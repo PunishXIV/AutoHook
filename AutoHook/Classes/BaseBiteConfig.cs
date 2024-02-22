@@ -4,6 +4,8 @@ using AutoHook.Utils;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using ImGuiNET;
+using System;
+using System.Numerics;
 
 namespace AutoHook.Classes;
 
@@ -29,17 +31,20 @@ public class BaseBiteConfig
 
     public HookType HooksetType;
 
+    private bool _modelOpen = false;
+    private Guid _windowHandleGuid = Guid.NewGuid();
+
     public BaseBiteConfig(HookType type)
     {
         HooksetType = type;
     }
 
-    public void DrawOptions(string biteName, bool enableSwap = false)
+    public void DrawOptions(string biteName, ref Guid windowOpenGuid, bool enableSwap = false)
     {
         EnableHooksetSwap = enableSwap;
         ImGui.PushID(@$"{biteName}");
 
-        DrawUtil.DrawCheckboxTree(biteName, ref HooksetEnabled,
+        /*DrawUtil.DrawCheckboxTree(biteName, ref HooksetEnabled,
             () =>
             {
                 if (EnableHooksetSwap)
@@ -71,9 +76,94 @@ public class BaseBiteConfig
                 DrawUtil.DrawTreeNodeEx(UIStrings.Surface_Slap_Options, DrawSurfaceSwap);
                 ImGui.Spacing();
                 DrawUtil.DrawTreeNodeEx(UIStrings.Identical_Cast_Options, DrawIdenticalCast);
-            });
+            });*/
+
+        ImGui.Checkbox($"##{biteName}###", ref HooksetEnabled);
+        ImGui.SameLine();
+        ImGui.Text(biteName);
+
+        DrawChild(biteName, ref windowOpenGuid);
+
+        ImGui.SameLine();
+
+        var windowGuidMatch = windowOpenGuid == _windowHandleGuid;
+
+        if (!windowGuidMatch && windowOpenGuid != Guid.Empty)
+            ImGui.BeginDisabled();
+
+        if (windowGuidMatch)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0, 0.5f, 0, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0, 0.3f, 0, 1.0f));
+        }
+
+        if (ImGui.Button("Configure"))
+        {
+            _modelOpen = !_modelOpen;
+            windowOpenGuid = _windowHandleGuid;
+        }
+
+        if (windowGuidMatch)
+            ImGui.PopStyleColor(2);
+
+        if (!windowGuidMatch && windowOpenGuid != Guid.Empty)
+            ImGui.EndDisabled();
 
         ImGui.PopID();
+    }
+
+    private void DrawChild(string biteName, ref Guid windowGuidHandle)
+    {
+
+        if (!_modelOpen)
+        {
+            if (windowGuidHandle == _windowHandleGuid)
+            {
+                Service.PluginLog.Debug($"Closing window: {_windowHandleGuid}");
+                windowGuidHandle = Guid.Empty;
+            }
+            return;
+        }
+
+
+        ImGui.SetNextWindowSizeConstraints(new Vector2(400, 350), new Vector2(int.MaxValue, int.MaxValue));
+        ImGui.SetNextWindowBgAlpha(1f);
+        if (ImGui.Begin($"{biteName}##{biteName}{_windowHandleGuid}###window", ref _modelOpen, ImGuiWindowFlags.NoCollapse))
+        {
+            ImGui.BeginChild($"##{biteName}{_windowHandleGuid}##child");
+            if (EnableHooksetSwap)
+                DrawUtil.DrawTreeNodeEx(UIStrings.HookType, DrawBite, UIStrings.HookWillBeUsedIfPatienceIsNotUp);
+
+            ImGui.Spacing();
+
+            DrawUtil.DrawTreeNodeEx(UIStrings.HookingTimer,
+                () =>
+                {
+                    ImGui.PushID(@"HookingTimer");
+                    DrawUtil.Checkbox(UIStrings.EnableHookingTimer, ref HookTimerEnabled);
+                    DrawTimer(ref MinHookTimer, ref MaxHookTimer);
+                    ImGui.PopID();
+
+                    DrawUtil.SpacingSeparator();
+
+                    //ImGui.TextWrapped(UIStrings.ChumTimer);
+                    ImGui.PushID(@"MoochTimer");
+                    DrawUtil.Checkbox(UIStrings.EnableChumTimer, ref ChumTimerEnabled);
+                    DrawTimer(ref ChumMinHookTimer, ref ChumMaxHookTimer);
+                    ImGui.PopID();
+                }
+                , UIStrings.HookingTimerHelpText);
+
+            ImGui.Spacing();
+
+
+            DrawUtil.DrawTreeNodeEx(UIStrings.Surface_Slap_Options, DrawSurfaceSwap);
+            ImGui.Spacing();
+            DrawUtil.DrawTreeNodeEx(UIStrings.Identical_Cast_Options, DrawIdenticalCast);
+
+            ImGui.EndChild();
+            ImGui.End();
+        }
     }
 
     private void DrawBite()
