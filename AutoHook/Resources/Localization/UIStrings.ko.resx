@@ -263,11 +263,6 @@
     <value>최대 대기 시간</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>설정한 시간 값에 도달하면 낚아채기가 발동됩니다.
-애니메이션 락에 의해 최소 대기 시간 값은 2초입니다.
-0으로 설정하면 비활성화 되며, 최소 대기 시간 값은 2초보다 낮을 수 없습니다.</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>최소 대기 시간</value>
   </data>
