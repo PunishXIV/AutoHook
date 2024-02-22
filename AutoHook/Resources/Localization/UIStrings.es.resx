@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -192,14 +192,6 @@
   <data name="AddNewPreset" xml:space="preserve">
     <value>Añadir nuevo Preset</value>
   </data>
-  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
-    <value>Aquí puedes elegir que Hook usar dependiendo de la carnada o mooch actual.
-Si una carnada/mooch no es especificado, se usara el Preset predeterminado.</value>
-  </data>
-  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
-    <value>Aquí puedes elegir que Hook usar dependiendo de la carnada o mooch actual.
-Si una carnada/mooch no es especificado, se usara el Preset predeterminado.</value>
-  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>Nuevo Preset</value>
   </data>
@@ -234,24 +226,6 @@ Si una carnada/mooch no es especificado, se usara el Preset predeterminado.</val
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>Haz clic aquí para reportar un problema o hacer una sugerencia</value>
   </data>
-  <data name="UseDefaultCast" xml:space="preserve">
-    <value>Usar Cast por defecto</value>
-  </data>
-  <data name="UseDefaultMooch" xml:space="preserve">
-    <value>Usar Mooch por defecto</value>
-  </data>
-  <data name="DefaultHookingBehavior" xml:space="preserve">
-    <value>Este es el comportamiento de Hook por defecto si no se encuentra ningún Preset personalizado.</value>
-  </data>
-  <data name="DefaultMoochingBehavior" xml:space="preserve">
-    <value>Este es el comportamiento de Mooch por defecto si no se encuentra ningún Preset personalizado.</value>
-  </data>
-  <data name="DefaultCast" xml:space="preserve">
-    <value>Cast por defecto</value>
-  </data>
-  <data name="DefaultMooch" xml:space="preserve">
-    <value>Mooch por defecto</value>
-  </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>Hook Débil (!)</value>
   </data>
@@ -273,12 +247,6 @@ Si una carnada/mooch no es especificado, se usara el Preset predeterminado.</val
   <data name="MaxWait" xml:space="preserve">
     <value>Espera Max.</value>
     <comment>Maximum time to wait</comment>
-  </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Hook será usado despues de cierta cantidad de tiempo haya pasado
-Tiempo minimo: 2s (Por el bloqueo de la animación)
-
-Usar Cero (0) para deshabilitar, y no usar tiempo menor a la Espera Min.</value>
   </data>
   <data name="MinWait" xml:space="preserve">
     <value>Espera Min.</value>
@@ -368,20 +336,11 @@ Si está desactivado, se utilizará Precision/Powerful Hookset cuando Patience e
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>Ajustes habilitados -&gt;</value>
   </data>
-  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
-    <value>¡¡¡Importante!!!
-
-Si está deshabilitado, el pez NO se usará ni Hook ni Mooch.
-Para usar el comportamiento predeterminado (Pestaña General), por favor elimine esta configuración.</value>
-  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>Timer de Chum</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>Habilitar timers de Chum</value>
-  </data>
-  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
-    <value>Habilitar Tiempos Maximos/minimos mientras usas Chum</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>Activar</value>
@@ -558,11 +517,6 @@ Si Auto Mooch (Global o Preset Personalizado) no está activado, se usara Cast n
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>Guía: Cómo auto aceptar Collectables</value>
   </data>
-  <data name="TabAutoCasts_DrawAutoMooch_HelpText" xml:space="preserve">
-    <value>Esta opción tiene prioridad sobre Auto Cast Line
-
-Si desea usar Auto Mooch con un solo pez e ignorar los otros, desactiva esta opcion y crea un Preset Personalizado.</value>
-  </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Apóyame en Ko-fi</value>
   </data>
@@ -584,14 +538,8 @@ Si desea usar Auto Mooch con un solo pez e ignorar los otros, desactiva esta opc
   <data name="Add_new_mooch" xml:space="preserve">
     <value>Añadir nuevo mooch</value>
   </data>
-  <data name="AutoMooch_HelpText" xml:space="preserve">
-    <value>Esta opción tiene prioridad sobre Auto Cast Line</value>
-  </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>Hook normal</value>
-  </data>
-  <data name="TabName_Default_Preset" xml:space="preserve">
-    <value>Preset Predeterminado</value>
   </data>
   <data name="Bait" xml:space="preserve">
     <value>Carnada</value>
@@ -749,8 +697,5 @@ Comprueba la pestaña de guías para las guías.</value>
   </data>
   <data name="Draw_Guides" xml:space="preserve">
     <value>Guías</value>
-  </data>
-  <data name="Delay_when_hooking" xml:space="preserve">
-    <value>Retardo al usar Hook</value>
   </data>
 </root>
