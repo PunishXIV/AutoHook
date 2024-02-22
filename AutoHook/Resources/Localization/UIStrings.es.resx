@@ -248,12 +248,6 @@
     <value>Espera Max.</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Hook será usado despues de cierta cantidad de tiempo haya pasado
-Tiempo minimo: 2s (Por el bloqueo de la animación)
-
-Usar Cero (0) para deshabilitar, y no usar tiempo menor a la Espera Min.</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Espera Min.</value>
   </data>
