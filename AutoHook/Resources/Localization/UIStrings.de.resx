@@ -261,12 +261,6 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
     <value>Max. Wartezeit</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Anschlag wird verwendet, wenn die angegebene Zeit verstrichen ist.
-Min. Wartezeit: 2s (aufgrund des Animationslocks)
-
-Null (0) setzen zum Deaktivieren und nicht kleiner einstellen, als Min. Wartezeit</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Min. Wartezeit</value>
   </data>
