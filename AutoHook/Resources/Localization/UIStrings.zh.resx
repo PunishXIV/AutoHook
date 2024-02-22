@@ -266,12 +266,6 @@
     <value>最长等待时间</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>当超过预设时间，提钩将会被使用
-最小等待时间：2秒(由于动画锁)
-
-设置为0将禁用此功能，请不要将该项设置在最小等待时间(2秒) 以内。</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>最小等待时间</value>
   </data>
