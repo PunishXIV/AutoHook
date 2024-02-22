@@ -192,6 +192,10 @@
   <data name="AddNewPreset" xml:space="preserve">
     <value>Neues Preset hinzufügen</value>
   </data>
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>Hier kannst du anpassen, welcher Anschlag verwendet werden soll, basierend auf dem aktuellen Köder oder Naturköder.
+Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset verwendet.</value>
+  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>Neues Preset</value>
   </data>
