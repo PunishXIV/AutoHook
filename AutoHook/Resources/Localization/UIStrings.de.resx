@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -192,6 +192,10 @@
   <data name="AddNewPreset" xml:space="preserve">
     <value>Neues Preset hinzufügen</value>
   </data>
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>Hier kannst du anpassen, welcher Anschlag verwendet werden soll, basierend auf dem aktuellen Köder oder Naturköder.
+Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset verwendet.</value>
+  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>Neues Preset</value>
   </data>
@@ -229,24 +233,6 @@
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>Hier klicken, um ein Problem zu melden oder einen Vorschlag zu machen</value>
   </data>
-  <data name="UseDefaultCast" xml:space="preserve">
-    <value>Standard-Angeleinstellung verwenden</value>
-  </data>
-  <data name="UseDefaultMooch" xml:space="preserve">
-    <value>Standard Naturköder verwenden</value>
-  </data>
-  <data name="DefaultHookingBehavior" xml:space="preserve">
-    <value>Das ist das Standardverhalten für den Anschlag, wenn kein benutzerdefiniertes Preset gefunden wurde.</value>
-  </data>
-  <data name="DefaultMoochingBehavior" xml:space="preserve">
-    <value>Dies ist das Standardverhalten für Naturköder, wenn kein Preset gefunden wird.</value>
-  </data>
-  <data name="DefaultCast" xml:space="preserve">
-    <value>Standard-Angeln</value>
-  </data>
-  <data name="DefaultMooch" xml:space="preserve">
-    <value>Standard-Naturköder</value>
-  </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>Schwacher Anschlag (!)</value>
   </data>
@@ -274,12 +260,6 @@
   <data name="MaxWait" xml:space="preserve">
     <value>Max. Wartezeit</value>
     <comment>Maximum time to wait</comment>
-  </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Anschlag wird verwendet, wenn die angegebene Zeit verstrichen ist.
-Min. Wartezeit: 2s (aufgrund des Animationslocks)
-
-Null (0) setzen zum Deaktivieren und nicht kleiner einstellen, als Min. Wartezeit</value>
   </data>
   <data name="MinWait" xml:space="preserve">
     <value>Min. Wartezeit</value>
@@ -372,20 +352,11 @@ Wenn deaktiviert, werden Präziser/Fester Anschlag stattdessen verwenden, wenn G
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>Aktive Config &gt;</value>
   </data>
-  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
-    <value>Wichtig!!!
-
-Wenn deaktiviert, wird der Fisch NICHT angeschlagen oder als Naturköder verwendet.
-Um das Standardverhalten (Allgemeiner Tab) zu verwenden, lösche bitte diese Einstellung.</value>
-  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>Streuköder-Timer</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>Streuköder-Timer aktivieren</value>
-  </data>
-  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
-    <value>Min/Max-Wartezeiten aktivieren, wenn unter dem Effekt von Streuköder</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>Aktivieren</value>
@@ -612,11 +583,6 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>Guide: Wie man Sammlerstücke automatisch annimmt</value>
-  </data>
-  <data name="TabAutoCasts_DrawAutoMooch_HelpText" xml:space="preserve">
-    <value>Diese Einstellung hat Priorität vor Autoauswurf der Leine
-
-Möchtest du Auto-Naturköder für einen spezifischen Fisch verwenden, und andere ignorieren, musst du die Einstellung deaktivieren und ein benutzerdefiniertes Preset anlegen.</value>
   </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Unterstütze mich auf Ko-fi</value>
