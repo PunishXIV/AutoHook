@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -243,26 +243,8 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>Cliquez ici pour signaler un problème ou faire une suggestion</value>
   </data>
-  <data name="UseDefaultCast" xml:space="preserve">
-    <value>Utiliser les actions par défaut</value>
-  </data>
-  <data name="UseDefaultMooch" xml:space="preserve">
-    <value>Utiliser pêche au vif par défaut</value>
-  </data>
-  <data name="DefaultHookingBehavior" xml:space="preserve">
-    <value>Ceci est le comportement de ferrage par défaut si aucun préréglage personnalisé n'est trouvé.</value>
-  </data>
-  <data name="DefaultMoochingBehavior" xml:space="preserve">
-    <value>Ceci est le comportement de pêche au vif par défaut si aucun préréglage personnalisé n'est trouvé.</value>
-  </data>
   <data name="Changelog" xml:space="preserve">
     <value>Journal de modifications</value>
-  </data>
-  <data name="DefaultCast" xml:space="preserve">
-    <value>Actions par défaut</value>
-  </data>
-  <data name="DefaultMooch" xml:space="preserve">
-    <value>Pêche au vif par défaut</value>
   </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>Ferrage Faible (!)</value>
@@ -291,12 +273,6 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
   <data name="MaxWait" xml:space="preserve">
     <value>Attente Max</value>
     <comment>Maximum time to wait</comment>
-  </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Ferrage sera utilisé après que le temps défini est passé
-Min. temps : 2s (en raison du verrouillage de l'animation)
-
-Mettre le zéro (0) pour désactiver, et ne pas le rendre inférieur au Min. Attendez</value>
   </data>
   <data name="MinWait" xml:space="preserve">
     <value>Attente minimum</value>
@@ -638,10 +614,8 @@ Si Pêche au Vif automatique (Global ou Personnalisée) n'est pas activé, la p�
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>Guide : Comment accepter automatiquement les poissons collectables</value>
   </data>
-  <data name="TabAutoCasts_DrawAutoMooch_HelpText" xml:space="preserve">
-    <value>Cette option a la priorité sur la pêche automatique
-
-Si vous voulez lancer Pêche Au vif automatiquement seulement sur un poisson spécifique et ignorer les autres, désactivez cette option et créez un préréglage personnalisé.</value>
+  <data name="AutoMooch_HelpText" xml:space="preserve">
+    <value>Cette option prend priorité sur le lancer de ligne automatique</value>
   </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Soutenez-moi sur Ko-fi</value>
@@ -673,14 +647,8 @@ Si vous voulez lancer Pêche Au vif automatiquement seulement sur un poisson sp�
   <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>Lancé automatiquement</value>
   </data>
-  <data name="AutoMooch_HelpText" xml:space="preserve">
-    <value>Cette option prend priorité sur le lancer de ligne automatique</value>
-  </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>Hameçon normal</value>
-  </data>
-  <data name="TabName_Default_Preset" xml:space="preserve">
-    <value>Préréglages par défaut</value>
   </data>
   <data name="Bait" xml:space="preserve">
     <value>Appât</value>
