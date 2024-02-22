@@ -260,11 +260,6 @@
     <value>最大待ち時間</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>設定された時間が経過した場合のみ、フッキングが使用されます。
-※最小時間：2秒
-無効にする場合は、0を設定してください。</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>最低待ち時間</value>
   </data>
