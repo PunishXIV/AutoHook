@@ -274,12 +274,6 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
     <value>Attente Max</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Ferrage sera utilisé après que le temps défini est passé
-Min. temps : 2s (en raison du verrouillage de l'animation)
-
-Mettre le zéro (0) pour désactiver, et ne pas le rendre inférieur au Min. Attendez</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Attente minimum</value>
   </data>
