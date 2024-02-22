@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -232,26 +232,8 @@
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>여기를 클릭해 문제 보고하거나 건의하기</value>
   </data>
-  <data name="UseDefaultCast" xml:space="preserve">
-    <value>낚싯대 던지기 사용하기</value>
-  </data>
-  <data name="UseDefaultMooch" xml:space="preserve">
-    <value>생미끼 낚시 사용하기</value>
-  </data>
-  <data name="DefaultHookingBehavior" xml:space="preserve">
-    <value>커스텀 설정을 찾을 수 없는 경우 사용 될 기본 낚아채기 동작입니다.</value>
-  </data>
-  <data name="DefaultMoochingBehavior" xml:space="preserve">
-    <value>커스텀 설정을 찾을 수 없는 경우 사용 될 기본 생미끼 낚시 동작입니다.</value>
-  </data>
   <data name="Changelog" xml:space="preserve">
     <value>변경 내역</value>
-  </data>
-  <data name="DefaultCast" xml:space="preserve">
-    <value>낚싯대 던지기</value>
-  </data>
-  <data name="DefaultMooch" xml:space="preserve">
-    <value>생미끼 낚시</value>
   </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>소형 낚기 (!)</value>
@@ -280,11 +262,6 @@
   <data name="MaxWait" xml:space="preserve">
     <value>최대 대기 시간</value>
     <comment>Maximum time to wait</comment>
-  </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>설정한 시간 값에 도달하면 낚아채기가 발동됩니다.
-애니메이션 락에 의해 최소 대기 시간 값은 2초입니다.
-0으로 설정하면 비활성화 되며, 최소 대기 시간 값은 2초보다 낮을 수 없습니다.</value>
   </data>
   <data name="MinWait" xml:space="preserve">
     <value>최소 대기 시간</value>
@@ -374,20 +351,11 @@
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>활성화 된 설정 -&gt;</value>
   </data>
-  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
-    <value>중요!!!
-
-비활성화 시, 물고기를 낚아채거나 생미끼가 되지 않습니다.
-기본 동작 (일반 탭) 으로 사용하려면, 이 설정을 삭제하세요.</value>
-  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>밑밥 타이머</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>밑밥 타이머 켜기</value>
-  </data>
-  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
-    <value>밑밥 던지기 활성 시 최소/최대 시간 설정하기</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>활성화</value>
@@ -621,11 +589,6 @@
   </data>
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>가이드: 자동으로 소장품 낚시 하는 법</value>
-  </data>
-  <data name="TabAutoCasts_DrawAutoMooch_HelpText" xml:space="preserve">
-    <value>본 옵션은 자동 낚싯대 던지기보다 우선입니다.
-
-특정 물고기만 자동 생미끼 낚시 되길 원한다면 본 옵션을 비활성화하고 커스텀 설정을 만드세요.</value>
   </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Ko-fi를 통해 후원하기</value>
