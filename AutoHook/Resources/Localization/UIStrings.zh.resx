@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -195,14 +195,6 @@
   <data name="AddNewPreset" xml:space="preserve">
     <value>添加新预设</value>
   </data>
-  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
-    <value>您可以在这里自定义当前的鱼饵或以小钓大鱼使用什么提钩技能。
-如果未指定鱼饵/以小钓大鱼，那么将会使用通用标签页中的默认行为。</value>
-  </data>
-  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
-    <value>您可以在这里自定义当前的鱼饵或以小钓大鱼使用什么提钩技能。
-如果未指定鱼饵/以小钓大鱼，那么将会使用通用标签页中的默认行为。</value>
-  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>新预设</value>
   </data>
@@ -243,26 +235,8 @@
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>点击此处报告一个问题或提出建议</value>
   </data>
-  <data name="UseDefaultCast" xml:space="preserve">
-    <value>使用默认抛竿</value>
-  </data>
-  <data name="UseDefaultMooch" xml:space="preserve">
-    <value>使用默认以小钓大</value>
-  </data>
-  <data name="DefaultHookingBehavior" xml:space="preserve">
-    <value>如果找不到自定义预设，这将是默认提钩方式。</value>
-  </data>
-  <data name="DefaultMoochingBehavior" xml:space="preserve">
-    <value>如果找不到预设，这将是默认以小钓大方式。</value>
-  </data>
   <data name="Changelog" xml:space="preserve">
     <value>更新日志</value>
-  </data>
-  <data name="DefaultCast" xml:space="preserve">
-    <value>默认抛竿</value>
-  </data>
-  <data name="DefaultMooch" xml:space="preserve">
-    <value>默认以小钓大</value>
   </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>提钩轻杆 (!)</value>
@@ -291,12 +265,6 @@
   <data name="MaxWait" xml:space="preserve">
     <value>最长等待时间</value>
     <comment>Maximum time to wait</comment>
-  </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>当超过预设时间，提钩将会被使用
-最小等待时间：2秒(由于动画锁)
-
-设置为0将禁用此功能，请不要将该项设置在最小等待时间(2秒) 以内。</value>
   </data>
   <data name="MinWait" xml:space="preserve">
     <value>最小等待时间</value>
@@ -388,20 +356,11 @@
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>已启用的配置 -&gt;</value>
   </data>
-  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
-    <value>重要！！！
-
-如果禁用该设置，将不会提钩/以小钓大
-若要使用默认行为(通用选项)，请删除此配置。</value>
-  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>撒饵计时</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>使用撒饵计时</value>
-  </data>
-  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
-    <value>在撒饵激活时使用最小/最大时间设置</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>启用</value>
@@ -638,11 +597,6 @@
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>指南：如何自动接受收藏品</value>
   </data>
-  <data name="TabAutoCasts_DrawAutoMooch_HelpText" xml:space="preserve">
-    <value>此选项优先于自动抛竿
-
-如果您想自动以小钓大某一特定鱼并忽略其他，禁用此选项并创建自定义预设。</value>
-  </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>在 Ko-fi 上赞助</value>
   </data>
@@ -676,14 +630,8 @@
   <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>自动抛竿</value>
   </data>
-  <data name="AutoMooch_HelpText" xml:space="preserve">
-    <value>此选项优先于自动抛竿</value>
-  </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>普通提钩</value>
-  </data>
-  <data name="TabName_Default_Preset" xml:space="preserve">
-    <value>默认预设</value>
   </data>
   <data name="Bait" xml:space="preserve">
     <value>鱼饵</value>
@@ -858,9 +806,6 @@
   <data name="Draw_Guides" xml:space="preserve">
     <value>指南</value>
   </data>
-  <data name="Delay_when_hooking" xml:space="preserve">
-    <value>延迟提勾</value>
-  </data>
   <data name="Preset_not_found" xml:space="preserve">
     <value>未找到预设</value>
   </data>
@@ -920,9 +865,6 @@
   </data>
   <data name="AutoCastStartTime" xml:space="preserve">
     <value>允许自动抛竿的起始时间</value>
-  </data>
-  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
-    <value>只在特定时间(艾欧泽亚时间) 允许自动抛竿</value>
   </data>
   <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
     <value>失去直觉时退出钓鱼</value>
