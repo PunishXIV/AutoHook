@@ -266,13 +266,6 @@
   <data name="MinWait" xml:space="preserve">
     <value>최소 대기 시간</value>
   </data>
-  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
-    <value>최소 시간이 지날 때까지 낚아채기가 사용되지 않습니다.
-
-예: 14초로 설정 시 8초에 입질이 온다면, 해당 물고기는 낚이지 않습니다.
-
-0초 (0) 로 설정 시 비활성화</value>
-  </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>~ 이후 낚시 그만두기</value>
   </data>
