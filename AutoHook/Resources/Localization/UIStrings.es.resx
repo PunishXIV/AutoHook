@@ -251,13 +251,6 @@
   <data name="MinWait" xml:space="preserve">
     <value>Espera Min.</value>
   </data>
-  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
-    <value>Hook NO será usado hasta que la Espera Min. haya pasado.
-
-Ej. Si el número es 14 y algo pica despues de 8 segundos, el pez no será capturado.
-
-Usar Cero (0) para deshabilitar</value>
-  </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Dejar de pescar despues de...</value>
   </data>
