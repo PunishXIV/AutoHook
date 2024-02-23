@@ -264,13 +264,6 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
   <data name="MinWait" xml:space="preserve">
     <value>Min. Wartezeit</value>
   </data>
-  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
-    <value>Anschlag wird NICHT verwendet bevor die Min. Wartezeit verstrichen ist.
-
-Bsp: Setzt du die Zeit auf 14 und etwas beißt nach 8 Sekunden, wird der Fisch nicht gehakt
-
-Null (0) setzen zum Deaktivieren</value>
-  </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Fischen anhalten nach...</value>
   </data>
