@@ -263,11 +263,6 @@
   <data name="MinWait" xml:space="preserve">
     <value>最低待ち時間</value>
   </data>
-  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
-    <value>最低待ち時間が経過するまでフッキングは使用されません。
-例：14秒と設定し、8秒後に食いついた場合、フッキングせず見逃します。
-0秒に設定すると無効になります。</value>
-  </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>釣りを中止後：</value>
   </data>
