@@ -633,6 +633,9 @@
   <data name="Normal_Hook" xml:space="preserve">
     <value>普通提钩</value>
   </data>
+  <data name="TabName_Global_Preset" xml:space="preserve">
+    <value>全局预设</value>
+  </data>
   <data name="Bait" xml:space="preserve">
     <value>鱼饵</value>
   </data>
@@ -779,6 +782,9 @@
   <data name="Extra" xml:space="preserve">
     <value>额外</value>
   </data>
+  <data name="ExtraOptions" xml:space="preserve">
+    <value>额外选项</value>
+  </data>
   <data name="NeverReleaseHelptext" xml:space="preserve">
     <value>如果在 "自动垂钓" 项目页选择了 "放生所有鱼", 该鱼也不会被放生</value>
   </data>
@@ -877,5 +883,26 @@
   </data>
   <data name="Current_Selected_Preset" xml:space="preserve">
     <value>当前选中的预设：</value>
+  </data>
+  <data name="HookType" xml:space="preserve">
+    <value>挂钩类型</value>
+  </data>
+  <data name="HookingTimer" xml:space="preserve">
+    <value>挂钩计时</value>
+  </data>
+  <data name="EnableHookingTimer" xml:space="preserve">
+    <value>使用挂钩计时器</value>
+  </data>
+  <data name="EnableChumTimer" xml:space="preserve">
+    <value>使用撒饵计时器</value>
+  </data>
+  <data name="UseDoubleHook" xml:space="preserve">
+    <value>使用双重提钩</value>
+  </data>
+  <data name="UseTripleHook" xml:space="preserve">
+    <value>使用三重提钩</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>超时</value>
   </data>
 </root>
