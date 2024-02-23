@@ -269,12 +269,6 @@
   <data name="MinWait" xml:space="preserve">
     <value>最小等待时间</value>
   </data>
-  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
-    <value>当超过预设时间，提钩将不会被使用
-例：如果设置此数为14并且8秒后有鱼咬钩，这条鱼将不会被提起。
-
-设置为 (0) 将禁用此功能。</value>
-  </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>在... 后停止捕鱼</value>
   </data>
