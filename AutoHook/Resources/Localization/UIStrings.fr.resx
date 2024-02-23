@@ -443,6 +443,9 @@ Pour utiliser le comportement par défaut (Onglet Général), veuillez supprimer
     <value>&gt;Faite en sorte à ce que "Utiliser Pêche au vif II" est activée ou sinon cela ne marchera pas&lt;
 Cela pourrais vous sauvegarder 100PR</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>.</value>
+  </data>
   <data name="Enable_AutoHook" xml:space="preserve">
     <value>Activer AutoHook</value>
   </data>
