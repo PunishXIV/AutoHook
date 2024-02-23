@@ -274,27 +274,8 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
     <value>Attente Max</value>
     <comment>Maximum time to wait</comment>
   </data>
-  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Le ferrage ne sera pas utilisé une fois que le temps défini sera écoulé
-      
-Exemple: Si vous définissez 10 secondes et que le poisson mord après 12 secondes, il ne sera pas attrapé
-      
-Définir zéro (0) pour désactiver, de manière à ne pas descendre plus bas que la valeur minimale configurée dans 'Min'. Wait"</value>
-  </data>
-  <data name="TimeoutHelpText" xml:space="preserve">
-    <value>Le crochet sera utilisé après que le temps défini a passé
-Un temps de 2 secondes minimum est requis (à cause du verrouillage de l'animation)
-
-Définir le zéro (0) pour désactiver</value>
-  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Attente minimum</value>
-  </data>
-  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
-    <value>Ferrage ne sera PAS utilisé avant qu'un minimum de temps est passé
-Ex : Si vous mettez 14 secondes et qu'un poisson mord après 8 secondes, le poisson ne sera pas capturé
-
-Mettre (0) pour désactiver</value>
   </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Arrêter la pêche après...</value>
