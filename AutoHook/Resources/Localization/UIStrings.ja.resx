@@ -260,6 +260,10 @@
     <value>最大待ち時間</value>
     <comment>Maximum time to wait</comment>
   </data>
+  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
+    <value>フックは指定された時間を経過した後には使用されません。
+例えば、最大待ち時間を10秒に設定し、何かが12秒後にかかった場合、その魚は無視されます。</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>最低待ち時間</value>
   </data>
