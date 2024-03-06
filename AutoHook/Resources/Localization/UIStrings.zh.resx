@@ -195,6 +195,14 @@
   <data name="AddNewPreset" xml:space="preserve">
     <value>添加新预设</value>
   </data>
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>您可以在这里自定义当前的鱼饵或以小钓大鱼使用什么提钩技能。
+如果未指定鱼饵/以小钓大鱼，那么将会使用通用标签页中的默认行为。</value>
+  </data>
+  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
+    <value>您可以在这里自定义当前的鱼饵或以小钓大鱼使用什么提钩技能。
+如果未指定鱼饵/以小钓大鱼，那么将会使用通用标签页中的默认行为。</value>
+  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>新预设</value>
   </data>
@@ -266,8 +274,29 @@
     <value>最长等待时间</value>
     <comment>Maximum time to wait</comment>
   </data>
+  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
+    <value>如果超过了设定的等待时间，就不会使用提钩
+例如：如果你把最大等待时间设为10秒，而有鱼在12秒后上钩，那么这条鱼会被忽略</value>
+  </data>
+  <data name="TimeoutHelpText" xml:space="preserve">
+    <value>设置零(0) 为禁用。
+在达到时间限制时使用钩子取消捕鱼尝试。</value>
+  </data>
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+    <value>聊天室活动时不受影响</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>最小等待时间</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>最小值</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>最大值</value>
+  </data>
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+    <value>如果超过了设定的等待时间，就不会使用提钩
+例如：如果你把最大等待时间设为14秒，而有鱼在8秒后上钩，那么这条鱼会被忽略</value>
   </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>在... 后停止捕鱼</value>
@@ -350,11 +379,19 @@
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>已启用的配置 -&gt;</value>
   </data>
+  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
+    <value>重要！！！
+
+如果禁用，鱼将不会被钓起。</value>
+  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>撒饵计时</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>使用撒饵计时</value>
+  </data>
+  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
+    <value>与上面的选项相同，但仅在聊天室活动时</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>启用</value>
@@ -419,6 +456,9 @@
   <data name="ExtraOptionPrizeCatchHelpMarker" xml:space="preserve">
     <value>&gt;请确保启用了'使用以小钓大 II'，否则它将无法正常工作&lt;
  如果只是为了以小钓大这将为您省下100GP</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>.</value>
   </data>
   <data name="Enable_AutoHook" xml:space="preserve">
     <value>启用自动提钩</value>
@@ -500,6 +540,9 @@
   </data>
   <data name="Surface_Slap_Options" xml:space="preserve">
     <value>拍打水面选项</value>
+  </data>
+  <data name="Identical_Cast_Options" xml:space="preserve">
+    <value>相同的投射选项</value>
   </data>
   <data name="Identical_Cast" xml:space="preserve">
     <value>专一垂钓</value>
@@ -591,6 +634,11 @@
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>指南：如何自动接受收藏品</value>
   </data>
+  <data name="AutoMooch_HelpText" xml:space="preserve">
+    <value>全部使用 以小钓大！这个选项优先于“自动抛竿”
+
+如果你只想自动使用 以小钓大 钓特定的鱼，而忽略其他的鱼，就关闭这个选项，然后使用“已钓鱼类”标签。</value>
+  </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>在 Ko-fi 上赞助</value>
   </data>
@@ -624,6 +672,9 @@
   <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>自动抛竿</value>
   </data>
+  <data name="AutoMooch_HelpText_old" xml:space="preserve">
+    <value>此选项优先于自动抛竿</value>
+  </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>普通提钩</value>
   </data>
@@ -644,6 +695,9 @@
   </data>
   <data name="Fish" xml:space="preserve">
     <value>鱼</value>
+  </data>
+  <data name="Fish Caught" xml:space="preserve">
+    <value>已捕获的鱼</value>
   </data>
   <data name="Add_new_fish" xml:space="preserve">
     <value>添加新鱼</value>
@@ -712,6 +766,9 @@
     <value>当未检测到自定义的鱼饵/以小到大/鱼/自动抛竿时，将使用默认预设。 在这里您可以设置用于所有鱼饵和以小钓大的挂钩行为，除非创建了自定义预设。 
 请检查指南选项卡。</value>
   </data>
+  <data name="TabGlobalPreset_Description" xml:space="preserve">
+    <value>当未检测到自定义的鱼饵/以小到大/鱼/自动抛竿时，将使用默认预设。 在这里您可以设置用于所有鱼饵和以小钓大的挂钩行为，除非创建了自定义预设。 请检查指南选项卡。</value>
+  </data>
   <data name="Old_Preset_Warning" xml:space="preserve">
     <value>这是一个旧的配置，可能缺少一些设置。</value>
   </data>
@@ -745,14 +802,26 @@
   <data name="SubAuto_Disabled" xml:space="preserve">
     <value>自动抛竿已关闭</value>
   </data>
+  <data name="AllActionsDisabled" xml:space="preserve">
+    <value>已禁用所有操作</value>
+  </data>
   <data name="SubExtra_Disabled" xml:space="preserve">
     <value>已禁用额外选项</value>
   </data>
   <data name="Default_AutoCast_Being_Used" xml:space="preserve">
     <value>[默认] 正在使用自动抛竿</value>
   </data>
+  <data name="Global_AutoCast_Being_Used" xml:space="preserve">
+    <value>[默认] 正在使用自动抛竿</value>
+  </data>
+  <data name="GlobalActionsBeingUsed" xml:space="preserve">
+    <value>正在使用来自全局预设的自动操作</value>
+  </data>
   <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
     <value>正在使用自定义预设 [{0}] 进行自动抛竿。</value>
+  </data>
+  <data name="Default_Extra_Being_Used" xml:space="preserve">
+    <value>[默认] 正在使用自动抛竿</value>
   </data>
   <data name="Custom_Extra_Being_Used" xml:space="preserve">
     <value>正在使用自定义预设 [{0}] 进行自动抛竿。</value>
@@ -842,6 +911,9 @@
   <data name="Show_Presets_As_Sidebar" xml:space="preserve">
     <value>将预设菜单作为侧边栏</value>
   </data>
+  <data name="Hide_Tab_Description" xml:space="preserve">
+    <value>隐藏标签描述</value>
+  </data>
   <data name="Ignore_When_Intuition" xml:space="preserve">
     <value>当直觉激活时忽略鱼类设置</value>
   </data>
@@ -898,5 +970,11 @@
   </data>
   <data name="Timeout" xml:space="preserve">
     <value>超时</value>
+  </data>
+  <data name="Hook" xml:space="preserve">
+    <value>提钩</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>禁用时不隐藏异常/自动投射选项</value>
   </data>
 </root>
