@@ -350,6 +350,9 @@
   <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
     <value>启用自定义垂钓当捕鱼人之识触发</value>
   </data>
+  <data name="SpectralCurrentSettings" xml:space="preserve">
+    <value>幻海流设置</value>
+  </data>
   <data name="HoldShiftBothDHTH" xml:space="preserve">
     <value>按住 SHIFT 键以同时选中双重提钩和三重提钩（不推荐）</value>
   </data>
@@ -592,6 +595,9 @@
   <data name="Hitbox" xml:space="preserve">
     <value>命中框</value>
   </data>
+  <data name="GigHitbox" xml:space="preserve">
+    <value>叉鱼判定框</value>
+  </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>使用熟练渔技</value>
   </data>
@@ -823,11 +829,17 @@
   <data name="Default_Extra_Being_Used" xml:space="preserve">
     <value>[默认] 正在使用自动抛竿</value>
   </data>
+  <data name="Global_Extra_Being_Used" xml:space="preserve">
+    <value>[全局] 正在使用额外配置</value>
+  </data>
   <data name="Custom_Extra_Being_Used" xml:space="preserve">
     <value>正在使用自定义预设 [{0}] 进行自动抛竿。</value>
   </data>
   <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
     <value>重要！如果您手动提钩，将不会使用自动抛竿。</value>
+  </data>
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+    <value>注意！如果手动提钩，将会停止自动抛竿。</value>
   </data>
   <data name="Food_Buff" xml:space="preserve">
     <value>食物增益</value>
@@ -875,11 +887,17 @@
   <data name="Draw_Guides" xml:space="preserve">
     <value>指南</value>
   </data>
+  <data name="Delay_when_hooking" xml:space="preserve">
+    <value>延迟提钩 (毫秒)</value>
+  </data>
   <data name="Preset_not_found" xml:space="preserve">
     <value>未找到预设</value>
   </data>
   <data name="Set_preset_command" xml:space="preserve">
     <value>用聊天命令设置自定义预设 ： /ahpreset 预设名称</value>
+  </data>
+  <data name="Starts_AutoHook" xml:space="preserve">
+    <value>使用当前预设进行操作</value>
   </data>
   <data name="Preset_set_to_" xml:space="preserve">
     <value>预设设置为：</value>
@@ -896,14 +914,41 @@
   <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
     <value>仅当拍打水面未激活时使用</value>
   </data>
+  <data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>仅在拍水时提钩</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>不在拍水时提钩</value>
+  </data>
+  <data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
+    <value>仅在专一时使用</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
+    <value>不在专一时使用</value>
+  </data>
+  <data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
+    <value>仅在专一中提钩</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
+    <value>不在专一中提钩</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>收集</value>
+  </data>
+  <data name="CollectHelpText" xml:space="preserve">
+    <value>开始钓鱼时自动开启收藏品采集</value>
   </data>
   <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
     <value>当buff计时器小于或等于.. 时刷新</value>
   </data>
+  <data name="Allow_Gp_Overcap" xml:space="preserve">
+    <value>专一时取消GP使用限制</value>
+  </data>
   <data name="Use_Cordials_First" xml:space="preserve">
     <value>在沙利亚克的恩宠之前使用强心剂</value>
+  </data>
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
+    <value>仅在强心剂冷却时使用</value>
   </data>
   <data name="Use_Cordials_First_Help" xml:space="preserve">
     <value>仅在使用强心剂时应用</value>
@@ -933,10 +978,13 @@
     <value>从游戏中选择当前选中的鱼饵</value>
   </data>
   <data name="AutoCastEndTime" xml:space="preserve">
-    <value>结束时间允许自动抛竿</value>
+    <value>停止自动抛竿的时间</value>
   </data>
   <data name="AutoCastStartTime" xml:space="preserve">
-    <value>允许自动抛竿的起始时间</value>
+    <value>开始自动抛竿的时间</value>
+  </data>
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+    <value>仅在特定时间使用 (ET时间)</value>
   </data>
   <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
     <value>失去直觉时退出钓鱼</value>
@@ -949,6 +997,9 @@
   </data>
   <data name="Current_Selected_Preset" xml:space="preserve">
     <value>当前选中的预设：</value>
+  </data>
+  <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
+    <value>仅在鱼眼中使用</value>
   </data>
   <data name="HookType" xml:space="preserve">
     <value>挂钩类型</value>
@@ -968,13 +1019,117 @@
   <data name="UseTripleHook" xml:space="preserve">
     <value>使用三重提钩</value>
   </data>
+  <data name="StopAfterHooking" xml:space="preserve">
+    <value>在... 后停止钓鱼</value>
+  </data>
   <data name="Timeout" xml:space="preserve">
     <value>超时</value>
+  </data>
+  <data name="Chum Timeout" xml:space="preserve">
+    <value>撒饵超时</value>
+  </data>
+  <data name="TimeoutOption" xml:space="preserve">
+    <value>超出指定时间后停止钓鱼</value>
   </data>
   <data name="Hook" xml:space="preserve">
     <value>提钩</value>
   </data>
+  <data name="Hooking" xml:space="preserve">
+    <value>提钩</value>
+  </data>
+  <data name="HookingTabHelpText" xml:space="preserve">
+    <value>平钓或以小钓大时的提钩设置</value>
+  </data>
+  <data name="BaitTabHelpText" xml:space="preserve">
+    <value>平钓时的提钩设置</value>
+  </data>
+  <data name="MoochTabHelpText" xml:space="preserve">
+    <value>以小钓大时的提钩设置</value>
+  </data>
+  <data name="RequiredStatusSettingHelpText" xml:space="preserve">
+    <value>如果禁用，将会使用默认提钩设置</value>
+  </data>
+  <data name="AntiAfkOption" xml:space="preserve">
+    <value>钓鱼时不会进入挂机状态</value>
+  </data>
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
+    <value>树形设置UI↔按钮设置UI</value>
+  </data>
+  <data name="LetFishEscapeHelpText" xml:space="preserve">
+    <value>如果禁用，GP不足时会使用普通提钩</value>
+  </data>
+  <data name="NormalPatienceHookset" xml:space="preserve">
+    <value>提什么 / 用轻重</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>自定义</value>
+  </data>
+  <data name="Type_1" xml:space="preserve">
+    <value>样式 1</value>
+  </data>
+  <data name="Type_2" xml:space="preserve">
+    <value>样式 2</value>
+  </data>
+  <data name="CordialOutsideTimeWindow" xml:space="preserve">
+    <value>在特定窗口期外使用强心剂</value>
+  </data>
+  <data name="SpecificTimeWindowHelpText" xml:space="preserve">
+    <value>受影响的操作：自动使用技能，自动以小钓大I/II，强心剂 (可选)，鱼眼，熟练渔技，耐心I/II</value>
+  </data>
+  <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
+    <value>默认情况下，在窗口期外不会使用强心剂(如果启用的话)。此选项将覆盖该行为</value>
+  </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>时间上限</value>
+  </data>
+  <data name="ChumTimeLimit" xml:space="preserve">
+    <value>撒饵时间上限</value>
+  </data>
+  <data name="SetZeroToIgnore" xml:space="preserve">
+    <value>设置为0时停用计时器</value>
+  </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="UseNaturesBounty" xml:space="preserve">
+    <value>使用嘉慧</value>
+  </data>
+  <data name="EnableActions" xml:space="preserve">
+    <value>启用操作</value>
+  </data>
   <data name="DontHideExtraAutoCast" xml:space="preserve">
     <value>禁用时不隐藏异常/自动投射选项</value>
+  </data>
+  <data name="IgnoreMooch" xml:space="preserve">
+    <value>忽略以小钓大</value>
+  </data>
+  <data name="IgnoreMoochHelpText" xml:space="preserve">
+    <value>如果禁用，将不会取消以小钓大，即使没有开启自动以小钓大</value>
+  </data>
+  <data name="NeverMoochHelpText" xml:space="preserve">
+    <value>如果启用，将会忽略以小钓大</value>
+  </data>
+  <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
+    <value>仅在耐心或熟练渔技中使用</value>
+  </data>
+  <data name="IgnoreMoochFishEyes" xml:space="preserve">
+    <value>鱼眼将会打断以小钓大</value>
+  </data>
+  <data name="StartActions" xml:space="preserve">
+    <value>开钓！</value>
+  </data>
+  <data name="StartActionHelpText" xml:space="preserve">
+    <value>开始使用自动执行！ 也可以在“额外”标签页中设置换饵操作
+
+可以使用命令/ahstart 开始捕鱼。 可以写个宏！</value>
+  </data>
+  <data name="ForceBaitSwap" xml:space="preserve">
+    <value>在点击“开钓！”时强制换饵</value>
+  </data>
+  <data name="SelectBaitStartFishing" xml:space="preserve">
+    <value>选择要使用的鱼饵:</value>
+  </data>
+  <data name="AnglersArt" xml:space="preserve">
+    <value>捕鱼人之计</value>
   </data>
 </root>
