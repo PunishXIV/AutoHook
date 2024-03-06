@@ -334,7 +334,7 @@
     <value>使用以小钓大II</value>
   </data>
   <data name="OnlyUseWhenFisherSIntutionIsActive" xml:space="preserve">
-    <value>只在捕鱼人之识触发时使用</value>
+    <value>只在鱼识中使用</value>
   </data>
   <data name="AutoMoochPresetDescription" xml:space="preserve">
     <value>- 如果这项设置是一个鱼饵(例：万能拟饵)，由此鱼饵上钩的所有鱼都将使用以小钓大
@@ -348,7 +348,7 @@
     <value>捕鱼人之识设置</value>
   </data>
   <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
-    <value>启用自定义垂钓当捕鱼人之识触发</value>
+    <value>触发鱼识时启用自定义提钩</value>
   </data>
   <data name="SpectralCurrentSettings" xml:space="preserve">
     <value>幻海流设置</value>
@@ -629,7 +629,7 @@
     <value>取消以小钓大的技能将不会被使用(例：撒饵，鱼眼，大鱼猎手等)</value>
   </data>
   <data name="TabAutoCasts_DrawExtraOptionsAutoMooch_Extra_Only_Active" xml:space="preserve">
-    <value>只在捕鱼人之识触发时使用</value>
+    <value>只在鱼识中使用</value>
   </data>
   <data name="Use_Mooch_II" xml:space="preserve">
     <value>使用以小钓大II</value>
@@ -876,10 +876,10 @@
     <value>启用额外配置</value>
   </data>
   <data name="When_gaining_fishers_intuition" xml:space="preserve">
-    <value>当获得捕鱼人之识时</value>
+    <value>当触发鱼识时</value>
   </data>
   <data name="When_losing_fishers_intuition" xml:space="preserve">
-    <value>当失去捕鱼人之识时</value>
+    <value>当鱼识结束时</value>
   </data>
   <data name="Draw_Configs" xml:space="preserve">
     <value>配置</value>
