@@ -274,6 +274,10 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
     <value>Attente Max</value>
     <comment>Maximum time to wait</comment>
   </data>
+  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
+    <value>Le ferrage ne sera PAS utilisé après que le temps défini soit passé
+Ex: Si vous définissez au Max. Attend jusqu'à 10 et si quelque chose mord après 12 secondes, le poisson sera ignoré</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Attente minimum</value>
   </data>
