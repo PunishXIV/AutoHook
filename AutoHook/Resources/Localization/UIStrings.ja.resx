@@ -120,9 +120,6 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>テスト中</value>
   </data>
-  <data name="default" xml:space="preserve">
-    <value>デフォルト</value>
-  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
