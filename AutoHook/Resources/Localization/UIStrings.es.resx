@@ -120,9 +120,6 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>Test</value>
   </data>
-  <data name="default" xml:space="preserve">
-    <value>Predeterminado</value>
-  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
