@@ -120,9 +120,6 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>测试</value>
   </data>
-  <data name="default" xml:space="preserve">
-    <value>默认</value>
-  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
@@ -701,9 +698,6 @@
   </data>
   <data name="Fish" xml:space="preserve">
     <value>鱼</value>
-  </data>
-  <data name="Fish Caught" xml:space="preserve">
-    <value>已捕获的鱼</value>
   </data>
   <data name="Add_new_fish" xml:space="preserve">
     <value>添加新鱼</value>
