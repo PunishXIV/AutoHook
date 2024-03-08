@@ -120,9 +120,6 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>Tests en cours</value>
   </data>
-  <data name="default" xml:space="preserve">
-    <value>Défaut</value>
-  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
@@ -677,9 +674,6 @@ Si Pêche au Vif automatique (Global ou Personnalisée) n'est pas activé, la p�
   </data>
   <data name="Fish" xml:space="preserve">
     <value>Poisson</value>
-  </data>
-  <data name="Fish Caught" xml:space="preserve">
-    <value>Poissons pêchés</value>
   </data>
   <data name="Add_new_fish" xml:space="preserve">
     <value>Ajouter un nouveau poisson</value>
