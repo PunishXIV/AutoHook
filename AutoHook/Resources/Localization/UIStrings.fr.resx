@@ -139,7 +139,7 @@
     <value>Pêche au vif automatique</value>
   </data>
   <data name="AddLastCatch" xml:space="preserve">
-    <value>Ajouter la dernière capture :</value>
+    <value>Ajouter la dernière capture:</value>
   </data>
   <data name="ExportPresetToClipboard" xml:space="preserve">
     <value>Exporter le préréglage dans le presse-papiers.</value>
@@ -181,7 +181,7 @@
     <value>Fermer</value>
   </data>
   <data name="RightClickToRename" xml:space="preserve">
-    <value>Clic droit pour renommer</value>
+    <value>Clic droit pour renommer ce préréglage personnalisé</value>
   </data>
   <data name="TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm" xml:space="preserve">
     <value>Modifier le nom du préréglage (appuyez sur Entrée pour confirmer)</value>
@@ -193,12 +193,12 @@
     <value>Ajouter un nouveau préréglage</value>
   </data>
   <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
-    <value>Ici, vous pouvez personnaliser l'hameçon à utiliser en fonction de l’appât actuel ou pêche au vif.
-Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera utilisé à la place.</value>
+    <value>Vous pouvez personnaliser quel type de Ferrage sera utiliser en fonction de l’Appât ou Pêche au vif actuel.
+Si aucun Appât/Pêche au vif n'est spécifié, le préréglage par défaut sera utilisé à la place.</value>
   </data>
   <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
-    <value>Ici, vous pouvez personnaliser l'hameçon à utiliser en fonction de l’appât actuel ou pêche au vif.
-Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera utilisé à la place.</value>
+    <value>Vous pouvez personnaliser quel type de Ferrage sera utiliser en fonction de l’Appât ou Pêche au vif actuel.
+Si aucun Appât/Pêche au vif n'est spécifié, le préréglage par défaut sera utilisé à la place.</value>
   </data>
   <data name="NewPreset" xml:space="preserve">
     <value>Nouveau Préréglage</value>
@@ -210,7 +210,7 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
     <value>Configuration PR</value>
   </data>
   <data name="TabGPConfig_TabDescription" xml:space="preserve">
-    <value>Ici, vous pouvez personnaliser le seuil de PR pour les actions et les objets utilisés par la fonctionnalité de ferrage automatique.</value>
+    <value>Vous pouvez personnaliser le seuil de PR pour les actions et les objets utilisés par la fonctionnalité de ferrage automatique.</value>
   </data>
   <data name="GP" xml:space="preserve">
     <value>PR</value>
@@ -274,6 +274,10 @@ Si aucun appât/pêche au vif n'est spécifié, le préréglage par défaut sera
   <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
     <value>Le ferrage ne sera PAS utilisé après que le temps défini soit passé
 Ex: Si vous définissez au Max. Attend jusqu'à 10 et si quelque chose mord après 12 secondes, le poisson sera ignoré</value>
+  </data>
+  <data name="TimeoutHelpText" xml:space="preserve">
+    <value>Définissez zéro (0) pour désactiver.
+Annule la tentative de pêche en utilisant l'hameçon lorsque la limite de temps est atteinte.</value>
   </data>
   <data name="MinWait" xml:space="preserve">
     <value>Attente minimum</value>
@@ -929,6 +933,9 @@ Consultez l’onglet Guide pour trouver des guides.</value>
   <data name="AutoCastStartTime" xml:space="preserve">
     <value>Heure de démarrage</value>
   </data>
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+    <value>Utiliser des actions uniquement à des moments spécifiques (Heure éorzéenne)</value>
+  </data>
   <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
     <value>Arrête la pêche quand le buff d'intuition disparaît</value>
   </data>
@@ -990,7 +997,60 @@ Consultez l’onglet Guide pour trouver des guides.</value>
   <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
     <value>Par défaut, cordial ne sera pas utilisé en dehors de la fenêtre de temps (si activé). Cette option remplacera ce comportement</value>
   </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>Limite de temps</value>
+  </data>
+  <data name="ChumTimeLimit" xml:space="preserve">
+    <value>Limite de temps pour Amorçage</value>
+  </data>
+  <data name="SetZeroToIgnore" xml:space="preserve">
+    <value>Définir zéro (0) pour ignorer les minuteurs : Min ou Max</value>
+  </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>À propos</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="SettingsTab" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="EnableActions" xml:space="preserve">
+    <value>Activer la pêche</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>Ne pas masquer les options Extra/Action Auto lorsque désactivées</value>
+  </data>
+  <data name="NeverMoochHelpText" xml:space="preserve">
+    <value>Si activé, les actions annuleront également cette tentative de pêche au vif</value>
+  </data>
+  <data name="StartActions" xml:space="preserve">
+    <value>Commencer Pêche Automatique</value>
+  </data>
+  <data name="StartActionHelpText" xml:space="preserve">
+    <value>Commencez à utiliser votre Pêche Automatique ! Vous pouvez également définir un échange d'appâts pour commencer à pêcher dans l'onglet Extra
+
+Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de faire une macro avec ça !</value>
+  </data>
+  <data name="CatchEverything" xml:space="preserve">
+    <value>Tout attraper</value>
+  </data>
+  <data name="IgnoresPresets" xml:space="preserve">
+    <value>Ignorer les préréglages</value>
+  </data>
+  <data name="CatchAllNotice" xml:space="preserve">
+    <value>Attraper tous les poissons est activé. Les paramètres ci-dessous seront ignorés lors du Harponnage.</value>
+  </data>
+  <data name="CatchAllNaturesBountyHelpText" xml:space="preserve">
+    <value>Seulement lorsque attraper tous les poissons est activé</value>
+  </data>
+  <data name="CatchAllGigWindow" xml:space="preserve">
+    <value>Attraper tous les poissons. Les préréglages seront ignorés.</value>
+  </data>
   <data name="DelaySettings" xml:space="preserve">
     <value>Paramètres de délai</value>
+  </data>
+  <data name="GeneratePreset" xml:space="preserve">
+    <value>Générer le préréglage</value>
   </data>
 </root>
