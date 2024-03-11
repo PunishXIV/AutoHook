@@ -990,4 +990,7 @@ Consultez l’onglet Guide pour trouver des guides.</value>
   <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
     <value>Par défaut, cordial ne sera pas utilisé en dehors de la fenêtre de temps (si activé). Cette option remplacera ce comportement</value>
   </data>
+  <data name="DelaySettings" xml:space="preserve">
+    <value>Paramètres de délai</value>
+  </data>
 </root>
