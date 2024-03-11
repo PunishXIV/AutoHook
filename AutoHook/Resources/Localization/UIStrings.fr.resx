@@ -294,6 +294,10 @@ Annule la tentative de pêche en utilisant l'hameçon lorsque la limite de temps
   <data name="Max" xml:space="preserve">
     <value>Maximum.</value>
   </data>
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+    <value>Le ferrage ne sera pas utilisé jusqu'à ce que le minimum du temps soit passé.
+Exemple : Si votre temps minimum est de 14 secondes et qu'un poisson mord après 8 secondes, le poisson sera ignoré</value>
+  </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Arrêter la pêche après...</value>
   </data>
@@ -824,6 +828,9 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   <data name="Global_AutoCast_Being_Used" xml:space="preserve">
     <value>[Default] Lancé automatique est utilisé à la place</value>
   </data>
+  <data name="GlobalActionsBeingUsed" xml:space="preserve">
+    <value>Les actions automatiques du préréglage global sont utilisées à la place</value>
+  </data>
   <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
     <value>Préréglage personnalisé [{0}] Le lancer auto est utilisé à la place</value>
   </data>
@@ -838,6 +845,9 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   </data>
   <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
     <value>Important ! Les lancés automatiques ne seront pas utilisés si vous hameçonnez manuellement.</value>
+  </data>
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+    <value>Important ! Les actions ne seront pas utilisées si vous pêcher manuellement.</value>
   </data>
   <data name="Food_Buff" xml:space="preserve">
     <value>Effets de repas</value>
@@ -915,11 +925,23 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
     <value>Utiliser uniquement lorsque la pêche variée n'est pas active</value>
   </data>
+  <data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>Utilise le ferrage seulement si la pêche variée est active</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>Utilise le ferrage seulement si la pêche variée n'est pas active</value>
+  </data>
   <data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
     <value>Utiliser uniquement lorsque Pêche Ciblée est actif</value>
   </data>
   <data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
     <value>Utiliser uniquement lorsque Pêche Ciblée n'est pas actif</value>
+  </data>
+  <data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
+    <value>Utilise le ferrage seulement si la pêche ciblée est active</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
+    <value>Utilise le ferrage seulement si la pêche ciblée n'est pas active</value>
   </data>
   <data name="Collect" xml:space="preserve">
     <value>Collecter</value>
@@ -935,6 +957,9 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   </data>
   <data name="Use_Cordials_First" xml:space="preserve">
     <value>Utilise Breuvage Cordial avant d'utiliser Faveur de Thaliak</value>
+  </data>
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
+    <value>Utilisé uniquement pendant que le breuvage cordial est en train d'être rechargé</value>
   </data>
   <data name="Use_Cordials_First_Help" xml:space="preserve">
     <value>S'applique uniquement lorsque Cordial est activé</value>
@@ -990,6 +1015,12 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   <data name="HookType" xml:space="preserve">
     <value>Type de ferrage</value>
   </data>
+  <data name="HookingTimer" xml:space="preserve">
+    <value>Minuterie du Ferrage</value>
+  </data>
+  <data name="EnableHookingTimer" xml:space="preserve">
+    <value>Utiliser la minuterie du Ferrage</value>
+  </data>
   <data name="HookingTimerHelpText" xml:space="preserve">
     <value>L'amorçage sera uniquement utilisé si l'appât mord entre la valeur minimum et la valeur maximum</value>
   </data>
@@ -1033,8 +1064,17 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
     <value>Utiliser ce paramètre lorsque {0} est actif</value>
     <comment>{0} Represents a status effect. For Example: Use this setting when Fisher's Intuition is active</comment>
   </data>
+  <data name="AutoCastOnlyUnderFishEyesHelpText" xml:space="preserve">
+    <value>Si le filtre de temps est activé, ceci est ignoré pendant la fenêtre de temps</value>
+  </data>
   <data name="Configure" xml:space="preserve">
     <value>Configuration</value>
+  </data>
+  <data name="Type_1" xml:space="preserve">
+    <value>Type 1</value>
+  </data>
+  <data name="Type_2" xml:space="preserve">
+    <value>Type 2</value>
   </data>
   <data name="CordialOutsideTimeWindow" xml:space="preserve">
     <value>Utiliser cordial en dehors de la fenêtre de temps de ferrage automatique spécifiée</value>
