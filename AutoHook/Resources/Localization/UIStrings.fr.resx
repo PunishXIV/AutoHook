@@ -282,8 +282,17 @@ Exemple : Si vous définissez un temps maximum de 10 secondes et qu'un poisson 
     <value>Définissez zéro (0) pour désactiver.
 Annule la tentative de pêche en utilisant l'hameçon lorsque la limite de temps est atteinte.</value>
   </data>
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+    <value>Lorsque l'amorçage est activé, il n'y a pas d'effet</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Attente minimum</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Minimum.</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Maximum.</value>
   </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Arrêter la pêche après...</value>
@@ -336,6 +345,9 @@ Annule la tentative de pêche en utilisant l'hameçon lorsque la limite de temps
   </data>
   <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
     <value>Activer ferrage personnalisé lorsque l'intuition du pêcheur est détectée</value>
+  </data>
+  <data name="SpectralCurrentSettings" xml:space="preserve">
+    <value>Paramètres de courant spectral</value>
   </data>
   <data name="HoldShiftBothDHTH" xml:space="preserve">
     <value>Maintenez MAJ pour sélectionner à la fois Double et Triple Ferrage (non recommandé)</value>
@@ -578,6 +590,9 @@ Si Pêche au Vif automatique (Global ou Personnalisée) n'est pas activé, la p�
   </data>
   <data name="Hitbox" xml:space="preserve">
     <value>Collisions</value>
+  </data>
+  <data name="GigHitbox" xml:space="preserve">
+    <value>Collision pour le Harponnage</value>
   </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>Activer l'action pêche au vif facile</value>
@@ -879,6 +894,9 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   <data name="Set_preset_command" xml:space="preserve">
     <value>Définir un préréglage personnalisé par ligne de commande -&gt; /ahpreset nom_du_préréglage</value>
   </data>
+  <data name="Starts_AutoHook" xml:space="preserve">
+    <value>Commencer la pêche avec le préréglage sélectionné</value>
+  </data>
   <data name="Preset_set_to_" xml:space="preserve">
     <value>Préréglage défini à :</value>
   </data>
@@ -995,6 +1013,15 @@ Vous pouvez définir ici le comportement global qui sera utilisé pour tous les 
   </data>
   <data name="HookingTabHelpText" xml:space="preserve">
     <value>Paramètres d'accrochage lors de la pêche avec un appât ou une Pêche au vif</value>
+  </data>
+  <data name="BaitTabHelpText" xml:space="preserve">
+    <value>Configuration du ferrage lors de la pêche en utilisant un appât</value>
+  </data>
+  <data name="MoochTabHelpText" xml:space="preserve">
+    <value>Configuration du ferrage pendant l'amorçage</value>
+  </data>
+  <data name="RequiredStatusSettingHelpText" xml:space="preserve">
+    <value>Si désactivé, le ferrage par défaut sera utilisé à la place</value>
   </data>
   <data name="AntiAfkOption" xml:space="preserve">
     <value>Retire l'état absent pendant la pêche</value>
