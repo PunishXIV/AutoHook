@@ -120,6 +120,9 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>テスト中</value>
   </data>
+  <data name="DefaultSubTab" xml:space="preserve">
+    <value>Default</value>
+  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
@@ -168,6 +171,9 @@
   <data name="NewBaitMooch" xml:space="preserve">
     <value>新しい餌</value>
   </data>
+  <data name="EditMe" xml:space="preserve">
+    <value>EditMe</value>
+  </data>
   <data name="Add" xml:space="preserve">
     <value>追加</value>
   </data>
@@ -189,6 +195,14 @@
   <data name="AddNewPreset" xml:space="preserve">
     <value>新規プリセットの追加</value>
   </data>
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>ここでは、現在の餌に基づいて使用するフッキングをカスタマイズすることができます。
+餌/魚が指定されていない場合、代わりにグローバルプリセット が使用されます。</value>
+  </data>
+  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
+    <value>ここでは、現在の餌に基づいて使用するフッキングをカスタマイズすることができます。
+餌/魚が指定されていない場合、代わりにグローバルプリセット が使用されます。</value>
+  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>新規プリセット</value>
   </data>
@@ -200,6 +214,9 @@
   </data>
   <data name="TabGPConfig_TabDescription" xml:space="preserve">
     <value>ここでは、自動キャスト機能で使用されるアクションとアイテムのGP閾値をカスタマイズできます。</value>
+  </data>
+  <data name="GP" xml:space="preserve">
+    <value>GP</value>
   </data>
   <data name="Above" xml:space="preserve">
     <value>以上</value>
@@ -261,8 +278,25 @@
     <value>フックは指定された時間を経過した後には使用されません。
 例えば、最大待ち時間を10秒に設定し、何かが12秒後にかかった場合、その魚は無視されます。</value>
   </data>
+  <data name="TimeoutHelpText" xml:space="preserve">
+    <value>(0) を指定すると設定は無効になります。
+時間制限に達したときにフッキングを使用して釣りをキャンセルします。</value>
+  </data>
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+    <value>撒き餌を使用中は適用しない</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>最低待ち時間</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+    <value>指定された時間を経過するまでフッキングしない。
+例: 最大待ち時間を14秒に設定し、何かが8秒後にかかった場合、その魚は無視されます。</value>
   </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>釣りを中止後：</value>
@@ -316,6 +350,9 @@
   <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
     <value>漁師の直感が発動中のみカスタムフッキングを有効にする</value>
   </data>
+  <data name="SpectralCurrentSettings" xml:space="preserve">
+    <value>幻海流時の設定</value>
+  </data>
   <data name="HoldShiftBothDHTH" xml:space="preserve">
     <value>Shiftキーを押しながら選択すると、ダブルフックとトリプルフックの両方を選択します (非推奨)</value>
   </data>
@@ -344,11 +381,19 @@
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>設定を有効にしました -&gt;</value>
   </data>
+  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
+    <value>重要!!!
+
+無効にするとフッキングしません。</value>
+  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>撒き餌タイマー</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>撒き餌タイマーを有効にする</value>
+  </data>
+  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
+    <value>上記と同じだが、撒き餌が有効な場合のみ実行する</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>有効</value>
@@ -491,6 +536,12 @@
   <data name="Surface_Slap" xml:space="preserve">
     <value>トレードリリース</value>
   </data>
+  <data name="Surface_Slap_Options" xml:space="preserve">
+    <value>トレードリリースオプション</value>
+  </data>
+  <data name="Identical_Cast_Options" xml:space="preserve">
+    <value>セイムキャストオプション</value>
+  </data>
   <data name="Identical_Cast" xml:space="preserve">
     <value>セイムキャスト</value>
   </data>
@@ -505,6 +556,9 @@
   </data>
   <data name="MakeShift_Bait" xml:space="preserve">
     <value>熟漁の技</value>
+  </data>
+  <data name="BaitName_Default" xml:space="preserve">
+    <value>Default</value>
   </data>
   <data name="DecompressString_Invalid_Import" xml:space="preserve">
     <value>無効なコードです</value>
@@ -535,6 +589,9 @@
   </data>
   <data name="Hitbox" xml:space="preserve">
     <value>ヒットボックス</value>
+  </data>
+  <data name="GigHitbox" xml:space="preserve">
+    <value>ヒットボックス(刺突漁)</value>
   </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>熟漁の技を使用</value>
@@ -578,6 +635,11 @@
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>ガイド：収集品を自動的に受け取る方法</value>
   </data>
+  <data name="AutoMooch_HelpText" xml:space="preserve">
+    <value>すべて泳がせ釣りする: このオプションは自動キャスティング設定より優先されます。
+
+特定の魚のみを自動で泳がせ釣りし、他の魚を無視したい場合はこのオプションを無効にしてカスタムプリセットを作成してください。</value>
+  </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Ko-Fiでサポート</value>
   </data>
@@ -586,6 +648,9 @@
   </data>
   <data name="Incomplete" xml:space="preserve">
     <value>未完了</value>
+  </data>
+  <data name="AutoHook" xml:space="preserve">
+    <value>AutoHook</value>
   </data>
   <data name="PluginUi_Language" xml:space="preserve">
     <value>言語</value>
@@ -608,8 +673,14 @@
   <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>自動キャスティング</value>
   </data>
+  <data name="AutoMooch_HelpText_old" xml:space="preserve">
+    <value>このオプションは自動キャスティングより優先されます</value>
+  </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>フッキング</value>
+  </data>
+  <data name="TabName_Global_Preset" xml:space="preserve">
+    <value>グローバルプリセット</value>
   </data>
   <data name="Bait" xml:space="preserve">
     <value>エサ</value>
@@ -625,6 +696,9 @@
   </data>
   <data name="Fish" xml:space="preserve">
     <value>魚</value>
+  </data>
+  <data name="FishCaught" xml:space="preserve">
+    <value>釣った回数</value>
   </data>
   <data name="Add_new_fish" xml:space="preserve">
     <value>新しい魚を追加</value>
@@ -693,6 +767,9 @@
     <value>デフォルトプリセットは、カスタムベイト/生き餌/魚/オートキャストが検出されない場合に使用されます。 ここでは、カスタムプリセットが作成されない限り、デフォルトで使用されるフック動作を設定できます。 
 ガイドタブをチェックしてください。</value>
   </data>
+  <data name="TabGlobalPreset_Description" xml:space="preserve">
+    <value>グローバルプリセットは、カスタム設定が検出されない場合に使用されます。 ここでは、カスタムプリセットがないときに、デフォルトで使用されるフッキング動作を設定できます。</value>
+  </data>
   <data name="Old_Preset_Warning" xml:space="preserve">
     <value>これは旧バージョンからのインポートです。いくつか設定がありません。</value>
   </data>
@@ -726,13 +803,71 @@
   <data name="SubAuto_Disabled" xml:space="preserve">
     <value>自動キャスティング：無効</value>
   </data>
+  <data name="AllActionsDisabled" xml:space="preserve">
+    <value>すべてのアクションが無効になりました</value>
+  </data>
+  <data name="SubExtra_Disabled" xml:space="preserve">
+    <value>追加オプションが無効になりました</value>
+  </data>
   <data name="Default_AutoCast_Being_Used" xml:space="preserve">
     <value>[Default] 自動キャスティングが使用されます</value>
+  </data>
+  <data name="Global_AutoCast_Being_Used" xml:space="preserve">
+    <value>[Global] タブの自動キャスト設定が使用されます</value>
+  </data>
+  <data name="GlobalActionsBeingUsed" xml:space="preserve">
+    <value>グローバルプリセットの自動アクションが代わりに使用されます</value>
+  </data>
+  <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
+    <value>カスタムプリセット [{0}] の自動キャスティング設定が使用されます</value>
+  </data>
+  <data name="Default_Extra_Being_Used" xml:space="preserve">
+    <value>[Default] タブの自動キャスティング設定が使用されます</value>
+  </data>
+  <data name="Global_Extra_Being_Used" xml:space="preserve">
+    <value>[Global] タブの追加設定が使用されます</value>
+  </data>
+  <data name="Custom_Extra_Being_Used" xml:space="preserve">
+    <value>カスタムプリセット [{0}] の追加設定が使用されます</value>
+  </data>
+  <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
+    <value>重要! 手動でフッキングすると自動キャスティングされません。</value>
+  </data>
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+    <value>重要! 手動でフッキングするとアクションは使用されません。</value>
+  </data>
+  <data name="Food_Buff" xml:space="preserve">
+    <value>食事</value>
   </data>
   <data name="Only_When_Patience_Active" xml:space="preserve">
     <value>ペーシェンス中のみ使用する</value>
   </data>
   <data name="Stop_After_Caught" xml:space="preserve">
     <value>釣り上げ後に停止</value>
+  </data>
+  <data name="Search_Hint" xml:space="preserve">
+    <value>検索</value>
+    <comment>Hint Text for search bar</comment>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="ExtraOptions" xml:space="preserve">
+    <value>追加設定</value>
+  </data>
+  <data name="NeverReleaseHelptext" xml:space="preserve">
+    <value>自動キャストタブで「すべての魚をリリース」が有効になっている場合でも、これらの魚はリリースされません</value>
+  </data>
+  <data name="NeverRelease" xml:space="preserve">
+    <value>リリースしない</value>
+  </data>
+  <data name="ReleaseAllFish" xml:space="preserve">
+    <value>すべての魚をリリース</value>
+  </data>
+  <data name="ReleaseAllFishHelpText" xml:space="preserve">
+    <value>特定の魚をリリースしたくない場合は、プリセットに追加して "Never Release" を選択します。</value>
+  </data>
+  <data name="Enable_Extra_Configs" xml:space="preserve">
+    <value>追加設定を有効にする</value>
   </data>
 </root>
