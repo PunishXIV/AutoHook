@@ -903,6 +903,9 @@
   <data name="When_losing_spectral_current" xml:space="preserve">
     <value>幻海流が終了したとき</value>
   </data>
+  <data name="UseWhenIntuitionTimeIsEqualOrGreaterThan" xml:space="preserve">
+    <value>漁師の直感の残り時間が指定 (秒) 以上のとき使用</value>
+  </data>
   <data name="OnlyUseWhenActiveSurfaceSlap" xml:space="preserve">
     <value>トレードリリースが有効なときのみ使用</value>
   </data>
@@ -929,6 +932,9 @@
   </data>
   <data name="Collect" xml:space="preserve">
     <value>収集品</value>
+  </data>
+  <data name="CollectHelpText" xml:space="preserve">
+    <value>収集品採集を有効にして釣り始める</value>
   </data>
   <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
     <value>バフの残り時間が以下のときに更新</value>
@@ -1060,6 +1066,9 @@
   <data name="NormalPatienceHookset" xml:space="preserve">
     <value>フッキング / ペーシェンス</value>
   </data>
+  <data name="Configure" xml:space="preserve">
+    <value>設定</value>
+  </data>
   <data name="SpecificTimeWindowHelpText" xml:space="preserve">
     <value>影響を受けるアクション: 自動キャスティング、自動泳がせ釣りI/II、コーディアル(オプション)、フィッシュアイ、熟漁の技、ペーシェンスI/II</value>
   </data>
@@ -1072,8 +1081,20 @@
   <data name="SetZeroToIgnore" xml:space="preserve">
     <value>(0) を指定すると最小、最大値の設定は無効になります。</value>
   </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="UseNaturesBounty" xml:space="preserve">
     <value>ネイチャーバウンティを使用</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsTab" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="EnableActions" xml:space="preserve">
+    <value>アクションを有効にする</value>
   </data>
   <data name="DontHideExtraAutoCast" xml:space="preserve">
     <value>無効時にExtra/AutoCastオプションを非表示にしない</value>
@@ -1089,5 +1110,58 @@
   </data>
   <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
     <value>熟漁の技またはペーシェンスが有効な場合にのみ使用</value>
+  </data>
+  <data name="IgnoreMoochFishEyes" xml:space="preserve">
+    <value>フィッシュアイが使用され、泳がせ釣りをキャンセルします。</value>
+  </data>
+  <data name="StartActions" xml:space="preserve">
+    <value>Start Actions</value>
+  </data>
+  <data name="StartActionHelpText" xml:space="preserve">
+    <value>自動キャスティングを開始します。Extra タブで餌を変更できます。
+
+/ahstart コマンドで使用することができ、マクロでも使えます。</value>
+  </data>
+  <data name="ForceBaitSwap" xml:space="preserve">
+    <value>"Start Actions"を使用するときに強制的に餌を変更する</value>
+  </data>
+  <data name="SelectBaitStartFishing" xml:space="preserve">
+    <value>釣りを開始する餌を選択:</value>
+  </data>
+  <data name="WhenAnglersAt" xml:space="preserve">
+    <value>ビッグフィッシャーのスタック数</value>
+  </data>
+  <data name="StacksOrMore" xml:space="preserve">
+    <value>スタック以上</value>
+  </data>
+  <data name="StopQuitFishing" xml:space="preserve">
+    <value>釣りを終了する</value>
+  </data>
+  <data name="AnglersArt" xml:space="preserve">
+    <value>ビッグフィッシャー</value>
+  </data>
+  <data name="CatchEverything" xml:space="preserve">
+    <value>すべて捕まえる</value>
+  </data>
+  <data name="IgnoresPresets" xml:space="preserve">
+    <value>プリセットを無視する</value>
+  </data>
+  <data name="CatchAllNotice" xml:space="preserve">
+    <value>「すべて捕まえる」が有効になっています。刺突漁をしているとき、以下の設定は無視されます。</value>
+  </data>
+  <data name="CatchAllNaturesBountyHelpText" xml:space="preserve">
+    <value>「すべて捕まえる」が有効なときのみ</value>
+  </data>
+  <data name="CatchAllGigWindow" xml:space="preserve">
+    <value>「すべて捕まえる」が有効になりました。プリセットは無視されます。</value>
+  </data>
+  <data name="Intuition" xml:space="preserve">
+    <value>漁師の直感</value>
+  </data>
+  <data name="DelaySettings" xml:space="preserve">
+    <value>遅延設定</value>
+  </data>
+  <data name="GeneratePreset" xml:space="preserve">
+    <value>プリセットを作成</value>
   </data>
 </root>
