@@ -891,6 +891,147 @@
   <data name="Set_preset_command" xml:space="preserve">
     <value>チャットコマンドでプリセットを適用 -&gt; /ahpreset presetName</value>
   </data>
+  <data name="Starts_AutoHook" xml:space="preserve">
+    <value>選択したプリセットで釣りを開始</value>
+  </data>
+  <data name="Preset_set_to_" xml:space="preserve">
+    <value>プリセット:</value>
+  </data>
+  <data name="When_gaining_spectral_current" xml:space="preserve">
+    <value>幻海流が発生したとき</value>
+  </data>
+  <data name="When_losing_spectral_current" xml:space="preserve">
+    <value>幻海流が終了したとき</value>
+  </data>
+  <data name="OnlyUseWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>トレードリリースが有効なときのみ使用</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>トレードリリースが無効なときのみ使用</value>
+  </data>
+  <data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>トレードリリースが有効なときのみフッキングする</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>トレードリリースが無効なときのみフッキングする</value>
+  </data>
+  <data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
+    <value>セイムキャストが有効なときのみ使用</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
+    <value>セイムキャストが無効なときのみ使用</value>
+  </data>
+  <data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
+    <value>セイムキャストが有効なときのみ使用</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
+    <value>セイムキャストが無効なときのみフッキングする</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>収集品</value>
+  </data>
+  <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
+    <value>バフの残り時間が以下のときに更新</value>
+  </data>
+  <data name="Allow_Gp_Overcap" xml:space="preserve">
+    <value>セイムキャスト中はGP上限を超えてもよい</value>
+  </data>
+  <data name="Use_Cordials_First" xml:space="preserve">
+    <value>サリャクの恩恵よりコーディアルを優先する</value>
+  </data>
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
+    <value>コーディアルがクールタイム中のみ使用</value>
+  </data>
+  <data name="Use_Cordials_First_Help" xml:space="preserve">
+    <value>コーディアル設定が有効な場合にのみ適用されます</value>
+  </data>
+  <data name="Show_Presets_As_Sidebar" xml:space="preserve">
+    <value>プリセットメニューをサイドバーとして表示</value>
+  </data>
+  <data name="Hide_Tab_Description" xml:space="preserve">
+    <value>タブの説明を隠す</value>
+  </data>
+  <data name="Ignore_When_Intuition" xml:space="preserve">
+    <value>漁師の直感が有効な場合は魚の設定を無視</value>
+  </data>
+  <data name="Reset_the_counter" xml:space="preserve">
+    <value>カウンターをリセット</value>
+  </data>
+  <data name="Reset_counter_after_swapping_presets" xml:space="preserve">
+    <value>プリセットを変更した後にカウンターをリセット</value>
+  </data>
+  <data name="Only_use_when_Cordial_is_available" xml:space="preserve">
+    <value>コーディアルが利用可能な場合にのみ使用</value>
+  </data>
+  <data name="Only_use_when_the_fish_is_caught" xml:space="preserve">
+    <value>魚を捕まえた場合にのみ使用</value>
+  </data>
+  <data name="UIUseCurrentBait" xml:space="preserve">
+    <value>使用中の餌を選択</value>
+  </data>
+  <data name="AutoCastEndTime" xml:space="preserve">
+    <value>自動キャスティングを終了する時間</value>
+  </data>
+  <data name="AutoCastStartTime" xml:space="preserve">
+    <value>自動キャスティングを開始する時間</value>
+  </data>
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+    <value>特定の時間 (ET) でのみアクションを使用する</value>
+  </data>
+  <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
+    <value>漁師の直感が切れたら中止する</value>
+  </data>
+  <data name="Stop_Fishing_On_IntuitionLost" xml:space="preserve">
+    <value>漁師の直感が切れたら終了する</value>
+  </data>
+  <data name="Auto_Cast_Sort_Notice" xml:space="preserve">
+    <value>アクションは上から順に使用されます。矢印ボタンをクリックして順序を変更します。</value>
+  </data>
+  <data name="Current_Selected_Preset" xml:space="preserve">
+    <value>選択中のプリセット:</value>
+  </data>
+  <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
+    <value>フィッシュアイが有効なときのみ使用します。</value>
+  </data>
+  <data name="HookType" xml:space="preserve">
+    <value>フッキングの種類</value>
+  </data>
+  <data name="HookingTimer" xml:space="preserve">
+    <value>フッキングタイマー</value>
+  </data>
+  <data name="EnableHookingTimer" xml:space="preserve">
+    <value>フッキングタイマーを使用する</value>
+  </data>
+  <data name="EnableChumTimer" xml:space="preserve">
+    <value>撒き餌タイマーを使用する</value>
+  </data>
+  <data name="HookingTimerHelpText" xml:space="preserve">
+    <value>最小値と最大値の間で魚がかかったときのみフッキングします。</value>
+  </data>
+  <data name="UseDoubleHook" xml:space="preserve">
+    <value>ダブルフッキングを使用する</value>
+  </data>
+  <data name="UseTripleHook" xml:space="preserve">
+    <value>トリプルフッキングを使用する</value>
+  </data>
+  <data name="StopAfterHooking" xml:space="preserve">
+    <value>釣れたら中止する:</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>タイムアウト</value>
+  </data>
+  <data name="Chum Timeout" xml:space="preserve">
+    <value>撒き餌タイマー</value>
+  </data>
+  <data name="TimeoutOption" xml:space="preserve">
+    <value>指定された時間が経過すると、釣りはキャンセルされます</value>
+  </data>
+  <data name="Hook" xml:space="preserve">
+    <value>フッキング</value>
+  </data>
+  <data name="Hooking" xml:space="preserve">
+    <value>フッキング</value>
+  </data>
   <data name="HookingTabHelpText" xml:space="preserve">
     <value>餌/泳がせ釣りのフッキング設定</value>
   </data>
@@ -905,5 +1046,48 @@
   </data>
   <data name="AntiAfkOption" xml:space="preserve">
     <value>釣り中は離席状態にしない</value>
+  </data>
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
+    <value>ボタン形式に入れ替える</value>
+  </data>
+  <data name="LetFishEscapeHelpText" xml:space="preserve">
+    <value>無効にすると、GPが必要以下の場合は通常のフッキングを使用します</value>
+  </data>
+  <data name="UseConfigRequiredStatus" xml:space="preserve">
+    <value>{0} が有効なときにこの設定を使用する</value>
+    <comment>{0} Represents a status effect. For Example: Use this setting when Fisher's Intuition is active</comment>
+  </data>
+  <data name="NormalPatienceHookset" xml:space="preserve">
+    <value>フッキング / ペーシェンス</value>
+  </data>
+  <data name="SpecificTimeWindowHelpText" xml:space="preserve">
+    <value>影響を受けるアクション: 自動キャスティング、自動泳がせ釣りI/II、コーディアル(オプション)、フィッシュアイ、熟漁の技、ペーシェンスI/II</value>
+  </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>時間制限</value>
+  </data>
+  <data name="ChumTimeLimit" xml:space="preserve">
+    <value>撒き餌時の時間制限</value>
+  </data>
+  <data name="SetZeroToIgnore" xml:space="preserve">
+    <value>(0) を指定すると最小、最大値の設定は無効になります。</value>
+  </data>
+  <data name="UseNaturesBounty" xml:space="preserve">
+    <value>ネイチャーバウンティを使用</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>無効時にExtra/AutoCastオプションを非表示にしない</value>
+  </data>
+  <data name="IgnoreMooch" xml:space="preserve">
+    <value>泳がせ釣り設定を無視</value>
+  </data>
+  <data name="IgnoreMoochHelpText" xml:space="preserve">
+    <value>無効にすると、自動泳がせ釣り設定が無効になっていても、泳がせ釣りはキャンセルされません。</value>
+  </data>
+  <data name="NeverMoochHelpText" xml:space="preserve">
+    <value>有効な場合、アクションはこの魚の泳がせ釣りもキャンセルします</value>
+  </data>
+  <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
+    <value>熟漁の技またはペーシェンスが有効な場合にのみ使用</value>
   </data>
 </root>
