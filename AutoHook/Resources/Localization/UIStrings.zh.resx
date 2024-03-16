@@ -120,6 +120,9 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>测试</value>
   </data>
+  <data name="DefaultSubTab" xml:space="preserve">
+    <value/>
+  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
