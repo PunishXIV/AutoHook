@@ -312,7 +312,7 @@
 - 如果该设置为鱼： 将在该鱼上钩X次后停止捕鱼</value>
   </data>
   <data name="TimeS" xml:space="preserve">
-    <value>时间(s)</value>
+    <value>次数(次)</value>
     <comment>Quantity, example: 5 Time(s) </comment>
   </data>
   <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
