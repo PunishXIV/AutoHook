@@ -698,7 +698,7 @@
     <value>魚</value>
   </data>
   <data name="FishCaught" xml:space="preserve">
-    <value>釣った回数</value>
+    <value>釣った魚</value>
   </data>
   <data name="Add_new_fish" xml:space="preserve">
     <value>新しい魚を追加</value>
