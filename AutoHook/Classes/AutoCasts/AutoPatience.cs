@@ -11,6 +11,7 @@ public class AutoPatience : BaseActionCast
 {
     //public bool EnableMakeshiftPatience;
     public int RefreshEarlyTime = 0;
+    public bool UseOnlyWhenMoochIIOnCD;
     public override bool RequiresTimeWindow() => true;
 
     public override bool DoesCancelMooch() => true;
@@ -32,6 +33,9 @@ public class AutoPatience : BaseActionCast
             return false;
 
         if (PlayerRes.HasStatus(IDs.Status.MakeshiftBait))
+            return false;
+
+        if (UseOnlyWhenMoochIIOnCD && !PlayerRes.ActionOnCoolDown(IDs.Actions.Mooch2))
             return false;
 
         return true;
@@ -60,6 +64,11 @@ public class AutoPatience : BaseActionCast
         if (DrawUtil.EditNumberField(UIStrings.RefreshWhenTimeIsLessThanOrEqual, ref time))
         {
             RefreshEarlyTime = Math.Max(0, Math.Min(time, 999));
+            Service.Save();
+        }
+
+        if (DrawUtil.Checkbox(UIStrings.AutoCastExtraOptionPatience, ref UseOnlyWhenMoochIIOnCD))
+        {
             Service.Save();
         }
     };

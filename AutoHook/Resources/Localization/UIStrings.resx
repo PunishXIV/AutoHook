@@ -1190,4 +1190,10 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
     <value>Only when mooch is not available</value>
   </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>Only use when Mooch II is on cooldown</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>Only use when Mooch II is on cooldown</value>
+  </data>
 </root>
