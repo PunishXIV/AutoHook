@@ -6,7 +6,7 @@
         <Description>Auto hooks for you</Description>
         <PackageProjectUrl>https://github.com/InitialDet/AutoHook</PackageProjectUrl>
         <Configurations>Release;Debug</Configurations>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Platforms>x64</Platforms>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
