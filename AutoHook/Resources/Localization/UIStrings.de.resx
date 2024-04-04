@@ -120,6 +120,9 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>Test</value>
   </data>
+  <data name="DefaultSubTab" xml:space="preserve">
+    <value>Standard</value>
+  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
@@ -168,6 +171,9 @@
   <data name="NewBaitMooch" xml:space="preserve">
     <value>Neuer Köder/Naturköder</value>
   </data>
+  <data name="EditMe" xml:space="preserve">
+    <value>Bearbeite Mich</value>
+  </data>
   <data name="Add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
@@ -190,6 +196,10 @@
     <value>Neues Preset hinzufügen</value>
   </data>
   <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>Hier kannst du anpassen, welcher Anschlag verwendet werden soll, basierend auf dem aktuellen Köder oder Naturköder.
+Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset verwendet.</value>
+  </data>
+  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
     <value>Hier kannst du anpassen, welcher Anschlag verwendet werden soll, basierend auf dem aktuellen Köder oder Naturköder.
 Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset verwendet.</value>
   </data>
@@ -218,6 +228,9 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
     <value>wird verwendet, wenn deine SP gleich oder</value>
     <comment>Action will be used when your GP is Equal or Above/Below</comment>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>Nichts</value>
+  </data>
   <data name="TabnameGeneral" xml:space="preserve">
     <value>Allgemein</value>
   </data>
@@ -229,6 +242,9 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
   </data>
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>Hier klicken, um ein Problem zu melden oder einen Vorschlag zu machen</value>
+  </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Changelog</value>
   </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>Schwacher Anschlag (!)</value>
@@ -258,8 +274,35 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
     <value>Max. Wartezeit</value>
     <comment>Maximum time to wait</comment>
   </data>
+  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
+    <value>Anschlag wird NICHT verwendet bevor die Min. Wartezeit verstrichen ist.
+
+Bsp: Setzt du die Zeit auf 10 und etwas beißt nach 12 Sekunden, wird der Fisch ignoriert
+
+Null (0) setzen zum Deaktivieren</value>
+  </data>
+  <data name="TimeoutHelpText" xml:space="preserve">
+    <value>Legen Sie Null (0) zum Deaktivieren fest.
+beendet den Angelversuch ab, indem Sie Hook verwenden, wenn das Zeitlimit erreicht ist.</value>
+  </data>
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+    <value>Hat keinen Einfluss, wenn Chum aktiv ist</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Min. Wartezeit</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Max.</value>
+  </data>
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+    <value>Anschlag wird NICHT verwendet bevor die Min. Wartezeit verstrichen ist.
+
+Bsp: Setzt du die Zeit auf 14 und etwas beißt nach 8 Sekunden, wird der Fisch ignoriert
+
+Null (0) setzen zum Deaktivieren</value>
   </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Fischen anhalten nach...</value>
@@ -313,6 +356,9 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
   <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
     <value>Benutzerdefinierte Anschläge verwenden wenn Fischer-Intuition aktiv ist</value>
   </data>
+  <data name="SpectralCurrentSettings" xml:space="preserve">
+    <value>Spektrale Aktuelle Einstellungen</value>
+  </data>
   <data name="HoldShiftBothDHTH" xml:space="preserve">
     <value>Umschalttaste halten um Doppelhaken und Tripelhaken auszuwählen (nicht empfohlen)</value>
   </data>
@@ -342,11 +388,19 @@ Wenn deaktiviert, werden Präziser/Fester Anschlag stattdessen verwenden, wenn G
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>Aktive Config &gt;</value>
   </data>
+  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
+    <value>Wichtig!!!
+
+Wenn deaktiviert, wird der Fisch NICHT angehakt.</value>
+  </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>Streuköder-Timer</value>
   </data>
   <data name="EnableChumTimers" xml:space="preserve">
     <value>Streuköder-Timer aktivieren</value>
+  </data>
+  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
+    <value>Gleiche wie die obige Option, aber nur, wenn Chum aktiv ist</value>
   </data>
   <data name="Enable" xml:space="preserve">
     <value>Aktivieren</value>
@@ -582,5 +636,20 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="Incomplete" xml:space="preserve">
     <value>Unvollständig</value>
+  </data>
+  <data name="Bait" xml:space="preserve">
+    <value>Köder</value>
+  </data>
+  <data name="AutoPatience_Patience" xml:space="preserve">
+    <value>Geduld</value>
+  </data>
+  <data name="Fish" xml:space="preserve">
+    <value>Fisch</value>
+  </data>
+  <data name="FishCaught" xml:space="preserve">
+    <value>Fisch gefangen</value>
+  </data>
+  <data name="Add_new_fish" xml:space="preserve">
+    <value>Fisch hinzufügen</value>
   </data>
 </root>
