@@ -121,7 +121,7 @@
     <value>测试</value>
   </data>
   <data name="DefaultSubTab" xml:space="preserve">
-    <value/>
+    <value>默认值</value>
   </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>取消</value>
@@ -250,7 +250,7 @@
     <value>提钩轻杆 (!)</value>
   </data>
   <data name="HookStrongExclamation" xml:space="preserve">
-    <value>提钩中杆 (!!)</value>
+    <value>提钩重杆 (!!)</value>
   </data>
   <data name="HookLegendaryExclamation" xml:space="preserve">
     <value>提钩鱼王杆 (!!!)</value>
@@ -312,7 +312,7 @@
 - 如果该设置为鱼： 将在该鱼上钩X次后停止捕鱼</value>
   </data>
   <data name="TimeS" xml:space="preserve">
-    <value>次数(次)</value>
+    <value>次数(条)</value>
     <comment>Quantity, example: 5 Time(s) </comment>
   </data>
   <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
@@ -1186,5 +1186,14 @@
   </data>
   <data name="GeneratePreset" xml:space="preserve">
     <value>生成预设</value>
+  </data>
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+    <value>仅在以小钓大不可用时</value>
+  </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>仅在以小钓大II冷却时使用</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>仅在以小钓大II冷却时使用</value>
   </data>
 </root>
