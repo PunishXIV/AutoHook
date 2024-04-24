@@ -1192,4 +1192,13 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
   <data name="GeneratePreset" xml:space="preserve">
     <value>Générer le préréglage</value>
   </data>
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+    <value>Seulement lorsque Pêche au vif n'est pas disponible</value>
+  </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>Utilisé uniquement pendant que Pêche au vif II est en train d'être rechargé</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>Utilisé uniquement pendant que Pêche au vif II est en train d'être rechargé</value>
+  </data>
 </root>
