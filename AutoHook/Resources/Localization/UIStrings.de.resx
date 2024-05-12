@@ -466,6 +466,9 @@ Wenn deaktiviert, wird der Fisch NICHT angehakt.</value>
     <value>&gt;Stellen Sie sicher, dass 'Naturköder II verwenden' aktiviert ist, da es andernfalls nicht funktioniert&lt;
 Dies könnte 100SP einsparen, falls nur auf Naturköder abgezielt wird</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>.</value>
+  </data>
   <data name="Enable_AutoHook" xml:space="preserve">
     <value>AutoHook aktivieren</value>
   </data>
@@ -556,6 +559,9 @@ Dies könnte 100SP einsparen, falls nur auf Naturköder abgezielt wird</value>
   <data name="Thaliaks_Favor" xml:space="preserve">
     <value>Thaliaks Huld</value>
   </data>
+  <data name="MakeShift_Bait" xml:space="preserve">
+    <value>Fischfinesse</value>
+  </data>
   <data name="BaitName_Default" xml:space="preserve">
     <value>Standard</value>
   </data>
@@ -585,6 +591,9 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="Enable_AutoGig" xml:space="preserve">
     <value>Auto-Harpunieren</value>
+  </data>
+  <data name="Hitbox" xml:space="preserve">
+    <value>Hitbox</value>
   </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>Fischfinesse verwenden</value>
@@ -637,8 +646,32 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="Incomplete" xml:space="preserve">
     <value>Unvollständig</value>
   </data>
+  <data name="AutoHook" xml:space="preserve">
+    <value>AutoHook</value>
+  </data>
+  <data name="PluginUi_Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="Add_new_bait" xml:space="preserve">
+    <value>Neuen Köder hinzufügen</value>
+  </data>
+  <data name="Add_new_mooch" xml:space="preserve">
+    <value>Neuen Naturköder hinzufügen</value>
+  </data>
+  <data name="Presets_Hook" xml:space="preserve">
+    <value>Anschlag</value>
+  </data>
+  <data name="Mooch" xml:space="preserve">
+    <value>Naturköder</value>
+  </data>
   <data name="Bait" xml:space="preserve">
     <value>Köder</value>
+  </data>
+  <data name="All_Baits" xml:space="preserve">
+    <value>Alle Köder</value>
+  </data>
+  <data name="All_Mooches" xml:space="preserve">
+    <value>Alle Naturköder</value>
   </data>
   <data name="AutoPatience_Patience" xml:space="preserve">
     <value>Geduld</value>
@@ -651,5 +684,50 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="Add_new_fish" xml:space="preserve">
     <value>Fisch hinzufügen</value>
+  </data>
+  <data name="Mooch_II" xml:space="preserve">
+    <value>Naturköder II</value>
+  </data>
+  <data name="Tab_Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Show_Chat_Logs" xml:space="preserve">
+    <value>Chatlogs anzeigen</value>
+  </data>
+  <data name="DrawConfigs_Max_" xml:space="preserve">
+    <value>Max.</value>
+  </data>
+  <data name="DrawConfigs_Min_" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="Delay_Between_Casts" xml:space="preserve">
+    <value>Verzögerung zwischen Casts (in ms):</value>
+  </data>
+  <data name="Show_Debug_Console" xml:space="preserve">
+    <value>Debug-Konsole Anzeigen</value>
+  </data>
+  <data name="TabName_Config_Guides" xml:space="preserve">
+    <value>Konfiguration / Anleitungen</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="ExtraOptions" xml:space="preserve">
+    <value>Extra Optionen</value>
+  </data>
+  <data name="ReleaseAllFish" xml:space="preserve">
+    <value>Alle Fische Freilassen</value>
+  </data>
+  <data name="Draw_Configs" xml:space="preserve">
+    <value>Konfigurationen</value>
+  </data>
+  <data name="Draw_Guides" xml:space="preserve">
+    <value>Anleitungen</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>Einsammeln</value>
+  </data>
+  <data name="Reset_the_counter" xml:space="preserve">
+    <value>Den Zähler zurücksetzen</value>
   </data>
 </root>
