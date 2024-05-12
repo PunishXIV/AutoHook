@@ -664,6 +664,9 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="Mooch" xml:space="preserve">
     <value>Naturköder</value>
   </data>
+  <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
+    <value>Automatisch Angeln</value>
+  </data>
   <data name="Bait" xml:space="preserve">
     <value>Köder</value>
   </data>
@@ -685,8 +688,41 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="Add_new_fish" xml:space="preserve">
     <value>Fisch hinzufügen</value>
   </data>
+  <data name="Cast_Line" xml:space="preserve">
+    <value>Angeln</value>
+    <comment>Cast (fisher action)</comment>
+  </data>
   <data name="Mooch_II" xml:space="preserve">
     <value>Naturköder II</value>
+  </data>
+  <data name="Never_Mooch" xml:space="preserve">
+    <value>Niemals Naturködern</value>
+  </data>
+  <data name="Mooch_Setting" xml:space="preserve">
+    <value>Naturköder Einstellungen</value>
+  </data>
+  <data name="Swap_Preset" xml:space="preserve">
+    <value>Voreinstellung Austauschen</value>
+  </data>
+  <data name="Swap_Bait" xml:space="preserve">
+    <value>Köder Austauschen</value>
+  </data>
+  <data name="Always_Mooch" xml:space="preserve">
+    <value>Immer Naturködern</value>
+  </data>
+  <data name="Caught_Counter" xml:space="preserve">
+    <value>Gefangen:</value>
+    <comment>It'll shows how many times the fish was caught. Example: Caught: 5x</comment>
+  </data>
+  <data name="Hooked_Counter" xml:space="preserve">
+    <value>Am Haken:</value>
+    <comment>It'll shows how many times the fish was caught. Example: Hooked: 5x</comment>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Aktiviert</value>
+  </data>
+  <data name="Quit_Fishing" xml:space="preserve">
+    <value>Fischen Beenden</value>
   </data>
   <data name="Tab_Description" xml:space="preserve">
     <value>Beschreibung</value>
@@ -709,11 +745,21 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="TabName_Config_Guides" xml:space="preserve">
     <value>Konfiguration / Anleitungen</value>
   </data>
+  <data name="Open_Console" xml:space="preserve">
+    <value>Konsole Öffnen</value>
+  </data>
+  <data name="Search_Hint" xml:space="preserve">
+    <value>Suchen...</value>
+    <comment>Hint Text for search bar</comment>
+  </data>
   <data name="Extra" xml:space="preserve">
     <value>Extra</value>
   </data>
   <data name="ExtraOptions" xml:space="preserve">
     <value>Extra Optionen</value>
+  </data>
+  <data name="NeverRelease" xml:space="preserve">
+    <value>Niemals Freilassen</value>
   </data>
   <data name="ReleaseAllFish" xml:space="preserve">
     <value>Alle Fische Freilassen</value>
@@ -729,5 +775,8 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="Reset_the_counter" xml:space="preserve">
     <value>Den Zähler zurücksetzen</value>
+  </data>
+  <data name="AntiAfkOption" xml:space="preserve">
+    <value>Anti-Afk während dem fischen</value>
   </data>
 </root>
