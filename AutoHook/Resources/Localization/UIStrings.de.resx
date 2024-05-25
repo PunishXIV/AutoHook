@@ -391,7 +391,7 @@ Wenn deaktiviert, werden Präziser/Fester Anschlag stattdessen verwenden, wenn G
   <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
     <value>Wichtig!!!
 
-Wenn deaktiviert, wird der Fisch NICHT angehakt.</value>
+Wenn deaktiviert, wird der Fisch NICHT geangelt.</value>
   </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>Streuköder-Timer</value>
@@ -637,6 +637,11 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>Guide: Sammlerstücke automatisch annehmen</value>
   </data>
+  <data name="AutoMooch_HelpText" xml:space="preserve">
+    <value>(Natur-)Ködere alles! Diese Einstellung hat Priorität vor "Autoauswurf der Leine"
+
+Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung aus und nutze den "Fische gefangen" Tab.</value>
+  </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Unterstütze mich auf Ko-fi</value>
   </data>
@@ -791,10 +796,16 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="UseDoubleHook" xml:space="preserve">
     <value>Doppelhaken verwenden</value>
   </data>
+  <data name="StopAfterHooking" xml:space="preserve">
+    <value>Stoppe Anschlag nach...</value>
+  </data>
   <data name="AntiAfkOption" xml:space="preserve">
     <value>Anti-Afk während dem fischen</value>
   </data>
   <data name="NormalPatienceHookset" xml:space="preserve">
     <value>Normaler Anschlag / Geduld-Anschläge</value>
+  </data>
+  <data name="IgnoreMoochHelpText" xml:space="preserve">
+    <value>Wenn deaktiviert wird der Köderversuch nicht abgebrochen, selbst wenn Auto-Ködern deaktiviert ist</value>
   </data>
 </root>
