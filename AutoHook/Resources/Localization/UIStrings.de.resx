@@ -275,7 +275,7 @@ Wenn kein Köder/Naturköder angegeben ist, wird stattdessen das Globale Preset 
     <comment>Maximum time to wait</comment>
   </data>
   <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
-    <value>Anschlag wird NICHT verwendet bevor die Min. Wartezeit verstrichen ist.
+    <value>Anschlag wird NICHT verwendet, nachdem die Max. Wartezeit verstrichen ist.
 
 Bsp: Setzt du die Zeit auf 10 und etwas beißt nach 12 Sekunden, wird der Fisch ignoriert
 
@@ -283,7 +283,7 @@ Null (0) setzen zum Deaktivieren</value>
   </data>
   <data name="TimeoutHelpText" xml:space="preserve">
     <value>Legen Sie Null (0) zum Deaktivieren fest.
-beendet den Angelversuch ab, indem Sie Hook verwenden, wenn das Zeitlimit erreicht ist.</value>
+Beendet den Angelversuch durch Anschlag, sobald das Zeitlimit erreicht ist.</value>
   </data>
   <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
     <value>Hat keinen Einfluss, wenn Chum aktiv ist</value>
@@ -635,7 +635,7 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
     <value>Globaler Auto-Naturköder</value>
   </data>
   <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
-    <value>Guide: Wie man Sammlerstücke automatisch annimmt</value>
+    <value>Guide: Sammlerstücke automatisch annehmen</value>
   </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Unterstütze mich auf Ko-fi</value>
@@ -669,6 +669,9 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>Automatisch Angeln</value>
+  </data>
+  <data name="Normal_Hook" xml:space="preserve">
+    <value>Normaler Anschlag</value>
   </data>
   <data name="Bait" xml:space="preserve">
     <value>Köder</value>
@@ -705,7 +708,7 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
     <value>Naturköder Einstellungen</value>
   </data>
   <data name="Swap_Preset" xml:space="preserve">
-    <value>Voreinstellung Austauschen</value>
+    <value>Preset wechseln</value>
   </data>
   <data name="Swap_Bait" xml:space="preserve">
     <value>Köder Austauschen</value>
@@ -723,6 +726,12 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="Enabled" xml:space="preserve">
     <value>Aktiviert</value>
+  </data>
+  <data name="Stop_Casting" xml:space="preserve">
+    <value>Angeln beenden</value>
+  </data>
+  <data name="Auto_Cast_Stopped" xml:space="preserve">
+    <value>Automatisches Auswerfen wird angehalten, Angeln aber nicht beendet</value>
   </data>
   <data name="Quit_Fishing" xml:space="preserve">
     <value>Fischen Beenden</value>
@@ -779,7 +788,13 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="Reset_the_counter" xml:space="preserve">
     <value>Den Zähler zurücksetzen</value>
   </data>
+  <data name="UseDoubleHook" xml:space="preserve">
+    <value>Doppelhaken verwenden</value>
+  </data>
   <data name="AntiAfkOption" xml:space="preserve">
     <value>Anti-Afk während dem fischen</value>
+  </data>
+  <data name="NormalPatienceHookset" xml:space="preserve">
+    <value>Normaler Anschlag / Geduld-Anschläge</value>
   </data>
 </root>
