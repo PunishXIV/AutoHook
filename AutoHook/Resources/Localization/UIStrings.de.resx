@@ -652,6 +652,9 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   <data name="PluginUi_Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
+  <data name="TabGeneral_DrawHeader_Localization_Help" xml:space="preserve">
+    <value>Hilf bei der Übersetzung des Plugins (Crowdin)</value>
+  </data>
   <data name="Add_new_bait" xml:space="preserve">
     <value>Neuen Köder hinzufügen</value>
   </data>
