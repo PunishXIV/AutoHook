@@ -744,6 +744,10 @@ Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung 
   <data name="Tab_Description" xml:space="preserve">
     <value>Beschreibung</value>
   </data>
+  <data name="TabDefaultPreset_Description" xml:space="preserve">
+    <value>Das Standard Preset wird verwendet, wenn kein benutzerdefiniertes Angeln/Fisch gefangen/Autoauswurf Preset gefunden wurde. Hier kannst du das globale Verhalten einstellen, das für alle Köder und Naturköder benutzt wird, die kein benutzerdefiniertes Preset haben.
+Schau in den Guide Tab für Erklärungen.</value>
+  </data>
   <data name="TabGlobalPreset_Description" xml:space="preserve">
     <value>Das Globale Preset wird verwendet, wenn kein benutzerdefiniertes Angeln/Fisch gefangen/Autoauswurf Preset gefunden wurde. Hier kannst du das globale Verhalten einstellen, das für alle Köder und Naturköder benutzt wird, die kein benutzerdefiniertes Preset haben</value>
   </data>
