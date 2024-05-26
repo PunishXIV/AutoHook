@@ -547,6 +547,12 @@ Dies könnte 100SP einsparen, falls nur auf Naturköder abgezielt wird</value>
   <data name="Surface_Slap" xml:space="preserve">
     <value>Buntes Gewässer</value>
   </data>
+  <data name="Surface_Slap_Options" xml:space="preserve">
+    <value>Einstellungen für Bunte Gewässer</value>
+  </data>
+  <data name="Identical_Cast_Options" xml:space="preserve">
+    <value>Einstellungen für Stetes Angeln</value>
+  </data>
   <data name="Identical_Cast" xml:space="preserve">
     <value>Stetes Angeln</value>
   </data>
@@ -594,6 +600,9 @@ Wenn Auto-Naturköder (Globales oder benutzerdefiniertes Preset) nicht aktiv ist
   </data>
   <data name="Hitbox" xml:space="preserve">
     <value>Hitbox</value>
+  </data>
+  <data name="GigHitbox" xml:space="preserve">
+    <value>Speerfisch Hitbox</value>
   </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>Fischfinesse verwenden</value>
@@ -675,8 +684,14 @@ Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung 
   <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>Automatisch Angeln</value>
   </data>
+  <data name="AutoMooch_HelpText_old" xml:space="preserve">
+    <value>Diese Einstellung hat Priorität gegenüber Autoauswurf der Leine</value>
+  </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>Normaler Anschlag</value>
+  </data>
+  <data name="TabName_Global_Preset" xml:space="preserve">
+    <value>Globales Preset</value>
   </data>
   <data name="Bait" xml:space="preserve">
     <value>Köder</value>
@@ -718,6 +733,9 @@ Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung 
   <data name="Swap_Bait" xml:space="preserve">
     <value>Köder Austauschen</value>
   </data>
+  <data name="IdenticalCast_HelpText" xml:space="preserve">
+    <value>Wenn deaktiviert, geht die Chance zum Naturködern verloren</value>
+  </data>
   <data name="Always_Mooch" xml:space="preserve">
     <value>Immer Naturködern</value>
   </data>
@@ -732,6 +750,15 @@ Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung 
   <data name="Enabled" xml:space="preserve">
     <value>Aktiviert</value>
   </data>
+  <data name="StopFishing_After_hooking" xml:space="preserve">
+    <value>Nach dem Anschlagen...</value>
+  </data>
+  <data name="Hooking_Limited_Reached_Chat_Message" xml:space="preserve">
+    <value>Anschlag Grenze erreicht ({0}). Stoppe das Angeln.</value>
+  </data>
+  <data name="Caught_Limited_Reached_Chat_Message" xml:space="preserve">
+    <value>Fanggrenze erreicht ({0}). Stoppe das Angeln.</value>
+  </data>
   <data name="Stop_Casting" xml:space="preserve">
     <value>Angeln beenden</value>
   </data>
@@ -740,6 +767,9 @@ Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung 
   </data>
   <data name="Quit_Fishing" xml:space="preserve">
     <value>Fischen Beenden</value>
+  </data>
+  <data name="Quit_Action_HelpText" xml:space="preserve">
+    <value>Der Beenden Skill wird genutzt und das Angeln komplett gestoppt</value>
   </data>
   <data name="Tab_Description" xml:space="preserve">
     <value>Beschreibung</value>
@@ -751,8 +781,14 @@ Schau in den Guide Tab für Erklärungen.</value>
   <data name="TabGlobalPreset_Description" xml:space="preserve">
     <value>Das Globale Preset wird verwendet, wenn kein benutzerdefiniertes Angeln/Fisch gefangen/Autoauswurf Preset gefunden wurde. Hier kannst du das globale Verhalten einstellen, das für alle Köder und Naturköder benutzt wird, die kein benutzerdefiniertes Preset haben</value>
   </data>
+  <data name="Old_Preset_Warning" xml:space="preserve">
+    <value>Import aus alter Version, einige Einstellungen könnten fehlen.</value>
+  </data>
   <data name="Show_Chat_Logs" xml:space="preserve">
     <value>Chatlogs anzeigen</value>
+  </data>
+  <data name="Show_Current_Status_Header" xml:space="preserve">
+    <value>Zeige aktuellen Status in der Kopfzeile</value>
   </data>
   <data name="DrawConfigs_Max_" xml:space="preserve">
     <value>Max.</value>
@@ -766,11 +802,59 @@ Schau in den Guide Tab für Erklärungen.</value>
   <data name="Show_Debug_Console" xml:space="preserve">
     <value>Debug-Konsole Anzeigen</value>
   </data>
+  <data name="Show_Chat_Logs_HelpText" xml:space="preserve">
+    <value>Zeige Nachrichten wie "Preset getauscht" im Chat</value>
+  </data>
   <data name="TabName_Config_Guides" xml:space="preserve">
     <value>Konfiguration / Anleitungen</value>
   </data>
   <data name="Open_Console" xml:space="preserve">
     <value>Konsole Öffnen</value>
+  </data>
+  <data name="SubAuto_Disabled" xml:space="preserve">
+    <value>Autoangeln ist deaktiviert</value>
+  </data>
+  <data name="AllActionsDisabled" xml:space="preserve">
+    <value>Alle Skills sind deaktiviert</value>
+  </data>
+  <data name="SubExtra_Disabled" xml:space="preserve">
+    <value>Extra Einstellungen sind deaktiviert</value>
+  </data>
+  <data name="Default_AutoCast_Being_Used" xml:space="preserve">
+    <value>[Standard] Auto Angeln wird stattdessen benutzt</value>
+  </data>
+  <data name="Global_AutoCast_Being_Used" xml:space="preserve">
+    <value>[Global] Auto Angeln wird stattdessen benutzt</value>
+  </data>
+  <data name="GlobalActionsBeingUsed" xml:space="preserve">
+    <value>Auto Skills des Globalen Presets werden stattdessen genutzt</value>
+  </data>
+  <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
+    <value>Auto Angeln des Presets [{0}] wird stattdessen verwendet</value>
+  </data>
+  <data name="Default_Extra_Being_Used" xml:space="preserve">
+    <value>[Standard] Extra Einstellungen werden stattdessen benutzt</value>
+  </data>
+  <data name="Global_Extra_Being_Used" xml:space="preserve">
+    <value>[Global] Extra Einstellungen werden stattdessen benutzt</value>
+  </data>
+  <data name="Custom_Extra_Being_Used" xml:space="preserve">
+    <value>Extra Einstellungen des Presets [{0}] werden stattdessen verwendet</value>
+  </data>
+  <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
+    <value>Wichtig! Auto Angeln wird nicht benutzt, wenn manuell Angeschlagen wurde.</value>
+  </data>
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+    <value>Wichtig! Skills weden nicht benutzt, wenn manuell Angeschlagen wurde.</value>
+  </data>
+  <data name="Food_Buff" xml:space="preserve">
+    <value>Nahrungsverstärkung</value>
+  </data>
+  <data name="Only_When_Patience_Active" xml:space="preserve">
+    <value>Nur nutzen, wenn Geduld aktiv ist</value>
+  </data>
+  <data name="Stop_After_Caught" xml:space="preserve">
+    <value>Beende nachdem ... gefangen wurden</value>
   </data>
   <data name="Search_Hint" xml:space="preserve">
     <value>Suchen...</value>
@@ -780,13 +864,22 @@ Schau in den Guide Tab für Erklärungen.</value>
     <value>Extra</value>
   </data>
   <data name="ExtraOptions" xml:space="preserve">
-    <value>Extra Optionen</value>
+    <value>Extra Einstellungen</value>
+  </data>
+  <data name="NeverReleaseHelptext" xml:space="preserve">
+    <value>Dieser Fisch wird nicht freigelassen, wenn "Lasse alle Fische frei" im Auto Skills Tab aktiviert ist</value>
   </data>
   <data name="NeverRelease" xml:space="preserve">
     <value>Niemals Freilassen</value>
   </data>
   <data name="ReleaseAllFish" xml:space="preserve">
-    <value>Alle Fische Freilassen</value>
+    <value>Lasse alle Fische frei</value>
+  </data>
+  <data name="ReleaseAllFishHelpText" xml:space="preserve">
+    <value>Wenn du einen speziellen Fisch nicht freilassen möchtset, füge ihn zu einem Preset hinzu und wähle "Nie freilassen" aus</value>
+  </data>
+  <data name="Enable_Extra_Configs" xml:space="preserve">
+    <value>Extra Einstellungen aktivieren</value>
   </data>
   <data name="Draw_Configs" xml:space="preserve">
     <value>Konfigurationen</value>
@@ -794,25 +887,301 @@ Schau in den Guide Tab für Erklärungen.</value>
   <data name="Draw_Guides" xml:space="preserve">
     <value>Anleitungen</value>
   </data>
+  <data name="Delay_when_hooking" xml:space="preserve">
+    <value>Verzögere das Anschlagen (in ms)</value>
+  </data>
+  <data name="Preset_not_found" xml:space="preserve">
+    <value>Preset nicht gefunden</value>
+  </data>
+  <data name="Set_preset_command" xml:space="preserve">
+    <value>Benutzerdefiniertes Preset wird im Chat mit folgendem Kommando festgelegt -&gt; /ahpreset presetName</value>
+  </data>
+  <data name="Starts_AutoHook" xml:space="preserve">
+    <value>Starte Angeln mit deinem ausgewählten Preset</value>
+  </data>
+  <data name="Preset_set_to_" xml:space="preserve">
+    <value>Preset eingestellt auf:</value>
+  </data>
+  <data name="When_gaining_spectral_current" xml:space="preserve">
+    <value>Wenn eine Phantomströmung aktiv wird...</value>
+  </data>
+  <data name="When_losing_spectral_current" xml:space="preserve">
+    <value>Wenn eine Phantomströmung inaktiv wird...</value>
+  </data>
+  <data name="UseWhenIntuitionTimeIsEqualOrGreaterThan" xml:space="preserve">
+    <value>Nutze während die verbleibende Zeit von Intuition (Sekunden) überschreitet</value>
+  </data>
+  <data name="OnlyUseWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>Nur nutzen, wenn Bunte Gewässer aktiv ist</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>Nur nutzen, wenn Bunte Gewässer inaktiv ist</value>
+  </data>
+  <data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>Nur Anschlagen, wenn Bunte Gewässer aktiv ist</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>Nur Anschlagen, wenn Bunte Gewässer inaktiv ist</value>
+  </data>
+  <data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
+    <value>Nur nutzen, wenn Stetes Angeln aktiv ist</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
+    <value>Nur nutzen, wenn Stetes Angeln inaktiv ist</value>
+  </data>
+  <data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
+    <value>Nur Anschlagen, wenn Stetes Angeln aktiv ist</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
+    <value>Nur Anschlagen, wenn Stetes Angeln inaktiv ist</value>
+  </data>
   <data name="Collect" xml:space="preserve">
     <value>Einsammeln</value>
+  </data>
+  <data name="CollectHelpText" xml:space="preserve">
+    <value>Sammlergespür wird aktiviert, wenn du Angeln startest</value>
+  </data>
+  <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
+    <value>Aktualisieren den Segen, wenn die Restzeit gleich oder niedriger ist als</value>
+  </data>
+  <data name="Allow_Gp_Overcap" xml:space="preserve">
+    <value>Erlaube SP Überfluss, wenn Stetes Angeln aktiv ist</value>
+  </data>
+  <data name="Use_Cordials_First" xml:space="preserve">
+    <value>Nutze Kräutertrunk vor Thaliks Huld</value>
+  </data>
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
+    <value>Nur nutzen, wenn Kräutertrunk noch Abklingzeit hat</value>
+  </data>
+  <data name="Use_Cordials_First_Help" xml:space="preserve">
+    <value>Gilt nur, wenn Kräutertrunk aktiviert ist</value>
+  </data>
+  <data name="Show_Presets_As_Sidebar" xml:space="preserve">
+    <value>Zeige das Preset Menu als Seitenleiste</value>
+  </data>
+  <data name="Hide_Tab_Description" xml:space="preserve">
+    <value>Verstecke Tab Beschreibungen</value>
+  </data>
+  <data name="Ignore_When_Intuition" xml:space="preserve">
+    <value>Ignoriere Fisch Einstellungen, wenn Intuition aktiv ist</value>
   </data>
   <data name="Reset_the_counter" xml:space="preserve">
     <value>Den Zähler zurücksetzen</value>
   </data>
+  <data name="Reset_counter_after_swapping_presets" xml:space="preserve">
+    <value>Setze Anschlag/Fisch-Zähler zurück, nach Preset Wechsel</value>
+  </data>
+  <data name="Only_use_when_Cordial_is_available" xml:space="preserve">
+    <value>Nur nutzen, wenn Kräutertrunk verfügbar ist</value>
+  </data>
+  <data name="Only_use_when_the_fish_is_caught" xml:space="preserve">
+    <value>Nur nutzen, wenn der Fisch gefangen ist</value>
+  </data>
+  <data name="UIUseCurrentBait" xml:space="preserve">
+    <value>Wählt aktuell ausgewählten Köder aus dem Spiel aus</value>
+  </data>
+  <data name="AutoCastEndTime" xml:space="preserve">
+    <value>Endzeit um Auto Angeln zu erlauben</value>
+  </data>
+  <data name="AutoCastStartTime" xml:space="preserve">
+    <value>Startzeit um Auto Angeln zu erlauben</value>
+  </data>
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+    <value>Nutze Skills nur zu eingestellten Zeiten (Eorzea Zeit)</value>
+  </data>
+  <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
+    <value>Beende Angeln, wenn Intuition verloren geht</value>
+  </data>
+  <data name="Stop_Fishing_On_IntuitionLost" xml:space="preserve">
+    <value>Pausiere Angeln, wenn Intuition verloren geht</value>
+  </data>
+  <data name="Auto_Cast_Sort_Notice" xml:space="preserve">
+    <value>Aktionen werden von oben nach unten benutzt. Klicke die Pfeile um sortieren.</value>
+  </data>
+  <data name="Current_Selected_Preset" xml:space="preserve">
+    <value>Aktuell ausgewähltes Preset:</value>
+  </data>
+  <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
+    <value>Nur nutzen, wenn Fischaugen aktiv ist.</value>
+  </data>
+  <data name="HookType" xml:space="preserve">
+    <value>Anschlag Variante</value>
+  </data>
+  <data name="HookingTimer" xml:space="preserve">
+    <value>Anschlag Timer</value>
+  </data>
+  <data name="EnableHookingTimer" xml:space="preserve">
+    <value>Nutze Anschlag Timer</value>
+  </data>
+  <data name="EnableChumTimer" xml:space="preserve">
+    <value>Nutze Streuköder Timer</value>
+  </data>
+  <data name="HookingTimerHelpText" xml:space="preserve">
+    <value>Anschlag wird nur genutzt, wenn zwischen den Min. und Max. Werten angebissen wurde</value>
+  </data>
   <data name="UseDoubleHook" xml:space="preserve">
     <value>Doppelhaken verwenden</value>
+  </data>
+  <data name="UseTripleHook" xml:space="preserve">
+    <value>Nutze Tripelhaken</value>
   </data>
   <data name="StopAfterHooking" xml:space="preserve">
     <value>Stoppe Anschlag nach...</value>
   </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Zeitlimit</value>
+  </data>
+  <data name="Chum Timeout" xml:space="preserve">
+    <value>Streuköder Zeitlimit</value>
+  </data>
+  <data name="TimeoutOption" xml:space="preserve">
+    <value>Der Angelversuch wird abgebrochen, nachdem die angegebene Zeit vergangen ist</value>
+  </data>
+  <data name="Hook" xml:space="preserve">
+    <value>Anschlag</value>
+  </data>
+  <data name="Hooking" xml:space="preserve">
+    <value>Angeln</value>
+  </data>
+  <data name="HookingTabHelpText" xml:space="preserve">
+    <value>Angeleinstellungen, wenn mit Köder oder Naturköder gefischt wird</value>
+  </data>
+  <data name="BaitTabHelpText" xml:space="preserve">
+    <value>Angeleinstellungen, wenn mit Ködern gefischt wird</value>
+  </data>
+  <data name="MoochTabHelpText" xml:space="preserve">
+    <value>Angeleinstellungen, wenn mit Naturködern gefischt wird</value>
+  </data>
+  <data name="RequiredStatusSettingHelpText" xml:space="preserve">
+    <value>Wenn deaktiviert, wird stattdessen der normale Anschlag verwendet</value>
+  </data>
   <data name="AntiAfkOption" xml:space="preserve">
     <value>Anti-Afk während dem fischen</value>
+  </data>
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
+    <value>Tausche Aufklapp-Menüs mit Buttons</value>
+  </data>
+  <data name="LetFishEscapeHelpText" xml:space="preserve">
+    <value>Wenn deaktiviert, wird der normale Anschlag genutzt, wenn SP unter dem geforderten Wert liegt</value>
+  </data>
+  <data name="UseConfigRequiredStatus" xml:space="preserve">
+    <value>Nutze diese Einstellung, wenn {0} aktiv ist</value>
+    <comment>{0} Represents a status effect. For Example: Use this setting when Fisher's Intuition is active</comment>
   </data>
   <data name="NormalPatienceHookset" xml:space="preserve">
     <value>Normaler Anschlag / Geduld-Anschläge</value>
   </data>
+  <data name="AutoCastOnlyUnderFishEyesHelpText" xml:space="preserve">
+    <value>Wenn ein Zeitfenster aktiviert ist, wird dies innerhalb des Zeitfensters ignoriert</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Einstellen</value>
+  </data>
+  <data name="Type_1" xml:space="preserve">
+    <value>Variante 1</value>
+  </data>
+  <data name="Type_2" xml:space="preserve">
+    <value>Variante 2</value>
+  </data>
+  <data name="CordialOutsideTimeWindow" xml:space="preserve">
+    <value>Nutze Kräutertrunk außerhalb des eingestellten Auto Angel Zeitfensters</value>
+  </data>
+  <data name="SpecificTimeWindowHelpText" xml:space="preserve">
+    <value>Betroffene Skills: Autoauswurf der Leine, Autonaturködern I/II, Kräutertrunk (optional), Fischaugen, Fischfinesse und Geduld I/II</value>
+  </data>
+  <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
+    <value>Standardmäßig wird Kräutertrunk nicht außerhalb des Zeitfensters, sofern es aktiviert ist, verwendet. Diese Einstellung überschreibt diese Verhalten</value>
+  </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>Zeitbegrenzung</value>
+  </data>
+  <data name="ChumTimeLimit" xml:space="preserve">
+    <value>Streuköder Zeitbegrenzung</value>
+  </data>
+  <data name="SetZeroToIgnore" xml:space="preserve">
+    <value>Stelle Null (0) ein, um Min. oder Max. Zeiten zu ignorieren</value>
+  </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="UseNaturesBounty" xml:space="preserve">
+    <value>Nutze Großes Füllhorn</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="SettingsTab" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="EnableActions" xml:space="preserve">
+    <value>Aktiviere Skills</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>Wenn deaktiviert, verstecke Extra/Auto Angeln Einstellungen nicht</value>
+  </data>
+  <data name="IgnoreMooch" xml:space="preserve">
+    <value>Ignoriere Naturköder</value>
+  </data>
   <data name="IgnoreMoochHelpText" xml:space="preserve">
     <value>Wenn deaktiviert wird der Köderversuch nicht abgebrochen, selbst wenn Auto-Ködern deaktiviert ist</value>
+  </data>
+  <data name="NeverMoochHelpText" xml:space="preserve">
+    <value>Wenn aktiviert, werden Aktionen diesen Naturköder Versuch abbrechen</value>
+  </data>
+  <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
+    <value>Nur nutzen, wenn Fischfinesse oder Geduld aktiv ist</value>
+  </data>
+  <data name="IgnoreMoochFishEyes" xml:space="preserve">
+    <value>Fischaugen wird genutzt und bricht den Natürköderversuch ab.</value>
+  </data>
+  <data name="StartActions" xml:space="preserve">
+    <value>Starte Angeln</value>
+  </data>
+  <data name="StartActionHelpText" xml:space="preserve">
+    <value>Starte das automatische Angeln! Du kannst den Köder auch automatisch in den Extra Einstellungen ändern
+
+Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Makros!</value>
+  </data>
+  <data name="ForceBaitSwap" xml:space="preserve">
+    <value>Erzwinge Köderwechsel, wenn "Starte Angeln" genutzt wird</value>
+  </data>
+  <data name="SelectBaitStartFishing" xml:space="preserve">
+    <value>Köder zum Angeln auswählen:</value>
+  </data>
+  <data name="BaitPresetPriorityWarning" xml:space="preserve">
+    <value>Köder und Preset Wechsel haben hier Priorität über den "Fische gefangen" Wechsel</value>
+  </data>
+  <data name="WhenAnglersAt" xml:space="preserve">
+    <value>Wenn Fischversessen bei ... Stacks ist</value>
+  </data>
+  <data name="StacksOrMore" xml:space="preserve">
+    <value>Stacks oder mehr</value>
+  </data>
+  <data name="StopQuitFishing" xml:space="preserve">
+    <value>Pausiere/Beende Angeln</value>
+  </data>
+  <data name="AnglersArt" xml:space="preserve">
+    <value>Fischversessen</value>
+  </data>
+  <data name="CatchEverything" xml:space="preserve">
+    <value>Fange alles</value>
+  </data>
+  <data name="IgnoresPresets" xml:space="preserve">
+    <value>Ignoriere Presets</value>
+  </data>
+  <data name="CatchAllNotice" xml:space="preserve">
+    <value>Fange alles ist aktiviert. Die Einstellungen unten werden beim Speerfischen ignoriert..</value>
+  </data>
+  <data name="GeneratePreset" xml:space="preserve">
+    <value>Generiere Preset</value>
+  </data>
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+    <value>Nur, wenn Naturköder nicht verfügbar ist</value>
+  </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>Nur nutzen, wenn Naturköder II auf Cooldown ist</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>Nur nutzen, wenn Naturköder II auf Cooldown ist</value>
   </data>
 </root>
