@@ -881,6 +881,12 @@ Schau in den Guide Tab für Erklärungen.</value>
   <data name="Enable_Extra_Configs" xml:space="preserve">
     <value>Extra Einstellungen aktivieren</value>
   </data>
+  <data name="When_gaining_fishers_intuition" xml:space="preserve">
+    <value>Bei Erhalt von Fischers Intuition...</value>
+  </data>
+  <data name="When_losing_fishers_intuition" xml:space="preserve">
+    <value>Bei Verlust von Fischers Intuition...</value>
+  </data>
   <data name="Draw_Configs" xml:space="preserve">
     <value>Konfigurationen</value>
   </data>
@@ -1164,13 +1170,25 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
     <value>Fischversessen</value>
   </data>
   <data name="CatchEverything" xml:space="preserve">
-    <value>Fange alles</value>
+    <value>Fange Alles</value>
   </data>
   <data name="IgnoresPresets" xml:space="preserve">
     <value>Ignoriere Presets</value>
   </data>
   <data name="CatchAllNotice" xml:space="preserve">
-    <value>Fange alles ist aktiviert. Die Einstellungen unten werden beim Speerfischen ignoriert..</value>
+    <value>Fange Alles ist aktiviert. Die Einstellungen unten werden beim Speerfischen ignoriert..</value>
+  </data>
+  <data name="CatchAllNaturesBountyHelpText" xml:space="preserve">
+    <value>Nur, wenn Fange Alles aktiviert ist</value>
+  </data>
+  <data name="CatchAllGigWindow" xml:space="preserve">
+    <value>Fange Alles ist aktivert. Presets werden ignoriert.</value>
+  </data>
+  <data name="Intuition" xml:space="preserve">
+    <value>Intuition</value>
+  </data>
+  <data name="DelaySettings" xml:space="preserve">
+    <value>Verzögerungs-Einstellungen</value>
   </data>
   <data name="GeneratePreset" xml:space="preserve">
     <value>Generiere Preset</value>
