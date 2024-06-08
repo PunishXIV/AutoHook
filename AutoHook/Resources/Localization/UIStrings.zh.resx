@@ -280,7 +280,7 @@
   </data>
   <data name="TimeoutHelpText" xml:space="preserve">
     <value>设置零(0) 为禁用。
-在达到时间限制时使用钩子取消捕鱼尝试。</value>
+在达到时间限制时，使用提钩取消捕鱼尝试。</value>
   </data>
   <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
     <value>聊天室活动时不受影响</value>
