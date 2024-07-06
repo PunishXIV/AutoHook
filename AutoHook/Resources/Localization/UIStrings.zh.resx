@@ -1196,4 +1196,7 @@
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>仅在以小钓大II冷却时使用</value>
   </data>
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
+    <value>Fish Hitbox偏移</value>
+  </data>
 </root>
