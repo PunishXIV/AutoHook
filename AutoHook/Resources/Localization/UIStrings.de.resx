@@ -1202,4 +1202,7 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>Nur nutzen, wenn Naturköder II auf Cooldown ist</value>
   </data>
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
+    <value>Fisch Treffer-Bereich Versatz</value>
+  </data>
 </root>
