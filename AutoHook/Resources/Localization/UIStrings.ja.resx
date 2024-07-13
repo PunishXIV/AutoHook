@@ -1167,11 +1167,20 @@
   <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
     <value>泳がせ釣りが利用できない場合のみ</value>
   </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>泳がせ釣りIIがクールダウン中のみ使用</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>泳がせ釣りIIがクールダウン中のみ使用</value>
+  </data>
   <data name="LureStacks" xml:space="preserve">
     <value>ルアーのスタック:</value>
   </data>
   <data name="BigGameFishing" xml:space="preserve">
     <value>大物の知識</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>アンビシャスルアー</value>
   </data>
   <data name="ModestLure" xml:space="preserve">
     <value>モデストルアー</value>
