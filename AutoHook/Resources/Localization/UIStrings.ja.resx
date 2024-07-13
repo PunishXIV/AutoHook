@@ -1164,4 +1164,19 @@
   <data name="GeneratePreset" xml:space="preserve">
     <value>プリセットを作成</value>
   </data>
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+    <value>泳がせ釣りが利用できない場合のみ</value>
+  </data>
+  <data name="LureStacks" xml:space="preserve">
+    <value>ルアーのスタック:</value>
+  </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>大物の知識</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>モデストルアー</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>熟漁の妙案</value>
+  </data>
 </root>
