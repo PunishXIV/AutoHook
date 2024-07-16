@@ -2338,7 +2338,16 @@ namespace AutoHook.Resources.Localization {
                 return ResourceManager.GetString("Preset_set_to_", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Set custom preset by chat command -&gt; /agpreset presetName.
+        /// </summary>
+        internal static string Gig_preset_set_to_ {
+            get {
+                return ResourceManager.GetString("Gig_preset_set_to_", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to A preset with the same name already exists.
         /// </summary>
@@ -2835,7 +2844,16 @@ namespace AutoHook.Resources.Localization {
                 return ResourceManager.GetString("SwitchFishBait", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Set custom gig preset by chat command -&gt; /agpreset presetName.
+        /// </summary>
+        internal static string Set_agpreset_command {
+            get {
+                return ResourceManager.GetString("Set_agpreset_command", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>

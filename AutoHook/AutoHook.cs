@@ -30,7 +30,8 @@ public class AutoHook : IDalamudPlugin
     private const string CmdAhStart = "/ahstart";
     private const string CmdAhBait = "/ahbait";
     private const string CmdBait = "/bait";
-    
+    private const string CmdAgPreset = "/agpreset";
+
     private static readonly Dictionary<string, string> CommandHelp = new()
     {
         {CmdAhOff, UIStrings.Disables_AutoHook},
@@ -41,15 +42,16 @@ public class AutoHook : IDalamudPlugin
         {CmdAhPreset, UIStrings.Set_preset_command},
         {CmdAhStart, UIStrings.Starts_AutoHook},
         {CmdAhBait, UIStrings.SwitchFishBait},
-        {CmdBait, UIStrings.SwitchFishBait}
+        {CmdBait, UIStrings.SwitchFishBait},
+        {CmdAgPreset, UIStrings.Set_agpreset_command}
     };
-    
+
     private static PluginUi _pluginUi = null!;
 
     private static AutoGig _autoGig = null!;
 
     public readonly HookingManager HookManager;
-    
+
     public AutoHook(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.All);
@@ -62,14 +64,14 @@ public class AutoHook : IDalamudPlugin
         Service.PluginInterface.UiBuilder.Draw += Service.WindowSystem.Draw;
         Service.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
         Service.Language = Service.ClientState.ClientLanguage;
-       
+
         GameRes.Initialize();
 
         Service.Configuration = Configuration.Load();
         UIStrings.Culture = new CultureInfo(Service.Configuration.CurrentLanguage);
         _pluginUi = new PluginUi();
         _autoGig = new AutoGig();
-        
+
         foreach (var (command, help) in CommandHelp)
         {
             Service.Commands.AddHandler(command, new CommandInfo(OnCommand)
@@ -77,7 +79,7 @@ public class AutoHook : IDalamudPlugin
                 HelpMessage = help
             });
         }
-        
+
         HookManager = new HookingManager();
 
 #if (DEBUG)
@@ -119,6 +121,9 @@ public class AutoHook : IDalamudPlugin
             case CmdAhBait:
                 SwapBait(args);
                 break;
+            case CmdAgPreset:
+                SetGigPreset(args);
+                break;
         }
     }
 
@@ -142,6 +147,21 @@ public class AutoHook : IDalamudPlugin
         Service.Save();
     }
 
+    private static void SetGigPreset(string presetName)
+    {
+        var preset = Service.Configuration.AutoGigConfig.Presets.FirstOrDefault(x => x.Name == presetName);
+        if (preset == null)
+        {
+            Service.Chat.Print(UIStrings.Preset_not_found);
+            Service.Chat.Print(presetName);
+            return;
+        }
+        Service.Save();
+        Service.Configuration.AutoGigConfig.SetSelectedPreset(preset.UniqueId);
+        Service.Chat.Print(@$"{UIStrings.Gig_preset_set_to_} {preset.Name}");
+        Service.Save();
+    }
+
     public void Dispose()
     {
         _pluginUi.Dispose();
@@ -151,12 +171,12 @@ public class AutoHook : IDalamudPlugin
         Service.Save();
         Service.PluginInterface.UiBuilder.Draw -= Service.WindowSystem.Draw;
         Service.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
-        
+
         foreach (var (command, _) in CommandHelp)
         {
             Service.Commands.RemoveHandler(command);
         }
-        
+
         ECommonsMain.Dispose();
     }
 
