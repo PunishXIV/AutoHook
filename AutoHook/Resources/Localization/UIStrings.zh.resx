@@ -1199,4 +1199,7 @@
   <data name="Fish_Hitbox_Offset" xml:space="preserve">
     <value>Fish Hitbox偏移</value>
   </data>
+  <data name="OffsetLR" xml:space="preserve">
+    <value/>
+  </data>
 </root>
