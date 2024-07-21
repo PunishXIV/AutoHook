@@ -77,7 +77,6 @@ public class OldHookConfig
     
     public void ConvertV3ToV4()
     {
-        Service.PrintDebug("Starting conversion");
         
         if (NormalHook == null)
             NormalHook =  new(IDs.Status.None);

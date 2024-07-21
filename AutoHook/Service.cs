@@ -20,7 +20,7 @@ public class Service
 
     public const string PluginName = "AutoHook";
     
-    public const string GlobalPresetName = "GlobalPreset";
+    public const string GlobalPresetName = "Global Preset";
 
     [PluginService] public static IDalamudPluginInterface PluginInterface { get; set; } = null!;
     [PluginService] public static ISigScanner SigScanner { get; private set; } = null!;
@@ -35,7 +35,7 @@ public class Service
     [PluginService] public static ICondition Condition { get;private set; } = null!;
     [PluginService] public static ITargetManager TargetManager { get; private set; } = null!;
     
-    public static FishingManager FishingManager { get; set; } = null!;
+    public static BaitManager BaitManager { get; set; } = null!;
     public static Configuration Configuration { get; set; } = null!;
     public static WindowSystem WindowSystem { get; } = new(PluginName);
     public static SeTugType TugType { get; set; } = null!;

@@ -7,10 +7,8 @@ using AutoHook.Resources.Localization;
 
 namespace AutoHook.Configurations;
 
-public class FishConfig
+public class FishConfig : BaseOption
 {
-    private Guid _uniqueId;
-    
     [DefaultValue(true)]
     public bool Enabled = true;
     
@@ -43,23 +41,18 @@ public class FishConfig
     public FishConfig(BaitFishClass fish)
     {
         Fish = fish;
-        // ok this is not the best way, but im tired and it works for now so be nice to me
+        // ok this is not the best way, but im tired, and it works for now so be nice to me
         Mooch.Name = UIStrings.Always_Mooch; 
-        
-        _uniqueId = Guid.NewGuid();
     }
     
     public FishConfig(int fishId) 
     { 
         Fish = new BaitFishClass(fishId); 
-        _uniqueId = Guid.NewGuid(); 
     }
     
-    public Guid GetUniqueId()
+    
+    public override void DrawOptions()
     {
-        if (_uniqueId == Guid.Empty)
-            _uniqueId = Guid.NewGuid();
         
-        return _uniqueId;
     }
 }

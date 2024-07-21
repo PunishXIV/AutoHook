@@ -11,9 +11,9 @@ using FFXIVClientStructs.FFXIV.Client.Game.Event;
 
 namespace AutoHook.SeFunctions;
 
-public unsafe class FishingManager
+public unsafe class BaitManager
 {
-    public FishingManager()
+    public BaitManager()
     {
         Service.GameInteropProvider.InitializeFromAttributes(this);
     }
@@ -69,6 +69,8 @@ public unsafe class FishingManager
     }
 
     public uint Current => PlayerState.Instance()->FishingBait;
+    
+    public uint CurrentBaitSwimBait => CurrentSwimBait ?? Current;
 
     public ChangeBaitReturn ChangeBait(uint baitId)
     {

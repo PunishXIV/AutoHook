@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoHook.Enums;
 using AutoHook.Spearfishing.Enums;
 using AutoHook.Utils;
 
 namespace AutoHook.Classes;
 
-public class Fish
+public class ImportedFish
 {
     public int ItemId { get; set; }
     public HookType HookType { get; set; }
@@ -23,6 +24,8 @@ public class Fish
     public FishInterval Interval { get; set; } = new();
 
     public string Name => MultiString.GetItemName(ItemId);
+    
+    public bool IsLureFish => GameRes.LureFishes.Any(f => f.Id == ItemId);
 
     public class FishPredator
     {

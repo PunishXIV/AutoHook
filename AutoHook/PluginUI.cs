@@ -8,25 +8,36 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using AutoHook.Enums;
+using AutoHook.Fishing;
 using AutoHook.Resources.Localization;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
+using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
+using ThreadLoadImageHandler = ECommons.ImGuiMethods.ThreadLoadImageHandler;
 
 namespace AutoHook;
 
 public class PluginUi : Window, IDisposable
 {
-    private readonly List<BaseTab> _tabs = new()
+    private static readonly List<BaseTab> _tabs = new()
     {
-        new TabGlobalPreset(),
-        new TabCustomPresets(),
+        new TabFishingPresets(),
         new TabAutoGig(),
-        new TabConfigGuides()
+        new TabCommunity(),
+        new TabSettings()
     };
+
+    private BaseTab debug = new TabDebug();
+
+    private static OpenWindow _selectedTab = OpenWindow.FishingPreset;
 
     public PluginUi() : base(
         $"{Service.PluginName} {Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? ""}###MainAutoHook")
@@ -61,6 +72,20 @@ public class PluginUi : Window, IDisposable
         if (!IsOpen)
             return;
 
+        try
+        {
+            DrawNewLayout();
+        }
+        catch (Exception e)
+        {
+            Service.PluginLog.Error(e.Message);
+        }
+
+        //DrawOldLayout()
+    }
+
+    private void DrawOldLayout()
+    {
         DrawUtil.Info(UIStrings.StartActionHelpText);
 
         ImGui.SameLine(0, 3);
@@ -99,7 +124,7 @@ public class PluginUi : Window, IDisposable
                 Debug();
         }
 
-        if (Service.Configuration.ShowStatusHeader)
+        if (Service.Configuration.ShowStatus)
         {
             if (string.IsNullOrEmpty(Service.Status))
             {
@@ -143,6 +168,150 @@ public class PluginUi : Window, IDisposable
         ImGui.PopID();
     }
 
+    private void DrawNewLayout()
+    {
+        var region = ImGui.GetContentRegionAvail();
+        var topLeftSideHeight = region.Y;
+
+        if (Service.Configuration.ShowStatus)
+        {
+            DrawStatus();
+        }
+        
+        if (Service.OpenConsole)
+            Debug();
+
+        using (var style = ImRaii.PushStyle(ImGuiStyleVar.CellPadding, new Vector2(5, 0)))
+        {
+            using (var table = ImRaii.Table("###MainTable", 2, ImGuiTableFlags.Resizable))
+            {
+                ImGui.TableSetupColumn("##LeftColumn", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 3);
+
+                ImGui.TableNextColumn();
+
+                var regionSize = ImGui.GetContentRegionAvail();
+                ImGui.PushStyleVar(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f));
+
+                using (var leftChild = ImRaii.Child($"###AhLeft", regionSize with { Y = topLeftSideHeight },
+                           false, ImGuiWindowFlags.NoDecoration))
+                {
+                    if (ImGui.Selectable($"Start Actions"))
+                        AutoHook.Plugin.HookManager.StartFishing();
+                    
+                    var image = Service.Configuration.PluginEnabled ? "images/Fishy.png" : "images/Fishy_g.png";
+                    var imagePath = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName!, image);
+                    using (var c = ImRaii.Child("logo", new(0, 125f.Scale())))
+                    {
+                        if (ThreadLoadImageHandler.TryGetTextureWrap(imagePath, out var logo))
+                        {
+                            ImGuiEx.LineCentered("###AHLogo", () =>
+                            {
+                                ImGui.Image(logo.ImGuiHandle, new(125f.Scale(), 125f.Scale()));
+
+                                if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
+                                    Service.Configuration.PluginEnabled = !Service.Configuration.PluginEnabled;
+
+                                if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
+                                    Service.OpenConsole = !Service.OpenConsole;
+                                
+
+                                if (ImGui.IsItemHovered())
+                                {
+                                    ImGui.BeginTooltip();
+                                    ImGui.Text($"Click to disable the plugin");
+                                    ImGui.EndTooltip();
+                                }
+                            });
+                        }
+                    }
+
+                    ImGui.Spacing();
+                    ImGui.Separator();
+
+                    foreach (var tab in _tabs)
+                    {
+                        if (tab.Enabled == false) continue;
+
+                        if (ImGui.Selectable($"{tab.TabName}###{tab.TabName}Main", _selectedTab == tab.Type))
+                        {
+                            _selectedTab = tab.Type;
+                        }
+                    }
+
+                    if (ImGui.Selectable($"{debug.TabName}###{debug.TabName}Main",
+                            _selectedTab == debug.Type))
+                    {
+                        _selectedTab = OpenWindow.Debug;
+                    }
+
+                    if (ImGui.Selectable($"{UIStrings.AboutTab}", _selectedTab == null))
+                    {
+                        _selectedTab = OpenWindow.About;
+                    }
+
+                    if (ImGui.Selectable($"{UIStrings.Changelog}", _selectedTab == null))
+                    {
+                        _openChangelog = !_openChangelog;
+                    }
+                }
+
+                ImGui.PopStyleVar();
+
+                ImGui.TableNextColumn();
+                using (var rightChild = ImRaii.Child($"###AhRight", Vector2.Zero, false))
+                {
+                    if (_selectedTab == OpenWindow.About)
+                        AboutTab.Draw("AutoHook");
+                    else if (_selectedTab == OpenWindow.Debug)
+                    {
+                        debug.DrawHeader();
+                        debug.Draw();
+                    }
+                    else
+                    {
+                        var tab = _tabs.FirstOrDefault(x => x.Type == _selectedTab);
+                        if (tab != null)
+                        {
+                            tab.DrawHeader();
+                            tab.Draw();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (_openChangelog)
+            DrawChangelog();
+    }
+
+    private static void DrawStatus()
+    {
+        ImGuiEx.LineCentered("###AhStatus", () =>
+        {
+            if (Service.BaitManager.FishingState == FishingState.NotFishing)
+            {
+                try
+                {
+                    var preset = _presets.SelectedPreset;
+                    var baitId = Service.BaitManager.CurrentBaitSwimBait;
+                    var baitName = MultiString.GetItemName(baitId);
+
+                    var hasBait = preset != null && preset.HasBaitOrMooch(baitId);
+                    var presetName = hasBait ? _presets.SelectedPreset?.PresetName : _presets.DefaultPreset.PresetName;
+                    Service.Status = $"Equipped Bait: {baitName} - Preset \'{presetName}\' will be used.";
+                }
+                catch (Exception e)
+                {
+                    Service.PluginLog.Error(e.Message);
+                }
+            }
+
+            ImGui.TextColored(ImGuiColors.DalamudViolet, Service.Status);
+        });
+
+        ImGui.Separator();
+    }
+
     private void DrawTabs()
     {
         try
@@ -168,7 +337,14 @@ public class PluginUi : Window, IDisposable
                     AboutTab.Draw("AutoHook");
                     ImGui.EndTabItem();
                 }
-
+#if DEBUG
+                if (ImGui.BeginTabItem("Debug"))
+                {
+                    debug.DrawHeader();
+                    debug.Draw();
+                    ImGui.EndTabItem();
+                }
+#endif
                 ImGui.EndTabBar();
             }
         }
@@ -206,18 +382,13 @@ public class PluginUi : Window, IDisposable
     }
 
     private bool _openChangelog = false;
+    private static FishingPresets _presets = Service.Configuration.HookPresets;
 
     [Localizable(false)]
     private void DrawChangelog()
     {
         var text = UIStrings.Changelog;
         ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ImGuiHelpers.GetButtonSize(text).X - 5);
-
-        if (ImGui.Button(text))
-            _openChangelog = !_openChangelog;
-
-        if (!_openChangelog)
-            return;
 
         ImGui.SetNextItemWidth(400);
         if (ImGui.Begin($"{text}", ref _openChangelog))

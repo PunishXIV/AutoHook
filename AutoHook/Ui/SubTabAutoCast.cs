@@ -15,14 +15,17 @@ namespace AutoHook.Ui;
 
 public class SubTabAutoCast
 {
-    public bool IsGlobalPreset { get; set; }
+    private static List<BaseActionCast> _actionsAvailable = new();
 
-    private List<BaseActionCast> actionsAvailable = new();
+    private static CustomPresetConfig _preset = null!;
 
-    public void DrawAutoCastTab(AutoCastsConfig acCfg)
+    public static void DrawAutoCastTab(CustomPresetConfig presetCfg)
     {
-        actionsAvailable = new()
-        {
+        _preset = presetCfg;
+        var acCfg = _preset.AutoCastsCfg;
+
+        _actionsAvailable =
+        [
             acCfg.CastLine,
             acCfg.CastMooch,
             acCfg.CastChum,
@@ -34,40 +37,24 @@ public class SubTabAutoCast
             acCfg.CastPrizeCatch,
             acCfg.CastThaliaksFavor,
             acCfg.CastBigGame
-        };
+        ];
 
         DrawHeader(acCfg);
         DrawBody(acCfg);
     }
 
-    private void DrawHeader(AutoCastsConfig acCfg)
+    private static void DrawHeader(AutoCastsConfig acCfg)
     {
         ImGui.Spacing();
 
-        if (DrawUtil.Checkbox(UIStrings.EnableActions, ref acCfg.EnableAll, UIStrings.Acton_Alert_Manual_Hook))
-        {
-            if (acCfg.EnableAll)
-            {
-                if (IsGlobalPreset &&
-                    (Service.Configuration.HookPresets.SelectedPreset?.AutoCastsCfg.EnableAll ?? false))
-                {
-                    Service.Configuration.HookPresets.SelectedPreset.AutoCastsCfg.EnableAll = false;
-                }
-                else if (!IsGlobalPreset)
-                {
-                    Service.Configuration.HookPresets.DefaultPreset.AutoCastsCfg.EnableAll = false;
-                }
-            }
-
-            Service.Save();
-        }
-
+        DrawUtil.Checkbox(UIStrings.EnableActions, ref acCfg.EnableAll, UIStrings.Acton_Alert_Manual_Hook);
+            
         ImGui.SameLine();
 
         if (DrawUtil.Checkbox(UIStrings.Dont_Cancel_Mooch, ref acCfg.DontCancelMooch,
                 UIStrings.TabAutoCasts_DrawHeader_HelpText))
         {
-            foreach (var action in actionsAvailable.Where(action => action != null))
+            foreach (var action in _actionsAvailable.Where(action => action != null))
             {
                 action.DontCancelMooch = acCfg.DontCancelMooch;
 
@@ -77,7 +64,7 @@ public class SubTabAutoCast
             Service.Save();
         }
 
-        if (!IsGlobalPreset)
+        if (!_preset.IsGlobal)
         {
             if (Service.Configuration.HookPresets.DefaultPreset.AutoCastsCfg.EnableAll && !acCfg.EnableAll)
                 ImGui.TextColored(ImGuiColors.DalamudViolet, UIStrings.GlobalActionsBeingUsed);
@@ -97,18 +84,22 @@ public class SubTabAutoCast
         DrawUtil.SpacingSeparator();
     }
 
-    private void DrawBody(AutoCastsConfig acCfg)
+    private static void DrawBody(AutoCastsConfig acCfg)
     {
         if (!acCfg.EnableAll && !Service.Configuration.DontHideOptionsDisabled)
             return;
-        
-        if (ImGui.TreeNodeEx("Animation Canceling", ImGuiTreeNodeFlags.FramePadding))
+
+        if (ImGui.TreeNodeEx(UIStrings.AnimationCanceling, ImGuiTreeNodeFlags.FramePadding))
         {
-            DrawUtil.Checkbox("Enable recasting animation cancel", ref acCfg.RecastAnimationCancel, "Doesn't work if a fish is hooked, only works when recasting from a failed/canceled attempt");
+            DrawUtil.Checkbox(UIStrings.EnableRecastCancel, ref acCfg.RecastAnimationCancel,
+                UIStrings.EnableRecastCancelHelp);
             if (acCfg.RecastAnimationCancel)
-                DrawUtil.SubCheckbox("Turn Collector's Glove off if Auto Collect is also disabled", ref acCfg.TurnCollectOff, "Animation canceling requires turning Collector's Glove on before casting the line, this option ensures Collector's Glove will remain off while fishing");
-            
-            DrawUtil.Checkbox("Enable Chum animation cancel", ref acCfg.ChumAnimationCancel, "Experimental and not consistent (maybe because of ping). Action \'Salvage\' will be activated");
+                DrawUtil.SubCheckbox(UIStrings.TurnCollectOff,
+                    ref acCfg.TurnCollectOff,
+                    UIStrings.TurnCollectOffHelp);
+
+            DrawUtil.Checkbox(UIStrings.EnableChumCancel, ref acCfg.ChumAnimationCancel,
+                UIStrings.ChumCancelHelp);
 
             ImGui.Separator();
             ImGui.TreePop();
@@ -139,19 +130,19 @@ public class SubTabAutoCast
                 Service.Save();
             }
         }, UIStrings.SpecificTimeWindowHelpText);
-        
+
         ImGui.TextColored(ImGuiColors.DalamudOrange, UIStrings.Auto_Cast_Sort_Notice);
 
         if (ImGui.BeginChild("AutoCastItems", new Vector2(0, 0), true))
         {
-            foreach (var action in actionsAvailable.OrderBy(x => x.GetType() == typeof(AutoCastLine))
+            foreach (var action in _actionsAvailable.OrderBy(x => x.GetType() == typeof(AutoCastLine))
                          .ThenBy(x => x.GetType() == typeof(AutoMooch)).ThenBy(x => x.GetType() == typeof(AutoCollect))
                          .ThenBy(x => x.Priority))
             {
                 try
                 {
                     ImGui.PushID(action.GetType().ToString());
-                    action.DrawConfig(actionsAvailable);
+                    action.DrawConfig(_actionsAvailable);
                     ImGui.PopID();
                 }
                 catch (Exception e)

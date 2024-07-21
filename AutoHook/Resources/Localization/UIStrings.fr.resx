@@ -126,7 +126,7 @@
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
-  <data name="ImportStackFromClipboard" xml:space="preserve">
+  <data name="ImportPresetFromClipboard" xml:space="preserve">
     <value>Importer un Style depuis le presse-papiers.</value>
   </data>
   <data name="Import" xml:space="preserve">
@@ -186,7 +186,7 @@
   <data name="RightClickToRename" xml:space="preserve">
     <value>Clic droit pour renommer ce préréglage personnalisé</value>
   </data>
-  <data name="TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm" xml:space="preserve">
+  <data name="EnterToConfirm" xml:space="preserve">
     <value>Modifier le nom du préréglage (appuyez sur Entrée pour confirmer)</value>
   </data>
   <data name="HookPresets" xml:space="preserve">
@@ -687,7 +687,7 @@ Si vous voulez avoir une Pêche au vif automatique qui est spécifique à un cer
   <data name="Normal_Hook" xml:space="preserve">
     <value>Hameçon normal</value>
   </data>
-  <data name="TabName_Global_Preset" xml:space="preserve">
+  <data name="GlobalPreset" xml:space="preserve">
     <value>Préréglage global</value>
   </data>
   <data name="Bait" xml:space="preserve">

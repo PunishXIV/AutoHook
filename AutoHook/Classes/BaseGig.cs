@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using AutoHook.Interfaces;
 using AutoHook.Resources.Localization;
 using AutoHook.Spearfishing.Enums;
 using AutoHook.Utils;
@@ -9,12 +8,12 @@ using ImGuiNET;
 
 namespace AutoHook.Classes;
 
-public class BaseGig : IBaseOption
+public class BaseGig : BaseOption
 {
     [DefaultValue(true)]
     public bool Enabled = true;
 
-    public Fish? Fish;
+    public ImportedFish? Fish;
 
     public bool UseNaturesBounty;
 
@@ -28,16 +27,14 @@ public class BaseGig : IBaseOption
 
     public SpearfishSpeed Speed => Fish?.Speed ?? SpearfishSpeed.Unknown;
     public SpearfishSize Size => Fish?.Size ?? SpearfishSize.Unknown;
-
-    public Guid UniqueId { get; } = Guid.NewGuid();
-
-    public void DrawOptions()
+    
+    public override void DrawOptions()
     {
         DrawUtil.DrawComboSelector(
             GameRes.ImportedFishes.Where(f => f.IsSpearFish).ToList(),
-            (Fish item) => item.Name,
+            (ImportedFish item) => item.Name,
             Fish?.Name ?? UIStrings.None,
-            (Fish item) => this.Fish = item);
+            (ImportedFish item) => this.Fish = item);
 
         DrawUtil.Checkbox(UIStrings.UseNaturesBounty, ref UseNaturesBounty);
         

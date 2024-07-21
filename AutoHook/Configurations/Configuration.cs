@@ -9,7 +9,9 @@ using System.Linq;
 using System.Text;
 using AutoHook.Classes;
 using AutoHook.Configurations.old_config;
+using AutoHook.Fishing;
 using AutoHook.Resources.Localization;
+using AutoHook.Spearfishing;
 using AutoHook.Utils;
 
 namespace AutoHook.Configurations;
@@ -17,16 +19,16 @@ namespace AutoHook.Configurations;
 [Serializable]
 public class Configuration : IPluginConfiguration
 {
-    public int Version { get; set; } = 4;
+    public int Version { get; set; } = 5;
     public string CurrentLanguage { get; set; } = @"en";
 
     public bool HideLocButtonn = true;
 
     [DefaultValue(true)] public bool PluginEnabled = true;
 
-    public HookPresets HookPresets = new();
+    public FishingPresets HookPresets = new();
 
-    public AutoGigConfig AutoGigConfig = new();
+    public SpearFishingPresets AutoGigConfig = new();
 
     public bool ShowDebugConsole = false;
 
@@ -40,8 +42,8 @@ public class Configuration : IPluginConfiguration
 
     public int DelayBeforeCancelMin = 1500;
     public int DelayBeforeCancelMax = 2000;
-    
-    [DefaultValue(true)] public bool ShowStatusHeader = true;
+
+    [DefaultValue(true)] public bool ShowStatus = true;
     public bool ShowPresetsAsSidebar = false;
 
     public bool HideTabDescription = false;
@@ -49,7 +51,7 @@ public class Configuration : IPluginConfiguration
     public bool SwapToButtons = false;
     public int SwapType;
 
-    public bool DontHideOptionsDisabled = false;
+    [DefaultValue(true)] public bool DontHideOptionsDisabled = true;
 
     [DefaultValue(true)] public bool ResetAfkTimer = true;
 
@@ -65,15 +67,10 @@ public class Configuration : IPluginConfiguration
     {
         if (Version == 1)
         {
-            /*
-            Service.PluginLog.Debug(@"Updating to Version 2");
-            PresetConfig temp = new(UIStrings.New_Preset);
-            temp.AddListOfHook(CustomBait);
-            BaitPresetList.Add(temp);
-            */
             Version = 2;
         }
-        else if (Version == 2)
+
+        if (Version == 2)
         {
             try
             {
@@ -91,22 +88,29 @@ public class Configuration : IPluginConfiguration
                 Service.PrintDebug(@$"[Configuration] {e.Message}");
             }
         }
-        else if (Version == 3)
+
+        if (Version == 3)
         {
             Service.PrintDebug(@$"[Configuration] Updating to v4");
-            HookPresets.DefaultPreset.RenamePreset(Service.GlobalPresetName);
-            HookPresets.DefaultPreset.ConvertV3ToV4();
-
-            HookPresets.SelectedPreset?.ConvertV3ToV4();
-
-            foreach (var preset in HookPresets.CustomPresets)
-            {
-                preset.ConvertV3ToV4();
-                Save();
-            }
 
             Save();
             Version = 4;
+        }
+
+        if (Version == 4)
+        {
+            Service.PrintDebug(@$"[Configuration] Updating to v5");
+
+            foreach (var gig in AutoGigConfig.Presets)
+            {
+                Service.PrintDebug($"Renaming {gig.PresetName} to {gig.Name}");
+                gig.PresetName = gig.Name;
+            }
+
+            HookPresets.DefaultPreset.PresetName = Service.GlobalPresetName;
+
+            Save();
+            Version = 5;
         }
     }
 
@@ -135,14 +139,11 @@ public class Configuration : IPluginConfiguration
         if (HookPresets.DefaultPreset.ListOfBaits.Count != 0)
             return;
 
-
         var bait = new BaitFishClass(UIStrings.All_Baits, 0);
         var mooch = new BaitFishClass(UIStrings.All_Mooches, 0);
 
-        Service.PrintDebug(@$"Bait: {bait.Id} {bait.Name}, Mooch: {mooch.Id} {mooch.Name}");
-
-        HookPresets.DefaultPreset.AddBaitConfig(new HookConfig(bait));
-        HookPresets.DefaultPreset.AddMoochConfig(new HookConfig(mooch));
+        HookPresets.DefaultPreset.AddItem(new HookConfig(bait));
+        HookPresets.DefaultPreset.AddItem(new HookConfig(mooch));
     }
 
     public static Configuration Load()
@@ -174,13 +175,27 @@ public class Configuration : IPluginConfiguration
     }
 
     // Got the export/import function from the UnknownX7's ReAction repo
-    public static string ExportPreset(PresetConfig preset)
+    /*public static string ExportPreset(CustomPresetConfig preset)
     {
         return CompressString(JsonConvert.SerializeObject(preset,
             new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore }));
+    }*/
+
+    public static string ExportPreset(BasePresetConfig preset)
+    {
+        var exported = CompressString(JsonConvert.SerializeObject(preset,
+            new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore }));
+
+        // check if preset is type of AutoGigConfig or CustomPresetConfig
+        if (preset is AutoGigConfig)
+            return ExportPrefixSf + exported;
+        else if (preset is CustomPresetConfig)
+            return ExportPrefixV4 + exported;
+
+        return "Something went wrong while exporting the preset";
     }
 
-    public static PresetConfig? ImportPreset(string import)
+    public static BasePresetConfig? ImportPreset(string import)
     {
         if (import.StartsWith(ExportPrefixV2))
         {
@@ -197,7 +212,15 @@ public class Configuration : IPluginConfiguration
             return ConvertOldPresetV3(old);
         }
 
-        var importActionStack = JsonConvert.DeserializeObject<PresetConfig>(DecompressString(import),
+        if (import.StartsWith(ExportPrefixSf))
+        {
+            var autogig = JsonConvert.DeserializeObject<AutoGigConfig>(DecompressString(import),
+                new JsonSerializerSettings() { ObjectCreationHandling = ObjectCreationHandling.Replace });
+
+            return autogig;
+        }
+
+        var importActionStack = JsonConvert.DeserializeObject<CustomPresetConfig>(DecompressString(import),
             new JsonSerializerSettings() { ObjectCreationHandling = ObjectCreationHandling.Replace });
         return importActionStack;
     }
@@ -205,10 +228,12 @@ public class Configuration : IPluginConfiguration
     [NonSerialized] private const string ExportPrefixV2 = "AH_";
     [NonSerialized] private const string ExportPrefixV3 = "AH3_";
     [NonSerialized] private const string ExportPrefixV4 = "AH4_";
+    [NonSerialized] private const string ExportPrefixSf = "AHSF1_";
+
 
     [NonSerialized] private static readonly List<string> ExportPrefixes =
     [
-        ExportPrefixV2, ExportPrefixV3, ExportPrefixV4
+        ExportPrefixV2, ExportPrefixV3, ExportPrefixV4, ExportPrefixSf
     ];
 
     public static string CompressString(string s)
@@ -218,7 +243,7 @@ public class Configuration : IPluginConfiguration
         using (var gs = new GZipStream(ms, CompressionMode.Compress))
             gs.Write(bytes, 0, bytes.Length);
 
-        return ExportPrefixV4 + Convert.ToBase64String(ms.ToArray());
+        return Convert.ToBase64String(ms.ToArray());
     }
 
     public static string DecompressString(string s)
@@ -261,7 +286,7 @@ public class Configuration : IPluginConfiguration
         }
     }
 
-    private static PresetConfig? ConvertOldPreset(BaitPresetConfig? preset)
+    private static CustomPresetConfig? ConvertOldPreset(BaitPresetConfig? preset)
     {
         if (preset == null)
             return null;
@@ -287,22 +312,24 @@ public class Configuration : IPluginConfiguration
             }
         }
 
-        PresetConfig newPreset = new(@$"[Old Version] {preset.PresetName}");
+        CustomPresetConfig newPreset = new(@$"[Old Version] {preset.PresetName}");
         newPreset.ListOfBaits = filteredBaits;
         newPreset.ListOfMooch = filteredMooch;
         return newPreset;
     }
 
-    private static PresetConfig? ConvertOldPresetV3(OldPresetConfig? old)
+    private static CustomPresetConfig? ConvertOldPresetV3(OldPresetConfig? old)
     {
         if (old == null)
             return null;
 
-        var newPreset = new PresetConfig(old.PresetName);
+        var newPreset = new CustomPresetConfig(old.PresetName);
 
+        Service.PrintDebug($"Converting v3 to v4: {old.PresetName}");
         foreach (var bait in old.ListOfBaits)
         {
             bait.ConvertV3ToV4();
+
             var newBait = new HookConfig(bait.BaitFish);
 
             newBait.Enabled = bait.Enabled;
@@ -310,7 +337,7 @@ public class Configuration : IPluginConfiguration
             newBait.IntuitionHook = bait.IntuitionHook;
             newBait.IntuitionHook.UseCustomStatusHook = bait.UseCustomIntuitionHook;
 
-            newPreset.AddBaitConfig(newBait);
+            newPreset.AddItem(newBait);
         }
 
         foreach (var mooch in old.ListOfMooch)
@@ -323,7 +350,7 @@ public class Configuration : IPluginConfiguration
             newMooch.IntuitionHook = mooch.IntuitionHook;
             newMooch.IntuitionHook.UseCustomStatusHook = mooch.UseCustomIntuitionHook;
 
-            newPreset.AddMoochConfig(newMooch);
+            newPreset.AddItem(newMooch);
         }
 
         newPreset.ListOfFish = old.ListOfFish;

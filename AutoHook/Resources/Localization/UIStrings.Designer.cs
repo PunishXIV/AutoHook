@@ -205,6 +205,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (Already Swapped).
+        /// </summary>
+        internal static string AlreadySwapped {
+            get {
+                return ResourceManager.GetString("AlreadySwapped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Always Mooch.
         /// </summary>
         internal static string Always_Mooch {
@@ -228,6 +237,15 @@ namespace AutoHook.Resources.Localization {
         internal static string AnglersArt {
             get {
                 return ResourceManager.GetString("AnglersArt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Animation Canceling.
+        /// </summary>
+        internal static string AnimationCanceling {
+            get {
+                return ResourceManager.GetString("AnimationCanceling", resourceCulture);
             }
         }
         
@@ -381,6 +399,15 @@ namespace AutoHook.Resources.Localization {
         internal static string AutoCastOnlyUnderFishEyesHelpText {
             get {
                 return ResourceManager.GetString("AutoCastOnlyUnderFishEyesHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Options for auto casting actions.
+        /// </summary>
+        internal static string AutoCastsHelp {
+            get {
+                return ResourceManager.GetString("AutoCastsHelp", resourceCulture);
             }
         }
         
@@ -623,6 +650,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t fish here.
+        /// </summary>
+        internal static string CantFishHere {
+            get {
+                return ResourceManager.GetString("CantFishHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cast Line.
         /// </summary>
         internal static string Cast_Line {
@@ -713,6 +749,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Experimental and not consistent (maybe because of ping). Action &apos;Salvage&apos; will be activated.
+        /// </summary>
+        internal static string ChumCancelHelp {
+            get {
+                return ResourceManager.GetString("ChumCancelHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chum Time Limit.
         /// </summary>
         internal static string ChumTimeLimit {
@@ -727,6 +772,15 @@ namespace AutoHook.Resources.Localization {
         internal static string ChumTimer {
             get {
                 return ResourceManager.GetString("ChumTimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click here to open the wiki page.
+        /// </summary>
+        internal static string ClickOpenWiki {
+            get {
+                return ResourceManager.GetString("ClickOpenWiki", resourceCulture);
             }
         }
         
@@ -754,6 +808,24 @@ namespace AutoHook.Resources.Localization {
         internal static string CollectHelpText {
             get {
                 return ResourceManager.GetString("CollectHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This tab is for community presets. You can get presets from the wiki or share your own..
+        /// </summary>
+        internal static string CommunityDescription {
+            get {
+                return ResourceManager.GetString("CommunityDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Community Presets.
+        /// </summary>
+        internal static string CommunityPresets {
+            get {
+                return ResourceManager.GetString("CommunityPresets", resourceCulture);
             }
         }
         
@@ -920,6 +992,24 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deselect.
+        /// </summary>
+        internal static string Deselect {
+            get {
+                return ResourceManager.GetString("Deselect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Important!!!
         ///
         ///If disabled, Precision/Powerful hook will be used instead when Patience is up..
@@ -927,6 +1017,15 @@ namespace AutoHook.Resources.Localization {
         internal static string DHTHPatienceHelpMarker {
             get {
                 return ResourceManager.GetString("DHTHPatienceHelpMarker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disabled.
+        /// </summary>
+        internal static string Disabled {
+            get {
+                return ResourceManager.GetString("Disabled", resourceCulture);
             }
         }
         
@@ -1165,6 +1264,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Chum animation cancel.
+        /// </summary>
+        internal static string EnableChumCancel {
+            get {
+                return ResourceManager.GetString("EnableChumCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Chum Timer.
         /// </summary>
         internal static string EnableChumTimer {
@@ -1230,11 +1338,38 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable line recasting animation cancel.
+        /// </summary>
+        internal static string EnableRecastCancel {
+            get {
+                return ResourceManager.GetString("EnableRecastCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doesn&apos;t work if the fish is hooked, only works when recasting from a failed/canceled attempt.
+        /// </summary>
+        internal static string EnableRecastCancelHelp {
+            get {
+                return ResourceManager.GetString("EnableRecastCancelHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enables AutoHook.
         /// </summary>
         internal static string Enables_AutoHook {
             get {
                 return ResourceManager.GetString("Enables_AutoHook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Preset name (press Enter to confirm).
+        /// </summary>
+        internal static string EnterToConfirm {
+            get {
+                return ResourceManager.GetString("EnterToConfirm", resourceCulture);
             }
         }
         
@@ -1276,6 +1411,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Just extra options.
+        /// </summary>
+        internal static string ExtraOptionsHelp {
+            get {
+                return ResourceManager.GetString("ExtraOptionsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fish.
         /// </summary>
         internal static string Fish {
@@ -1312,6 +1456,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Options for when you catch a fish.
+        /// </summary>
+        internal static string FishCaughtHelp {
+            get {
+                return ResourceManager.GetString("FishCaughtHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fisher&apos;s Intuition Settings.
         /// </summary>
         internal static string FisherSIntuitionSettings {
@@ -1339,6 +1492,24 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fishing.
+        /// </summary>
+        internal static string Fishing {
+            get {
+                return ResourceManager.GetString("Fishing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fishing Presets.
+        /// </summary>
+        internal static string FishingPresets {
+            get {
+                return ResourceManager.GetString("FishingPresets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Food Buff.
         /// </summary>
         internal static string Food_Buff {
@@ -1362,6 +1533,15 @@ namespace AutoHook.Resources.Localization {
         internal static string GeneratePreset {
             get {
                 return ResourceManager.GetString("GeneratePreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Wiki Presets.
+        /// </summary>
+        internal static string GetWikiPresets {
+            get {
+                return ResourceManager.GetString("GetWikiPresets", resourceCulture);
             }
         }
         
@@ -1416,6 +1596,24 @@ namespace AutoHook.Resources.Localization {
         internal static string GlobalActionsBeingUsed {
             get {
                 return ResourceManager.GetString("GlobalActionsBeingUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Global Preset.
+        /// </summary>
+        internal static string GlobalPreset {
+            get {
+                return ResourceManager.GetString("GlobalPreset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If no preset is selected, the global preset will be used.
+        /// </summary>
+        internal static string GlobalPresetHelpText {
+            get {
+                return ResourceManager.GetString("GlobalPresetHelpText", resourceCulture);
             }
         }
         
@@ -1719,11 +1917,11 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import stack from clipboard..
+        ///   Looks up a localized string similar to Import preset from clipboard..
         /// </summary>
-        internal static string ImportStackFromClipboard {
+        internal static string ImportPresetFromClipboard {
             get {
-                return ResourceManager.GetString("ImportStackFromClipboard", resourceCulture);
+                return ResourceManager.GetString("ImportPresetFromClipboard", resourceCulture);
             }
         }
         
@@ -1958,6 +2156,15 @@ namespace AutoHook.Resources.Localization {
         internal static string New_Preset {
             get {
                 return ResourceManager.GetString("New_Preset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New accounts might need to wait a bit before being able to edit the wiki.
+        /// </summary>
+        internal static string NewAccountWarning {
+            get {
+                return ResourceManager.GetString("NewAccountWarning", resourceCulture);
             }
         }
         
@@ -2358,11 +2565,47 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preset copied to clipboard.
+        /// </summary>
+        internal static string PresetCopied {
+            get {
+                return ResourceManager.GetString("PresetCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preset exported to the clipboard.
         /// </summary>
         internal static string PresetExportedToTheClipboard {
             get {
                 return ResourceManager.GetString("PresetExportedToTheClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset Gen.
+        /// </summary>
+        internal static string PresetGen {
+            get {
+                return ResourceManager.GetString("PresetGen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset Generator.
+        /// </summary>
+        internal static string PresetGenerator {
+            get {
+                return ResourceManager.GetString("PresetGenerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preset Imported.
+        /// </summary>
+        internal static string PresetImported {
+            get {
+                return ResourceManager.GetString("PresetImported", resourceCulture);
             }
         }
         
@@ -2448,6 +2691,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        internal static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If disabled, the Default hook will be used instead.
         /// </summary>
         internal static string RequiredStatusSettingHelpText {
@@ -2471,6 +2723,15 @@ namespace AutoHook.Resources.Localization {
         internal static string Reset_the_counter {
             get {
                 return ResourceManager.GetString("Reset_the_counter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right click for options.
+        /// </summary>
+        internal static string RightClickOptions {
+            get {
+                return ResourceManager.GetString("RightClickOptions", resourceCulture);
             }
         }
         
@@ -2516,6 +2777,15 @@ namespace AutoHook.Resources.Localization {
         internal static string Set_preset_command {
             get {
                 return ResourceManager.GetString("Set_preset_command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set as active.
+        /// </summary>
+        internal static string SetActive {
+            get {
+                return ResourceManager.GetString("SetActive", resourceCulture);
             }
         }
         
@@ -2606,6 +2876,15 @@ namespace AutoHook.Resources.Localization {
         internal static string SparefulHand {
             get {
                 return ResourceManager.GetString("SparefulHand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spearfishing.
+        /// </summary>
+        internal static string Spearfishing {
+            get {
+                return ResourceManager.GetString("Spearfishing", resourceCulture);
             }
         }
         
@@ -3012,15 +3291,6 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Global Preset.
-        /// </summary>
-        internal static string TabName_Global_Preset {
-            get {
-                return ResourceManager.GetString("TabName_Global_Preset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to AutoGig.
         /// </summary>
         internal static string TabNameAutoGig {
@@ -3062,15 +3332,6 @@ namespace AutoHook.Resources.Localization {
         internal static string TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName {
             get {
                 return ResourceManager.GetString("TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Preset name (press Enter to confirm).
-        /// </summary>
-        internal static string TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm {
-            get {
-                return ResourceManager.GetString("TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm", resourceCulture);
             }
         }
         
@@ -3191,6 +3452,24 @@ namespace AutoHook.Resources.Localization {
         internal static string Triple_Hook {
             get {
                 return ResourceManager.GetString("Triple_Hook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn Collector&apos;s Glove off if Auto Collect is also disabled.
+        /// </summary>
+        internal static string TurnCollectOff {
+            get {
+                return ResourceManager.GetString("TurnCollectOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Animation canceling requires turning Collector&apos;s Glove on before casting the line, this option ensures Collector&apos;s Glove will remain off while fishing.
+        /// </summary>
+        internal static string TurnCollectOffHelp {
+            get {
+                return ResourceManager.GetString("TurnCollectOffHelp", resourceCulture);
             }
         }
         
@@ -3330,6 +3609,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use when Identical Cast is active.
+        /// </summary>
+        internal static string UseIcActive {
+            get {
+                return ResourceManager.GetString("UseIcActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Identical Cast.
         /// </summary>
         internal static string UseIdenticalCast {
@@ -3362,6 +3650,15 @@ namespace AutoHook.Resources.Localization {
         internal static string UseNaturesBounty {
             get {
                 return ResourceManager.GetString("UseNaturesBounty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use when Surface Slap is active.
+        /// </summary>
+        internal static string UseSlapActive {
+            get {
+                return ResourceManager.GetString("UseSlapActive", resourceCulture);
             }
         }
         

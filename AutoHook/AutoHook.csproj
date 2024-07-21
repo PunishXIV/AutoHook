@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Authors>Det</Authors>
-        <Version>4.2.8.4</Version>
+        <Version>4.3.0.0</Version>
         <Description>Auto hooks for you</Description>
         <PackageProjectUrl>https://github.com/PunishXIV/AutoHook</PackageProjectUrl>
         <Configurations>Release;Debug</Configurations>
@@ -30,7 +30,7 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-
+    
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
         <DebugType>none</DebugType>
         <DebugSymbols>false</DebugSymbols>
@@ -42,19 +42,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="images\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <None  Include="Data\FishData\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None >
+        <None Update="images\Fishy.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="images\Fishy_g.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <!-- Localization -->
 
     <ItemGroup>
         <PackageReference Include="DalamudPackager" Version="2.1.13"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
         <ProjectReference Include="..\PunishLib\PunishLib\PunishLib.csproj"/>
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>

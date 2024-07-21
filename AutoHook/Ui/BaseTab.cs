@@ -1,4 +1,5 @@
 using System;
+using AutoHook.Enums;
 using AutoHook.Resources.Localization;
 using AutoHook.Utils;
 using ImGuiNET;
@@ -9,6 +10,9 @@ public abstract class BaseTab : IDisposable
 {
     public abstract string TabName { get; }
     public abstract bool Enabled { get; }
+    
+    public abstract OpenWindow Type { get; }
+
 
     private bool _showDescription;
 

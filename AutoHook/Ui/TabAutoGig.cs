@@ -1,7 +1,9 @@
 ﻿using System;
 using AutoHook.Classes;
 using AutoHook.Configurations;
+using AutoHook.Enums;
 using AutoHook.Resources.Localization;
+using AutoHook.Spearfishing;
 using AutoHook.Utils;
 using Dalamud.Interface.Colors;
 using FFXIVClientStructs.FFXIV.Common.Math;
@@ -11,10 +13,13 @@ namespace AutoHook.Ui;
 
 internal class TabAutoGig : BaseTab
 {
-    public override string TabName => UIStrings.TabNameAutoGig;
+    public override string TabName => "Spearfishing Presets";
     public override bool Enabled => true;
+    
+    public override OpenWindow Type => OpenWindow.AutoGig;
 
-    private readonly AutoGigConfig _gigCfg = Service.Configuration.AutoGigConfig;
+
+    private SpearFishingPresets _gigCfg = Service.Configuration.AutoGigConfig;
 
     public override void DrawHeader()
     {
@@ -68,9 +73,7 @@ internal class TabAutoGig : BaseTab
     {
         if (ImGui.BeginChild(@"ag_cfg1", new Vector2(0, 0), true))
         {
-            var selectedPreset = _gigCfg.GetSelectedPreset();
-
-            if (selectedPreset != null)
+            if (_gigCfg.SelectedPreset is AutoGigConfig selectedPreset)
             {
                 if (_gigCfg.CatchAll)
                 {
@@ -107,6 +110,8 @@ internal class TabAutoGig : BaseTab
         DrawUtil.DrawComboSelectorPreset(_gigCfg);
         ImGui.SameLine();
         DrawUtil.DrawAddNewPresetButton(_gigCfg);
+        ImGui.SameLine();
+        DrawUtil.DrawImportExport(_gigCfg);
         ImGui.SameLine();
         DrawUtil.DrawDeletePresetButton(_gigCfg);
     }

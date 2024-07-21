@@ -126,7 +126,7 @@
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <data name="ImportStackFromClipboard" xml:space="preserve">
+  <data name="ImportPresetFromClipboard" xml:space="preserve">
     <value>Stack aus der Zwischenablage importieren.</value>
   </data>
   <data name="Import" xml:space="preserve">
@@ -186,7 +186,7 @@
   <data name="RightClickToRename" xml:space="preserve">
     <value>Rechtklicken zum Umbenennen</value>
   </data>
-  <data name="TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm" xml:space="preserve">
+  <data name="EnterToConfirm" xml:space="preserve">
     <value>Preset-Namen ändern (Enter drücken zum Bestätigen)</value>
   </data>
   <data name="HookPresets" xml:space="preserve">
@@ -690,7 +690,7 @@ Um nur einen speziellen Fisch automatisch zu ködern, schalte diese Einstellung 
   <data name="Normal_Hook" xml:space="preserve">
     <value>Normaler Anschlag</value>
   </data>
-  <data name="TabName_Global_Preset" xml:space="preserve">
+  <data name="GlobalPreset" xml:space="preserve">
     <value>Globales Preset</value>
   </data>
   <data name="Bait" xml:space="preserve">
@@ -1201,5 +1201,8 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   </data>
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>Nur nutzen, wenn Naturköder II auf Cooldown ist</value>
+  </data>
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
+    <value>Fisch Treffer-Bereich Versatz</value>
   </data>
 </root>

@@ -126,8 +126,8 @@
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ImportStackFromClipboard" xml:space="preserve">
-    <value>Import stack from clipboard.</value>
+  <data name="ImportPresetFromClipboard" xml:space="preserve">
+    <value>Import preset from clipboard.</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
@@ -186,7 +186,7 @@
   <data name="RightClickToRename" xml:space="preserve">
     <value>Right-click to rename</value>
   </data>
-  <data name="TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm" xml:space="preserve">
+  <data name="EnterToConfirm" xml:space="preserve">
     <value>Edit Preset name (press Enter to confirm)</value>
   </data>
   <data name="HookPresets" xml:space="preserve">
@@ -684,7 +684,7 @@ If you want to Auto Mooch only a specific fish and ignore others, disable this o
   <data name="Normal_Hook" xml:space="preserve">
     <value>Normal Hook</value>
   </data>
-  <data name="TabName_Global_Preset" xml:space="preserve">
+  <data name="GlobalPreset" xml:space="preserve">
     <value>Global Preset</value>
   </data>
   <data name="Bait" xml:space="preserve">
@@ -1276,5 +1276,104 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="SwitchFishBait" xml:space="preserve">
     <value>Switches fishing baits (by Name or ID)</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>Preset copied to clipboard</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>Right click for options</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>Preset Imported</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>Community Presets</value>
+  </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>Preset Gen</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>Preset Generator</value>
+  </data>
+  <data name="FishingPresets" xml:space="preserve">
+    <value>Fishing Presets</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>New accounts might need to wait a bit before being able to edit the wiki</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>Spearfishing</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>Click here to open the wiki page</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>This tab is for community presets. You can get presets from the wiki or share your own.</value>
+  </data>
+  <data name="UseIcActive" xml:space="preserve">
+    <value>Use when Identical Cast is active</value>
+  </data>
+  <data name="UseSlapActive" xml:space="preserve">
+    <value>Use when Surface Slap is active</value>
+  </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>Can't fish here</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Deselect</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>Set as active</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>If no preset is selected, the global preset will be used</value>
+  </data>
+  <data name="AlreadySwapped" xml:space="preserve">
+    <value>(Already Swapped)</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>Animation Canceling</value>
+  </data>
+  <data name="EnableRecastCancel" xml:space="preserve">
+    <value>Enable line recasting animation cancel</value>
+  </data>
+  <data name="EnableRecastCancelHelp" xml:space="preserve">
+    <value>Doesn't work if the fish is hooked, only works when recasting from a failed/canceled attempt</value>
+  </data>
+  <data name="TurnCollectOff" xml:space="preserve">
+    <value>Turn Collector's Glove off if Auto Collect is also disabled</value>
+  </data>
+  <data name="TurnCollectOffHelp" xml:space="preserve">
+    <value>Animation canceling requires turning Collector's Glove on before casting the line, this option ensures Collector's Glove will remain off while fishing</value>
+  </data>
+  <data name="EnableChumCancel" xml:space="preserve">
+    <value>Enable Chum animation cancel</value>
+  </data>
+  <data name="ChumCancelHelp" xml:space="preserve">
+    <value>Experimental and not consistent (maybe because of ping). Action 'Salvage' will be activated</value>
+  </data>
+  <data name="FishCaughtHelp" xml:space="preserve">
+    <value>Options for when you catch a fish</value>
+  </data>
+  <data name="ExtraOptionsHelp" xml:space="preserve">
+    <value>Just extra options</value>
+  </data>
+  <data name="AutoCastsHelp" xml:space="preserve">
+    <value>Options for auto casting actions</value>
+  </data>
+  <data name="GetWikiPresets" xml:space="preserve">
+    <value>Get Wiki Presets</value>
   </data>
 </root>

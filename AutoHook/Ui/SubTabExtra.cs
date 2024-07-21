@@ -14,36 +14,40 @@ namespace AutoHook.Ui;
 
 public class SubTabExtra
 {
-    public bool IsGlobalPreset { get; set; }
-    
-    public void DrawExtraTab(ExtraConfig config)
+    private static CustomPresetConfig _preset = null!;
+
+    public static void DrawExtraTab(CustomPresetConfig preset)
     {
-        DrawHeader(config);
-        
-        if (config.Enabled || Service.Configuration.DontHideOptionsDisabled)
-            DrawBody(config);
+        _preset = preset;
+        var extraCfg = _preset.ExtraCfg;
+
+        DrawHeader(extraCfg);
+
+        if (extraCfg.Enabled || Service.Configuration.DontHideOptionsDisabled)
+            DrawBody(extraCfg);
     }
 
-    public void DrawHeader(ExtraConfig config)
+    public static void DrawHeader(ExtraConfig config)
     {
         ImGui.Spacing();
         if (DrawUtil.Checkbox(UIStrings.Enable_Extra_Configs, ref config.Enabled))
         {
             if (config.Enabled)
             {
-                if (IsGlobalPreset && (Service.Configuration.HookPresets.SelectedPreset?.ExtraCfg.Enabled ?? false))
+                if (_preset.IsGlobal && (Service.Configuration.HookPresets.SelectedPreset?.ExtraCfg.Enabled ?? false))
                 {
                     Service.Configuration.HookPresets.SelectedPreset.ExtraCfg.Enabled = false;
                 }
-                else if (!IsGlobalPreset)
+                else if (!_preset.IsGlobal)
                 {
                     Service.Configuration.HookPresets.DefaultPreset.ExtraCfg.Enabled = false;
                 }
             }
+
             Service.Save();
         }
 
-        if (!IsGlobalPreset)
+        if (!_preset.IsGlobal)
         {
             if (Service.Configuration.HookPresets.DefaultPreset.ExtraCfg.Enabled && !config.Enabled)
                 ImGui.TextColored(ImGuiColors.DalamudViolet, UIStrings.Global_Extra_Being_Used);
@@ -54,23 +58,25 @@ public class SubTabExtra
         {
             if (Service.Configuration.HookPresets.SelectedPreset?.ExtraCfg.Enabled ?? false)
                 ImGui.TextColored(ImGuiColors.DalamudViolet,
-                    string.Format(UIStrings.Custom_Extra_Being_Used, Service.Configuration.HookPresets.SelectedPreset.PresetName));
+                    string.Format(UIStrings.Custom_Extra_Being_Used,
+                        Service.Configuration.HookPresets.SelectedPreset.PresetName));
             else if (!config.Enabled)
                 ImGui.TextColored(ImGuiColors.ParsedBlue, UIStrings.SubExtra_Disabled);
         }
+
         ImGui.Spacing();
     }
 
-    public void DrawBody(ExtraConfig config)
+    public static void DrawBody(ExtraConfig config)
     {
         if (ImGui.BeginChild("ExtraItems", new Vector2(0, 0), true))
         {
             ImGui.BeginGroup();
-            
+
             ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.BaitPresetPriorityWarning);
-            
+
             DrawUtil.SpacingSeparator();
-            
+
             DrawUtil.DrawCheckboxTree(UIStrings.ForceBaitSwap, ref config.ForceBaitSwap,
                 () =>
                 {
@@ -84,13 +90,13 @@ public class SubTabExtra
             );
 
             DrawUtil.SpacingSeparator();
-            
+
             if (ImGui.TreeNodeEx(UIStrings.FisherSIntuitionSettings, ImGuiTreeNodeFlags.FramePadding))
             {
                 DrawFishersIntuition(config);
                 ImGui.TreePop();
             }
-            
+
             DrawUtil.SpacingSeparator();
 
             if (ImGui.TreeNodeEx(UIStrings.SpectralCurrentSettings, ImGuiTreeNodeFlags.FramePadding))
@@ -98,28 +104,28 @@ public class SubTabExtra
                 DrawSpectralCurrent(config);
                 ImGui.TreePop();
             }
-            
+
             DrawUtil.SpacingSeparator();
-            
+
             if (ImGui.TreeNodeEx(UIStrings.AnglersArt, ImGuiTreeNodeFlags.FramePadding))
             {
                 DrawAnglersArt(config);
                 ImGui.TreePop();
             }
-            
+
             DrawUtil.SpacingSeparator();
 
             if (DrawUtil.Checkbox(UIStrings.Reset_counter_after_swapping_presets, ref config.ResetCounterPresetSwap))
             {
                 Service.Save();
             }
-            
+
             ImGui.EndGroup();
             ImGui.EndChild();
         }
     }
 
-    private void DrawSpectralCurrent(ExtraConfig config)
+    private static void DrawSpectralCurrent(ExtraConfig config)
     {
         ImGui.PushID(@"gaining_spectral");
         ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.When_gaining_spectral_current);
@@ -133,10 +139,9 @@ public class SubTabExtra
         DrawBaitSwap(ref config.SwapBaitSpectralCurrentLost, ref config.BaitToSwapSpectralCurrentLost);
         ImGui.PopID();
         DrawUtil.SpacingSeparator();
-
     }
 
-    private void DrawFishersIntuition(ExtraConfig config)
+    private static void DrawFishersIntuition(ExtraConfig config)
     {
         ImGui.PushID(@"gaining_intuition");
         ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.When_gaining_fishers_intuition);
@@ -160,7 +165,7 @@ public class SubTabExtra
         DrawUtil.SpacingSeparator();
     }
 
-    private void DrawAnglersArt(ExtraConfig config)
+    private static void DrawAnglersArt(ExtraConfig config)
     {
         ImGui.PushID(@"anglers_art");
         ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.WhenAnglersAt);
@@ -170,7 +175,7 @@ public class SubTabExtra
             config.AnglerStackQtd = Math.Clamp(config.AnglerStackQtd, 0, 10);
             Service.Save();
         }
-        
+
         DrawUtil.DrawCheckboxTree(UIStrings.StopQuitFishing, ref config.StopAfterAnglersArt,
             () =>
             {
@@ -179,9 +184,10 @@ public class SubTabExtra
                     config.AnglerStopFishingStep = FishingSteps.None;
                     Service.Save();
                 }
+
                 ImGui.SameLine();
                 ImGuiComponents.HelpMarker(UIStrings.Auto_Cast_Stopped);
-                
+
                 if (ImGui.RadioButton(UIStrings.Quit_Fishing, config.AnglerStopFishingStep == FishingSteps.Quitting))
                 {
                     config.AnglerStopFishingStep = FishingSteps.Quitting;
@@ -189,15 +195,14 @@ public class SubTabExtra
                 }
             }
         );
-        
+
         DrawPresetSwap(ref config.SwapPresetAnglersArt, ref config.PresetToSwapAnglersArt);
         DrawBaitSwap(ref config.SwapBaitAnglersArt, ref config.BaitToSwapAnglersArt);
         ImGui.PopID();
         DrawUtil.SpacingSeparator();
-        
     }
-    
-    private void DrawPresetSwap(ref bool enable, ref string presetName)
+
+    private static void DrawPresetSwap(ref bool enable, ref string presetName)
     {
         ImGui.PushID(@$"{nameof(DrawPresetSwap)}");
 
@@ -217,10 +222,10 @@ public class SubTabExtra
         ImGui.PopID();
     }
 
-    private void DrawBaitSwap(ref bool enable, ref BaitFishClass baitSwap)
+    private static void DrawBaitSwap(ref bool enable, ref BaitFishClass baitSwap)
     {
         ImGui.PushID(@$"{nameof(DrawBaitSwap)}");
-        
+
         var newBait = baitSwap;
         DrawUtil.DrawCheckboxTree(UIStrings.Swap_Bait, ref enable,
             () =>
@@ -232,7 +237,7 @@ public class SubTabExtra
                     bait => newBait = bait);
             }
         );
-        
+
         baitSwap = newBait;
         ImGui.PopID();
     }

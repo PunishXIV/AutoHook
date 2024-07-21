@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using AutoHook.Configurations;
+using AutoHook.Fishing;
 using AutoHook.IPC;
 using AutoHook.Resources.Localization;
 using AutoHook.SeFunctions;
@@ -20,7 +21,9 @@ public class AutoHook : IDalamudPlugin
     public string Name => UIStrings.AutoHook;
 
     internal static AutoHook Plugin = null!;
-
+    
+    //todo: - Spearfishing rework
+    //todo: - make identical cast/surface slap apply before "stop fishing"
     private const string CmdAhCfg = "/ahcfg";
     private const string CmdAh = "/autohook";
     private const string CmdAhOn = "/ahon";
@@ -34,32 +37,35 @@ public class AutoHook : IDalamudPlugin
 
     private static readonly Dictionary<string, string> CommandHelp = new()
     {
-        {CmdAhOff, UIStrings.Disables_AutoHook},
-        {CmdAhOn, UIStrings.Enables_AutoHook},
-        {CmdAhCfg, UIStrings.Opens_Config_Window},
-        {CmdAh, UIStrings.Opens_Config_Window},
-        {CmdAhtg, UIStrings.Toggles_AutoHook_On_Off},
-        {CmdAhPreset, UIStrings.Set_preset_command},
-        {CmdAhStart, UIStrings.Starts_AutoHook},
-        {CmdAhBait, UIStrings.SwitchFishBait},
-        {CmdBait, UIStrings.SwitchFishBait},
-        {CmdAgPreset, UIStrings.Set_agpreset_command}
+        { CmdAhOff, UIStrings.Disables_AutoHook },
+        { CmdAhOn, UIStrings.Enables_AutoHook },
+        { CmdAhCfg, UIStrings.Opens_Config_Window },
+        { CmdAh, UIStrings.Opens_Config_Window },
+        { CmdAhtg, UIStrings.Toggles_AutoHook_On_Off },
+        { CmdAhPreset, UIStrings.Set_preset_command },
+        { CmdAhStart, UIStrings.Starts_AutoHook },
+        { CmdAhBait, UIStrings.SwitchFishBait },
+        { CmdBait, UIStrings.SwitchFishBait },
+        { CmdAgPreset, UIStrings.Set_agpreset_command }
     };
 
     private static PluginUi _pluginUi = null!;
 
     private static AutoGig _autoGig = null!;
 
-    public readonly HookingManager HookManager;
+    public readonly FishingManager HookManager;
+
+    public AutoHookIPC AutoHookIpc;
 
     public AutoHook(IDalamudPluginInterface pluginInterface)
     {
         ECommonsMain.Init(pluginInterface, this, Module.All);
         Service.Initialize(pluginInterface);
-        AutoHookIPC.Init();
-        PunishLibMain.Init(pluginInterface, "AutoHook", new AboutPlugin() { Developer = "InitialDet", Sponsor = "https://ko-fi.com/initialdet" });
+        AutoHookIpc = new AutoHookIPC();
+        PunishLibMain.Init(pluginInterface, "AutoHook",
+            new AboutPlugin() { Developer = "InitialDet", Sponsor = "https://ko-fi.com/initialdet" });
         Plugin = this;
-        Service.FishingManager = new FishingManager();
+        Service.BaitManager = new BaitManager();
         Service.TugType = new SeTugType(Service.SigScanner);
         Service.PluginInterface.UiBuilder.Draw += Service.WindowSystem.Draw;
         Service.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
@@ -80,7 +86,8 @@ public class AutoHook : IDalamudPlugin
             });
         }
 
-        HookManager = new HookingManager();
+
+        HookManager = new FishingManager();
 
 #if (DEBUG)
         OnOpenConfigUi();
@@ -130,7 +137,7 @@ public class AutoHook : IDalamudPlugin
     private static void SwapBait(string args)
     {
         var bait = GameRes.Baits.FirstOrDefault(f => f.Name.ToLower() == args.ToLower() || f.Id.ToString() == args);
-        Service.PrintChat($"Bait Swap: {Service.FishingManager.ChangeBait((uint)bait?.Id)}");
+        Service.BaitManager.ChangeBait((uint)bait?.Id!);
     }
 
     private static void SetPreset(string presetName)
@@ -141,6 +148,7 @@ public class AutoHook : IDalamudPlugin
             Service.Chat.Print(UIStrings.Preset_not_found);
             return;
         }
+
         Service.Save();
         Service.Configuration.HookPresets.SelectedPreset = preset;
         Service.Chat.Print(@$"{UIStrings.Preset_set_to_} {preset.PresetName}");
@@ -167,7 +175,6 @@ public class AutoHook : IDalamudPlugin
         _pluginUi.Dispose();
         _autoGig.Dispose();
         HookManager.Dispose();
-        AutoHookIPC.Dispose();
         Service.Save();
         Service.PluginInterface.UiBuilder.Draw -= Service.WindowSystem.Draw;
         Service.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
@@ -182,4 +189,3 @@ public class AutoHook : IDalamudPlugin
 
     private static void OnOpenConfigUi() => _pluginUi.Toggle();
 }
-

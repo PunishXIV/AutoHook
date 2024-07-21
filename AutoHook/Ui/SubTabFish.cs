@@ -4,6 +4,7 @@ using System.Numerics;
 using AutoHook.Classes;
 using AutoHook.Configurations;
 using AutoHook.Enums;
+using AutoHook.Fishing;
 using AutoHook.Resources.Localization;
 using AutoHook.Utils;
 using Dalamud.Interface;
@@ -13,38 +14,31 @@ using ImGuiNET;
 
 namespace AutoHook.Ui;
 
-public class SubTabFish : BaseTab
+public class SubTabFish
 {
-    public bool IsGlobalPreset { get; set; }
+    private static CustomPresetConfig _preset = null!;
 
-    public override string TabName { get; } = UIStrings.FishCaught;
-    public override bool Enabled { get; } = true;
-
-    private List<FishConfig> _listOfFish = new();
-
-    public void DrawFishTab(PresetConfig presetCfg)
+    public static void DrawFishTab(CustomPresetConfig presetCfg)
     {
-        _listOfFish = presetCfg.ListOfFish;
+        _preset = presetCfg;
+        var listOfFish = presetCfg.ListOfFish;
 
-        if (_listOfFish == null)
-            return;
-        
-        DrawDescription(_listOfFish);
-        
+        DrawDescription(listOfFish);
+
         if (ImGui.BeginChild("FishItems", new Vector2(0, 0), true))
         {
-            for (var idx = 0; idx < _listOfFish.Count; idx++)
+            for (var idx = 0; idx < listOfFish.Count; idx++)
             {
-                var fish = _listOfFish[idx];
+                var fish = listOfFish[idx];
                 ImGui.PushID($"fishTab###{idx}");
 
-                var count = HookingManager.FishingHelper.GetFishCount(fish.GetUniqueId());
+                var count = FishingManager.FishingHelper.GetFishCount(fish.UniqueId);
                 var fishCount = count > 0 ? $"({UIStrings.Caught_Counter} {count})" : "";
 
                 if (DrawUtil.Checkbox($"###checkbox{idx}", ref fish.Enabled))
                     Service.Save();
 
-                ImGui.SameLine(0,6);
+                ImGui.SameLine(0, 6);
                 var x = ImGui.GetCursorPosX();
                 if (ImGui.CollapsingHeader($"{fish.Fish.Name} {fishCount}###a{idx}"))
                 {
@@ -72,19 +66,19 @@ public class SubTabFish : BaseTab
 
                     if (DrawUtil.Checkbox(UIStrings.Ignore_When_Intuition, ref fish.IgnoreOnIntuition))
                         Service.Save();
-                
+
                     ImGui.EndGroup();
                 }
 
                 ImGui.Spacing();
                 ImGui.PopID();
             }
-            
+
             ImGui.EndChild();
         }
     }
 
-    private void DrawDescription(List<FishConfig> list)
+    private static void DrawDescription(List<FishConfig> list)
     {
         if (ImGui.Button(UIStrings.Add))
         {
@@ -92,6 +86,7 @@ public class SubTabFish : BaseTab
             {
                 list.Add(new FishConfig(new BaitFishClass()));
             }
+
             Service.Save();
         }
 
@@ -113,16 +108,13 @@ public class SubTabFish : BaseTab
         }
     }
 
-    private void DrawDeleteButton(FishConfig fishConfig)
+    private static void DrawDeleteButton(FishConfig fishConfig)
     {
-        if (IsGlobalPreset)
-            return;
         ImGui.SameLine();
         ImGui.PushFont(UiBuilder.IconFont);
-        if (ImGui.Button($"{FontAwesomeIcon.Trash.ToIconChar()}", new Vector2(ImGui.GetFrameHeight(), 0)) &&
-            ImGui.GetIO().KeyShift)
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.Trash) && ImGui.GetIO().KeyShift)
         {
-            _listOfFish.RemoveAll(x => x.Fish.Id == fishConfig.Fish.Id);
+            _preset.RemoveItem(fishConfig.UniqueId);
             Service.Save();
         }
 
@@ -132,7 +124,7 @@ public class SubTabFish : BaseTab
             ImGui.SetTooltip(UIStrings.HoldShiftToDelete);
     }
 
-    private void DrawFishSearchBar(FishConfig fishConfig)
+    private static void DrawFishSearchBar(FishConfig fishConfig)
     {
         ImGui.PushID("DrawFishSearchBar");
         DrawUtil.DrawComboSelector<BaitFishClass>(
@@ -144,7 +136,7 @@ public class SubTabFish : BaseTab
         ImGui.PopID();
     }
 
-    private void DrawSurfaceSlapIdenticalCast(FishConfig fishConfig)
+    private static void DrawSurfaceSlapIdenticalCast(FishConfig fishConfig)
     {
         ImGui.PushID($"{UIStrings.SurfaceSlapIdenticalCast}");
 
@@ -160,7 +152,7 @@ public class SubTabFish : BaseTab
         ImGui.PopID();
     }
 
-    private void DrawMooch(FishConfig fishConfig)
+    private static void DrawMooch(FishConfig fishConfig)
     {
         ImGui.PushID(@"DrawMooch");
         if (ImGui.TreeNodeEx(UIStrings.Mooch_Setting, ImGuiTreeNodeFlags.FramePadding))
@@ -179,14 +171,14 @@ public class SubTabFish : BaseTab
         ImGui.PopID();
     }
 
-    private void DrawSwapBait(FishConfig fishConfig)
+    private static void DrawSwapBait(FishConfig fishConfig)
     {
         ImGui.PushID("DrawSwapBait");
-        
+
         var alreadySwapped = "";
-        if (HookingManager.FishingHelper.SwappedBait(fishConfig.GetUniqueId()))
-            alreadySwapped = "(Already Swapped)";
-        
+        if (FishingManager.FishingHelper.SwappedBait(fishConfig.UniqueId))
+            alreadySwapped = UIStrings.AlreadySwapped;
+
         DrawUtil.DrawCheckboxTree($"{UIStrings.Swap_Bait} {alreadySwapped}", ref fishConfig.SwapBait,
             () =>
             {
@@ -215,13 +207,13 @@ public class SubTabFish : BaseTab
         ImGui.PopID();
     }
 
-    private void DrawSwapPreset(FishConfig fishConfig)
+    private static void DrawSwapPreset(FishConfig fishConfig)
     {
         ImGui.PushID("DrawSwapPreset");
-        
+
         var alreadySwapped = "";
-        if (HookingManager.FishingHelper.SwappedPreset(fishConfig.GetUniqueId()))
-            alreadySwapped = "(Already Swapped)";
+        if (FishingManager.FishingHelper.SwappedPreset(fishConfig.UniqueId))
+            alreadySwapped = UIStrings.AlreadySwapped;
         DrawUtil.DrawCheckboxTree($"{UIStrings.Swap_Preset} {alreadySwapped}", ref fishConfig.SwapPresets,
             () =>
             {
@@ -250,10 +242,10 @@ public class SubTabFish : BaseTab
         ImGui.PopID();
     }
 
-    private void DrawStopAfter(FishConfig fishConfig)
+    private static void DrawStopAfter(FishConfig fishConfig)
     {
         ImGui.PushID("DrawStopAfter");
-        
+
         DrawUtil.DrawCheckboxTree(UIStrings.Stop_After_Caught, ref fishConfig.StopAfterCaught,
             () =>
             {
@@ -287,14 +279,5 @@ public class SubTabFish : BaseTab
                 DrawUtil.Checkbox(UIStrings.Reset_the_counter, ref fishConfig.StopAfterResetCount);
             });
         ImGui.PopID();
-    }
-
-
-    public override void DrawHeader()
-    {
-    }
-
-    public override void Draw()
-    {
     }
 }

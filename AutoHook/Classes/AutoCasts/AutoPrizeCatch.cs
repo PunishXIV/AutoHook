@@ -10,11 +10,10 @@ public class AutoPrizeCatch : BaseActionCast
     public bool UseWhenMoochIIOnCD = false;
 
     public bool UseOnlyWithIdenticalCast = false;
-
     public bool UseOnlyWithActiveSlap = false;
 
     public override bool DoesCancelMooch() => true;
-    
+
     public AutoPrizeCatch() : base(UIStrings.Prize_Catch, Data.IDs.Actions.PrizeCatch, ActionType.Action)
     {
         HelpText = UIStrings.Use_Prize_Catch_HelpText;
@@ -31,10 +30,8 @@ public class AutoPrizeCatch : BaseActionCast
         if (UseWhenMoochIIOnCD && !PlayerRes.ActionOnCoolDown(IDs.Actions.Mooch2))
             return false;
 
-        if (UseOnlyWithIdenticalCast && !PlayerRes.HasStatus(IDs.Status.IdenticalCast))
-            return false;
-
-        if (UseOnlyWithActiveSlap && !PlayerRes.HasStatus(IDs.Status.SurfaceSlap))
+        if (UseOnlyWithIdenticalCast && !PlayerRes.HasStatus(IDs.Status.IdenticalCast) && UseOnlyWithActiveSlap &&
+            !PlayerRes.HasStatus(IDs.Status.SurfaceSlap))
             return false;
 
         if (PlayerRes.HasStatus(IDs.Status.MakeshiftBait))
@@ -51,22 +48,12 @@ public class AutoPrizeCatch : BaseActionCast
 
     protected override DrawOptionsDelegate DrawOptions => () =>
     {
-        if (DrawUtil.Checkbox(UIStrings.AutoCastExtraOptionPrizeCatch,
-                ref UseWhenMoochIIOnCD, UIStrings.ExtraOptionPrizeCatchHelpMarker))
-        {
-            Service.Save();
-        }
+        DrawUtil.Checkbox(UIStrings.AutoCastExtraOptionPrizeCatch,
+            ref UseWhenMoochIIOnCD, UIStrings.ExtraOptionPrizeCatchHelpMarker);
 
-        if (DrawUtil.Checkbox(UIStrings.OnlyUseWhenIdenticalCastIsActive,
-                ref UseOnlyWithIdenticalCast))
-        {
-            Service.Save();
-        }
-
-        if (DrawUtil.Checkbox(UIStrings.OnlyUseWhenActiveSurfaceSlap, ref UseOnlyWithActiveSlap))
-        {
-            Service.Save();
-        }
+        DrawUtil.Checkbox(UIStrings.UseIcActive, ref UseOnlyWithIdenticalCast);
+        
+        DrawUtil.Checkbox(UIStrings.UseSlapActive, ref UseOnlyWithActiveSlap);
     };
 
     public override int Priority { get; set; } = 13;

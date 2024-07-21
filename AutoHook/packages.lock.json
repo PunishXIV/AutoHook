@@ -8,6 +8,12 @@
         "resolved": "2.1.13",
         "contentHash": "rMN1omGe8536f4xLMvx9NwfvpAc9YFFfeXJ1t4P4PE6Gu8WCIoFliR1sh07hM+bfODmesk/dvMbji7vNI+B/pQ=="
       },
+      "HtmlAgilityPack": {
+        "type": "Direct",
+        "requested": "[1.11.61, )",
+        "resolved": "1.11.61",
+        "contentHash": "hqZASeEFHS9quHvfZSwaULoAJLWkOYVPiQjc3P9J4pQS8vSYzrP3bxe04Vm7vYYuxwbQhq9hCSVvZVLTyRaNaQ=="
+      },
       "ecommons": {
         "type": "Project"
       },

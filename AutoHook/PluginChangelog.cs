@@ -8,32 +8,51 @@ public static class PluginChangelog
 {
     public static readonly List<Version> Versions = new()
     {
+        new Version("4.3.0.0")
+        {
+            Main =
+            {
+                "UI rework (sorry for that, don't hit me)",
+                " - Merged Global and Custom Presets tabs",
+                " - It should be easier to see what preset is being used before starting fishing",
+                " - You can edit presets without changing the currently selected one",
+                "New community presets tab! You can now share your presets with others (github account required)",
+                "Spearfishing now has preset import/export",
+                "Options for Big-game fishing and Prize Catch for when Identical Cast >OR< Surface Slap is active",
+                "Identical Cast / Surface Slap will now be used if Stop Casting is activated",
+                
+            },
+            Minor =
+            {
+                "Small changes to the preset generator",
+                "Spearfishing improvements soon",
+                "Fixed that fucking bug where the last fish caught was not being detected, like really what the hell was wrong with that thing IT NEVER HAPPENED ON MY MACHINE i am losing my mind im crying right thanks for reading",
+            }
+        },
         new Version("4.2.8.3")
         {
-            Main = 
+            Main =
             {
                 "Added new /ahbait command for swapping baits using names or id",
             }
-        }, 
+        },
         new Version("4.2.8.2")
         {
-            Main = 
+            Main =
             {
                 "Initial support for swimbait to be recognized as bait/mooch. This will be improved later",
                 "Added optional delay before canceling a bite in the"
-               
             },
             Minor =
             {
                 "Preset List can be resized",
                 "Fixed animation cancel spamming collect",
                 "Fixed preset DropDownMenu, i hate ImGui"
-
             }
-        }, 
+        },
         new Version("4.2.7.0")
         {
-            Main = 
+            Main =
             {
                 "Lv.100 Lures updated to actually be useful",
             },
@@ -41,10 +60,10 @@ public static class PluginChangelog
             {
                 "Fixed auto casts not being used when Rest was used, not intended (sorry lol)"
             }
-        }, 
+        },
         new Version("4.2.6.0")
         {
-            Main = 
+            Main =
             {
                 "Added Lv. 100 Lures for bait/mooch",
                 "Added Big-game Fishing",
@@ -53,26 +72,26 @@ public static class PluginChangelog
             {
                 "I still don't know how to use Spareful Hand so i'll add it another time lol"
             }
-        },   
+        },
         new Version("4.2.5.0")
         {
-            Main = 
+            Main =
             {
                 "AutoGig Updates",
                 "Added an option to use Nature's Bounty before the fish appears while spearfishing",
                 "Added an option to individually adjust the fish hitbox offset"
             }
-        },   
+        },
         new Version("4.2.4.0")
         {
-            Main = 
+            Main =
             {
                 "7.0 Autogig support"
             }
-        },   
+        },
         new Version("4.2.3.3")
         {
-            Main = 
+            Main =
             {
                 "New action Rest will be on unwanted bites, increasing recast speed"
             },
@@ -81,21 +100,21 @@ public static class PluginChangelog
                 "Fixed Time Limit not working",
                 "Fixed filter menu not working"
             }
-        },   
+        },
         new Version("4.2.3.0")
         {
-            Main = 
+            Main =
             {
                 "7.0 initial support, new actions NOT included yet"
             }
-        },   
+        },
         new Version("4.2.2.1")
         {
-            Minor = 
+            Minor =
             {
                 "Localization Update"
             }
-        },      
+        },
         new Version("4.2.2.0")
         {
             Main =
@@ -103,7 +122,7 @@ public static class PluginChangelog
                 "Update to net8",
                 "Added 'use only when mooch2 is on cd' options to msb and patience."
             }
-        },        
+        },
         new Version("4.2.1.9")
         {
             Main =

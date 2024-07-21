@@ -33,7 +33,7 @@ internal class AutoGig : Window, IDisposable
 
     private int currentNode = 0;
 
-    private readonly AutoGigConfig _gigCfg = Service.Configuration.AutoGigConfig;
+    private readonly SpearFishingPresets _gigCfg = Service.Configuration.AutoGigConfig;
 
     public AutoGig() : base(@"SpearfishingHelper", WindowFlags, true)
     {
@@ -71,7 +71,7 @@ internal class AutoGig : Window, IDisposable
             Service.Save();
 
 
-        var selectedPreset = _gigCfg.GetSelectedPreset();
+        var selectedPreset = _gigCfg.SelectedPreset;
         
         ImGui.SameLine();
 
@@ -82,9 +82,9 @@ internal class AutoGig : Window, IDisposable
 
         DrawUtil.DrawComboSelector(
             _gigCfg.Presets,
-            preset => preset.Name,
-            _gigCfg.GetSelectedPreset()?.Name ?? UIStrings.None,
-            gig => _gigCfg.SetSelectedPreset(gig.UniqueId));
+            preset => preset.PresetName,
+            _gigCfg.SelectedPreset?.PresetName ?? UIStrings.None,
+            gig => _gigCfg.SelectedPreset = gig);
         
         ImGui.SetNextItemWidth(90);
         if (selectedPreset != null)
@@ -150,7 +150,7 @@ internal class AutoGig : Window, IDisposable
     {
         var drawList = ImGui.GetWindowDrawList();
 
-        var gigHitbox = _gigCfg.GetSelectedPreset()?.HitboxSize ?? 0;
+        var gigHitbox = _gigCfg.SelectedPreset?.HitboxSize ?? 0;
 
         DrawGigHitbox(drawList, gigHitbox);
 
@@ -194,7 +194,7 @@ internal class AutoGig : Window, IDisposable
 
     private BaseGig? CheckFish(SpearfishWindow.Info info)
     {
-        var fishes = _gigCfg.GetSelectedPreset()?.GetGigCurrentNode(currentNode);
+        var fishes = _gigCfg.SelectedPreset?.GetGigCurrentNode(currentNode);
 
         if (fishes is null || fishes.Count == 0)
             return null;

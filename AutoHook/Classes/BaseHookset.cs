@@ -1,6 +1,5 @@
 ﻿using System;
 using AutoHook.Classes.AutoCasts;
-using AutoHook.Data;
 using AutoHook.Enums;
 using AutoHook.Resources.Localization;
 using AutoHook.Utils;

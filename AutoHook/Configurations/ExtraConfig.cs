@@ -4,11 +4,9 @@ using AutoHook.Enums;
 
 namespace AutoHook.Configurations;
 
-public class ExtraConfig
+public class ExtraConfig : BaseOption
 {
     public bool Enabled = false;
-    
-    private Guid _uniqueId;
     
     public bool SwapBaitIntuitionGain = false;
     public BaitFishClass BaitToSwapIntuitionGain = new();
@@ -17,10 +15,10 @@ public class ExtraConfig
     public BaitFishClass BaitToSwapIntuitionLost = new();
     
     public bool SwapPresetIntuitionGain = false;
-    public string PresetToSwapIntuitionGain = "-";
+    public string PresetToSwapIntuitionGain = @"-";
     
     public bool SwapPresetIntuitionLost = false;
-    public string PresetToSwapIntuitionLost = "-";
+    public string PresetToSwapIntuitionLost = @"-";
 
     public bool SwapBaitSpectralCurrentGain = false;
     public BaitFishClass BaitToSwapSpectralCurrentGain = new();
@@ -29,10 +27,10 @@ public class ExtraConfig
     public BaitFishClass BaitToSwapSpectralCurrentLost = new();
 
     public bool SwapPresetSpectralCurrentGain = false;
-    public string PresetToSwapSpectralCurrentGain = "-";
+    public string PresetToSwapSpectralCurrentGain = @"-";
 
     public bool SwapPresetSpectralCurrentLost = false;
-    public string PresetToSwapSpectralCurrentLost = "-";
+    public string PresetToSwapSpectralCurrentLost = @"-";
 
     public bool ResetCounterPresetSwap = false;
     public bool QuitOnIntuitionLost = false;
@@ -48,13 +46,11 @@ public class ExtraConfig
     public bool SwapBaitAnglersArt = false;
     public BaitFishClass BaitToSwapAnglersArt = new();
     public bool SwapPresetAnglersArt = false;
-    public string PresetToSwapAnglersArt = "-";
+    public string PresetToSwapAnglersArt = @"-";
     
-    public Guid GetUniqueId()
+    
+    public override void DrawOptions()
     {
-        if (_uniqueId == Guid.Empty)
-            _uniqueId = Guid.NewGuid();
         
-        return _uniqueId;
     }
 }

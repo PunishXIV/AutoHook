@@ -126,7 +126,7 @@
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="ImportStackFromClipboard" xml:space="preserve">
+  <data name="ImportPresetFromClipboard" xml:space="preserve">
     <value>クリップボードから取り込む</value>
   </data>
   <data name="Import" xml:space="preserve">
@@ -186,7 +186,7 @@
   <data name="RightClickToRename" xml:space="preserve">
     <value>右クリックで名前を変更</value>
   </data>
-  <data name="TabPresets_DrawHeader_EditPresetNamePressEnterToConfirm" xml:space="preserve">
+  <data name="EnterToConfirm" xml:space="preserve">
     <value>プリセット名を編集(Enterキーを押して確定)</value>
   </data>
   <data name="HookPresets" xml:space="preserve">
@@ -679,7 +679,7 @@
   <data name="Normal_Hook" xml:space="preserve">
     <value>フッキング</value>
   </data>
-  <data name="TabName_Global_Preset" xml:space="preserve">
+  <data name="GlobalPreset" xml:space="preserve">
     <value>グローバルプリセット</value>
   </data>
   <data name="Bait" xml:space="preserve">
@@ -1163,5 +1163,29 @@
   </data>
   <data name="GeneratePreset" xml:space="preserve">
     <value>プリセットを作成</value>
+  </data>
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+    <value>泳がせ釣りが利用できない場合のみ</value>
+  </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>泳がせ釣りIIがクールダウン中のみ使用</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>泳がせ釣りIIがクールダウン中のみ使用</value>
+  </data>
+  <data name="LureStacks" xml:space="preserve">
+    <value>ルアーのスタック:</value>
+  </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>大物の知識</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>アンビシャスルアー</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>モデストルアー</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>熟漁の妙案</value>
   </data>
 </root>

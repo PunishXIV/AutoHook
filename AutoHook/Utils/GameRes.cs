@@ -17,7 +17,7 @@ public static class GameRes
     public static List<BaitFishClass> Fishes { get; private set; } = new();
     public static List<BaitFishClass> LureFishes => Fishes.Where(f => f.LureMessage != "").ToList();
 
-    public static List<Fish> ImportedFishes { get; private set; } = new();
+    public static List<ImportedFish> ImportedFishes { get; private set; } = new();
     
     public static List<BiteTimers> BiteTimers { get; private set; } = new();
     
@@ -45,7 +45,7 @@ public static class GameRes
             {
                 var json = File.ReadAllText(fishList);
                 
-                ImportedFishes = JsonSerializer.Deserialize<List<Fish>>(json)!;
+                ImportedFishes = JsonSerializer.Deserialize<List<ImportedFish>>(json)!;
             }
             
             var biteTimers = Path.Combine(Service.PluginInterface.AssemblyLocation.DirectoryName!, $"Data\\FishData\\bitetimers.json");

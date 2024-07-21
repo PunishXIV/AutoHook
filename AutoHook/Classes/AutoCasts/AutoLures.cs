@@ -37,7 +37,7 @@ public class AutoLures : BaseActionCast
         if (PlayerRes.GetStatusStacks(StatusId) >= LureStacks)
             return false;
 
-        if (Service.FishingManager.FishingState is not (NormalFishing or LureFishing))
+        if (Service.BaitManager.FishingState is not (NormalFishing or LureFishing))
             return false;
 
         if (OnlyCastLarge && !PlayerRes.HasAnyStatus([IDs.Status.AnglersFortune, IDs.Status.PrizeCatch]))
