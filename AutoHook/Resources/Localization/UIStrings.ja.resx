@@ -891,6 +891,9 @@
   <data name="Set_preset_command" xml:space="preserve">
     <value>チャットコマンドでプリセットを適用 -&gt; /ahpreset presetName</value>
   </data>
+  <data name="Set_agpreset_command" xml:space="preserve">
+    <value>Set custom preset by chat command -&gt; /ahpreset presetName</value>
+  </data>
   <data name="Starts_AutoHook" xml:space="preserve">
     <value>選択したプリセットで釣りを開始</value>
   </data>
@@ -1176,6 +1179,9 @@
   <data name="LureStacks" xml:space="preserve">
     <value>ルアーのスタック:</value>
   </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>ルアーを使う</value>
+  </data>
   <data name="BigGameFishing" xml:space="preserve">
     <value>大物の知識</value>
   </data>
@@ -1185,7 +1191,34 @@
   <data name="ModestLure" xml:space="preserve">
     <value>モデストルアー</value>
   </data>
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
+    <value>対象の魚:</value>
+  </data>
+  <data name="AnyTarget" xml:space="preserve">
+    <value>任意の小さい/大きい/特別な魚</value>
+  </data>
+  <data name="OnlySpecial" xml:space="preserve">
+    <value>特別な魚のみ</value>
+  </data>
+  <data name="SpecialFishExemple" xml:space="preserve">
+    <value>特別な魚とは、ルアーを使った際にこのようなダイアログが表示されます：</value>
+  </data>
+  <data name="MaxAttempts" xml:space="preserve">
+    <value>最大試行回数</value>
+  </data>
+  <data name="CancelAttempt" xml:space="preserve">
+    <value>成功せずにスタック限界に達した場合、フッキングをキャンセルする</value>
+  </data>
+  <data name="LureType" xml:space="preserve">
+    <value>ルアーの種類:</value>
+  </data>
+  <data name="OnlyCastLarge" xml:space="preserve">
+    <value>ペーシェンス/大物狙いが有効な場合のみ使用</value>
+  </data>
   <data name="SparefulHand" xml:space="preserve">
     <value>熟漁の妙案</value>
+  </data>
+  <data name="DelayBeforeCancel" xml:space="preserve">
+    <value>釣りを中止するまでの遅延（単位：ms）</value>
   </data>
 </root>
