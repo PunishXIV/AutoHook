@@ -733,7 +733,7 @@
     <comment>It'll shows how many times the fish was caught. Example: Caught: 5x</comment>
   </data>
   <data name="Hooked_Counter" xml:space="preserve">
-    <value>釣った魚の数をカウントします。例:”フッキング: 5”</value>
+    <value>釣られた:</value>
     <comment>It'll shows how many times the fish was caught. Example: Hooked: 5x</comment>
   </data>
   <data name="Enabled" xml:space="preserve">
