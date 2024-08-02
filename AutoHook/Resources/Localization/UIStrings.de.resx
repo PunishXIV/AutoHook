@@ -1229,6 +1229,9 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="PresetImported" xml:space="preserve">
     <value>Vorlage importiert</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
   <data name="CommunityPresets" xml:space="preserve">
     <value>Community Vorlagen</value>
   </data>
@@ -1237,5 +1240,17 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   </data>
   <data name="PresetGenerator" xml:space="preserve">
     <value>Vorlagen Generator</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>Neue Accounts müssen möglicherweise etwas warten, bevor sie in der Wiki etwas bearbeiten können</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>Fischen</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>Speerfischen</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>Hier klicken, um die Wiki-Seite zu öffnen</value>
   </data>
 </root>
