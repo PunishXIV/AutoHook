@@ -1205,4 +1205,37 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="Fish_Hitbox_Offset" xml:space="preserve">
     <value>Fisch Treffer-Bereich Versatz</value>
   </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>Köder benutzen</value>
+  </data>
+  <data name="OnlySpecial" xml:space="preserve">
+    <value>Nur Spezial</value>
+  </data>
+  <data name="MaxAttempts" xml:space="preserve">
+    <value>Max. Versuche</value>
+  </data>
+  <data name="LureType" xml:space="preserve">
+    <value>Köder Typ:</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Deaktiviert</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>Vorlage in die Zwischenablage kopiert</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>Rechtsklick für Optionen</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>Vorlage importiert</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>Community Vorlagen</value>
+  </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>Vorlagen Generierung</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>Vorlagen Generator</value>
+  </data>
 </root>
