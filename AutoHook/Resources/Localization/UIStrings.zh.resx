@@ -1202,6 +1202,51 @@
   <data name="OffsetLR" xml:space="preserve">
     <value/>
   </data>
+  <data name="NBBeforeFish" xml:space="preserve">
+    <value>在鱼出现前，使用嘉惠</value>
+  </data>
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
+    <value>目标鱼类：</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>已禁用</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>预设已复制到剪贴板</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>右键查看更多选项</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>预设已导入</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>社区预设</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>预设生成器</value>
+  </data>
+  <data name="FishingPresets" xml:space="preserve">
+    <value>钓鱼预设</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>刺鱼</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>点击这里打开 wiki 页面</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>此选项卡用于社区预设。您可以从 wiki 获取预设或分享您自己的预设。</value>
+  </data>
+  <data name="UseIcActive" xml:space="preserve">
+    <value>当处于专一垂钓状态时使用</value>
+  </data>
+  <data name="UseSlapActive" xml:space="preserve">
+    <value>当处于拍击水面状态时使用</value>
+  </data>
   <data name="CantFishHere" xml:space="preserve">
     <value>无法在这里钓鱼。</value>
   </data>
