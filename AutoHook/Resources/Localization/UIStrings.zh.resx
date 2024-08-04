@@ -1202,4 +1202,13 @@
   <data name="OffsetLR" xml:space="preserve">
     <value/>
   </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>无法在这里钓鱼。</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>如果没有选择预设，将使用全局预设</value>
+  </data>
 </root>
