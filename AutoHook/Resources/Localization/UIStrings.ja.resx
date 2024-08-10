@@ -1221,4 +1221,13 @@
   <data name="DelayBeforeCancel" xml:space="preserve">
     <value>釣りを中止するまでの遅延（単位：ms）</value>
   </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>釣り</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>刺突漁</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>wikiを開く</value>
+  </data>
 </root>
