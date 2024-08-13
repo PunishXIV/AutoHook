@@ -896,10 +896,16 @@
   <data name="Set_preset_command" xml:space="preserve">
     <value>用聊天命令设置自定义预设 ： /ahpreset 预设名称</value>
   </data>
+  <data name="Set_agpreset_command" xml:space="preserve">
+    <value>用聊天命令设置自动预设 ： /ahpreset 预设名称</value>
+  </data>
   <data name="Starts_AutoHook" xml:space="preserve">
     <value>使用当前预设进行操作</value>
   </data>
   <data name="Preset_set_to_" xml:space="preserve">
+    <value>预设设置为：</value>
+  </data>
+  <data name="Gig_preset_set_to_" xml:space="preserve">
     <value>预设设置为：</value>
   </data>
   <data name="When_gaining_spectral_current" xml:space="preserve">
@@ -1202,8 +1208,29 @@
   <data name="OffsetLR" xml:space="preserve">
     <value/>
   </data>
+  <data name="OffsetLRHelpText" xml:space="preserve">
+    <value>从左至右游来的鱼的击中框偏移量</value>
+  </data>
+  <data name="OffsetRLHelpText" xml:space="preserve">
+    <value>从右至左游来的鱼的击中框偏移量</value>
+  </data>
+  <data name="FishHitboxHelpText" xml:space="preserve">
+    <value>如果你认为击中框（hitbox）区域太小或经常错过目标，调整它</value>
+  </data>
   <data name="NBBeforeFish" xml:space="preserve">
     <value>在鱼出现前，使用嘉惠</value>
+  </data>
+  <data name="NBBeforeFishHelpText" xml:space="preserve">
+    <value>如果目标鱼不出现，是否废弃GP</value>
+  </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value>Auto-Cordial 可以在 Pandora's Box 插件中找到</value>
+  </data>
+  <data name="LureStacks" xml:space="preserve">
+    <value>鱼饵堆叠</value>
+  </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>使用鱼饵</value>
   </data>
   <data name="AutoLures_Target_Fish" xml:space="preserve">
     <value>目标鱼类：</value>
