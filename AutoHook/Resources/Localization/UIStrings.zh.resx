@@ -1232,6 +1232,15 @@
   <data name="UseLures" xml:space="preserve">
     <value>使用鱼饵</value>
   </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>大鱼捕手</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>人工拟饵</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>普通钓饵</value>
+  </data>
   <data name="AutoLures_Target_Fish" xml:space="preserve">
     <value>目标鱼类：</value>
   </data>
@@ -1282,5 +1291,20 @@
   </data>
   <data name="GlobalPresetHelpText" xml:space="preserve">
     <value>如果没有选择预设，将使用全局预设</value>
+  </data>
+  <data name="GetWikiPresets" xml:space="preserve">
+    <value>获取社区预设</value>
+  </data>
+  <data name="ClickToToggle" xml:space="preserve">
+    <value>点击切换开/关</value>
+  </data>
+  <data name="PluginEnabledHelp" xml:space="preserve">
+    <value>您也可以单击鱼类图册来切换插件开启/关闭</value>
+  </data>
+  <data name="MakeACopy" xml:space="preserve">
+    <value>创建副本</value>
+  </data>
+  <data name="StatusNoPreset" xml:space="preserve">
+    <value>无预设运行中，将使用全局预设</value>
   </data>
 </root>
