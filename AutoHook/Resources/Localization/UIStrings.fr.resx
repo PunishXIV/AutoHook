@@ -1201,4 +1201,16 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>Utilisé uniquement pendant que Pêche au vif II est en train d'être rechargé</value>
   </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value>Auto-Cordial peut être trouvé dans le plugin "Pandora's Box"</value>
+  </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>Utiliser les leurres</value>
+  </data>
+  <data name="OnlyCastLarge" xml:space="preserve">
+    <value>Utiliser uniquement lorsque "Patience"/"Pêche au gros" est actif</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>Préréglages de la communauté</value>
+  </data>
 </root>
