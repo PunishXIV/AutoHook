@@ -648,6 +648,9 @@ Comprueba la pestaña de guías para las guías.</value>
   <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
     <value>¡Importante! Auto Cast no será utilizado si usas Hook manualmente.</value>
   </data>
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+    <value>¡Importante! Auto Cast no será utilizado si usas Hook manualmente.</value>
+  </data>
   <data name="Food_Buff" xml:space="preserve">
     <value>Buff de Comida</value>
   </data>
