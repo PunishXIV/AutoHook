@@ -1072,6 +1072,12 @@
   <data name="Configure" xml:space="preserve">
     <value>設定</value>
   </data>
+  <data name="Type_1" xml:space="preserve">
+    <value>タイプ1</value>
+  </data>
+  <data name="Type_2" xml:space="preserve">
+    <value>タイプ2</value>
+  </data>
   <data name="SpecificTimeWindowHelpText" xml:space="preserve">
     <value>影響を受けるアクション: 自動キャスティング、自動泳がせ釣りI/II、コーディアル(オプション)、フィッシュアイ、熟漁の技、ペーシェンスI/II</value>
   </data>
