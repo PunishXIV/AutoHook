@@ -1244,6 +1244,21 @@
   <data name="AutoLures_Target_Fish" xml:space="preserve">
     <value>目标鱼类：</value>
   </data>
+  <data name="AnyTarget" xml:space="preserve">
+    <value>任意</value>
+  </data>
+  <data name="OnlySpecial" xml:space="preserve">
+    <value>仅鱼王杆</value>
+  </data>
+  <data name="SpecialFishExemple" xml:space="preserve">
+    <value>特定鱼是指需要传承录的鱼，例如：</value>
+  </data>
+  <data name="MaxAttempts" xml:space="preserve">
+    <value>最大使用次数</value>
+  </data>
+  <data name="OnlyCastLarge" xml:space="preserve">
+    <value>仅在耐心/大鱼猎手状态下使用</value>
+  </data>
   <data name="Disabled" xml:space="preserve">
     <value>已禁用</value>
   </data>
@@ -1291,6 +1306,9 @@
   </data>
   <data name="GlobalPresetHelpText" xml:space="preserve">
     <value>如果没有选择预设，将使用全局预设</value>
+  </data>
+  <data name="AutoCastsHelp" xml:space="preserve">
+    <value>自动操作选项</value>
   </data>
   <data name="GetWikiPresets" xml:space="preserve">
     <value>获取社区预设</value>
