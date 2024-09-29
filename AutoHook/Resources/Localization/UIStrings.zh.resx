@@ -1236,10 +1236,10 @@
     <value>大鱼捕手</value>
   </data>
   <data name="AmbitiousLure" xml:space="preserve">
-    <value>人工拟饵</value>
+    <value>雄心之饵</value>
   </data>
   <data name="ModestLure" xml:space="preserve">
-    <value>普通钓饵</value>
+    <value>谦逊之饵</value>
   </data>
   <data name="AutoLures_Target_Fish" xml:space="preserve">
     <value>目标鱼类：</value>
@@ -1256,8 +1256,23 @@
   <data name="MaxAttempts" xml:space="preserve">
     <value>最大使用次数</value>
   </data>
+  <data name="LureType" xml:space="preserve">
+    <value>100级大招种类</value>
+  </data>
   <data name="OnlyCastLarge" xml:space="preserve">
     <value>仅在耐心/大鱼猎手状态下使用</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>熟练妙招</value>
+  </data>
+  <data name="DelayBeforeCancel" xml:space="preserve">
+    <value>延迟歇竿(毫秒)</value>
+  </data>
+  <data name="DelayBeforeCancelInfo" xml:space="preserve">
+    <value>当不想提的鱼咬钩且未提竿时延迟使用歇竿</value>
+  </data>
+  <data name="SwitchFishBait" xml:space="preserve">
+    <value>切换鱼饵(根据名称或ID)</value>
   </data>
   <data name="Disabled" xml:space="preserve">
     <value>已禁用</value>
@@ -1277,11 +1292,20 @@
   <data name="CommunityPresets" xml:space="preserve">
     <value>社区预设</value>
   </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>预设生成器</value>
+  </data>
   <data name="PresetGenerator" xml:space="preserve">
     <value>预设生成器</value>
   </data>
   <data name="FishingPresets" xml:space="preserve">
     <value>钓鱼预设</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>新帐户可能需要稍等才能编辑 wiki</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>钓鱼中</value>
   </data>
   <data name="Spearfishing" xml:space="preserve">
     <value>刺鱼</value>
@@ -1301,11 +1325,47 @@
   <data name="CantFishHere" xml:space="preserve">
     <value>无法在这里钓鱼。</value>
   </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>取消选择</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>设置为启用</value>
+  </data>
   <data name="Rename" xml:space="preserve">
     <value>重命名</value>
   </data>
   <data name="GlobalPresetHelpText" xml:space="preserve">
     <value>如果没有选择预设，将使用全局预设</value>
+  </data>
+  <data name="AlreadySwapped" xml:space="preserve">
+    <value>(已交换)</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>取消后摇</value>
+  </data>
+  <data name="EnableRecastCancel" xml:space="preserve">
+    <value>取消歇竿后摇</value>
+  </data>
+  <data name="EnableRecastCancelHelp" xml:space="preserve">
+    <value>在提竿动作中不可用</value>
+  </data>
+  <data name="TurnCollectOff" xml:space="preserve">
+    <value>在下方“收集”选项未勾选时，在抛竿后取消收藏品收集</value>
+  </data>
+  <data name="TurnCollectOffHelp" xml:space="preserve">
+    <value>取消后摇需要使用“收藏品收集”，这个选项能让你在抛竿后退出收藏品收集状态</value>
+  </data>
+  <data name="EnableChumCancel" xml:space="preserve">
+    <value>取消撒饵后摇</value>
+  </data>
+  <data name="ChumCancelHelp" xml:space="preserve">
+    <value>试验性/不稳定(受PING影响)。技能“打捞”会被激活以用于取消后摇</value>
+  </data>
+  <data name="FishCaughtHelp" xml:space="preserve">
+    <value>当你钓起一条鱼后的选项</value>
+  </data>
+  <data name="ExtraOptionsHelp" xml:space="preserve">
+    <value>额外选项</value>
   </data>
   <data name="AutoCastsHelp" xml:space="preserve">
     <value>自动操作选项</value>
