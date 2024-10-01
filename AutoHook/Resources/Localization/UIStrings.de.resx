@@ -127,7 +127,7 @@
     <value>Abbrechen</value>
   </data>
   <data name="ImportPresetFromClipboard" xml:space="preserve">
-    <value>Stack aus der Zwischenablage importieren.</value>
+    <value>Preset aus der Zwischenablage importieren.</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Importieren</value>
