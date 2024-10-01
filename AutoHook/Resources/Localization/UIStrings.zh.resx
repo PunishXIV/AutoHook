@@ -1208,6 +1208,9 @@
   <data name="OffsetLR" xml:space="preserve">
     <value/>
   </data>
+  <data name="OffsetRL" xml:space="preserve">
+    <value>Offset (R-&gt;L)</value>
+  </data>
   <data name="OffsetLRHelpText" xml:space="preserve">
     <value>从左至右游来的鱼的击中框偏移量</value>
   </data>
@@ -1248,13 +1251,16 @@
     <value>任意</value>
   </data>
   <data name="OnlySpecial" xml:space="preserve">
-    <value>仅鱼王杆</value>
+    <value>隐藏鱼</value>
   </data>
   <data name="SpecialFishExemple" xml:space="preserve">
-    <value>特定鱼是指需要传承录的鱼，例如：</value>
+    <value>隐藏鱼是指需要100级大招触发条件的鱼，例如：</value>
   </data>
   <data name="MaxAttempts" xml:space="preserve">
     <value>最大使用次数</value>
+  </data>
+  <data name="CancelAttempt" xml:space="preserve">
+    <value>如果达到尝试次数上限仍未成功就收杆</value>
   </data>
   <data name="LureType" xml:space="preserve">
     <value>100级大招种类</value>
