@@ -1207,8 +1207,20 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
   <data name="UseLures" xml:space="preserve">
     <value>Utiliser les leurres</value>
   </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>Connaissance des grosse proies</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>Leurre ambitieux</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>Leurre modeste</value>
+  </data>
   <data name="OnlyCastLarge" xml:space="preserve">
     <value>Utiliser uniquement lorsque "Patience"/"Pêche au gros" est actif</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>Pêche au vif énorme</value>
   </data>
   <data name="CommunityPresets" xml:space="preserve">
     <value>Préréglages de la communauté</value>
