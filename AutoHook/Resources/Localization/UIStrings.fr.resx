@@ -1208,7 +1208,7 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
     <value>Utiliser les leurres</value>
   </data>
   <data name="BigGameFishing" xml:space="preserve">
-    <value>Connaissance des grosse proies</value>
+    <value>Connaissance des grosses proies</value>
   </data>
   <data name="AmbitiousLure" xml:space="preserve">
     <value>Leurre ambitieux</value>
