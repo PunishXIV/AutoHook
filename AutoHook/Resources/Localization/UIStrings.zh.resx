@@ -127,7 +127,7 @@
     <value>取消</value>
   </data>
   <data name="ImportPresetFromClipboard" xml:space="preserve">
-    <value>从剪贴板导入样式</value>
+    <value>从剪贴板导入预设。</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>导入</value>
@@ -142,13 +142,13 @@
     <value>自动以小钓大</value>
   </data>
   <data name="AddLastCatch" xml:space="preserve">
-    <value>添加上次渔获</value>
+    <value>添加上次渔获：</value>
   </data>
   <data name="ExportPresetToClipboard" xml:space="preserve">
     <value>导出预设到剪贴板。</value>
   </data>
   <data name="PresetExportedToTheClipboard" xml:space="preserve">
-    <value>预设导出到剪贴板</value>
+    <value>已导出预设至剪贴板</value>
   </data>
   <data name="APresetWithTheSameNameAlreadyExists" xml:space="preserve">
     <value>已存在同名的预设</value>
@@ -172,7 +172,7 @@
     <value>新的鱼饵/以小钓大</value>
   </data>
   <data name="EditMe" xml:space="preserve">
-    <value>修改</value>
+    <value>编辑</value>
   </data>
   <data name="Add" xml:space="preserve">
     <value>添加</value>
