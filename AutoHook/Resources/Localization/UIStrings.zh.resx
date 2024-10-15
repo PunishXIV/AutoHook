@@ -127,7 +127,7 @@
     <value>取消</value>
   </data>
   <data name="ImportPresetFromClipboard" xml:space="preserve">
-    <value>从剪贴板导入样式</value>
+    <value>从剪贴板导入预设。</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>导入</value>
@@ -142,13 +142,13 @@
     <value>自动以小钓大</value>
   </data>
   <data name="AddLastCatch" xml:space="preserve">
-    <value>添加上次渔获</value>
+    <value>添加上次渔获：</value>
   </data>
   <data name="ExportPresetToClipboard" xml:space="preserve">
     <value>导出预设到剪贴板。</value>
   </data>
   <data name="PresetExportedToTheClipboard" xml:space="preserve">
-    <value>预设导出到剪贴板</value>
+    <value>已导出预设至剪贴板</value>
   </data>
   <data name="APresetWithTheSameNameAlreadyExists" xml:space="preserve">
     <value>已存在同名的预设</value>
@@ -172,7 +172,7 @@
     <value>新的鱼饵/以小钓大</value>
   </data>
   <data name="EditMe" xml:space="preserve">
-    <value>修改</value>
+    <value>编辑</value>
   </data>
   <data name="Add" xml:space="preserve">
     <value>添加</value>
@@ -896,10 +896,16 @@
   <data name="Set_preset_command" xml:space="preserve">
     <value>用聊天命令设置自定义预设 ： /ahpreset 预设名称</value>
   </data>
+  <data name="Set_agpreset_command" xml:space="preserve">
+    <value>用聊天命令设置自动预设 ： /ahpreset 预设名称</value>
+  </data>
   <data name="Starts_AutoHook" xml:space="preserve">
     <value>使用当前预设进行操作</value>
   </data>
   <data name="Preset_set_to_" xml:space="preserve">
+    <value>预设设置为：</value>
+  </data>
+  <data name="Gig_preset_set_to_" xml:space="preserve">
     <value>预设设置为：</value>
   </data>
   <data name="When_gaining_spectral_current" xml:space="preserve">
@@ -1201,5 +1207,188 @@
   </data>
   <data name="OffsetLR" xml:space="preserve">
     <value/>
+  </data>
+  <data name="OffsetRL" xml:space="preserve">
+    <value>Offset (R-&gt;L)</value>
+  </data>
+  <data name="OffsetLRHelpText" xml:space="preserve">
+    <value>从左至右游来的鱼的击中框偏移量</value>
+  </data>
+  <data name="OffsetRLHelpText" xml:space="preserve">
+    <value>从右至左游来的鱼的击中框偏移量</value>
+  </data>
+  <data name="FishHitboxHelpText" xml:space="preserve">
+    <value>如果你认为击中框（hitbox）区域太小或经常错过目标，调整它</value>
+  </data>
+  <data name="NBBeforeFish" xml:space="preserve">
+    <value>在鱼出现前，使用嘉惠</value>
+  </data>
+  <data name="NBBeforeFishHelpText" xml:space="preserve">
+    <value>如果目标鱼不出现，是否废弃GP</value>
+  </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value>Auto-Cordial 可以在 Pandora's Box 插件中找到</value>
+  </data>
+  <data name="LureStacks" xml:space="preserve">
+    <value>鱼饵堆叠</value>
+  </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>使用鱼饵</value>
+  </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>大鱼捕手</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>雄心之饵</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>谦逊之饵</value>
+  </data>
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
+    <value>目标鱼类：</value>
+  </data>
+  <data name="AnyTarget" xml:space="preserve">
+    <value>任意</value>
+  </data>
+  <data name="OnlySpecial" xml:space="preserve">
+    <value>隐藏鱼</value>
+  </data>
+  <data name="SpecialFishExemple" xml:space="preserve">
+    <value>隐藏鱼是指需要100级大招触发条件的鱼，例如：</value>
+  </data>
+  <data name="MaxAttempts" xml:space="preserve">
+    <value>最大使用次数</value>
+  </data>
+  <data name="CancelAttempt" xml:space="preserve">
+    <value>如果达到尝试次数上限仍未成功就收杆</value>
+  </data>
+  <data name="LureType" xml:space="preserve">
+    <value>100级大招种类</value>
+  </data>
+  <data name="OnlyCastLarge" xml:space="preserve">
+    <value>仅在耐心/大鱼猎手状态下使用</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>熟练妙招</value>
+  </data>
+  <data name="DelayBeforeCancel" xml:space="preserve">
+    <value>延迟歇竿(毫秒)</value>
+  </data>
+  <data name="DelayBeforeCancelInfo" xml:space="preserve">
+    <value>当不想提的鱼咬钩且未提竿时延迟使用歇竿</value>
+  </data>
+  <data name="SwitchFishBait" xml:space="preserve">
+    <value>切换鱼饵(根据名称或ID)</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>已禁用</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>预设已复制到剪贴板</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>右键查看更多选项</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>预设已导入</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>社区预设</value>
+  </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>预设生成器</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>预设生成器</value>
+  </data>
+  <data name="FishingPresets" xml:space="preserve">
+    <value>钓鱼预设</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>新帐户可能需要稍等才能编辑 wiki</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>钓鱼中</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>刺鱼</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>点击这里打开 wiki 页面</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>此选项卡用于社区预设。您可以从 wiki 获取预设或分享您自己的预设。</value>
+  </data>
+  <data name="UseIcActive" xml:space="preserve">
+    <value>当处于专一垂钓状态时使用</value>
+  </data>
+  <data name="UseSlapActive" xml:space="preserve">
+    <value>当处于拍击水面状态时使用</value>
+  </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>无法在这里钓鱼。</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>取消选择</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>设置为启用</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>如果没有选择预设，将使用全局预设</value>
+  </data>
+  <data name="AlreadySwapped" xml:space="preserve">
+    <value>(已交换)</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>取消后摇</value>
+  </data>
+  <data name="EnableRecastCancel" xml:space="preserve">
+    <value>取消歇竿后摇</value>
+  </data>
+  <data name="EnableRecastCancelHelp" xml:space="preserve">
+    <value>在提竿动作中不可用</value>
+  </data>
+  <data name="TurnCollectOff" xml:space="preserve">
+    <value>在下方“收集”选项未勾选时，在抛竿后取消收藏品收集</value>
+  </data>
+  <data name="TurnCollectOffHelp" xml:space="preserve">
+    <value>取消后摇需要使用“收藏品收集”，这个选项能让你在抛竿后退出收藏品收集状态</value>
+  </data>
+  <data name="EnableChumCancel" xml:space="preserve">
+    <value>取消撒饵后摇</value>
+  </data>
+  <data name="ChumCancelHelp" xml:space="preserve">
+    <value>试验性/不稳定(受PING影响)。技能“打捞”会被激活以用于取消后摇</value>
+  </data>
+  <data name="FishCaughtHelp" xml:space="preserve">
+    <value>当你钓起一条鱼后的选项</value>
+  </data>
+  <data name="ExtraOptionsHelp" xml:space="preserve">
+    <value>额外选项</value>
+  </data>
+  <data name="AutoCastsHelp" xml:space="preserve">
+    <value>自动操作选项</value>
+  </data>
+  <data name="GetWikiPresets" xml:space="preserve">
+    <value>获取社区预设</value>
+  </data>
+  <data name="ClickToToggle" xml:space="preserve">
+    <value>点击切换开/关</value>
+  </data>
+  <data name="PluginEnabledHelp" xml:space="preserve">
+    <value>您也可以单击鱼类图册来切换插件开启/关闭</value>
+  </data>
+  <data name="MakeACopy" xml:space="preserve">
+    <value>创建副本</value>
+  </data>
+  <data name="StatusNoPreset" xml:space="preserve">
+    <value>无预设运行中，将使用全局预设</value>
   </data>
 </root>

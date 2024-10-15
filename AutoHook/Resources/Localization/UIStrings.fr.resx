@@ -1201,4 +1201,28 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>Utilisé uniquement pendant que Pêche au vif II est en train d'être rechargé</value>
   </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value/>
+  </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>Utiliser les leurres</value>
+  </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>Connaissance des grosses proies</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>Leurre ambitieux</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>Leurre modeste</value>
+  </data>
+  <data name="OnlyCastLarge" xml:space="preserve">
+    <value>Utiliser uniquement lorsque "Patience"/"Pêche au gros" est actif</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>Pêche au vif énorme</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>Préréglages de la communauté</value>
+  </data>
 </root>

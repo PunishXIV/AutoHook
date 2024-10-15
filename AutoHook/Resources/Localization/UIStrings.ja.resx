@@ -1072,6 +1072,12 @@
   <data name="Configure" xml:space="preserve">
     <value>設定</value>
   </data>
+  <data name="Type_1" xml:space="preserve">
+    <value>タイプ1</value>
+  </data>
+  <data name="Type_2" xml:space="preserve">
+    <value>タイプ2</value>
+  </data>
   <data name="SpecificTimeWindowHelpText" xml:space="preserve">
     <value>影響を受けるアクション: 自動キャスティング、自動泳がせ釣りI/II、コーディアル(オプション)、フィッシュアイ、熟漁の技、ペーシェンスI/II</value>
   </data>
@@ -1131,6 +1137,9 @@
   <data name="SelectBaitStartFishing" xml:space="preserve">
     <value>釣りを開始する餌を選択:</value>
   </data>
+  <data name="BaitPresetPriorityWarning" xml:space="preserve">
+    <value>ここで設定した釣り餌とプリセットの変更は、個別の釣りで設定したものよりも優先されます</value>
+  </data>
   <data name="WhenAnglersAt" xml:space="preserve">
     <value>ビッグフィッシャーのスタック数</value>
   </data>
@@ -1176,6 +1185,27 @@
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>泳がせ釣りIIがクールダウン中のみ使用</value>
   </data>
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
+    <value>ヒットボックスの調整</value>
+  </data>
+  <data name="OffsetLRHelpText" xml:space="preserve">
+    <value>左からくる魚に対するヒットボックス境界を調整する</value>
+  </data>
+  <data name="OffsetRLHelpText" xml:space="preserve">
+    <value>右からくる魚に対するヒットボックス境界を調整する</value>
+  </data>
+  <data name="FishHitboxHelpText" xml:space="preserve">
+    <value>領域が不足している場合はヒットボックスの幅を調整してください</value>
+  </data>
+  <data name="NBBeforeFish" xml:space="preserve">
+    <value>魚が現れる前にネイチャーバウンティを使う</value>
+  </data>
+  <data name="NBBeforeFishHelpText" xml:space="preserve">
+    <value>目的の魚が現れない場合GPが無駄になることがあります</value>
+  </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value>コーディアルの自動接種はPandora's Boxプラグインから利用できます</value>
+  </data>
   <data name="LureStacks" xml:space="preserve">
     <value>ルアーのスタック:</value>
   </data>
@@ -1220,5 +1250,101 @@
   </data>
   <data name="DelayBeforeCancel" xml:space="preserve">
     <value>釣りを中止するまでの遅延（単位：ms）</value>
+  </data>
+  <data name="SwitchFishBait" xml:space="preserve">
+    <value>釣り餌を(名前またはIDで) 切り替える</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>無効化済み</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>プリセットをクリップボードにコピーしました</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>右クリックしてオプションを表示</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>プリセットがインポートされました</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>削除</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>コミュニティプリセット</value>
+  </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>プリセットジェネレーター</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>プリセットジェネレーター</value>
+  </data>
+  <data name="FishingPresets" xml:space="preserve">
+    <value>釣りのプリセット</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>新規アカウントはwiki編集が可能になるまで時間がかかることがあります</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>釣り</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>刺突漁</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>wikiを開く</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>このタブはコミュニティプリセット用です。Wikiからプリセットを取得したり、独自のプリセットを共有することができます。</value>
+  </data>
+  <data name="UseIcActive" xml:space="preserve">
+    <value>セイムキャストがアクティブな場合のみ使用</value>
+  </data>
+  <data name="UseSlapActive" xml:space="preserve">
+    <value>トレードリリースが有効なときのみ使用</value>
+  </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>ここでは魚を釣ることができません</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>選択を解除</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>有効に設定</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>名前を変更</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>プリセットが選択されていない場合、グローバルプリセットが使用されます</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>アニメーションのキャンセル</value>
+  </data>
+  <data name="EnableChumCancel" xml:space="preserve">
+    <value>撒き餌のアニメーションをキャンセルする</value>
+  </data>
+  <data name="FishCaughtHelp" xml:space="preserve">
+    <value>魚を捕まえたときのオプション</value>
+  </data>
+  <data name="ExtraOptionsHelp" xml:space="preserve">
+    <value>ちょっとしたおまけ</value>
+  </data>
+  <data name="AutoCastsHelp" xml:space="preserve">
+    <value>自動キャスト動作のオプション</value>
+  </data>
+  <data name="GetWikiPresets" xml:space="preserve">
+    <value>wikiにあるプリセットを取得する</value>
+  </data>
+  <data name="ClickToToggle" xml:space="preserve">
+    <value>クリックしてオン/オフを切り替える</value>
+  </data>
+  <data name="PluginEnabledHelp" xml:space="preserve">
+    <value>魚の画像をクリックしてプラグインのオン/オフを切り替えることもできます</value>
+  </data>
+  <data name="MakeACopy" xml:space="preserve">
+    <value>コピーを作成する</value>
+  </data>
+  <data name="StatusNoPreset" xml:space="preserve">
+    <value>プリセットがアクティブではありません。代わりにグローバルプリセットが使用されます</value>
   </data>
 </root>
