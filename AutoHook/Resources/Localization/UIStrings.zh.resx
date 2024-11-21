@@ -545,7 +545,7 @@
     <value>拍打水面选项</value>
   </data>
   <data name="Identical_Cast_Options" xml:space="preserve">
-    <value>相同的投射选项</value>
+    <value>专一垂钓选项</value>
   </data>
   <data name="Identical_Cast" xml:space="preserve">
     <value>专一垂钓</value>
@@ -1236,7 +1236,7 @@
     <value>使用鱼饵</value>
   </data>
   <data name="BigGameFishing" xml:space="preserve">
-    <value>大鱼捕手</value>
+    <value>大鱼的知识</value>
   </data>
   <data name="AmbitiousLure" xml:space="preserve">
     <value>雄心之饵</value>
@@ -1311,7 +1311,7 @@
     <value>新帐户可能需要稍等才能编辑 wiki</value>
   </data>
   <data name="Fishing" xml:space="preserve">
-    <value>钓鱼中</value>
+    <value>钓鱼</value>
   </data>
   <data name="Spearfishing" xml:space="preserve">
     <value>刺鱼</value>
@@ -1390,5 +1390,17 @@
   </data>
   <data name="StatusNoPreset" xml:space="preserve">
     <value>无预设运行中，将使用全局预设</value>
+  </data>
+  <data name="LureSSActive" xml:space="preserve">
+    <value>仅当拍打水面激活时使用拟饵技能</value>
+  </data>
+  <data name="LureSSNotActive" xml:space="preserve">
+    <value>不在拍打水面激活时使用拟饵技能</value>
+  </data>
+  <data name="LureICActive" xml:space="preserve">
+    <value>仅当专一垂钓激活时使用拟饵技能</value>
+  </data>
+  <data name="LureICNotActive" xml:space="preserve">
+    <value>不在专一垂钓激活时使用拟饵技能</value>
   </data>
 </root>
