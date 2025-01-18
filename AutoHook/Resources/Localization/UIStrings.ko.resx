@@ -247,13 +247,13 @@
     <value>변경 내역</value>
   </data>
   <data name="HookWeakExclamation" xml:space="preserve">
-    <value>소형 낚기 (!)</value>
+    <value>약한 입질 (!)</value>
   </data>
   <data name="HookStrongExclamation" xml:space="preserve">
-    <value>중형 낚기 (!!)</value>
+    <value>강한 입질 (!!)</value>
   </data>
   <data name="HookLegendaryExclamation" xml:space="preserve">
-    <value>대형/대물 낚기 (!!!)</value>
+    <value>대형 입질 (!!!)</value>
   </data>
   <data name="HookWillBeUsedIfPatienceIsNotUp" xml:space="preserve">
     <value>"인내" 스킬이 없을 시 "낚싯대 던지기" 가 사용됩니다.</value>
@@ -656,7 +656,7 @@
     <value>미완료</value>
   </data>
   <data name="AutoHook" xml:space="preserve">
-    <value>자동 낚아채기</value>
+    <value>자동 낚시</value>
   </data>
   <data name="PluginUi_Language" xml:space="preserve">
     <value>언어 설정</value>
