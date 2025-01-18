@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DrawHeader_Testing" xml:space="preserve">
-    <value>테스트</value>
+    <value>테스트n</value>
   </data>
   <data name="DefaultSubTab" xml:space="preserve">
     <value>기본값</value>
@@ -627,7 +627,7 @@
     <value>생미끼 낚시 취소하지 않기</value>
   </data>
   <data name="TabAutoCasts_DrawHeader_HelpText" xml:space="preserve">
-    <value>생미끼 낚시 취소하는 기술 사용하지 않기 (예: 밑밥, 물고기의 눈, 대물 낚시)</value>
+    <value>생미끼 낚시를 취소하는 작업은 사용하지 않기 (예: 밑밥, 물고기의 눈, 대물 낚시)</value>
   </data>
   <data name="TabAutoCasts_DrawExtraOptionsAutoMooch_Extra_Only_Active" xml:space="preserve">
     <value>어부의 직감이 발동 중일때만 사용합니다</value>
@@ -764,7 +764,7 @@
     <value>낚시 끝내기</value>
   </data>
   <data name="Quit_Action_HelpText" xml:space="preserve">
-    <value>종료 행동이 실행되어 낚시가 완전히 중단됩니다.</value>
+    <value>움직임이 감지되면 낚시가 중단됩니다</value>
   </data>
   <data name="Tab_Description" xml:space="preserve">
     <value>설명</value>
@@ -812,7 +812,7 @@
     <value>자동 낚싯대 던지기가 비활성화됨</value>
   </data>
   <data name="AllActionsDisabled" xml:space="preserve">
-    <value>모든 행동이 비활성화됨</value>
+    <value>모든 작업이 비활성화됨</value>
   </data>
   <data name="SubExtra_Disabled" xml:space="preserve">
     <value>추가 옵션이 비활성화되었습니다.</value>
@@ -824,7 +824,7 @@
     <value>[글로벌] 자동 낚싯대 던지기가 대신 사용됩니다.</value>
   </data>
   <data name="GlobalActionsBeingUsed" xml:space="preserve">
-    <value>글로벌 프리셋의 자동 행동이 대신 사용됩니다.</value>
+    <value>글로벌 프리셋의 자동 작업이 대신 사용됩니다.</value>
   </data>
   <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
     <value>사용자 지정 프리셋 [{0}]의 자동 낚싯대 던지기가 대신 사용됩니다.</value>
@@ -842,7 +842,7 @@
     <value>중요! 수동으로 낚아채기를 하면 자동 낚싯대 던지기가 사용되지 않습니다.</value>
   </data>
   <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
-    <value>중요! 수동으로 낚아채기를 하면 동작이 실행되지 않습니다.</value>
+    <value>중요! 수동으로 낚아채기를 하면 작업이 진행되지 않습니다.</value>
   </data>
   <data name="Food_Buff" xml:space="preserve">
     <value>요리 효과</value>
@@ -1005,7 +1005,7 @@
     <value>직감이 사라지면 낚시를 종료</value>
   </data>
   <data name="Auto_Cast_Sort_Notice" xml:space="preserve">
-    <value>동작은 위에서 아래로 사용됩니다. 화살표 버튼을 클릭하여 순서를 변경하세요.</value>
+    <value>작업은 위에서 아래로 진행됩니다. 화살표 버튼을 클릭하여 순서를 변경하세요.</value>
   </data>
   <data name="Current_Selected_Preset" xml:space="preserve">
     <value>현재 선택된 프리셋:</value>
@@ -1096,7 +1096,7 @@
     <value>강장제를 지정된 자동 낚시 시간 창 외부에서 사용</value>
   </data>
   <data name="SpecificTimeWindowHelpText" xml:space="preserve">
-    <value>영향을 받는 행동: 낚싯대 던지기, 생미끼 낚시 I/II, 강장제(선택), 물고기의 눈, 숙련 낚시꾼, 인내 I/II</value>
+    <value>영향을 받는 작업: 낚싯대 던지기, 생미끼 낚시 I/II, 강장제(선택), 물고기의 눈, 숙련 낚시꾼, 인내 I/II</value>
   </data>
   <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
     <value>기본적으로 강장제는 시간 창 외부에서 사용되지 않습니다(활성화된 경우). 이 옵션은 해당 동작을 무시합니다.</value>
@@ -1123,7 +1123,7 @@
     <value>설정</value>
   </data>
   <data name="EnableActions" xml:space="preserve">
-    <value>행동 활성화</value>
+    <value>작업 활성화</value>
   </data>
   <data name="DontHideExtraAutoCast" xml:space="preserve">
     <value>비활성화 시 추가/자동 캐스팅 옵션 숨기지 않음</value>
@@ -1135,7 +1135,7 @@
     <value>비활성화된 경우, 생미끼 낚시 시도가 취소되지 않으며 자동 생미끼 낚시 옵션도 무시됩니다.</value>
   </data>
   <data name="NeverMoochHelpText" xml:space="preserve">
-    <value>활성화된 경우, 행동이 해당 물고기의 생미끼 낚시 시도도 취소합니다.</value>
+    <value>활성화된 경우, 작업이 해당 물고기의 생미끼 낚시 시도도 취소합니다.</value>
   </data>
   <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
     <value>숙련 낚시꾼 또는 인내가 활성화된 경우에만 사용합니다.</value>
@@ -1144,7 +1144,7 @@
     <value>물고기의 눈이 사용되며 생미끼 낚시 시도가 취소됩니다.</value>
   </data>
   <data name="StartActions" xml:space="preserve">
-    <value>행동 시작</value>
+    <value>작업 시작</value>
   </data>
   <data name="StartActionHelpText" xml:space="preserve">
     <value>자동 낚시를 시작하세요! 추가 탭에서 낚시에 사용할 미끼 교체도 설정할 수 있습니다.
@@ -1152,7 +1152,7 @@
 또한 /ahstart 명령어를 사용해 시작할 수 있습니다. 매크로로 만들어 보세요!</value>
   </data>
   <data name="ForceBaitSwap" xml:space="preserve">
-    <value>"행동 시작" 사용 시 미끼 강제 교체</value>
+    <value>"작업 시작" 사용 시 미끼 강제 교체</value>
   </data>
   <data name="SelectBaitStartFishing" xml:space="preserve">
     <value>낚시를 시작할 미끼 선택:</value>
@@ -1278,7 +1278,7 @@
     <value>낚시 시도 취소 전 지연 시간(ms)</value>
   </data>
   <data name="DelayBeforeCancelInfo" xml:space="preserve">
-    <value>원치 않는 입질이 발생하고 낚이지 않을 경우 행동 '휴식' 사용을 지연</value>
+    <value>원치 않는 입질이 발생하고 낚이지 않을 경우 작업 진행을 지연</value>
   </data>
   <data name="SwitchFishBait" xml:space="preserve">
     <value>낚시 미끼 전환(이름 또는 ID로)</value>
@@ -1368,7 +1368,7 @@
     <value>밑밥 애니메이션 캔슬 활성화</value>
   </data>
   <data name="ChumCancelHelp" xml:space="preserve">
-    <value>실험적이며 일관성이 없을 수 있음(핑 때문일 가능성 있음). 행동 '구조'가 활성화됩니다.</value>
+    <value>실험적이며 일관성이 없을 수 있음(핑 때문일 가능성 있음). 작업 '구조'가 활성화됩니다.</value>
   </data>
   <data name="FishCaughtHelp" xml:space="preserve">
     <value>물고기를 잡았을 때의 옵션</value>
@@ -1377,7 +1377,7 @@
     <value>추가 옵션</value>
   </data>
   <data name="AutoCastsHelp" xml:space="preserve">
-    <value>자동 낚시 행동 옵션</value>
+    <value>자동 낚시 작업 옵션</value>
   </data>
   <data name="GetWikiPresets" xml:space="preserve">
     <value>위키 프리셋 가져오기</value>
