@@ -1202,7 +1202,7 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
     <value>Utilisé uniquement pendant que Pêche au vif II est en train d'être rechargé</value>
   </data>
   <data name="AutoCordialPandoras" xml:space="preserve">
-    <value/>
+    <value></value>
   </data>
   <data name="UseLures" xml:space="preserve">
     <value>Utiliser les leurres</value>
