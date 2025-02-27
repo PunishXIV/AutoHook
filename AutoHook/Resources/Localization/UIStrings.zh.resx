@@ -1206,7 +1206,7 @@
     <value>Fish Hitbox偏移</value>
   </data>
   <data name="OffsetLR" xml:space="preserve">
-    <value/>
+    <value></value>
   </data>
   <data name="OffsetRL" xml:space="preserve">
     <value>Offset (R-&gt;L)</value>
@@ -1402,5 +1402,8 @@
   </data>
   <data name="LureICNotActive" xml:space="preserve">
     <value>不在专一垂钓激活时使用拟饵技能</value>
+  </data>
+  <data name="Prize_Catch_Options" xml:space="preserve">
+    <value></value>
   </data>
 </root>
