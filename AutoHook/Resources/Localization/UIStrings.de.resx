@@ -1205,6 +1205,9 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="Fish_Hitbox_Offset" xml:space="preserve">
     <value>Fisch Treffer-Bereich Versatz</value>
   </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value>Auto-Cordial kann im Pandora's Box Plugin gefunden werden</value>
+  </data>
   <data name="UseLures" xml:space="preserve">
     <value>Köder benutzen</value>
   </data>
@@ -1252,5 +1255,32 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   </data>
   <data name="ClickOpenWiki" xml:space="preserve">
     <value>Hier klicken, um die Wiki-Seite zu öffnen</value>
+  </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>Du kannst hier nicht fischen</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Abwählen</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>Als aktiv festlegen</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>Wenn keine Voreinstellung ausgewählt ist, wird die globale Voreinstellung verwendet</value>
+  </data>
+  <data name="AlreadySwapped" xml:space="preserve">
+    <value>(Bereits getauscht)</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>Animation abbrechen</value>
+  </data>
+  <data name="MakeACopy" xml:space="preserve">
+    <value>Kopie erstellen</value>
+  </data>
+  <data name="StatusNoPreset" xml:space="preserve">
+    <value>Keine Voreinstellung aktiv, globale Voreinstellung wird stattdessen verwendet</value>
   </data>
 </root>
