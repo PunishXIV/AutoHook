@@ -1406,4 +1406,7 @@
   <data name="LureICNotActive" xml:space="preserve">
     <value>한결같은 챔질이 비활성화된 경우에만 루어를 사용합니다.</value>
   </data>
+  <data name="Prize_Catch_Options" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
