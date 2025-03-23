@@ -157,7 +157,7 @@
     <value>같은 이름의 프리셋이 이미 존재합니다</value>
   </data>
   <data name="CurrentBaitMooch" xml:space="preserve">
-    <value>현재 미끼/생미끼 추가하기:</value>
+    <value>현재 미끼/생미끼:</value>
   </data>
   <data name="AddCurrentBaitMooch" xml:space="preserve">
     <value>현재 미끼/생미끼 추가하기</value>
@@ -1236,10 +1236,10 @@
     <value>미끼 스택:</value>
   </data>
   <data name="UseLures" xml:space="preserve">
-    <value>미끼 사용</value>
+    <value>루어 사용</value>
   </data>
   <data name="BigGameFishing" xml:space="preserve">
-    <value>대물 낚시</value>
+    <value>대물 지식</value>
   </data>
   <data name="AmbitiousLure" xml:space="preserve">
     <value>거대한 루어</value>
@@ -1269,7 +1269,7 @@
     <value>루어 유형:</value>
   </data>
   <data name="OnlyCastLarge" xml:space="preserve">
-    <value>인내/대어 낚시가 활성화된 경우에만 사용</value>
+    <value>인내 혹은 대물 낚시가 활성화된 경우에만 사용</value>
   </data>
   <data name="SparefulHand" xml:space="preserve">
     <value>낚시꾼의 묘안</value>
@@ -1407,6 +1407,39 @@
     <value>한결같은 챔질이 비활성화된 경우에만 루어를 사용합니다.</value>
   </data>
   <data name="Prize_Catch_Options" xml:space="preserve">
-    <value></value>
+    <value>대물 낚시</value>
+  </data>
+  <data name="Prize_Catch_Required" xml:space="preserve">
+    <value>대물 낚시가 활성화된 경우에만 낚아채기</value>
+  </data>
+  <data name="Conditions" xml:space="preserve">
+    <value>조건부</value>
+  </data>
+  <data name="Conditions_HelpText" xml:space="preserve">
+    <value>낚아채는 조건부를 정합니다.</value>
+  </data>
+  <data name="Status_NoHookEnabled" xml:space="preserve">
+    <value>입질 건너뛰기 - 해당 입질에는 걸릴 훅이 활성화 되지 않음</value>
+  </data>
+  <data name="Status_PrizeCatchRequired" xml:space="preserve">
+    <value>입질 건너뛰기 - 낚아채기 위해 대물 낚시가 필요하지만 활성화 되지 않음</value>
+  </data>
+  <data name="Status_IdenticalCastRequired" xml:space="preserve">
+    <value>입질 건너뛰기 - 낚아채기 위해 한결같은 챔질이 필요하지만 활성화 되지 않음</value>
+  </data>
+  <data name="Status_IdenticalCastNotRequired" xml:space="preserve">
+    <value>입질 건너뛰기 - 한결같은 챔질이 활성화 되어 있지만,  해당 입질에선 필요하지 않음</value>
+  </data>
+  <data name="Status_SurfaceSlapRequired" xml:space="preserve">
+    <value>입질 건너뛰기 - 낚아채기 위해 교환 방생이 필요하지만 활성화 되지 않음</value>
+  </data>
+  <data name="Status_SurfaceSlapNotRequired" xml:space="preserve">
+    <value>입질 건너뛰기 - 교환 방생이 활성화 되어 있지만, 해당 입질에선 필요하지 않음</value>
+  </data>
+  <data name="PrizeCatchNotActive" xml:space="preserve">
+    <value>대물 낚시가 비활성화된 경우에만 낚아채기</value>
+  </data>
+  <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
+    <value>입질 건너뛰기 - 대물 낚시가 활성화 되어 있지만, 해당 입질에선 필요하지 않음</value>
   </data>
 </root>
