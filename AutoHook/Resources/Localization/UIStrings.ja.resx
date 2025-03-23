@@ -458,6 +458,9 @@
   <data name="ExtraOptionPrizeCatchHelpMarker" xml:space="preserve">
     <value>”泳がせ釣りII”が有効になっていないと機能しません。”泳がせ釣り”のみを行う場合は100GP節約出来るかもしれません。</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>。。。</value>
+  </data>
   <data name="Enable_AutoHook" xml:space="preserve">
     <value>AutoHookを有効にする</value>
   </data>
