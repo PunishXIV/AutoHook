@@ -9,6 +9,6 @@
   "Tags": [ "Gathering", "Fishing" ],
   "AcceptsFeedback": false,
   "Changelog": "Click the Changelog button to see whats new",
-  "DalamudApiLevel": 11,
+  "DalamudApiLevel": 12,
   "IconURL": "https://s3.puni.sh/media/plugin/47/icon-k1slevjorpo.png"
 }

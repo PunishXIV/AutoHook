@@ -15,6 +15,7 @@ using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Interface.Colors;
 using ECommons.Automation;
 using ECommons.Automation.NeoTaskManager;
+using InteropGenerator.Runtime;
 
 namespace AutoHook.Spearfishing;
 

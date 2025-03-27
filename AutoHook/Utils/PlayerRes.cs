@@ -75,7 +75,7 @@ public static class PlayerRes
         foreach (var buff in Service.ClientState.LocalPlayer.StatusList)
         {
             if (buff.StatusId == status)
-                return buff.StackCount;
+                return buff.Param;
         }
 
         return 0;
@@ -89,7 +89,7 @@ public static class PlayerRes
         foreach (var buff in Service.ClientState.LocalPlayer.StatusList)
         {
             if (buff.StatusId == IDs.Status.AnglersArt)
-                return buff.StackCount >= amount;
+                return buff.Param >= amount;
         }
 
         return false;

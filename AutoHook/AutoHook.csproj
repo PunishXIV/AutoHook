@@ -6,7 +6,7 @@
         <Description>Auto hooks for you</Description>
         <PackageProjectUrl>https://github.com/PunishXIV/AutoHook</PackageProjectUrl>
         <Configurations>Release;Debug</Configurations>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFramework>net9.0-windows</TargetFramework>
         <Platforms>x64</Platforms>
         
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -61,11 +61,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="11.0.0" />
+        <PackageReference Include="DalamudPackager" Version="12.0.0" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
         <ProjectReference Include="..\PunishLib\PunishLib\PunishLib.csproj"/>
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
+        <Reference Include="InteropGenerator.Runtime">
+            <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
             <Private>false</Private>
         </Reference>
         <Reference Include="Newtonsoft.Json">
