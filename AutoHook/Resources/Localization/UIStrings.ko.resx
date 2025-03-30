@@ -312,7 +312,7 @@
 - 물고기로 설정되어 있는 경우: 해당 물고기가 X번 잡히면 낚시를 그만둡니다</value>
   </data>
   <data name="TimeS" xml:space="preserve">
-    <value>시간(초)</value>
+    <value>회</value>
     <comment>Quantity, example: 5 Time(s) </comment>
   </data>
   <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
