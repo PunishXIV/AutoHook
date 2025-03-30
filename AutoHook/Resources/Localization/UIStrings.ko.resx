@@ -764,7 +764,7 @@
     <value>낚시 끝내기</value>
   </data>
   <data name="Quit_Action_HelpText" xml:space="preserve">
-    <value>움직임이 감지되면 낚시가 중단됩니다</value>
+    <value>중단 행동이 실행되며 낚시를 완전히 중단합니다</value>
   </data>
   <data name="Tab_Description" xml:space="preserve">
     <value>설명</value>
