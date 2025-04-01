@@ -1201,6 +1201,12 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
   <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>Utilisé uniquement pendant que Pêche au vif II est en train d'être rechargé</value>
   </data>
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
+    <value>Décalage de la collision du poisson</value>
+  </data>
+  <data name="NBBeforeFishHelpText" xml:space="preserve">
+    <value>Peut gâcher des PR si le poisson ciblé n'apparaît pas</value>
+  </data>
   <data name="AutoCordialPandoras" xml:space="preserve">
     <value></value>
   </data>
@@ -1216,13 +1222,112 @@ Vous pouvez également utiliser la commande /ahstart pour commencer. Essayez de 
   <data name="ModestLure" xml:space="preserve">
     <value>Leurre modeste</value>
   </data>
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
+    <value>Poisson cible :</value>
+  </data>
+  <data name="AnyTarget" xml:space="preserve">
+    <value>N'importe quelle taille (Petit / Moyen / Large)</value>
+  </data>
+  <data name="OnlySpecial" xml:space="preserve">
+    <value>Seulement spécial</value>
+  </data>
+  <data name="SpecialFishExemple" xml:space="preserve">
+    <value>Les poissons spéciaux sont les seuls qui déclenche un dialogue unique lors de l'utilisation d'un hameçon. Par example:</value>
+  </data>
+  <data name="MaxAttempts" xml:space="preserve">
+    <value>Essaie maximum</value>
+  </data>
+  <data name="CancelAttempt" xml:space="preserve">
+    <value>Annuler le ferrage si la limite de stack est atteinte sans succès.</value>
+  </data>
   <data name="OnlyCastLarge" xml:space="preserve">
     <value>Utiliser uniquement lorsque "Patience"/"Pêche au gros" est actif</value>
   </data>
   <data name="SparefulHand" xml:space="preserve">
     <value>Pêche au vif énorme</value>
   </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Déactivé</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>Préréglage copié dans le presse-papiers</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>Clic droit pour plus d'options</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>Préréglage importé</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Supprimé</value>
+  </data>
   <data name="CommunityPresets" xml:space="preserve">
     <value>Préréglages de la communauté</value>
+  </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>Génération de préréglage</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>Générateur de préréglage</value>
+  </data>
+  <data name="FishingPresets" xml:space="preserve">
+    <value>Préréglage de pêche</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>Les nouveaux comptes doivent attendre un peu avant de pouvoir éditer le Wiki</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>Pêche</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>Harponnage</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>Cliquer ici pour ouvrir la page du Wiki</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>Cet onglet est destiné aux préréglages de la communauté. Vous pouvez obtenir des préréglages depuis le wiki ou partager les vôtres.</value>
+  </data>
+  <data name="UseIcActive" xml:space="preserve">
+    <value>Utiliser lorsque "Pêche identique" est active</value>
+  </data>
+  <data name="UseSlapActive" xml:space="preserve">
+    <value>Utiliser lorsque "Pêche variée" est active</value>
+  </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>Impossible de pêcher ici</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Désélectionner</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>Définir comme actif</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Renommer</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>Si aucun préréglage n'est sélectionner, le préréglage global sera utilisé</value>
+  </data>
+  <data name="AlreadySwapped" xml:space="preserve">
+    <value>(Déjà échangé)</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>Annulation de l'animation</value>
+  </data>
+  <data name="EnableRecastCancel" xml:space="preserve">
+    <value>Utiliser l'annulation de l'animation de pêche</value>
+  </data>
+  <data name="EnableRecastCancelHelp" xml:space="preserve">
+    <value>Ne fonctionne pas si le poisson est hameçonné, seulement quand la ligne est relancée après une tentative annulée / échoué.</value>
+  </data>
+  <data name="TurnCollectOff" xml:space="preserve">
+    <value>Désactive "Gants du collectionneur" quand Collection automatique est désactivé</value>
+  </data>
+  <data name="TurnCollectOffHelp" xml:space="preserve">
+    <value>L'annulation de l'animation nécessite l'activation de "Gants du collectionneur" avant de lancer la ligne, ça permet de s'assurer que "Gants du collectionneur"  restera désactivé pendant la pêche.</value>
+  </data>
+  <data name="ChumCancelHelp" xml:space="preserve">
+    <value>Expérimental et inconsistant (peut-être causé par le ping). L'action "Ramassage sous-marin" va être activée.</value>
   </data>
 </root>

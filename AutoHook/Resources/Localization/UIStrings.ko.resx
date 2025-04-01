@@ -312,7 +312,7 @@
 - 물고기로 설정되어 있는 경우: 해당 물고기가 X번 잡히면 낚시를 그만둡니다</value>
   </data>
   <data name="TimeS" xml:space="preserve">
-    <value>시간(초)</value>
+    <value>회</value>
     <comment>Quantity, example: 5 Time(s) </comment>
   </data>
   <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
@@ -764,7 +764,7 @@
     <value>낚시 끝내기</value>
   </data>
   <data name="Quit_Action_HelpText" xml:space="preserve">
-    <value>움직임이 감지되면 낚시가 중단됩니다</value>
+    <value>중단 기술이 시전 되며 낚시를 완전히 중단합니다</value>
   </data>
   <data name="Tab_Description" xml:space="preserve">
     <value>설명</value>
