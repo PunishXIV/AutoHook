@@ -1406,4 +1406,7 @@
   <data name="Prize_Catch_Options" xml:space="preserve">
     <value></value>
   </data>
+  <data name="Prize_Catch_Required" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
