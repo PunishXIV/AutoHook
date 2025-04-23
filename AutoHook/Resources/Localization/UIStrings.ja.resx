@@ -1100,10 +1100,10 @@
     <value>ネイチャーバウンティを使用</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>設定</value>
   </data>
   <data name="SettingsTab" xml:space="preserve">
-    <value>Settings</value>
+    <value>設定</value>
   </data>
   <data name="EnableActions" xml:space="preserve">
     <value>アクションを有効にする</value>
