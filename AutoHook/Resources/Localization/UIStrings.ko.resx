@@ -165,9 +165,6 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>가 새로운 미끼/생미끼 추가 시 기본으로 활성화 됨 </value>
   </data>
-  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
-    <value>수정 시 미끼/생미끼의 이름이 게임 내와 일치하는 지 확인하세요. (예: 만능 루어)</value>
-  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>새로운 미끼/생미끼</value>
   </data>
