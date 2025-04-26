@@ -159,9 +159,6 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>se activa por defecto cuando se añade carnada/mooch nuevo </value>
   </data>
-  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
-    <value>Asegúrate de editar correctamente el nombre de la carnada/mooch tal y como se muestra en el juego (Ej: Versatile Lure)</value>
-  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>Nueva carnada/mooch</value>
   </data>
