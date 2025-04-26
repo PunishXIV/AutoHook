@@ -165,9 +165,6 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>Ist standardmäßig aktiv, wenn ein neuer Köder/Naturköder hinzugefügt wird</value>
   </data>
-  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
-    <value>Stelle sicher, dass der Köder-/Naturködername wie im Spiel angezeigt angegeben ist (z.B.: Universalköder)</value>
-  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>Neuer Köder/Naturköder</value>
   </data>
