@@ -165,9 +165,6 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>新しい餌が追加されたときにデフォルトで有効になります </value>
   </data>
-  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
-    <value>ゲーム内で表示されるように、餌/泳がせ釣り用の魚名を正しく編集してください。(例：万能ルアー)</value>
-  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>新しい餌</value>
   </data>
