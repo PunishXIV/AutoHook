@@ -165,9 +165,6 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>est activé par défaut lorsqu'un nouvel appât/pêche au vif est ajouté </value>
   </data>
-  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
-    <value>Assurez-vous de bien modifier le nom de l'appât/pêche au vif comme affiché en jeu (Ex : Leurre universel)</value>
-  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>Nouveau appât/pêche au vif</value>
   </data>
