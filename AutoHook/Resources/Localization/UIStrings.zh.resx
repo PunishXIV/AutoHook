@@ -165,9 +165,6 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>在新的鱼饵/以小钓大鱼被添加时默认启用 </value>
   </data>
-  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
-    <value>请确认您所输入的鱼饵/以小钓大鱼和游戏中显示的一致（例：万能拟饵）</value>
-  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>新的鱼饵/以小钓大</value>
   </data>
