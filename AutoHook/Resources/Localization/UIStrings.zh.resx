@@ -1418,4 +1418,25 @@
   <data name="Status_NoHookEnabled" xml:space="preserve">
     <value>跳过咬钩 - 没有为这个咬钩启用提钩</value>
   </data>
+  <data name="Status_PrizeCatchRequired" xml:space="preserve">
+    <value>跳过咬钩 - 大鱼猎手未激活，但提钩需要其激活</value>
+  </data>
+  <data name="Status_IdenticalCastRequired" xml:space="preserve">
+    <value>跳过咬钩 - 专一垂钓已激活，但提钩无需其激活</value>
+  </data>
+  <data name="Status_IdenticalCastNotRequired" xml:space="preserve">
+    <value>跳过咬钩 - 专一垂钓未激活，但提钩需要其激活</value>
+  </data>
+  <data name="Status_SurfaceSlapRequired" xml:space="preserve">
+    <value>跳过咬钩 - 拍击水面未激活，但提钩需要其激活</value>
+  </data>
+  <data name="Status_SurfaceSlapNotRequired" xml:space="preserve">
+    <value>跳过咬钩 - 拍击水面已激活，但提钩无需其激活</value>
+  </data>
+  <data name="PrizeCatchNotActive" xml:space="preserve">
+    <value>只在大鱼猎手未激活时提钩</value>
+  </data>
+  <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
+    <value>跳过咬钩 - 大鱼猎手已激活，但提钩无需其激活</value>
+  </data>
 </root>
