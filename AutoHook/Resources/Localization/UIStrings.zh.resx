@@ -1439,4 +1439,7 @@
   <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
     <value>跳过咬钩 - 大鱼猎手已激活，但提钩无需其激活</value>
   </data>
+  <data name="StellarHookset" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
