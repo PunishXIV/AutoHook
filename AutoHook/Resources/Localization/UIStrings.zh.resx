@@ -1442,4 +1442,7 @@
   <data name="StellarHookset" xml:space="preserve">
     <value></value>
   </data>
+  <data name="FolderMostBeEmpty" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
