@@ -842,7 +842,7 @@ Schau in den Guide Tab für Erklärungen.</value>
     <value>Wichtig! Auto Angeln wird nicht benutzt, wenn manuell Angeschlagen wurde.</value>
   </data>
   <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
-    <value>Wichtig! Skills weden nicht benutzt, wenn manuell Angeschlagen wurde.</value>
+    <value>Wichtig! Skills werden nicht benutzt, wenn manuell Angeschlagen wurde.</value>
   </data>
   <data name="Food_Buff" xml:space="preserve">
     <value>Nahrungsverstärkung</value>
