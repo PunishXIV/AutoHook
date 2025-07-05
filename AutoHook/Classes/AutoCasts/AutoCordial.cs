@@ -36,10 +36,10 @@ public class AutoCordial : BaseActionCast
     [NonSerialized]
     private readonly List<(uint, uint)> _invertedList = new()
     {
-        (IDs.Item.HQWateredCordial, CordialHqWateredRecovery), 
         (IDs.Item.WateredCordial,   CordialWateredRecovery),
-        (IDs.Item.HQCordial,        CordialHqRecovery),
+        (IDs.Item.HQWateredCordial, CordialHqWateredRecovery),
         (IDs.Item.Cordial,          CordialRecovery),
+        (IDs.Item.HQCordial,        CordialHqRecovery),
         (IDs.Item.HiCordial,        CordialHiRecovery)
     };
     
