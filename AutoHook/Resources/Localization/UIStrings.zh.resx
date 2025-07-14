@@ -1445,4 +1445,7 @@
   <data name="FolderMostBeEmpty" xml:space="preserve">
     <value></value>
   </data>
+  <data name="FolderExported" xml:space="preserve">
+    <value>已导出预设至剪贴板</value>
+  </data>
 </root>
