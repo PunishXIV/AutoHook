@@ -903,6 +903,9 @@
   <data name="Preset_set_to_" xml:space="preserve">
     <value>プリセット:</value>
   </data>
+  <data name="Gig_preset_set_to_" xml:space="preserve">
+    <value>：</value>
+  </data>
   <data name="When_gaining_spectral_current" xml:space="preserve">
     <value>幻海流が発生したとき</value>
   </data>
