@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using AutoHook.Classes;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using Lumina.Excel.Sheets;
 
 namespace AutoHook.Utils;
@@ -32,8 +32,8 @@ public static class GameRes
              ?? [])
             .Concat(
                 Service.DataManager.GetExcelSheet<WKSItemInfo>()?
-                    .Where(i => i.Unknown3 == 5)
-                    .Select(i => Service.DataManager.GetExcelSheet<Item>()?.GetRow(i.Unknown0))
+                    .Where(i => i.Unknown3)
+                    .Select(i => Service.DataManager.GetExcelSheet<Item>()?.GetRow(i.Item.RowId))
                     .Where(item => item != null)
                     .Cast<Item>()
                 ?? []

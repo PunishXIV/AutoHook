@@ -6,7 +6,7 @@ using AutoHook.Resources.Localization;
 using AutoHook.Utils;
 using Dalamud.Interface;
 using Dalamud.Interface.Utility.Raii;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace AutoHook.Configurations;
 

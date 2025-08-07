@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AutoHook.Utils;
 using ECommons.Automation.NeoTaskManager;
 using ECommons.Throttlers;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using HtmlAgilityPack;
 using System.Linq;
 using AutoHook.Enums;
