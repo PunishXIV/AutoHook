@@ -1,17 +1,18 @@
 using AutoHook.Data;
+using AutoHook.Resources.Localization;
 using AutoHook.Utils;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
+using Dalamud.Interface.Utility.Raii;
+using ECommons.ImGuiMethods;
+using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
-using AutoHook.Resources.Localization;
-using Dalamud.Interface.Utility.Raii;
-using ECommons.Throttlers;
 
 namespace AutoHook.Classes;
 
@@ -178,7 +179,7 @@ public abstract class BaseActionCast
         if (!availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority))
             ImGui.BeginDisabled();
 
-        if (ImGui.ArrowButton(@"###UpArrow", ImGuiDir.Up))
+        if (ImGuiEx.IconButton(Dalamud.Interface.FontAwesomeIcon.ArrowUp))
         {
             if (availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority))
             {
@@ -197,7 +198,7 @@ public abstract class BaseActionCast
         if (!availableActs.Any(x => x.Priority > Priority && !x.IsExcludedPriority))
             ImGui.BeginDisabled();
 
-        if (ImGui.ArrowButton(@"###DownArrow", ImGuiDir.Down))
+        if (ImGuiEx.IconButton(Dalamud.Interface.FontAwesomeIcon.ArrowDown))
         {
             if (availableActs.Any(x => x.Priority > Priority && !x.IsExcludedPriority))
             {
@@ -217,7 +218,8 @@ public abstract class BaseActionCast
         ImGui.PushID(@$"{GetName()}_gp");
         if (ImGui.Button($"GP"))
         {
-            ImGui.OpenPopup(str_id: @"gp_cfg");
+            ImGui.OpenPopup(@"gp_cfg");
+
         }
 
         if (ImGui.BeginPopup(@"gp_cfg"))

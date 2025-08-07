@@ -14,7 +14,7 @@ using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
 using ECommons.Throttlers;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace AutoHook.Ui;
 

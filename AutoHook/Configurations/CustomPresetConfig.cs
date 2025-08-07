@@ -11,7 +11,7 @@ using AutoHook.Utils;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace AutoHook.Configurations;
 

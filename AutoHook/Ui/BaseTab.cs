@@ -2,7 +2,7 @@ using System;
 using AutoHook.Enums;
 using AutoHook.Resources.Localization;
 using AutoHook.Utils;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace AutoHook.Ui;
 

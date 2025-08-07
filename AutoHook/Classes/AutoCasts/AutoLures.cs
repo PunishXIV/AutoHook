@@ -1,7 +1,7 @@
 ﻿using AutoHook.Data;
 using AutoHook.Resources.Localization;
 using AutoHook.Utils;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using System;
 using System.Linq;
 using AutoHook.Enums;

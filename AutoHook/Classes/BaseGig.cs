@@ -4,7 +4,7 @@ using System.Linq;
 using AutoHook.Resources.Localization;
 using AutoHook.Spearfishing.Enums;
 using AutoHook.Utils;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace AutoHook.Classes;
 
