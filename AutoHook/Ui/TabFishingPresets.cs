@@ -13,7 +13,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using Newtonsoft.Json;
 
 namespace AutoHook.Ui;
@@ -781,8 +781,8 @@ public class TabFishingPresets : BaseTab
 
     private void DrawFolderContextMenu(PresetFolder folder)
     {
-        if (!ImGui.BeginPopupContextItem())
-            return;
+        //if (!ImGui.BeginPopupContextItem())
+        //    return;
 
         if (ImGui.Selectable(UIStrings.Rename, false, ImGuiSelectableFlags.DontClosePopups))
         {

@@ -2,7 +2,7 @@ using AutoHook.Ui;
 using AutoHook.Utils;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using PunishLib.ImGuiMethods;
 using System;
 using System.Collections.Generic;
@@ -206,7 +206,7 @@ public class PluginUi : Window, IDisposable
                         {
                             ImGuiEx.LineCentered("###AHLogo", () =>
                             {
-                                ImGui.Image(logo.ImGuiHandle, new(125f.Scale(), 125f.Scale()));
+                                ImGui.Image(logo.Handle, new(125f.Scale(), 125f.Scale()));
 
                                 if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
                                     Service.Configuration.PluginEnabled = !Service.Configuration.PluginEnabled;

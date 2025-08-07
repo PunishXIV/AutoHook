@@ -5,7 +5,7 @@ using AutoHook.Utils;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -115,7 +115,7 @@ internal class AutoGig : Window, IDisposable
 
     private unsafe void DrawFishOverlay()
     {
-        _addon = (SpearfishWindow*)Service.GameGui.GetAddonByName("SpearFishing", 1);
+        _addon = (SpearfishWindow*)Service.GameGui.GetAddonByName("SpearFishing", 1).Address;
 
         if (!checkForNullAddon && (_addon == null || _addon->Base.WindowNode == null))
         {
@@ -254,7 +254,7 @@ internal class AutoGig : Window, IDisposable
     {
         var lastOpen = _isOpen;
 
-        _addon = (SpearfishWindow*)Service.GameGui.GetAddonByName(@"SpearFishing");
+        _addon = (SpearfishWindow*)Service.GameGui.GetAddonByName(@"SpearFishing").Address;
         _isOpen = _addon != null && _addon->Base.WindowNode != null;
 
         if (!_isOpen)

@@ -3,7 +3,7 @@ using AutoHook.Utils;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -178,7 +178,8 @@ public abstract class BaseActionCast
         if (!availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority))
             ImGui.BeginDisabled();
 
-        if (ImGui.ArrowButton(@"###UpArrow", ImGuiDir.Up))
+        
+        /*if (ImGui.ArrowButton(@"###UpArrow", ImGuiDir.Up))
         {
             if (availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority))
             {
@@ -188,6 +189,7 @@ public abstract class BaseActionCast
                 this.Priority--;
             }
         }
+        */
 
         if (!availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority))
             ImGui.EndDisabled();
@@ -197,7 +199,7 @@ public abstract class BaseActionCast
         if (!availableActs.Any(x => x.Priority > Priority && !x.IsExcludedPriority))
             ImGui.BeginDisabled();
 
-        if (ImGui.ArrowButton(@"###DownArrow", ImGuiDir.Down))
+        /*if (ImGui.ArrowButton(@"###DownArrow", ImGuiDir.Down))
         {
             if (availableActs.Any(x => x.Priority > Priority && !x.IsExcludedPriority))
             {
@@ -206,7 +208,7 @@ public abstract class BaseActionCast
                 lastAct.Priority = this.Priority;
                 this.Priority++;
             }
-        }
+        }*/
 
         if (!availableActs.Any(x => x.Priority > Priority && !x.IsExcludedPriority))
             ImGui.EndDisabled();
@@ -217,7 +219,7 @@ public abstract class BaseActionCast
         ImGui.PushID(@$"{GetName()}_gp");
         if (ImGui.Button($"GP"))
         {
-            ImGui.OpenPopup(str_id: @"gp_cfg");
+            ImGui.OpenPopup(@"gp_cfg");
         }
 
         if (ImGui.BeginPopup(@"gp_cfg"))
