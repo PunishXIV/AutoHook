@@ -1206,7 +1206,7 @@
     <value>Fish Hitbox偏移</value>
   </data>
   <data name="OffsetLR" xml:space="preserve">
-    <value></value>
+    <value>Offset (L-&gt;R)</value>
   </data>
   <data name="OffsetRL" xml:space="preserve">
     <value>Offset (R-&gt;L)</value>
@@ -1404,10 +1404,10 @@
     <value>不在专一垂钓激活时使用拟饵技能</value>
   </data>
   <data name="Prize_Catch_Options" xml:space="preserve">
-    <value></value>
+    <value>Prize Catch Options</value>
   </data>
   <data name="Prize_Catch_Required" xml:space="preserve">
-    <value></value>
+    <value>Only hook when Prize Catch active</value>
   </data>
   <data name="Conditions" xml:space="preserve">
     <value>条件</value>
@@ -1440,10 +1440,10 @@
     <value>跳过咬钩 - 大鱼猎手已激活，但提钩无需其激活</value>
   </data>
   <data name="StellarHookset" xml:space="preserve">
-    <value></value>
+    <value>Stellar Hookset</value>
   </data>
   <data name="FolderMostBeEmpty" xml:space="preserve">
-    <value></value>
+    <value>Folder must be empty to delete</value>
   </data>
   <data name="FolderExported" xml:space="preserve">
     <value>已导出预设至剪贴板</value>
