@@ -1304,4 +1304,10 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="StatusNoPreset" xml:space="preserve">
     <value>Keine Voreinstellung aktiv, globale Voreinstellung wird stattdessen verwendet</value>
   </data>
+  <data name="Conditions_HelpText" xml:space="preserve">
+    <value>Bestimmte Bedingungen für den Anschlag</value>
+  </data>
+  <data name="FolderExported" xml:space="preserve">
+    <value>Ordner in die Zwischenablage exportiert</value>
+  </data>
 </root>
