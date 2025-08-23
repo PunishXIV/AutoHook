@@ -165,6 +165,9 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>Ist standardmäßig aktiv, wenn ein neuer Köder/Naturköder hinzugefügt wird</value>
   </data>
+  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
+    <value>"Alle Köder" und "Alle Naturköder" haben die niedrigste Priorität</value>
+  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>Neuer Köder/Naturköder</value>
   </data>
@@ -899,10 +902,16 @@ Schau in den Guide Tab für Erklärungen.</value>
   <data name="Set_preset_command" xml:space="preserve">
     <value>Benutzerdefiniertes Preset wird im Chat mit folgendem Kommando festgelegt -&gt; /ahpreset presetName</value>
   </data>
+  <data name="Set_agpreset_command" xml:space="preserve">
+    <value>Benutzerdefiniertes Preset wird im Chat mit folgendem Kommando festgelegt -&gt; /ahpreset presetName</value>
+  </data>
   <data name="Starts_AutoHook" xml:space="preserve">
     <value>Starte Angeln mit deinem ausgewählten Preset</value>
   </data>
   <data name="Preset_set_to_" xml:space="preserve">
+    <value>Preset eingestellt auf:</value>
+  </data>
+  <data name="Gig_preset_set_to_" xml:space="preserve">
     <value>Preset eingestellt auf:</value>
   </data>
   <data name="When_gaining_spectral_current" xml:space="preserve">
@@ -1202,6 +1211,21 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="Fish_Hitbox_Offset" xml:space="preserve">
     <value>Fisch Treffer-Bereich Versatz</value>
   </data>
+  <data name="OffsetLR" xml:space="preserve">
+    <value>Versatz (L-&gt;R)</value>
+  </data>
+  <data name="OffsetRL" xml:space="preserve">
+    <value>Versatz (R-&gt;L)</value>
+  </data>
+  <data name="OffsetRLHelpText" xml:space="preserve">
+    <value>Hitbox-Versatz für Fische, die von rechts nach links kommen</value>
+  </data>
+  <data name="FishHitboxHelpText" xml:space="preserve">
+    <value>Passen Sie den Hitbox-Bereich an, wenn Sie denken, dass zu viel fehlt</value>
+  </data>
+  <data name="NBBeforeFish" xml:space="preserve">
+    <value>Nutze Großes Füllhorn bevor der Fisch erscheint</value>
+  </data>
   <data name="AutoCordialPandoras" xml:space="preserve">
     <value>Auto-Cordial kann im Pandora's Box Plugin gefunden werden</value>
   </data>
@@ -1279,5 +1303,11 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   </data>
   <data name="StatusNoPreset" xml:space="preserve">
     <value>Keine Voreinstellung aktiv, globale Voreinstellung wird stattdessen verwendet</value>
+  </data>
+  <data name="Conditions_HelpText" xml:space="preserve">
+    <value>Bestimmte Bedingungen für den Anschlag</value>
+  </data>
+  <data name="FolderExported" xml:space="preserve">
+    <value>Ordner in die Zwischenablage exportiert</value>
   </data>
 </root>
