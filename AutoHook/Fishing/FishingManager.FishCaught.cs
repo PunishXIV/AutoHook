@@ -91,6 +91,7 @@ public partial class FishingManager
                     Service.PrintChat(@$"[Fish Caught] Swapping bait to {lastCatchCfg.BaitToSwap.Name}");
                     Service.Save();
                 }
+                if(lastCatchCfg.SwapBaitResetCount) FishingHelper.ToBeRemoved.Add(guid);
             }
         }
     }

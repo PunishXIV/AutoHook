@@ -200,6 +200,7 @@ public class SubTabFish
 
                     Service.Save();
                 }
+                DrawUtil.Checkbox(UIStrings.Reset_Counter_Bait_Swap, ref fishConfig.SwapBaitResetCount);
             }
         );
 

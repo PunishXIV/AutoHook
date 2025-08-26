@@ -27,7 +27,8 @@ public class FishConfig : BaseOption
     public bool SwapBait = false;
     public BaitFishClass BaitToSwap = new();
     public int SwapBaitCount = 1;
-    
+    public bool SwapBaitResetCount = false;
+
     public bool SwapPresets = false;
     public string PresetToSwap = "-"; 
     public int SwapPresetCount = 1;

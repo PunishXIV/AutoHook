@@ -1498,4 +1498,7 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
     <value>Moving folder:</value>
     <comment>Moving folder: FolderName</comment>
   </data>
+  <data name="Reset_Counter_Bait_Swap" xml:space="preserve">
+    <value>Reset counter after swapping baits</value>
+  </data>
 </root>
