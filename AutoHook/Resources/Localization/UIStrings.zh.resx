@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema 
 		
 		Version 2.0
@@ -59,1401 +59,1400 @@
 						: using a System.ComponentModel.TypeConverter
 						: and then encoded with base64 encoding.
 		-->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	            xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0"/>
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string"/>
-							<xsd:attribute name="type" type="xsd:string"/>
-							<xsd:attribute name="mimetype" type="xsd:string"/>
-							<xsd:attribute ref="xml:space"/>
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string"/>
-							<xsd:attribute name="name" type="xsd:string"/>
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-							<xsd:attribute ref="xml:space"/>
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required"/>
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
 			PublicKeyToken=b77a5c561934e089
 		</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
 			PublicKeyToken=b77a5c561934e089
 		</value>
-	</resheader>
-	<data name="DrawHeader_Testing" xml:space="preserve">
+  </resheader>
+  <data name="DrawHeader_Testing" xml:space="preserve">
     <value>测试</value>
   </data>
-	<data name="DefaultSubTab" xml:space="preserve">
+  <data name="DefaultSubTab" xml:space="preserve">
     <value>默认值</value>
   </data>
-	<data name="DrawImportExport_Cancel" xml:space="preserve">
+  <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
-	<data name="ImportPresetFromClipboard" xml:space="preserve">
+  <data name="ImportPresetFromClipboard" xml:space="preserve">
     <value>从剪贴板导入预设。</value>
   </data>
-	<data name="Import" xml:space="preserve">
+  <data name="Import" xml:space="preserve">
     <value>导入</value>
   </data>
-	<data name="PresetName" xml:space="preserve">
+  <data name="PresetName" xml:space="preserve">
     <value>预设名称</value>
   </data>
-	<data name="ImportThisPreset" xml:space="preserve">
+  <data name="ImportThisPreset" xml:space="preserve">
     <value>导入此预设？</value>
   </data>
-	<data name="AutoMooch" xml:space="preserve">
+  <data name="AutoMooch" xml:space="preserve">
     <value>自动以小钓大</value>
   </data>
-	<data name="AddLastCatch" xml:space="preserve">
+  <data name="AddLastCatch" xml:space="preserve">
     <value>添加上次渔获：</value>
   </data>
-	<data name="ExportPresetToClipboard" xml:space="preserve">
+  <data name="ExportPresetToClipboard" xml:space="preserve">
     <value>导出预设到剪贴板。</value>
   </data>
-	<data name="PresetExportedToTheClipboard" xml:space="preserve">
+  <data name="PresetExportedToTheClipboard" xml:space="preserve">
     <value>已导出预设至剪贴板</value>
   </data>
-	<data name="APresetWithTheSameNameAlreadyExists" xml:space="preserve">
+  <data name="APresetWithTheSameNameAlreadyExists" xml:space="preserve">
     <value>已存在同名的预设</value>
   </data>
-	<data name="PresetAlreadyExist" xml:space="preserve">
+  <data name="PresetAlreadyExist" xml:space="preserve">
     <value>已存在同名的预设</value>
   </data>
-	<data name="CurrentBaitMooch" xml:space="preserve">
+  <data name="CurrentBaitMooch" xml:space="preserve">
     <value>当前鱼饵/以小钓大鱼</value>
   </data>
-	<data name="AddCurrentBaitMooch" xml:space="preserve">
+  <data name="AddCurrentBaitMooch" xml:space="preserve">
     <value>添加当前鱼饵/以小钓大鱼</value>
   </data>
-	<data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
+  <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>在新的鱼饵/以小钓大鱼被添加时默认启用 </value>
   </data>
-	<data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
+  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
     <value>“所有鱼饵”和“所有以小钓大鱼”拥有最低优先级</value>
   </data>
-	<data name="NewBaitMooch" xml:space="preserve">
+  <data name="NewBaitMooch" xml:space="preserve">
     <value>新的鱼饵/以小钓大</value>
   </data>
-	<data name="EditMe" xml:space="preserve">
+  <data name="EditMe" xml:space="preserve">
     <value>编辑</value>
   </data>
-	<data name="Add" xml:space="preserve">
+  <data name="Add" xml:space="preserve">
     <value>添加</value>
   </data>
-	<data name="HoldShiftToDelete" xml:space="preserve">
+  <data name="HoldShiftToDelete" xml:space="preserve">
     <value>按住SHIFT以删除。</value>
   </data>
-	<data name="Close" xml:space="preserve">
+  <data name="Close" xml:space="preserve">
     <value>关闭</value>
   </data>
-	<data name="RightClickToRename" xml:space="preserve">
+  <data name="RightClickToRename" xml:space="preserve">
     <value>右键单击以重命名</value>
   </data>
-	<data name="EnterToConfirm" xml:space="preserve">
+  <data name="EnterToConfirm" xml:space="preserve">
     <value>编辑预设名称（按回车键确认）</value>
   </data>
-	<data name="HookPresets" xml:space="preserve">
+  <data name="HookPresets" xml:space="preserve">
     <value>提钩预设</value>
   </data>
-	<data name="AddNewPreset" xml:space="preserve">
+  <data name="AddNewPreset" xml:space="preserve">
     <value>添加新预设</value>
   </data>
-	<data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
     <value>您可以在这里自定义当前的鱼饵或以小钓大鱼使用什么提钩技能。
 如果未指定鱼饵/以小钓大鱼，那么将会使用通用标签页中的默认行为。</value>
   </data>
-	<data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
+  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
     <value>您可以在这里自定义当前的鱼饵或以小钓大鱼使用什么提钩技能。
 如果未指定鱼饵/以小钓大鱼，那么将会使用通用标签页中的默认行为。</value>
   </data>
-	<data name="NewPreset" xml:space="preserve">
+  <data name="NewPreset" xml:space="preserve">
     <value>新预设</value>
   </data>
-	<data name="TabNameCustomPresets" xml:space="preserve">
+  <data name="TabNameCustomPresets" xml:space="preserve">
     <value>自定义预设</value>
   </data>
-	<data name="TabNameGPConfig" xml:space="preserve">
+  <data name="TabNameGPConfig" xml:space="preserve">
     <value>采集力配置</value>
   </data>
-	<data name="TabGPConfig_TabDescription" xml:space="preserve">
+  <data name="TabGPConfig_TabDescription" xml:space="preserve">
     <value>您可以在这里自定义 AutoCast 提供的的技能和道具的采集力门槛值。</value>
   </data>
-	<data name="GP" xml:space="preserve">
+  <data name="GP" xml:space="preserve">
     <value>采集力</value>
   </data>
-	<data name="Above" xml:space="preserve">
+  <data name="Above" xml:space="preserve">
     <value>高于</value>
   </data>
-	<data name="Below" xml:space="preserve">
+  <data name="Below" xml:space="preserve">
     <value>低于</value>
   </data>
-	<data name="WillBeUsedWhenYourGPIsEqualOr" xml:space="preserve">
+  <data name="WillBeUsedWhenYourGPIsEqualOr" xml:space="preserve">
     <value>当您的采集力等于或</value>
 		<comment>Action will be used when your GP is Equal or Above/Below</comment>
   </data>
-	<data name="None" xml:space="preserve">
+  <data name="None" xml:space="preserve">
     <value>无</value>
   </data>
-	<data name="TabnameGeneral" xml:space="preserve">
+  <data name="TabnameGeneral" xml:space="preserve">
     <value>通用</value>
   </data>
-	<data name="DrawHeader_GeneralSettings" xml:space="preserve">
+  <data name="DrawHeader_GeneralSettings" xml:space="preserve">
     <value>通用设置</value>
   </data>
-	<data name="DrawHeader_CheckChangelog" xml:space="preserve">
+  <data name="DrawHeader_CheckChangelog" xml:space="preserve">
     <value>请在下方的更新日志中检查新更改</value>
   </data>
-	<data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
+  <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>点击此处报告一个问题或提出建议</value>
   </data>
-	<data name="Changelog" xml:space="preserve">
+  <data name="Changelog" xml:space="preserve">
     <value>更新日志</value>
   </data>
-	<data name="HookWeakExclamation" xml:space="preserve">
+  <data name="HookWeakExclamation" xml:space="preserve">
     <value>提钩轻杆 (!)</value>
   </data>
-	<data name="HookStrongExclamation" xml:space="preserve">
+  <data name="HookStrongExclamation" xml:space="preserve">
     <value>提钩重杆 (!!)</value>
   </data>
-	<data name="HookLegendaryExclamation" xml:space="preserve">
+  <data name="HookLegendaryExclamation" xml:space="preserve">
     <value>提钩鱼王杆 (!!!)</value>
   </data>
-	<data name="HookWillBeUsedIfPatienceIsNotUp" xml:space="preserve">
+  <data name="HookWillBeUsedIfPatienceIsNotUp" xml:space="preserve">
     <value>在未使用耐心技能时使用“提钩”</value>
   </data>
-	<data name="PrecisionHookset" xml:space="preserve">
+  <data name="PrecisionHookset" xml:space="preserve">
     <value>精准提钩</value>
   </data>
-	<data name="PowerfulHookset" xml:space="preserve">
+  <data name="PowerfulHookset" xml:space="preserve">
     <value>强力提钩</value>
   </data>
-	<data name="MoochBaitName" xml:space="preserve">
+  <data name="MoochBaitName" xml:space="preserve">
     <value>以小钓大/鱼饵名</value>
   </data>
-	<data name="BaitAlreadyExists" xml:space="preserve">
+  <data name="BaitAlreadyExists" xml:space="preserve">
     <value>鱼饵已存在</value>
   </data>
-	<data name="MaxWait" xml:space="preserve">
+  <data name="MaxWait" xml:space="preserve">
     <value>最长等待时间</value>
 		<comment>Maximum time to wait</comment>
   </data>
-	<data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
+  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
     <value>如果超过了设定的等待时间，就不会使用提钩
 例如：如果你把最大等待时间设为10秒，而有鱼在12秒后上钩，那么这条鱼会被忽略</value>
   </data>
-	<data name="TimeoutHelpText" xml:space="preserve">
+  <data name="TimeoutHelpText" xml:space="preserve">
     <value>设置零(0) 为禁用。
 在达到时间限制时，使用提钩取消捕鱼尝试。</value>
   </data>
-	<data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
     <value>聊天室活动时不受影响</value>
   </data>
-	<data name="MinWait" xml:space="preserve">
+  <data name="MinWait" xml:space="preserve">
     <value>最小等待时间</value>
   </data>
-	<data name="Min" xml:space="preserve">
+  <data name="Min" xml:space="preserve">
     <value>最小值</value>
   </data>
-	<data name="Max" xml:space="preserve">
+  <data name="Max" xml:space="preserve">
     <value>最大值</value>
   </data>
-	<data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
     <value>如果超过了设定的等待时间，就不会使用提钩
 例如：如果你把最小等待时间设为14秒，而有鱼在8秒后上钩，那么这条鱼会被忽略</value>
   </data>
-	<data name="StopFishingAfter" xml:space="preserve">
+  <data name="StopFishingAfter" xml:space="preserve">
     <value>在... 后停止捕鱼</value>
   </data>
-	<data name="StopFishing" xml:space="preserve">
+  <data name="StopFishing" xml:space="preserve">
     <value>停止钓鱼</value>
   </data>
-	<data name="AfterBeingCaught" xml:space="preserve">
+  <data name="AfterBeingCaught" xml:space="preserve">
     <value>当... 条鱼提钩后</value>
   </data>
-	<data name="AfterBeingCaughtDescription" xml:space="preserve">
+  <data name="AfterBeingCaughtDescription" xml:space="preserve">
     <value>- 如果该设置为鱼饵： 将在X条鱼上钩后停止捕鱼
 - 如果该设置为鱼： 将在该鱼上钩X次后停止捕鱼</value>
   </data>
-	<data name="TimeS" xml:space="preserve">
+  <data name="TimeS" xml:space="preserve">
     <value>次数(条)</value>
 		<comment>Quantity, example: 5 Time(s) </comment>
   </data>
-	<data name="SurfaceSlapIdenticalCast" xml:space="preserve">
+  <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
     <value>拍击水面 &amp; 专一垂钓</value>
   </data>
-	<data name="OverridesIdenticalCast" xml:space="preserve">
+  <data name="OverridesIdenticalCast" xml:space="preserve">
     <value>覆盖专一垂钓</value>
   </data>
-	<data name="OverridesSurfaceSlap" xml:space="preserve">
+  <data name="OverridesSurfaceSlap" xml:space="preserve">
     <value>覆盖拍击水面</value>
   </data>
-	<data name="UseSurfaceSlap" xml:space="preserve">
+  <data name="UseSurfaceSlap" xml:space="preserve">
     <value>使用拍击水面</value>
   </data>
-	<data name="UseIdenticalCast" xml:space="preserve">
+  <data name="UseIdenticalCast" xml:space="preserve">
     <value>使用专一垂钓</value>
   </data>
-	<data name="UseMoochII" xml:space="preserve">
+  <data name="UseMoochII" xml:space="preserve">
     <value>使用以小钓大II</value>
   </data>
-	<data name="OnlyUseWhenFisherSIntutionIsActive" xml:space="preserve">
+  <data name="OnlyUseWhenFisherSIntutionIsActive" xml:space="preserve">
     <value>只在鱼识中使用</value>
   </data>
-	<data name="AutoMoochPresetDescription" xml:space="preserve">
+  <data name="AutoMoochPresetDescription" xml:space="preserve">
     <value>- 如果这项设置是一个鱼饵(例：万能拟饵)，由此鱼饵上钩的所有鱼都将使用以小钓大
 - 如果这项设置是一条鱼/以小钓大鱼(例：海港鲱)，当这条鱼上钩时会使用以小钓大
 - 如果这项设置被禁用，即使综合面板中自动以小钓大被启用，都不会使用以小钓大</value>
   </data>
-	<data name="AutoMoochPresetHelpMarker" xml:space="preserve">
+  <data name="AutoMoochPresetHelpMarker" xml:space="preserve">
     <value>此选项优先于自动垂钓</value>
   </data>
-	<data name="FisherSIntuitionSettings" xml:space="preserve">
+  <data name="FisherSIntuitionSettings" xml:space="preserve">
     <value>捕鱼人之识设置</value>
   </data>
-	<data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
+  <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
     <value>触发鱼识时启用自定义提钩</value>
   </data>
-	<data name="SpectralCurrentSettings" xml:space="preserve">
+  <data name="SpectralCurrentSettings" xml:space="preserve">
     <value>幻海流设置</value>
   </data>
-	<data name="HoldShiftBothDHTH" xml:space="preserve">
+  <data name="HoldShiftBothDHTH" xml:space="preserve">
     <value>按住 SHIFT 键以同时选中双重提钩和三重提钩（不推荐）</value>
   </data>
-	<data name="UseDoubleHookIfGp400" xml:space="preserve">
+  <data name="UseDoubleHookIfGp400" xml:space="preserve">
     <value>使用双重提钩（如果采集力 &gt; 400）</value>
   </data>
-	<data name="UseTripleHookIfGp700" xml:space="preserve">
+  <data name="UseTripleHookIfGp700" xml:space="preserve">
     <value>使用三重提钩（如果采集力 &gt; 700）</value>
   </data>
-	<data name="UseWhenPatienceIsActiveNotRecommended" xml:space="preserve">
+  <data name="UseWhenPatienceIsActiveNotRecommended" xml:space="preserve">
     <value>当耐心激活时使用（不推荐）</value>
   </data>
-	<data name="DHTHPatienceHelpMarker" xml:space="preserve">
+  <data name="DHTHPatienceHelpMarker" xml:space="preserve">
     <value>重要！！！
 
 如果禁用此项，那么耐心存在的时候将使用精准/强力提钩。</value>
   </data>
-	<data name="LetTheFishEscape" xml:space="preserve">
+  <data name="LetTheFishEscape" xml:space="preserve">
     <value>如果GP不够就放掉不提。</value>
   </data>
-	<data name="OnlyUseWhenIdenticalCastIsActive" xml:space="preserve">
+  <data name="OnlyUseWhenIdenticalCastIsActive" xml:space="preserve">
     <value>仅当专一垂钓激活时使用</value>
   </data>
-	<data name="DoubleTripleHookSettings" xml:space="preserve">
+  <data name="DoubleTripleHookSettings" xml:space="preserve">
     <value>双重/三重提钩设置</value>
   </data>
-	<data name="EnabledConfigArrow" xml:space="preserve">
+  <data name="EnabledConfigArrow" xml:space="preserve">
     <value>已启用的配置 -&gt;</value>
   </data>
-	<data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
+  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
     <value>重要！！！
 
 如果禁用，鱼将不会被钓起。</value>
   </data>
-	<data name="ChumTimer" xml:space="preserve">
+  <data name="ChumTimer" xml:space="preserve">
     <value>撒饵计时</value>
   </data>
-	<data name="EnableChumTimers" xml:space="preserve">
+  <data name="EnableChumTimers" xml:space="preserve">
     <value>使用撒饵计时</value>
   </data>
-	<data name="EnableChumTimersHelpMarker" xml:space="preserve">
+  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
     <value>与上面的选项相同，但仅在聊天室活动时</value>
   </data>
-	<data name="Enable" xml:space="preserve">
+  <data name="Enable" xml:space="preserve">
     <value>启用</value>
   </data>
-	<data name="TabNameAutoGig" xml:space="preserve">
+  <data name="TabNameAutoGig" xml:space="preserve">
     <value>自动刺鱼</value>
   </data>
-	<data name="TabAutoGigDescription" xml:space="preserve">
+  <data name="TabAutoGigDescription" xml:space="preserve">
     <value>这是一项实验性设置，它可能会漏掉鱼。如果你发现漏鱼过多，请尝试修改刺鱼的窗口范围至不同值</value>
   </data>
-	<data name="EnableAutoGig" xml:space="preserve">
+  <data name="EnableAutoGig" xml:space="preserve">
     <value>启用自动刺鱼</value>
   </data>
-	<data name="HideOverlayDuringSpearfishing" xml:space="preserve">
+  <data name="HideOverlayDuringSpearfishing" xml:space="preserve">
     <value>刺鱼期间隐藏UI</value>
   </data>
-	<data name="AutoGigHideOverlayHelpMarker" xml:space="preserve">
+  <data name="AutoGigHideOverlayHelpMarker" xml:space="preserve">
     <value>它将只在自动刺鱼禁用时隐藏</value>
   </data>
-	<data name="DrawFishHitbox" xml:space="preserve">
+  <data name="DrawFishHitbox" xml:space="preserve">
     <value>绘制鱼的命中框</value>
   </data>
-	<data name="DrawFishHitboxHelpMarker" xml:space="preserve">
+  <data name="DrawFishHitboxHelpMarker" xml:space="preserve">
     <value>只显示所选尺寸及速度的鱼的命中框</value>
   </data>
-	<data name="DrawGigHitbox" xml:space="preserve">
+  <data name="DrawGigHitbox" xml:space="preserve">
     <value>绘制刺鱼命中框</value>
   </data>
-	<data name="SelectTheSizeAndSpeed" xml:space="preserve">
+  <data name="SelectTheSizeAndSpeed" xml:space="preserve">
     <value>选择你想要的鱼的尺寸及速度( Gatherbudy 的刺鱼界面很有帮助)</value>
   </data>
-	<data name="Size" xml:space="preserve">
+  <data name="Size" xml:space="preserve">
     <value>尺寸</value>
   </data>
-	<data name="Speed" xml:space="preserve">
+  <data name="Speed" xml:space="preserve">
     <value>速度</value>
   </data>
-	<data name="AutoCastCordialPriority" xml:space="preserve">
+  <data name="AutoCastCordialPriority" xml:space="preserve">
     <value>更改优先级：轻型强心剂 &gt; 强心剂 &gt; 高级强心剂</value>
   </data>
-	<data name="AutoCastCordialPriorityHelpMarker" xml:space="preserve">
+  <data name="AutoCastCordialPriorityHelpMarker" xml:space="preserve">
     <value>如果没有强心剂，使用高级强心剂</value>
   </data>
-	<data name="AutoCastUseCordial" xml:space="preserve">
+  <data name="AutoCastUseCordial" xml:space="preserve">
     <value>使用强心剂(优先使用高级强心剂)</value>
   </data>
-	<data name="AutoCastUseCordialHelpMarker" xml:space="preserve">
+  <data name="AutoCastUseCordialHelpMarker" xml:space="preserve">
     <value>如果没有高级强心剂，使用强心剂</value>
   </data>
-	<data name="AutoCastUseFishEyes" xml:space="preserve">
+  <data name="AutoCastUseFishEyes" xml:space="preserve">
     <value>使用鱼眼</value>
   </data>
-	<data name="CancelsCurrentMooch" xml:space="preserve">
+  <data name="CancelsCurrentMooch" xml:space="preserve">
     <value>取消当前以小钓大</value>
   </data>
-	<data name="AutoCastUseChum" xml:space="preserve">
+  <data name="AutoCastUseChum" xml:space="preserve">
     <value>使用撒铒</value>
   </data>
-	<data name="AutoCastExtraOptionPrizeCatch" xml:space="preserve">
+  <data name="AutoCastExtraOptionPrizeCatch" xml:space="preserve">
     <value>仅当以小钓大 II 不可用时使用 - 阅读说明 &gt;&gt;&gt;</value>
   </data>
-	<data name="ExtraOptionPrizeCatchHelpMarker" xml:space="preserve">
+  <data name="ExtraOptionPrizeCatchHelpMarker" xml:space="preserve">
     <value>&gt;请确保启用了'使用以小钓大 II'，否则它将无法正常工作&lt;
  如果只是为了以小钓大这将为您省下100GP</value>
   </data>
-	<data name="Test" xml:space="preserve">
+  <data name="Test" xml:space="preserve">
     <value>.</value>
   </data>
-	<data name="Enable_AutoHook" xml:space="preserve">
+  <data name="Enable_AutoHook" xml:space="preserve">
     <value>启用自动提钩</value>
   </data>
-	<data name="Plugin_Enabled" xml:space="preserve">
+  <data name="Plugin_Enabled" xml:space="preserve">
     <value>插件已启用</value>
   </data>
-	<data name="Plugin_Disabled" xml:space="preserve">
+  <data name="Plugin_Disabled" xml:space="preserve">
     <value>插件已禁用</value>
   </data>
-	<data name="Plugin_Name_Settings" xml:space="preserve">
+  <data name="Plugin_Name_Settings" xml:space="preserve">
     <value>{0} 设置</value>
   </data>
-	<data name="PluginUi_Draw_Enables_Disables" xml:space="preserve">
+  <data name="PluginUi_Draw_Enables_Disables" xml:space="preserve">
     <value>启用/禁用插件</value>
   </data>
-	<data name="Using_Chum_Timer" xml:space="preserve">
+  <data name="Using_Chum_Timer" xml:space="preserve">
     <value>使用撒饵计时器</value>
   </data>
-	<data name="Disables_AutoHook" xml:space="preserve">
+  <data name="Disables_AutoHook" xml:space="preserve">
     <value>禁用自动提钩</value>
   </data>
-	<data name="AutoHook_Disabled" xml:space="preserve">
+  <data name="AutoHook_Disabled" xml:space="preserve">
     <value>自动提钩已禁用</value>
   </data>
-	<data name="AutoHook_Enabled" xml:space="preserve">
+  <data name="AutoHook_Enabled" xml:space="preserve">
     <value>自动提钩已启用</value>
   </data>
-	<data name="Enables_AutoHook" xml:space="preserve">
+  <data name="Enables_AutoHook" xml:space="preserve">
     <value>启用自动提钩</value>
   </data>
-	<data name="Opens_Config_Window" xml:space="preserve">
+  <data name="Opens_Config_Window" xml:space="preserve">
     <value>打开配置窗口</value>
   </data>
-	<data name="TabAutoCasts_When_Stack_Equals" xml:space="preserve">
+  <data name="TabAutoCasts_When_Stack_Equals" xml:space="preserve">
     <value>当捕鱼人之技的档数 = </value>
   </data>
-	<data name="Use_Prize_Catch" xml:space="preserve">
+  <data name="Use_Prize_Catch" xml:space="preserve">
     <value>使用大鱼猎手</value>
   </data>
-	<data name="Use_Prize_Catch_HelpText" xml:space="preserve">
+  <data name="Use_Prize_Catch_HelpText" xml:space="preserve">
     <value>取消当前以小钓大状态。当大鱼猎手激活时耐心及熟练渔技将不会被使用</value>
   </data>
-	<data name="Toggles_AutoHook_On_Off" xml:space="preserve">
+  <data name="Toggles_AutoHook_On_Off" xml:space="preserve">
     <value>切换自动提钩开/关</value>
   </data>
-	<data name="Triple_Hook" xml:space="preserve">
+  <data name="Triple_Hook" xml:space="preserve">
     <value>三重提钩</value>
   </data>
-	<data name="Watered_Cordial" xml:space="preserve">
+  <data name="Watered_Cordial" xml:space="preserve">
     <value>轻型强心剂</value>
   </data>
-	<data name="Cordial" xml:space="preserve">
+  <data name="Cordial" xml:space="preserve">
     <value>强心剂</value>
   </data>
-	<data name="HQ_Cordial" xml:space="preserve">
+  <data name="HQ_Cordial" xml:space="preserve">
     <value>强心剂HQ</value>
   </data>
-	<data name="HQ_Watered_Cordial" xml:space="preserve">
+  <data name="HQ_Watered_Cordial" xml:space="preserve">
     <value>轻型强心剂HQ</value>
   </data>
-	<data name="Double_Hook" xml:space="preserve">
+  <data name="Double_Hook" xml:space="preserve">
     <value>双重提钩</value>
   </data>
-	<data name="Patience_II" xml:space="preserve">
+  <data name="Patience_II" xml:space="preserve">
     <value>耐心II</value>
   </data>
-	<data name="Hi_Cordial" xml:space="preserve">
+  <data name="Hi_Cordial" xml:space="preserve">
     <value>高级强心剂</value>
   </data>
-	<data name="Patience_I" xml:space="preserve">
+  <data name="Patience_I" xml:space="preserve">
     <value>耐心I</value>
   </data>
-	<data name="Prize_Catch" xml:space="preserve">
+  <data name="Prize_Catch" xml:space="preserve">
     <value>大鱼猎手</value>
   </data>
-	<data name="Surface_Slap" xml:space="preserve">
+  <data name="Surface_Slap" xml:space="preserve">
     <value>拍击水面</value>
   </data>
-	<data name="Surface_Slap_Options" xml:space="preserve">
+  <data name="Surface_Slap_Options" xml:space="preserve">
     <value>拍打水面选项</value>
   </data>
-	<data name="Identical_Cast_Options" xml:space="preserve">
+  <data name="Identical_Cast_Options" xml:space="preserve">
     <value>专一垂钓选项</value>
   </data>
-	<data name="Identical_Cast" xml:space="preserve">
+  <data name="Identical_Cast" xml:space="preserve">
     <value>专一垂钓</value>
   </data>
-	<data name="Fish_Eyes" xml:space="preserve">
+  <data name="Fish_Eyes" xml:space="preserve">
     <value>鱼眼</value>
   </data>
-	<data name="Chum" xml:space="preserve">
+  <data name="Chum" xml:space="preserve">
     <value>撒饵</value>
   </data>
-	<data name="Thaliaks_Favor" xml:space="preserve">
+  <data name="Thaliaks_Favor" xml:space="preserve">
     <value>沙利亚克的恩宠</value>
   </data>
-	<data name="MakeShift_Bait" xml:space="preserve">
+  <data name="MakeShift_Bait" xml:space="preserve">
     <value>熟练渔技</value>
   </data>
-	<data name="BaitName_Default" xml:space="preserve">
+  <data name="BaitName_Default" xml:space="preserve">
     <value>默认值</value>
   </data>
-	<data name="DecompressString_Invalid_Import" xml:space="preserve">
+  <data name="DecompressString_Invalid_Import" xml:space="preserve">
     <value>这不是一个有效的导入。</value>
   </data>
-	<data name="New_Preset" xml:space="preserve">
+  <data name="New_Preset" xml:space="preserve">
     <value>新预设</value>
   </data>
-	<data name="Auto_Casts" xml:space="preserve">
+  <data name="Auto_Casts" xml:space="preserve">
     <value>自动垂钓</value>
   </data>
-	<data name="TabAutoCasts_DrawAutoCast_HelpText" xml:space="preserve">
+  <data name="TabAutoCasts_DrawAutoCast_HelpText" xml:space="preserve">
     <value>抛竿(技能) 会在咬钩后使用
 
 重要！！！
 如果自动以小钓大(全局或自定预设) 未启用，将正常抛竿，同时你将失去以小钓大机会(如有)</value>
   </data>
-	<data name="Global_Auto_Cast_Line" xml:space="preserve">
+  <data name="Global_Auto_Cast_Line" xml:space="preserve">
     <value>全局自动抛竿</value>
   </data>
-	<data name="Use_Thaliaks_Favor" xml:space="preserve">
+  <data name="Use_Thaliaks_Favor" xml:space="preserve">
     <value>使用沙利亚克的恩宠</value>
   </data>
-	<data name="Use_Natures_Bounty" xml:space="preserve">
+  <data name="Use_Natures_Bounty" xml:space="preserve">
     <value>使用嘉慧</value>
   </data>
-	<data name="Enable_AutoGig" xml:space="preserve">
+  <data name="Enable_AutoGig" xml:space="preserve">
     <value>启用自动刺鱼</value>
   </data>
-	<data name="Hitbox" xml:space="preserve">
+  <data name="Hitbox" xml:space="preserve">
     <value>命中框</value>
   </data>
-	<data name="GigHitbox" xml:space="preserve">
+  <data name="GigHitbox" xml:space="preserve">
     <value>叉鱼判定框</value>
   </data>
-	<data name="Use_Makeshift_Bait" xml:space="preserve">
+  <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>使用熟练渔技</value>
   </data>
-	<data name="TabAutoCasts_DrawMakeShiftBait_HelpText" xml:space="preserve">
+  <data name="TabAutoCasts_DrawMakeShiftBait_HelpText" xml:space="preserve">
     <value>这可能与自动沙利亚克的恩宠冲突</value>
   </data>
-	<data name="TabAutoCasts_DrawExtraOptionsThaliaksFavor_" xml:space="preserve">
+  <data name="TabAutoCasts_DrawExtraOptionsThaliaksFavor_" xml:space="preserve">
     <value>当捕鱼人之技的档数 =</value>
   </data>
-	<data name="TabAutoCasts_DrawThaliaksFavor_HelpText" xml:space="preserve">
+  <data name="TabAutoCasts_DrawThaliaksFavor_HelpText" xml:space="preserve">
     <value>这可能与自动熟练渔技冲突</value>
   </data>
-	<data name="Use_Patience_I_II" xml:space="preserve">
+  <data name="Use_Patience_I_II" xml:space="preserve">
     <value>使用耐心 I/II</value>
   </data>
-	<data name="TabAutoCasts_DrawPatience_HelpText" xml:space="preserve">
+  <data name="TabAutoCasts_DrawPatience_HelpText" xml:space="preserve">
     <value>使用耐心 I/II 当你当前GP 等于(或高于) 技能消耗 +20 (例： 220 耐心I，580 耐心II)，这有助于避免GP不足以提钩</value>
   </data>
-	<data name="TabAutoCasts_DrawExtraOptionsPatience" xml:space="preserve">
+  <data name="TabAutoCasts_DrawExtraOptionsPatience" xml:space="preserve">
     <value>当熟练渔技激活时使用</value>
   </data>
-	<data name="Enable_Auto_Casts" xml:space="preserve">
+  <data name="Enable_Auto_Casts" xml:space="preserve">
     <value>使用自动抛竿</value>
   </data>
-	<data name="Dont_Cancel_Mooch" xml:space="preserve">
+  <data name="Dont_Cancel_Mooch" xml:space="preserve">
     <value>不要取消以小钓大</value>
   </data>
-	<data name="TabAutoCasts_DrawHeader_HelpText" xml:space="preserve">
+  <data name="TabAutoCasts_DrawHeader_HelpText" xml:space="preserve">
     <value>取消以小钓大的技能将不会被使用(例：撒饵，鱼眼，大鱼猎手等)</value>
   </data>
-	<data name="TabAutoCasts_DrawExtraOptionsAutoMooch_Extra_Only_Active" xml:space="preserve">
+  <data name="TabAutoCasts_DrawExtraOptionsAutoMooch_Extra_Only_Active" xml:space="preserve">
     <value>只在鱼识中使用</value>
   </data>
-	<data name="Use_Mooch_II" xml:space="preserve">
+  <data name="Use_Mooch_II" xml:space="preserve">
     <value>使用以小钓大II</value>
   </data>
-	<data name="Global_Auto_Mooch" xml:space="preserve">
+  <data name="Global_Auto_Mooch" xml:space="preserve">
     <value>全局自动以小钓大</value>
   </data>
-	<data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
+  <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
     <value>指南：如何自动接受收藏品</value>
   </data>
-	<data name="AutoMooch_HelpText" xml:space="preserve">
+  <data name="AutoMooch_HelpText" xml:space="preserve">
     <value>全部使用 以小钓大！这个选项优先于“自动抛竿”
 
 如果你只想自动使用 以小钓大 钓特定的鱼，而忽略其他的鱼，就关闭这个选项，然后使用“已钓鱼类”标签。</value>
   </data>
-	<data name="Support_me_on_Ko_fi" xml:space="preserve">
+  <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>在 Ko-fi 上赞助</value>
   </data>
-	<data name="Complete" xml:space="preserve">
+  <data name="Complete" xml:space="preserve">
     <value>完成</value>
   </data>
-	<data name="Incomplete" xml:space="preserve">
+  <data name="Incomplete" xml:space="preserve">
     <value>未完成</value>
   </data>
-	<data name="AutoHook" xml:space="preserve">
+  <data name="AutoHook" xml:space="preserve">
     <value>自动提钩</value>
   </data>
-	<data name="PluginUi_Language" xml:space="preserve">
+  <data name="PluginUi_Language" xml:space="preserve">
     <value>语言</value>
   </data>
-	<data name="TabGeneral_DrawHeader_Localization_Help" xml:space="preserve">
+  <data name="TabGeneral_DrawHeader_Localization_Help" xml:space="preserve">
     <value>帮助插件本地化 (Crowdin)</value>
   </data>
-	<data name="Add_new_bait" xml:space="preserve">
+  <data name="Add_new_bait" xml:space="preserve">
     <value>添加新鱼饵</value>
   </data>
-	<data name="Add_new_mooch" xml:space="preserve">
+  <data name="Add_new_mooch" xml:space="preserve">
     <value>添加新的以小钓大</value>
   </data>
-	<data name="Presets_Hook" xml:space="preserve">
+  <data name="Presets_Hook" xml:space="preserve">
     <value>提钩</value>
   </data>
-	<data name="Mooch" xml:space="preserve">
+  <data name="Mooch" xml:space="preserve">
     <value>以小钓大</value>
   </data>
-	<data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
+  <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
     <value>自动抛竿</value>
   </data>
-	<data name="AutoMooch_HelpText_old" xml:space="preserve">
+  <data name="AutoMooch_HelpText_old" xml:space="preserve">
     <value>此选项优先于自动抛竿</value>
   </data>
-	<data name="Normal_Hook" xml:space="preserve">
+  <data name="Normal_Hook" xml:space="preserve">
     <value>普通提钩</value>
   </data>
-	<data name="GlobalPreset" xml:space="preserve">
+  <data name="GlobalPreset" xml:space="preserve">
     <value>全局预设</value>
   </data>
-	<data name="Bait" xml:space="preserve">
+  <data name="Bait" xml:space="preserve">
     <value>鱼饵</value>
   </data>
-	<data name="All_Baits" xml:space="preserve">
+  <data name="All_Baits" xml:space="preserve">
     <value>所有鱼饵</value>
   </data>
-	<data name="All_Mooches" xml:space="preserve">
+  <data name="All_Mooches" xml:space="preserve">
     <value>所有以小钓大</value>
   </data>
-	<data name="AutoPatience_Patience" xml:space="preserve">
+  <data name="AutoPatience_Patience" xml:space="preserve">
     <value>耐心</value>
   </data>
-	<data name="Fish" xml:space="preserve">
+  <data name="Fish" xml:space="preserve">
     <value>鱼</value>
   </data>
-	<data name="FishCaught" xml:space="preserve">
+  <data name="FishCaught" xml:space="preserve">
     <value>已捕获的鱼</value>
   </data>
-	<data name="Add_new_fish" xml:space="preserve">
+  <data name="Add_new_fish" xml:space="preserve">
     <value>添加新鱼</value>
   </data>
-	<data name="Cast_Line" xml:space="preserve">
+  <data name="Cast_Line" xml:space="preserve">
     <value>抛竿</value>
 		<comment>Cast (fisher action)</comment>
   </data>
-	<data name="Mooch_II" xml:space="preserve">
+  <data name="Mooch_II" xml:space="preserve">
     <value>以小钓大II</value>
   </data>
-	<data name="Never_Mooch" xml:space="preserve">
+  <data name="Never_Mooch" xml:space="preserve">
     <value>从不以小钓大</value>
   </data>
-	<data name="Mooch_Setting" xml:space="preserve">
+  <data name="Mooch_Setting" xml:space="preserve">
     <value>以小钓大设置</value>
   </data>
-	<data name="Swap_Preset" xml:space="preserve">
+  <data name="Swap_Preset" xml:space="preserve">
     <value>交换预设</value>
   </data>
-	<data name="Swap_Bait" xml:space="preserve">
+  <data name="Swap_Bait" xml:space="preserve">
     <value>交换鱼饵</value>
   </data>
-	<data name="IdenticalCast_HelpText" xml:space="preserve">
+  <data name="IdenticalCast_HelpText" xml:space="preserve">
     <value>如果禁用，将会失去以小钓大机会</value>
   </data>
-	<data name="Always_Mooch" xml:space="preserve">
+  <data name="Always_Mooch" xml:space="preserve">
     <value>总是以小钓大</value>
   </data>
-	<data name="Caught_Counter" xml:space="preserve">
+  <data name="Caught_Counter" xml:space="preserve">
     <value>捕获:</value>
 		<comment>It'll shows how many times the fish was caught. Example: Caught: 5x</comment>
   </data>
-	<data name="Hooked_Counter" xml:space="preserve">
+  <data name="Hooked_Counter" xml:space="preserve">
     <value>提钩:</value>
 		<comment>It'll shows how many times the fish was caught. Example: Hooked: 5x</comment>
   </data>
-	<data name="Enabled" xml:space="preserve">
+  <data name="Enabled" xml:space="preserve">
     <value>启用</value>
   </data>
-	<data name="StopFishing_After_hooking" xml:space="preserve">
+  <data name="StopFishing_After_hooking" xml:space="preserve">
     <value>提钩后...</value>
   </data>
-	<data name="Hooking_Limited_Reached_Chat_Message" xml:space="preserve">
+  <data name="Hooking_Limited_Reached_Chat_Message" xml:space="preserve">
     <value>提钩达到({0})。停止钓鱼。</value>
   </data>
-	<data name="Caught_Limited_Reached_Chat_Message" xml:space="preserve">
+  <data name="Caught_Limited_Reached_Chat_Message" xml:space="preserve">
     <value>捕获达到({0})。停止钓鱼。</value>
   </data>
-	<data name="Stop_Casting" xml:space="preserve">
+  <data name="Stop_Casting" xml:space="preserve">
     <value>停止抛竿</value>
   </data>
-	<data name="Auto_Cast_Stopped" xml:space="preserve">
+  <data name="Auto_Cast_Stopped" xml:space="preserve">
     <value>自动垂钓将停止，但不会退出钓鱼状态</value>
   </data>
-	<data name="Quit_Fishing" xml:space="preserve">
+  <data name="Quit_Fishing" xml:space="preserve">
     <value>退出钓鱼</value>
   </data>
-	<data name="Quit_Action_HelpText" xml:space="preserve">
+  <data name="Quit_Action_HelpText" xml:space="preserve">
     <value>退出并停止钓鱼</value>
   </data>
-	<data name="Tab_Description" xml:space="preserve">
+  <data name="Tab_Description" xml:space="preserve">
     <value>描述</value>
   </data>
-	<data name="TabDefaultPreset_Description" xml:space="preserve">
+  <data name="TabDefaultPreset_Description" xml:space="preserve">
     <value>当未检测到自定义的鱼饵/以小到大/鱼/自动抛竿时，将使用默认预设。 在这里您可以设置用于所有鱼饵和以小钓大的挂钩行为，除非创建了自定义预设。 
 请检查指南选项卡。</value>
   </data>
-	<data name="TabGlobalPreset_Description" xml:space="preserve">
+  <data name="TabGlobalPreset_Description" xml:space="preserve">
     <value>当未检测到自定义的鱼饵/以小到大/鱼/自动抛竿时，将使用默认预设。 在这里您可以设置用于所有鱼饵和以小钓大的挂钩行为，除非创建了自定义预设。 请检查指南选项卡。</value>
   </data>
-	<data name="Old_Preset_Warning" xml:space="preserve">
+  <data name="Old_Preset_Warning" xml:space="preserve">
     <value>这是一个旧的配置，可能缺少一些设置。</value>
   </data>
-	<data name="Show_Chat_Logs" xml:space="preserve">
+  <data name="Show_Chat_Logs" xml:space="preserve">
     <value>显示聊天日志</value>
   </data>
-	<data name="Show_Current_Status_Header" xml:space="preserve">
+  <data name="Show_Current_Status_Header" xml:space="preserve">
     <value>显示当前状态标题</value>
   </data>
-	<data name="DrawConfigs_Max_" xml:space="preserve">
+  <data name="DrawConfigs_Max_" xml:space="preserve">
     <value>最大值</value>
   </data>
-	<data name="DrawConfigs_Min_" xml:space="preserve">
+  <data name="DrawConfigs_Min_" xml:space="preserve">
     <value>最小.</value>
   </data>
-	<data name="Delay_Between_Casts" xml:space="preserve">
+  <data name="Delay_Between_Casts" xml:space="preserve">
     <value>延迟抛竿(毫秒)：</value>
   </data>
-	<data name="Show_Debug_Console" xml:space="preserve">
+  <data name="Show_Debug_Console" xml:space="preserve">
     <value>显示调试控制台</value>
   </data>
-	<data name="Show_Chat_Logs_HelpText" xml:space="preserve">
+  <data name="Show_Chat_Logs_HelpText" xml:space="preserve">
     <value>在聊天中显示像“预设交换”这样的消息</value>
   </data>
-	<data name="TabName_Config_Guides" xml:space="preserve">
+  <data name="TabName_Config_Guides" xml:space="preserve">
     <value>配置 / 指南</value>
   </data>
-	<data name="Open_Console" xml:space="preserve">
+  <data name="Open_Console" xml:space="preserve">
     <value>打开控制台</value>
   </data>
-	<data name="SubAuto_Disabled" xml:space="preserve">
+  <data name="SubAuto_Disabled" xml:space="preserve">
     <value>自动抛竿已关闭</value>
   </data>
-	<data name="AllActionsDisabled" xml:space="preserve">
+  <data name="AllActionsDisabled" xml:space="preserve">
     <value>已禁用所有操作</value>
   </data>
-	<data name="SubExtra_Disabled" xml:space="preserve">
+  <data name="SubExtra_Disabled" xml:space="preserve">
     <value>已禁用额外选项</value>
   </data>
-	<data name="Default_AutoCast_Being_Used" xml:space="preserve">
+  <data name="Default_AutoCast_Being_Used" xml:space="preserve">
     <value>[默认] 正在使用自动抛竿</value>
   </data>
-	<data name="Global_AutoCast_Being_Used" xml:space="preserve">
+  <data name="Global_AutoCast_Being_Used" xml:space="preserve">
     <value>[默认] 正在使用自动抛竿</value>
   </data>
-	<data name="GlobalActionsBeingUsed" xml:space="preserve">
+  <data name="GlobalActionsBeingUsed" xml:space="preserve">
     <value>正在使用来自全局预设的自动操作</value>
   </data>
-	<data name="Custom_AutoCast_Being_Used" xml:space="preserve">
+  <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
     <value>正在使用自定义预设 [{0}] 进行自动抛竿。</value>
   </data>
-	<data name="Default_Extra_Being_Used" xml:space="preserve">
+  <data name="Default_Extra_Being_Used" xml:space="preserve">
     <value>[默认] 正在使用自动抛竿</value>
   </data>
-	<data name="Global_Extra_Being_Used" xml:space="preserve">
+  <data name="Global_Extra_Being_Used" xml:space="preserve">
     <value>[全局] 正在使用额外配置</value>
   </data>
-	<data name="Custom_Extra_Being_Used" xml:space="preserve">
+  <data name="Custom_Extra_Being_Used" xml:space="preserve">
     <value>正在使用自定义预设 [{0}] 进行自动抛竿。</value>
   </data>
-	<data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
+  <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
     <value>重要！如果您手动提钩，将不会使用自动抛竿。</value>
   </data>
-	<data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
     <value>注意！如果手动提钩，将会停止自动抛竿。</value>
   </data>
-	<data name="Food_Buff" xml:space="preserve">
+  <data name="Food_Buff" xml:space="preserve">
     <value>食物增益</value>
   </data>
-	<data name="Only_When_Patience_Active" xml:space="preserve">
+  <data name="Only_When_Patience_Active" xml:space="preserve">
     <value>仅在耐心激活时使用</value>
   </data>
-	<data name="Stop_After_Caught" xml:space="preserve">
+  <data name="Stop_After_Caught" xml:space="preserve">
     <value>捕获后停止</value>
   </data>
-	<data name="Search_Hint" xml:space="preserve">
+  <data name="Search_Hint" xml:space="preserve">
     <value>搜索...</value>
 		<comment>Hint Text for search bar</comment>
   </data>
-	<data name="Extra" xml:space="preserve">
+  <data name="Extra" xml:space="preserve">
     <value>额外</value>
   </data>
-	<data name="ExtraOptions" xml:space="preserve">
+  <data name="ExtraOptions" xml:space="preserve">
     <value>额外选项</value>
   </data>
-	<data name="NeverReleaseHelptext" xml:space="preserve">
+  <data name="NeverReleaseHelptext" xml:space="preserve">
     <value>如果在 "自动垂钓" 项目页选择了 "放生所有鱼", 该鱼也不会被放生</value>
   </data>
-	<data name="NeverRelease" xml:space="preserve">
+  <data name="NeverRelease" xml:space="preserve">
     <value>永不放生</value>
   </data>
-	<data name="ReleaseAllFish" xml:space="preserve">
+  <data name="ReleaseAllFish" xml:space="preserve">
     <value>放生所有鱼</value>
   </data>
-	<data name="ReleaseAllFishHelpText" xml:space="preserve">
+  <data name="ReleaseAllFishHelpText" xml:space="preserve">
     <value>如果你不想放生特定鱼, 请将其添加至一个预设中, 并选择 "永不放生"</value>
   </data>
-	<data name="Enable_Extra_Configs" xml:space="preserve">
+  <data name="Enable_Extra_Configs" xml:space="preserve">
     <value>启用额外配置</value>
   </data>
-	<data name="When_gaining_fishers_intuition" xml:space="preserve">
+  <data name="When_gaining_fishers_intuition" xml:space="preserve">
     <value>当触发鱼识时</value>
   </data>
-	<data name="When_losing_fishers_intuition" xml:space="preserve">
+  <data name="When_losing_fishers_intuition" xml:space="preserve">
     <value>当鱼识结束时</value>
   </data>
-	<data name="Draw_Configs" xml:space="preserve">
+  <data name="Draw_Configs" xml:space="preserve">
     <value>配置</value>
   </data>
-	<data name="Draw_Guides" xml:space="preserve">
+  <data name="Draw_Guides" xml:space="preserve">
     <value>指南</value>
   </data>
-	<data name="Delay_when_hooking" xml:space="preserve">
+  <data name="Delay_when_hooking" xml:space="preserve">
     <value>延迟提钩 (毫秒)</value>
   </data>
-	<data name="Preset_not_found" xml:space="preserve">
+  <data name="Preset_not_found" xml:space="preserve">
     <value>未找到预设</value>
   </data>
-	<data name="Set_preset_command" xml:space="preserve">
+  <data name="Set_preset_command" xml:space="preserve">
     <value>用聊天命令设置自定义预设 ： /ahpreset 预设名称</value>
   </data>
-	<data name="Set_agpreset_command" xml:space="preserve">
+  <data name="Set_agpreset_command" xml:space="preserve">
     <value>用聊天命令设置自动预设 ： /ahpreset 预设名称</value>
   </data>
-	<data name="Starts_AutoHook" xml:space="preserve">
+  <data name="Starts_AutoHook" xml:space="preserve">
     <value>使用当前预设进行操作</value>
   </data>
-	<data name="Preset_set_to_" xml:space="preserve">
+  <data name="Preset_set_to_" xml:space="preserve">
     <value>预设设置为：</value>
   </data>
-	<data name="Gig_preset_set_to_" xml:space="preserve">
+  <data name="Gig_preset_set_to_" xml:space="preserve">
     <value>预设设置为：</value>
   </data>
-	<data name="When_gaining_spectral_current" xml:space="preserve">
+  <data name="When_gaining_spectral_current" xml:space="preserve">
     <value>当幻海流处于活动状态时...</value>
   </data>
-	<data name="When_losing_spectral_current" xml:space="preserve">
+  <data name="When_losing_spectral_current" xml:space="preserve">
     <value>当幻海流处于非活动状态时...</value>
   </data>
-	<data name="UseWhenIntuitionTimeIsEqualOrGreaterThan" xml:space="preserve">
+  <data name="UseWhenIntuitionTimeIsEqualOrGreaterThan" xml:space="preserve">
     <value>鱼识剩余时间超过(秒)</value>
   </data>
-	<data name="OnlyUseWhenActiveSurfaceSlap" xml:space="preserve">
+  <data name="OnlyUseWhenActiveSurfaceSlap" xml:space="preserve">
     <value>仅当拍打水面激活时使用</value>
   </data>
-	<data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
+  <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
     <value>仅当拍打水面未激活时使用</value>
   </data>
-	<data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
+  <data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
     <value>仅在拍水时提钩</value>
   </data>
-	<data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
+  <data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
     <value>不在拍水时提钩</value>
   </data>
-	<data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
+  <data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
     <value>仅在专一时使用</value>
   </data>
-	<data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
+  <data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
     <value>不在专一时使用</value>
   </data>
-	<data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
+  <data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
     <value>仅在专一中提钩</value>
   </data>
-	<data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
+  <data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
     <value>不在专一中提钩</value>
   </data>
-	<data name="Collect" xml:space="preserve">
+  <data name="Collect" xml:space="preserve">
     <value>收集</value>
   </data>
-	<data name="CollectHelpText" xml:space="preserve">
+  <data name="CollectHelpText" xml:space="preserve">
     <value>开始钓鱼时自动开启收藏品采集</value>
   </data>
-	<data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
+  <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
     <value>当buff计时器小于或等于.. 时刷新</value>
   </data>
-	<data name="Allow_Gp_Overcap" xml:space="preserve">
+  <data name="Allow_Gp_Overcap" xml:space="preserve">
     <value>专一时取消GP使用限制</value>
   </data>
-	<data name="Use_Cordials_First" xml:space="preserve">
+  <data name="Use_Cordials_First" xml:space="preserve">
     <value>在沙利亚克的恩宠之前使用强心剂</value>
   </data>
-	<data name="ThaliaksCordialOffCd" xml:space="preserve">
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
     <value>仅在强心剂冷却时使用</value>
   </data>
-	<data name="Use_Cordials_First_Help" xml:space="preserve">
+  <data name="Use_Cordials_First_Help" xml:space="preserve">
     <value>仅在使用强心剂时应用</value>
   </data>
-	<data name="Show_Presets_As_Sidebar" xml:space="preserve">
+  <data name="Show_Presets_As_Sidebar" xml:space="preserve">
     <value>将预设菜单作为侧边栏</value>
   </data>
-	<data name="Hide_Tab_Description" xml:space="preserve">
+  <data name="Hide_Tab_Description" xml:space="preserve">
     <value>隐藏标签页描述</value>
   </data>
-	<data name="Ignore_When_Intuition" xml:space="preserve">
+  <data name="Ignore_When_Intuition" xml:space="preserve">
     <value>当直觉激活时忽略鱼类设置</value>
   </data>
-	<data name="Reset_the_counter" xml:space="preserve">
+  <data name="Reset_the_counter" xml:space="preserve">
     <value>重置计时器</value>
   </data>
-	<data name="Reset_counter_after_swapping_presets" xml:space="preserve">
+  <data name="Reset_counter_after_swapping_presets" xml:space="preserve">
     <value>交换预设后重置钩/鱼计数器</value>
   </data>
-	<data name="Only_use_when_Cordial_is_available" xml:space="preserve">
+  <data name="Only_use_when_Cordial_is_available" xml:space="preserve">
     <value>仅在强心剂可用时使用</value>
   </data>
-	<data name="Only_use_when_the_fish_is_caught" xml:space="preserve">
+  <data name="Only_use_when_the_fish_is_caught" xml:space="preserve">
     <value>仅在捕获鱼时使用</value>
   </data>
-	<data name="UIUseCurrentBait" xml:space="preserve">
+  <data name="UIUseCurrentBait" xml:space="preserve">
     <value>从游戏中选择当前选中的鱼饵</value>
   </data>
-	<data name="AutoCastEndTime" xml:space="preserve">
+  <data name="AutoCastEndTime" xml:space="preserve">
     <value>停止自动抛竿的时间</value>
   </data>
-	<data name="AutoCastStartTime" xml:space="preserve">
+  <data name="AutoCastStartTime" xml:space="preserve">
     <value>开始自动抛竿的时间</value>
   </data>
-	<data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
     <value>仅在特定时间使用 (ET时间)</value>
   </data>
-	<data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
+  <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
     <value>失去直觉时退出钓鱼</value>
   </data>
-	<data name="Stop_Fishing_On_IntuitionLost" xml:space="preserve">
+  <data name="Stop_Fishing_On_IntuitionLost" xml:space="preserve">
     <value>失去直觉时停止钓鱼</value>
   </data>
-	<data name="Auto_Cast_Sort_Notice" xml:space="preserve">
+  <data name="Auto_Cast_Sort_Notice" xml:space="preserve">
     <value>技能将从上到下使用。点击箭头按钮重新排序。</value>
   </data>
-	<data name="Current_Selected_Preset" xml:space="preserve">
+  <data name="Current_Selected_Preset" xml:space="preserve">
     <value>当前选中的预设：</value>
   </data>
-	<data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
+  <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
     <value>仅在鱼眼中使用</value>
   </data>
-	<data name="HookType" xml:space="preserve">
+  <data name="HookType" xml:space="preserve">
     <value>挂钩类型</value>
   </data>
-	<data name="HookingTimer" xml:space="preserve">
+  <data name="HookingTimer" xml:space="preserve">
     <value>挂钩计时</value>
   </data>
-	<data name="EnableHookingTimer" xml:space="preserve">
+  <data name="EnableHookingTimer" xml:space="preserve">
     <value>使用挂钩计时器</value>
   </data>
-	<data name="EnableChumTimer" xml:space="preserve">
+  <data name="EnableChumTimer" xml:space="preserve">
     <value>使用撒饵计时器</value>
   </data>
-	<data name="HookingTimerHelpText" xml:space="preserve">
+  <data name="HookingTimerHelpText" xml:space="preserve">
     <value>只在设定时长之间才提钩</value>
   </data>
-	<data name="UseDoubleHook" xml:space="preserve">
+  <data name="UseDoubleHook" xml:space="preserve">
     <value>使用双重提钩</value>
   </data>
-	<data name="UseTripleHook" xml:space="preserve">
+  <data name="UseTripleHook" xml:space="preserve">
     <value>使用三重提钩</value>
   </data>
-	<data name="StopAfterHooking" xml:space="preserve">
+  <data name="StopAfterHooking" xml:space="preserve">
     <value>在... 后停止钓鱼</value>
   </data>
-	<data name="Timeout" xml:space="preserve">
+  <data name="Timeout" xml:space="preserve">
     <value>超时</value>
   </data>
-	<data name="Chum Timeout" xml:space="preserve">
+  <data name="Chum Timeout" xml:space="preserve">
     <value>撒饵超时</value>
   </data>
-	<data name="TimeoutOption" xml:space="preserve">
+  <data name="TimeoutOption" xml:space="preserve">
     <value>超出指定时间后停止钓鱼</value>
   </data>
-	<data name="Hook" xml:space="preserve">
+  <data name="Hook" xml:space="preserve">
     <value>提钩</value>
   </data>
-	<data name="Hooking" xml:space="preserve">
+  <data name="Hooking" xml:space="preserve">
     <value>提钩</value>
   </data>
-	<data name="HookingTabHelpText" xml:space="preserve">
+  <data name="HookingTabHelpText" xml:space="preserve">
     <value>平钓或以小钓大时的提钩设置</value>
   </data>
-	<data name="BaitTabHelpText" xml:space="preserve">
+  <data name="BaitTabHelpText" xml:space="preserve">
     <value>平钓时的提钩设置</value>
   </data>
-	<data name="MoochTabHelpText" xml:space="preserve">
+  <data name="MoochTabHelpText" xml:space="preserve">
     <value>以小钓大时的提钩设置</value>
   </data>
-	<data name="RequiredStatusSettingHelpText" xml:space="preserve">
+  <data name="RequiredStatusSettingHelpText" xml:space="preserve">
     <value>如果禁用，将会使用默认提钩设置</value>
   </data>
-	<data name="AntiAfkOption" xml:space="preserve">
+  <data name="AntiAfkOption" xml:space="preserve">
     <value>钓鱼时不会进入挂机状态</value>
   </data>
-	<data name="SwapTreeNodeButtons" xml:space="preserve">
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
     <value>树形设置UI↔按钮设置UI</value>
   </data>
-	<data name="LetFishEscapeHelpText" xml:space="preserve">
+  <data name="LetFishEscapeHelpText" xml:space="preserve">
     <value>如果禁用，GP不足时会使用普通提钩</value>
   </data>
-	<data name="UseConfigRequiredStatus" xml:space="preserve">
+  <data name="UseConfigRequiredStatus" xml:space="preserve">
     <value>当 {0} 激活时使用此设置</value>
 		<comment>{0} Represents a status effect. For Example: Use this setting when Fisher's Intuition is active</comment>
   </data>
-	<data name="NormalPatienceHookset" xml:space="preserve">
+  <data name="NormalPatienceHookset" xml:space="preserve">
     <value>提什么 / 用轻重</value>
   </data>
-	<data name="AutoCastOnlyUnderFishEyesHelpText" xml:space="preserve">
+  <data name="AutoCastOnlyUnderFishEyesHelpText" xml:space="preserve">
     <value>如果启用计时器，这将在时间窗口中被忽略</value>
   </data>
-	<data name="Configure" xml:space="preserve">
+  <data name="Configure" xml:space="preserve">
     <value>自定义</value>
   </data>
-	<data name="Type_1" xml:space="preserve">
+  <data name="Type_1" xml:space="preserve">
     <value>样式 1</value>
   </data>
-	<data name="Type_2" xml:space="preserve">
+  <data name="Type_2" xml:space="preserve">
     <value>样式 2</value>
   </data>
-	<data name="CordialOutsideTimeWindow" xml:space="preserve">
+  <data name="CordialOutsideTimeWindow" xml:space="preserve">
     <value>在特定窗口期外使用强心剂</value>
   </data>
-	<data name="SpecificTimeWindowHelpText" xml:space="preserve">
+  <data name="SpecificTimeWindowHelpText" xml:space="preserve">
     <value>受影响的操作：自动使用技能，自动以小钓大I/II，强心剂 (可选)，鱼眼，熟练渔技，耐心I/II</value>
   </data>
-	<data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
+  <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
     <value>默认情况下，在窗口期外不会使用强心剂(如果启用的话)。此选项将覆盖该行为</value>
   </data>
-	<data name="TimeLimit" xml:space="preserve">
+  <data name="TimeLimit" xml:space="preserve">
     <value>时间上限</value>
   </data>
-	<data name="ChumTimeLimit" xml:space="preserve">
+  <data name="ChumTimeLimit" xml:space="preserve">
     <value>撒饵时间上限</value>
   </data>
-	<data name="SetZeroToIgnore" xml:space="preserve">
+  <data name="SetZeroToIgnore" xml:space="preserve">
     <value>设置为0时停用计时器</value>
   </data>
-	<data name="AboutTab" xml:space="preserve">
+  <data name="AboutTab" xml:space="preserve">
     <value>关于</value>
   </data>
-	<data name="UseNaturesBounty" xml:space="preserve">
+  <data name="UseNaturesBounty" xml:space="preserve">
     <value>使用嘉慧</value>
   </data>
-	<data name="Settings" xml:space="preserve">
+  <data name="Settings" xml:space="preserve">
     <value>设置</value>
   </data>
-	<data name="SettingsTab" xml:space="preserve">
+  <data name="SettingsTab" xml:space="preserve">
     <value>设置</value>
   </data>
-	<data name="EnableActions" xml:space="preserve">
+  <data name="EnableActions" xml:space="preserve">
     <value>启用操作</value>
   </data>
-	<data name="DontHideExtraAutoCast" xml:space="preserve">
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
     <value>不启用额外配置时不隐藏详细设置</value>
   </data>
-	<data name="IgnoreMooch" xml:space="preserve">
+  <data name="IgnoreMooch" xml:space="preserve">
     <value>忽略以小钓大</value>
   </data>
-	<data name="IgnoreMoochHelpText" xml:space="preserve">
+  <data name="IgnoreMoochHelpText" xml:space="preserve">
     <value>如果禁用，将不会取消以小钓大，即使没有开启自动以小钓大</value>
   </data>
-	<data name="NeverMoochHelpText" xml:space="preserve">
+  <data name="NeverMoochHelpText" xml:space="preserve">
     <value>如果启用，将会忽略以小钓大</value>
   </data>
-	<data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
+  <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
     <value>仅在耐心或熟练渔技中使用</value>
   </data>
-	<data name="IgnoreMoochFishEyes" xml:space="preserve">
+  <data name="IgnoreMoochFishEyes" xml:space="preserve">
     <value>鱼眼将会打断以小钓大</value>
   </data>
-	<data name="StartActions" xml:space="preserve">
+  <data name="StartActions" xml:space="preserve">
     <value>开钓！</value>
   </data>
-	<data name="StartActionHelpText" xml:space="preserve">
+  <data name="StartActionHelpText" xml:space="preserve">
     <value>开始使用自动执行！ 也可以在“额外”标签页中设置换饵操作
 
 可以使用命令/ahstart 开始捕鱼。 可以写个宏！</value>
   </data>
-	<data name="ForceBaitSwap" xml:space="preserve">
+  <data name="ForceBaitSwap" xml:space="preserve">
     <value>在点击“开钓！”时强制换饵</value>
   </data>
-	<data name="SelectBaitStartFishing" xml:space="preserve">
+  <data name="SelectBaitStartFishing" xml:space="preserve">
     <value>选择要使用的鱼饵:</value>
   </data>
-	<data name="BaitPresetPriorityWarning" xml:space="preserve">
+  <data name="BaitPresetPriorityWarning" xml:space="preserve">
     <value>这些鱼饵和预设的优先级比鱼获切换高</value>
   </data>
-	<data name="WhenAnglersAt" xml:space="preserve">
+  <data name="WhenAnglersAt" xml:space="preserve">
     <value>当捕鱼人之计层数达到...</value>
   </data>
-	<data name="StacksOrMore" xml:space="preserve">
+  <data name="StacksOrMore" xml:space="preserve">
     <value>层及以上</value>
   </data>
-	<data name="StopQuitFishing" xml:space="preserve">
+  <data name="StopQuitFishing" xml:space="preserve">
     <value>停止/退出钓鱼状态</value>
   </data>
-	<data name="AnglersArt" xml:space="preserve">
+  <data name="AnglersArt" xml:space="preserve">
     <value>捕鱼人之计</value>
   </data>
-	<data name="CatchEverything" xml:space="preserve">
+  <data name="CatchEverything" xml:space="preserve">
     <value>全都钓</value>
   </data>
-	<data name="IgnoresPresets" xml:space="preserve">
+  <data name="IgnoresPresets" xml:space="preserve">
     <value>忽略预设</value>
   </data>
-	<data name="CatchAllNotice" xml:space="preserve">
+  <data name="CatchAllNotice" xml:space="preserve">
     <value>获取全部已启用。叉鱼时将忽略以下设置...</value>
   </data>
-	<data name="CatchAllNaturesBountyHelpText" xml:space="preserve">
+  <data name="CatchAllNaturesBountyHelpText" xml:space="preserve">
     <value>仅当钓全部启用时</value>
   </data>
-	<data name="CatchAllGigWindow" xml:space="preserve">
+  <data name="CatchAllGigWindow" xml:space="preserve">
     <value>当钓全部已启用。预设将被忽略。</value>
   </data>
-	<data name="Intuition" xml:space="preserve">
+  <data name="Intuition" xml:space="preserve">
     <value>感知</value>
   </data>
-	<data name="DelaySettings" xml:space="preserve">
+  <data name="DelaySettings" xml:space="preserve">
     <value>延时设置</value>
   </data>
-	<data name="GeneratePreset" xml:space="preserve">
+  <data name="GeneratePreset" xml:space="preserve">
     <value>生成预设</value>
   </data>
-	<data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
     <value>仅在以小钓大不可用时</value>
   </data>
-	<data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
     <value>仅在以小钓大II冷却时使用</value>
   </data>
-	<data name="AutoCastExtraOptionPatience" xml:space="preserve">
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
     <value>仅在以小钓大II冷却时使用</value>
   </data>
-	<data name="Fish_Hitbox_Offset" xml:space="preserve">
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
     <value>Fish Hitbox偏移</value>
   </data>
-	<data name="OffsetLR" xml:space="preserve">
+  <data name="OffsetLR" xml:space="preserve">
     <value>Offset (L-&gt;R)</value>
   </data>
-	<data name="OffsetRL" xml:space="preserve">
+  <data name="OffsetRL" xml:space="preserve">
     <value>Offset (R-&gt;L)</value>
   </data>
-	<data name="OffsetLRHelpText" xml:space="preserve">
+  <data name="OffsetLRHelpText" xml:space="preserve">
     <value>从左至右游来的鱼的击中框偏移量</value>
   </data>
-	<data name="OffsetRLHelpText" xml:space="preserve">
+  <data name="OffsetRLHelpText" xml:space="preserve">
     <value>从右至左游来的鱼的击中框偏移量</value>
   </data>
-	<data name="FishHitboxHelpText" xml:space="preserve">
+  <data name="FishHitboxHelpText" xml:space="preserve">
     <value>如果你认为击中框（hitbox）区域太小或经常错过目标，调整它</value>
   </data>
-	<data name="NBBeforeFish" xml:space="preserve">
+  <data name="NBBeforeFish" xml:space="preserve">
     <value>在鱼出现前，使用嘉惠</value>
   </data>
-	<data name="NBBeforeFishHelpText" xml:space="preserve">
+  <data name="NBBeforeFishHelpText" xml:space="preserve">
     <value>如果目标鱼不出现，是否废弃GP</value>
   </data>
-	<data name="AutoCordialPandoras" xml:space="preserve">
+  <data name="AutoCordialPandoras" xml:space="preserve">
     <value>Auto-Cordial 可以在 Pandora's Box 插件中找到</value>
   </data>
-	<data name="LureStacks" xml:space="preserve">
+  <data name="LureStacks" xml:space="preserve">
     <value>鱼饵堆叠</value>
   </data>
-	<data name="UseLures" xml:space="preserve">
+  <data name="UseLures" xml:space="preserve">
     <value>使用鱼饵</value>
   </data>
-	<data name="BigGameFishing" xml:space="preserve">
+  <data name="BigGameFishing" xml:space="preserve">
     <value>大鱼的知识</value>
   </data>
-	<data name="AmbitiousLure" xml:space="preserve">
+  <data name="AmbitiousLure" xml:space="preserve">
     <value>雄心之饵</value>
   </data>
-	<data name="ModestLure" xml:space="preserve">
+  <data name="ModestLure" xml:space="preserve">
     <value>谦逊之饵</value>
   </data>
-	<data name="AutoLures_Target_Fish" xml:space="preserve">
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
     <value>目标鱼类：</value>
   </data>
-	<data name="AnyTarget" xml:space="preserve">
+  <data name="AnyTarget" xml:space="preserve">
     <value>任意</value>
   </data>
-	<data name="OnlySpecial" xml:space="preserve">
+  <data name="OnlySpecial" xml:space="preserve">
     <value>隐藏鱼</value>
   </data>
-	<data name="SpecialFishExemple" xml:space="preserve">
+  <data name="SpecialFishExemple" xml:space="preserve">
     <value>隐藏鱼是指需要100级大招触发条件的鱼，例如：</value>
   </data>
-	<data name="MaxAttempts" xml:space="preserve">
+  <data name="MaxAttempts" xml:space="preserve">
     <value>最大使用次数</value>
   </data>
-	<data name="CancelAttempt" xml:space="preserve">
+  <data name="CancelAttempt" xml:space="preserve">
     <value>如果达到尝试次数上限仍未成功就收杆</value>
   </data>
-	<data name="LureType" xml:space="preserve">
+  <data name="LureType" xml:space="preserve">
     <value>100级大招种类</value>
   </data>
-	<data name="OnlyCastLarge" xml:space="preserve">
+  <data name="OnlyCastLarge" xml:space="preserve">
     <value>仅在耐心/大鱼猎手状态下使用</value>
   </data>
-	<data name="SparefulHand" xml:space="preserve">
+  <data name="SparefulHand" xml:space="preserve">
     <value>熟练妙招</value>
   </data>
-	<data name="DelayBeforeCancel" xml:space="preserve">
+  <data name="DelayBeforeCancel" xml:space="preserve">
     <value>延迟歇竿(毫秒)</value>
   </data>
-	<data name="DelayBeforeCancelInfo" xml:space="preserve">
+  <data name="DelayBeforeCancelInfo" xml:space="preserve">
     <value>当不想提的鱼咬钩且未提竿时延迟使用歇竿</value>
   </data>
-	<data name="SwitchFishBait" xml:space="preserve">
+  <data name="SwitchFishBait" xml:space="preserve">
     <value>切换鱼饵(根据名称或ID)</value>
   </data>
-	<data name="Disabled" xml:space="preserve">
+  <data name="Disabled" xml:space="preserve">
     <value>已禁用</value>
   </data>
-	<data name="PresetCopied" xml:space="preserve">
+  <data name="PresetCopied" xml:space="preserve">
     <value>预设已复制到剪贴板</value>
   </data>
-	<data name="RightClickOptions" xml:space="preserve">
+  <data name="RightClickOptions" xml:space="preserve">
     <value>右键查看更多选项</value>
   </data>
-	<data name="PresetImported" xml:space="preserve">
+  <data name="PresetImported" xml:space="preserve">
     <value>预设已导入</value>
   </data>
-	<data name="Delete" xml:space="preserve">
+  <data name="Delete" xml:space="preserve">
     <value>删除</value>
   </data>
-	<data name="CommunityPresets" xml:space="preserve">
+  <data name="CommunityPresets" xml:space="preserve">
     <value>社区预设</value>
   </data>
-	<data name="PresetGen" xml:space="preserve">
+  <data name="PresetGen" xml:space="preserve">
     <value>预设生成器</value>
   </data>
-	<data name="PresetGenerator" xml:space="preserve">
+  <data name="PresetGenerator" xml:space="preserve">
     <value>预设生成器</value>
   </data>
-	<data name="FishingPresets" xml:space="preserve">
+  <data name="FishingPresets" xml:space="preserve">
     <value>钓鱼预设</value>
   </data>
-	<data name="NewAccountWarning" xml:space="preserve">
+  <data name="NewAccountWarning" xml:space="preserve">
     <value>新帐户可能需要稍等才能编辑 wiki</value>
   </data>
-	<data name="Fishing" xml:space="preserve">
+  <data name="Fishing" xml:space="preserve">
     <value>钓鱼</value>
   </data>
-	<data name="Spearfishing" xml:space="preserve">
+  <data name="Spearfishing" xml:space="preserve">
     <value>刺鱼</value>
   </data>
-	<data name="ClickOpenWiki" xml:space="preserve">
+  <data name="ClickOpenWiki" xml:space="preserve">
     <value>点击这里打开 wiki 页面</value>
   </data>
-	<data name="CommunityDescription" xml:space="preserve">
+  <data name="CommunityDescription" xml:space="preserve">
     <value>此选项卡用于社区预设。您可以从 wiki 获取预设或分享您自己的预设。</value>
   </data>
-	<data name="UseIcActive" xml:space="preserve">
+  <data name="UseIcActive" xml:space="preserve">
     <value>当处于专一垂钓状态时使用</value>
   </data>
-	<data name="UseSlapActive" xml:space="preserve">
+  <data name="UseSlapActive" xml:space="preserve">
     <value>当处于拍击水面状态时使用</value>
   </data>
-	<data name="CantFishHere" xml:space="preserve">
+  <data name="CantFishHere" xml:space="preserve">
     <value>无法在这里钓鱼。</value>
   </data>
-	<data name="Deselect" xml:space="preserve">
+  <data name="Deselect" xml:space="preserve">
     <value>取消选择</value>
   </data>
-	<data name="SetActive" xml:space="preserve">
+  <data name="SetActive" xml:space="preserve">
     <value>设置为启用</value>
   </data>
-	<data name="Rename" xml:space="preserve">
+  <data name="Rename" xml:space="preserve">
     <value>重命名</value>
   </data>
-	<data name="GlobalPresetHelpText" xml:space="preserve">
+  <data name="GlobalPresetHelpText" xml:space="preserve">
     <value>如果没有选择预设，将使用全局预设</value>
   </data>
-	<data name="AlreadySwapped" xml:space="preserve">
+  <data name="AlreadySwapped" xml:space="preserve">
     <value>(已交换)</value>
   </data>
-	<data name="AnimationCanceling" xml:space="preserve">
+  <data name="AnimationCanceling" xml:space="preserve">
     <value>取消后摇</value>
   </data>
-	<data name="EnableRecastCancel" xml:space="preserve">
+  <data name="EnableRecastCancel" xml:space="preserve">
     <value>取消歇竿后摇</value>
   </data>
-	<data name="EnableRecastCancelHelp" xml:space="preserve">
+  <data name="EnableRecastCancelHelp" xml:space="preserve">
     <value>在提竿动作中不可用</value>
   </data>
-	<data name="TurnCollectOff" xml:space="preserve">
+  <data name="TurnCollectOff" xml:space="preserve">
     <value>在下方“收集”选项未勾选时，在抛竿后取消收藏品收集</value>
   </data>
-	<data name="TurnCollectOffHelp" xml:space="preserve">
+  <data name="TurnCollectOffHelp" xml:space="preserve">
     <value>取消后摇需要使用“收藏品收集”，这个选项能让你在抛竿后退出收藏品收集状态</value>
   </data>
-	<data name="EnableChumCancel" xml:space="preserve">
+  <data name="EnableChumCancel" xml:space="preserve">
     <value>取消撒饵后摇</value>
   </data>
-	<data name="ChumCancelHelp" xml:space="preserve">
+  <data name="ChumCancelHelp" xml:space="preserve">
     <value>试验性/不稳定(受PING影响)。技能“打捞”会被激活以用于取消后摇</value>
   </data>
-	<data name="FishCaughtHelp" xml:space="preserve">
+  <data name="FishCaughtHelp" xml:space="preserve">
     <value>当你钓起一条鱼后的选项</value>
   </data>
-	<data name="ExtraOptionsHelp" xml:space="preserve">
+  <data name="ExtraOptionsHelp" xml:space="preserve">
     <value>额外选项</value>
   </data>
-	<data name="AutoCastsHelp" xml:space="preserve">
+  <data name="AutoCastsHelp" xml:space="preserve">
     <value>自动操作选项</value>
   </data>
-	<data name="GetWikiPresets" xml:space="preserve">
+  <data name="GetWikiPresets" xml:space="preserve">
     <value>获取社区预设</value>
   </data>
-	<data name="ClickToToggle" xml:space="preserve">
+  <data name="ClickToToggle" xml:space="preserve">
     <value>点击切换开/关</value>
   </data>
-	<data name="PluginEnabledHelp" xml:space="preserve">
+  <data name="PluginEnabledHelp" xml:space="preserve">
     <value>您也可以单击鱼类图册来切换插件开启/关闭</value>
   </data>
-	<data name="MakeACopy" xml:space="preserve">
+  <data name="MakeACopy" xml:space="preserve">
     <value>创建副本</value>
   </data>
-	<data name="StatusNoPreset" xml:space="preserve">
+  <data name="StatusNoPreset" xml:space="preserve">
     <value>无预设运行中，将使用全局预设</value>
   </data>
-	<data name="LureSSActive" xml:space="preserve">
+  <data name="LureSSActive" xml:space="preserve">
     <value>仅当拍打水面激活时使用拟饵技能</value>
   </data>
-	<data name="LureSSNotActive" xml:space="preserve">
+  <data name="LureSSNotActive" xml:space="preserve">
     <value>不在拍打水面激活时使用拟饵技能</value>
   </data>
-	<data name="LureICActive" xml:space="preserve">
+  <data name="LureICActive" xml:space="preserve">
     <value>仅当专一垂钓激活时使用拟饵技能</value>
   </data>
-	<data name="LureICNotActive" xml:space="preserve">
+  <data name="LureICNotActive" xml:space="preserve">
     <value>不在专一垂钓激活时使用拟饵技能</value>
   </data>
-	<data name="Prize_Catch_Options" xml:space="preserve">
+  <data name="Prize_Catch_Options" xml:space="preserve">
     <value>Prize Catch Options</value>
   </data>
-	<data name="Prize_Catch_Required" xml:space="preserve">
+  <data name="Prize_Catch_Required" xml:space="preserve">
     <value>Only hook when Prize Catch active</value>
   </data>
-	<data name="Conditions" xml:space="preserve">
+  <data name="Conditions" xml:space="preserve">
     <value>条件</value>
   </data>
-	<data name="Conditions_HelpText" xml:space="preserve">
+  <data name="Conditions_HelpText" xml:space="preserve">
     <value>提钩的特殊条件</value>
   </data>
-	<data name="Status_NoHookEnabled" xml:space="preserve">
+  <data name="Status_NoHookEnabled" xml:space="preserve">
     <value>跳过咬钩 - 没有为这个咬钩启用提钩</value>
   </data>
-	<data name="Status_PrizeCatchRequired" xml:space="preserve">
+  <data name="Status_PrizeCatchRequired" xml:space="preserve">
     <value>跳过咬钩 - 大鱼猎手未激活，但提钩需要其激活</value>
   </data>
-	<data name="Status_IdenticalCastRequired" xml:space="preserve">
+  <data name="Status_IdenticalCastRequired" xml:space="preserve">
     <value>跳过咬钩 - 专一垂钓已激活，但提钩无需其激活</value>
   </data>
-	<data name="Status_IdenticalCastNotRequired" xml:space="preserve">
+  <data name="Status_IdenticalCastNotRequired" xml:space="preserve">
     <value>跳过咬钩 - 专一垂钓未激活，但提钩需要其激活</value>
   </data>
-	<data name="Status_SurfaceSlapRequired" xml:space="preserve">
+  <data name="Status_SurfaceSlapRequired" xml:space="preserve">
     <value>跳过咬钩 - 拍击水面未激活，但提钩需要其激活</value>
   </data>
-	<data name="Status_SurfaceSlapNotRequired" xml:space="preserve">
+  <data name="Status_SurfaceSlapNotRequired" xml:space="preserve">
     <value>跳过咬钩 - 拍击水面已激活，但提钩无需其激活</value>
   </data>
-	<data name="PrizeCatchNotActive" xml:space="preserve">
+  <data name="PrizeCatchNotActive" xml:space="preserve">
     <value>只在大鱼猎手未激活时提钩</value>
   </data>
-	<data name="Status_PrizeCatchNotRequired" xml:space="preserve">
+  <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
     <value>跳过咬钩 - 大鱼猎手已激活，但提钩无需其激活</value>
   </data>
-	<data name="StellarHookset" xml:space="preserve">
+  <data name="StellarHookset" xml:space="preserve">
     <value>Stellar Hookset</value>
   </data>
-	<data name="FolderMostBeEmpty" xml:space="preserve">
+  <data name="FolderMostBeEmpty" xml:space="preserve">
     <value>Folder must be empty to delete</value>
   </data>
-	<data name="FolderExported" xml:space="preserve">
+  <data name="FolderExported" xml:space="preserve">
     <value>已导出预设至剪贴板</value>
   </data>
-	<data name="ExportFolderClipboard" xml:space="preserve">
+  <data name="ExportFolderClipboard" xml:space="preserve">
     <value>Export Folder to Clipboard</value>
   </data>
 </root>
