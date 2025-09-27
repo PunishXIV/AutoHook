@@ -6,6 +6,7 @@ using AutoHook.Configurations;
 using AutoHook.Enums;
 using AutoHook.Fishing;
 using AutoHook.Resources.Localization;
+using AutoHook.SeFunctions;
 using AutoHook.Utils;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
@@ -128,7 +129,7 @@ public class SubTabFish
         ImGui.PushID("DrawFishSearchBar");
         DrawUtil.DrawComboSelector<BaitFishClass>(
             GameRes.Fishes,
-            (BaitFishClass fish) => fish.Name,
+            (BaitFishClass fish) => $"[{item.Id}] {fish.Name}", // fish.Id or item.Id?
             fishConfig.Fish.Name,
             (BaitFishClass fish) => fishConfig.Fish = fish);
 
@@ -183,9 +184,20 @@ public class SubTabFish
             {
                 DrawUtil.DrawComboSelector(
                     GameRes.Baits,
-                    bait => bait.Name,
+                    bait => $"[{item.Id}] {bait.Name}", // idk if it's supposed to be bait.Id or item.Id?
                     fishConfig.BaitToSwap.Name,
                     bait => fishConfig.BaitToSwap = bait);
+
+                ImGui.SameLine();
+
+        if (ImGuiComponents.IconButton(FontAwesomeIcon.ArrowLeft))
+        {
+            if (Service.BaitManager.Current > 0) 
+                fishConfig.BaitToSwap = list.Single(x => x.Id == Service.BaitManager.Current);
+        }
+
+        if (ImGui.IsItemHovered())
+            ImGui.SetTooltip(UIStrings.UIUseCurrentBait);
 
                 ImGui.Spacing();
 
@@ -280,4 +292,5 @@ public class SubTabFish
             });
         ImGui.PopID();
     }
+
 }
