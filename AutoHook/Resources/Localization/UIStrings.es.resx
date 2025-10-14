@@ -124,6 +124,9 @@
   <data name="DrawHeader_Testing" xml:space="preserve">
     <value>Test</value>
   </data>
+  <data name="DefaultSubTab" xml:space="preserve">
+    <value>Por Defecto</value>
+  </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
@@ -189,6 +192,9 @@
   </data>
   <data name="AddNewPreset" xml:space="preserve">
     <value>Añadir nuevo Preset</value>
+  </data>
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>Aquí puedes configurar qué anzuelo usar basado en el cebo o "mooch". Si no hay cebo especificado, se utilizará la configuración global.</value>
   </data>
   <data name="NewPreset" xml:space="preserve">
     <value>Nuevo Preset</value>

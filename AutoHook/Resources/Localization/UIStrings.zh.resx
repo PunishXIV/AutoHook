@@ -1260,6 +1260,9 @@
   <data name="SpecialFishExemple" xml:space="preserve">
     <value>隐藏鱼是指需要100级大招触发条件的鱼，例如：</value>
   </data>
+  <data name="NotSpecial" xml:space="preserve">
+    <value>仅限小型/大型鱼类</value>
+  </data>
   <data name="MaxAttempts" xml:space="preserve">
     <value>最大使用次数</value>
   </data>
@@ -1455,4 +1458,54 @@
   <data name="ExportFolderClipboard" xml:space="preserve">
     <value>Export Folder to Clipboard</value>
   </data>
+  <data name="EnterNewFolderName" xml:space="preserve">
+    <value>为文件夹输入一个新名称：</value>
+  </data>
+  <data name="RenameFolder" xml:space="preserve">
+    <value>重命名文件夹</value>
+  </data>
+  <data name="CreateNewFolder" xml:space="preserve">
+    <value>新建文件夹</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>创建</value>
+  </data>
+  <data name="FolderNameHint" xml:space="preserve">
+    <value>输入新文件夹的名称：</value>
+  </data>
+  <data name="NoPresetsSelected" xml:space="preserve">
+    <value>未选择要导入的预设</value>
+  </data>
+  <data name="RenamePreset" xml:space="preserve">
+    <value>重命名预设</value>
+  </data>
+  <data name="ImportFolderAndPresets" xml:space="preserve">
+    <value>导入此文件夹及其预设？</value>
+  </data>
+  <data name="Presets_" xml:space="preserve">
+    <value>预设：</value>
+  </data>
+  <data name="FolderName" xml:space="preserve">
+    <value>文件夹名称</value>
+  </data>
+  <data name="ImportPresetOrFolder" xml:space="preserve">
+    <value>从剪贴板导入预设或文件夹</value>
+  </data>
+  <data name="CreateFolder" xml:space="preserve">
+    <value>新建文件夹</value>
+  </data>
+  <data name="Moving_" xml:space="preserve">
+    <value>移动：</value>
+		<comment>Moving: PresetName</comment>
+  </data>
+  <data name="MovingFolder_" xml:space="preserve">
+    <value>移动文件夹：</value>
+		<comment>Moving folder: FolderName</comment>
+  </data>
+  <data name="Reset_Counter_Bait_Swap" xml:space="preserve">
+    <value>交换钓饵后重置计数器</value>
+  </data>
+  <data name="GPlabel" xml:space="preserve">
+		<value>采集力</value>
+	</data>
 </root>
