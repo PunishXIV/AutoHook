@@ -260,6 +260,24 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically cast when not fishing.
+        /// </summary>
+        internal static string AutoStartFishing {
+            get {
+                return ResourceManager.GetString("AutoStartFishing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically casts line when not fishing. Disable if you keep AutoHook on at all times..
+        /// </summary>
+        internal static string AutoStartFishingHelpText {
+            get {
+                return ResourceManager.GetString("AutoStartFishingHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any Small/Large/Special.
         /// </summary>
         internal static string AnyTarget {
@@ -3966,6 +3984,24 @@ namespace AutoHook.Resources.Localization {
         internal static string TurnCollectOffHelp {
             get {
                 return ResourceManager.GetString("TurnCollectOffHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn Collector&apos;s Glove off when Auto Collect is disabled.
+        /// </summary>
+        internal static string TurnCollectOffWithoutAnimCancel {
+            get {
+                return ResourceManager.GetString("TurnCollectOffWithoutAnimCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically turns off Collector&apos;s Glove if Auto Collect is disabled, regardless of animation canceling settings.
+        /// </summary>
+        internal static string TurnCollectOffWithoutAnimCancelHelp {
+            get {
+                return ResourceManager.GetString("TurnCollectOffWithoutAnimCancelHelp", resourceCulture);
             }
         }
         

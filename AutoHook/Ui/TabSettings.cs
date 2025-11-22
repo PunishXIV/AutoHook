@@ -64,6 +64,8 @@ public class TabSettings : BaseTab
 
         DrawUtil.Checkbox(UIStrings.AntiAfkOption, ref Service.Configuration.ResetAfkTimer);
 
+        DrawUtil.Checkbox(UIStrings.AutoStartFishing, ref Service.Configuration.AutoStartFishing, UIStrings.AutoStartFishingHelpText);
+
         DrawUtil.Checkbox(UIStrings.DontHideExtraAutoCast, ref Service.Configuration.DontHideOptionsDisabled);
 
         DrawUtil.Checkbox(UIStrings.Hide_Tab_Description, ref Service.Configuration.HideTabDescription);

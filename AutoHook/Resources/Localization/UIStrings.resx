@@ -1064,6 +1064,12 @@ Check the Guide Tab for Guides.</value>
   <data name="AntiAfkOption" xml:space="preserve">
     <value>Anti-Afk while fishing</value>
   </data>
+  <data name="AutoStartFishing" xml:space="preserve">
+    <value>Automatically cast when not fishing</value>
+  </data>
+  <data name="AutoStartFishingHelpText" xml:space="preserve">
+    <value>Automatically casts line when not fishing. Disable if you keep AutoHook on at all times.</value>
+  </data>
   <data name="SwapTreeNodeButtons" xml:space="preserve">
     <value>Swap Tree Node to Buttons</value>
   </data>
@@ -1426,6 +1432,12 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="ChumCancelHelp" xml:space="preserve">
     <value>Experimental and not consistent (maybe because of ping). Action 'Salvage' will be activated</value>
+  </data>
+  <data name="TurnCollectOffWithoutAnimCancel" xml:space="preserve">
+    <value>Turn Collector's Glove off when Auto Collect is disabled</value>
+  </data>
+  <data name="TurnCollectOffWithoutAnimCancelHelp" xml:space="preserve">
+    <value>Automatically turns off Collector's Glove if Auto Collect is disabled, regardless of animation canceling settings</value>
   </data>
   <data name="FishCaughtHelp" xml:space="preserve">
     <value>Options for when you catch a fish</value>

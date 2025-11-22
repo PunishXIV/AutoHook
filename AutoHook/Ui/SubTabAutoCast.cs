@@ -98,6 +98,9 @@ public class SubTabAutoCast
             ImGui.TreePop();
         }
 
+        DrawUtil.Checkbox(UIStrings.TurnCollectOffWithoutAnimCancel, ref acCfg.TurnCollectOffWithoutAnimCancel,
+            UIStrings.TurnCollectOffWithoutAnimCancelHelp);
+
         DrawUtil.DrawCheckboxTree(UIStrings.AutoCastOnlyAtSpecificTimes, ref acCfg.OnlyCastDuringSpecificTime, () =>
         {
             var startTime = acCfg.StartTime.ToString(@"HH:mm");

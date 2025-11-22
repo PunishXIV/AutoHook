@@ -19,6 +19,13 @@ public class AutoHookIPC
     }
 
     [EzIPC]
+    public void SetAutoStartFishing(bool state)
+    {
+        _cfg.AutoStartFishing = state;
+        Service.Save();
+    }
+
+    [EzIPC]
     public void SetAutoGigState(bool state)
     {
         _cfg.AutoGigConfig.AutoGigEnabled = state;

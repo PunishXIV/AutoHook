@@ -17,6 +17,7 @@ public class AutoCastsConfig
     public bool RecastAnimationCancel;
     public bool TurnCollectOff;
     public bool ChumAnimationCancel;
+    public bool TurnCollectOffWithoutAnimCancel;
 
     public AutoCastLine CastLine = new();
     public AutoMooch CastMooch = new();

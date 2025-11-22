@@ -47,6 +47,8 @@ public class Configuration : IPluginConfiguration
 
     [DefaultValue(true)] public bool ResetAfkTimer = true;
 
+    [DefaultValue(false)] public bool AutoStartFishing = false;
+
     // old config
     public List<BaitPresetConfig> BaitPresetList = [];
 

@@ -31,6 +31,8 @@ public partial class FishingManager
 
         if (PlayerRes.HasStatus(IDs.Status.CollectorsGlove) && cfg.RecastAnimationCancel && cfg.TurnCollectOff && !cfg.CastCollect.Enabled)
             PlayerRes.CastAction(IDs.Actions.Collect);
+        else if (PlayerRes.HasStatus(IDs.Status.CollectorsGlove) && cfg.TurnCollectOffWithoutAnimCancel && !cfg.CastCollect.Enabled)
+            PlayerRes.CastAction(IDs.Actions.Collect);
         else
         {
             cfg.TryCastAction(cfg.CastCollect);
