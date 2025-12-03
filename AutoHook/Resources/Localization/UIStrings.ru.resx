@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -117,7 +117,1460 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DrawHeader_Testing" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="DefaultSubTab" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="DrawImportExport_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ImportPresetFromClipboard" xml:space="preserve">
+    <value>Импортировать шаблон из буфера.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Импортировать</value>
+  </data>
+  <data name="PresetName" xml:space="preserve">
+    <value>Имя шаблона</value>
+  </data>
+  <data name="ImportThisPreset" xml:space="preserve">
+    <value>Импортировать шаблон?</value>
+  </data>
+  <data name="AutoMooch" xml:space="preserve">
+    <value>Авто-наживка</value>
+  </data>
+  <data name="AddLastCatch" xml:space="preserve">
+    <value>Добавить последний улов:</value>
+  </data>
+  <data name="ExportPresetToClipboard" xml:space="preserve">
+    <value>Экспортировать шаблон в буфер.</value>
+  </data>
+  <data name="PresetExportedToTheClipboard" xml:space="preserve">
+    <value>Шаблон экспортирован в буфер</value>
+  </data>
+  <data name="APresetWithTheSameNameAlreadyExists" xml:space="preserve">
+    <value>Шаблон с данным именем уже существует</value>
+  </data>
   <data name="PresetAlreadyExist" xml:space="preserve">
-    <value>Пресет с таким именем уже существует</value>
+    <value>Шаблон с таким именем уже существует</value>
+  </data>
+  <data name="CurrentBaitMooch" xml:space="preserve">
+    <value>Текущая приманка/наживка:</value>
+  </data>
+  <data name="AddCurrentBaitMooch" xml:space="preserve">
+    <value>Добавить текущую приманку/наживку</value>
+  </data>
+  <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
+    <value>включён по умолчанию в случае добавления новой приманки/наживки </value>
+  </data>
+  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
+    <value>"Все приманки" и "Все наживки" имеют наименьший приоритет</value>
+  </data>
+  <data name="NewBaitMooch" xml:space="preserve">
+    <value>Новая наживка/приманка</value>
+  </data>
+  <data name="EditMe" xml:space="preserve">
+    <value>Отредактировать</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="HoldShiftToDelete" xml:space="preserve">
+    <value>Зажмите SHIFT для удаления.</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="RightClickToRename" xml:space="preserve">
+    <value>Щёлкните ПКМ для переименования</value>
+  </data>
+  <data name="EnterToConfirm" xml:space="preserve">
+    <value>Отредактировать имя шаблона (нажмите Enter для подтверждения)</value>
+  </data>
+  <data name="HookPresets" xml:space="preserve">
+    <value>Шаблоны подсечек</value>
+  </data>
+  <data name="AddNewPreset" xml:space="preserve">
+    <value>Добавить новый шаблон</value>
+  </data>
+  <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
+    <value>Здесь вы можете настроить использование подсечек на основе нынешней приманки/наживки.
+Если приманка/наживка не установлена, будут использоваться установки общего шаблона.</value>
+  </data>
+  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
+    <value>Здесь вы можете настроить использование подсечек на основе нынешней приманки/наживки.
+Если приманка/наживка не установлена, будут использоваться установки общего шаблона.</value>
+  </data>
+  <data name="NewPreset" xml:space="preserve">
+    <value>Новый шаблон</value>
+  </data>
+  <data name="TabNameCustomPresets" xml:space="preserve">
+    <value>Пользовательские шаблоны</value>
+  </data>
+  <data name="TabNameGPConfig" xml:space="preserve">
+    <value>Конфигурации ОС</value>
+  </data>
+  <data name="TabGPConfig_TabDescription" xml:space="preserve">
+    <value>Здесь вы можете настроить порог ОС для активации действий/предметов, используемых для функции Автокаста.</value>
+  </data>
+  <data name="GP" xml:space="preserve">
+    <value>ОС</value>
+  </data>
+  <data name="Above" xml:space="preserve">
+    <value>Выше</value>
+  </data>
+  <data name="Below" xml:space="preserve">
+    <value>Ниже</value>
+  </data>
+  <data name="WillBeUsedWhenYourGPIsEqualOr" xml:space="preserve">
+    <value>используется, если количество ОС равно или</value>
+    <comment>Action will be used when your GP is Equal or Above/Below</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="TabnameGeneral" xml:space="preserve">
+    <value>Общее</value>
+  </data>
+  <data name="DrawHeader_GeneralSettings" xml:space="preserve">
+    <value>Общие настройки</value>
+  </data>
+  <data name="DrawHeader_CheckChangelog" xml:space="preserve">
+    <value>Новые изменения в списке ниже</value>
+  </data>
+  <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
+    <value>Нажмите сюда, чтобы сообщить о проблеме или внести предложение</value>
+  </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Список изменений</value>
+  </data>
+  <data name="HookWeakExclamation" xml:space="preserve">
+    <value>Слабая Подсечка (!)</value>
+  </data>
+  <data name="HookStrongExclamation" xml:space="preserve">
+    <value>Сильная Подсечка (!!)</value>
+  </data>
+  <data name="HookLegendaryExclamation" xml:space="preserve">
+    <value>Легендарная Подсечка (!!!)</value>
+  </data>
+  <data name="HookWillBeUsedIfPatienceIsNotUp" xml:space="preserve">
+    <value>Используемая "Подсечка" в случае, если "Терпение" не активировано</value>
+  </data>
+  <data name="PrecisionHookset" xml:space="preserve">
+    <value>Аккуратная Подсечка</value>
+  </data>
+  <data name="PowerfulHookset" xml:space="preserve">
+    <value>Мощная Подсечка</value>
+  </data>
+  <data name="MoochBaitName" xml:space="preserve">
+    <value>Имя наживки/приманки</value>
+  </data>
+  <data name="BaitAlreadyExists" xml:space="preserve">
+    <value>Приманка уже существует</value>
+  </data>
+  <data name="MaxWait" xml:space="preserve">
+    <value>Макс. Ожидание</value>
+    <comment>Maximum time to wait</comment>
+  </data>
+  <data name="HelpMarkerMaxWaitTimer" xml:space="preserve">
+    <value>Подсечка НЕ будет использоваться после указанного времени.
+Пример: Если вы установили макс. ожидание на 10 и поклёвка началась после 12 сек., рыба будет проигнорирована</value>
+  </data>
+  <data name="TimeoutHelpText" xml:space="preserve">
+    <value>Установить (0) для отключения.
+Отменяет ловлю рыбы подсечкой в случае истечения лимита времени.</value>
+  </data>
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+    <value>Не влияет в случае использования "Прикормки"</value>
+  </data>
+  <data name="MinWait" xml:space="preserve">
+    <value>Мин. Ожидание</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Мин.</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Макс.</value>
+  </data>
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+    <value>Подсечка НЕ будет использоваться до указанного времени.
+Пример: Если вы установили мин. ожидание на 14 и поклёвка началась после 8 сек., рыба будет проигнорирована</value>
+  </data>
+  <data name="StopFishingAfter" xml:space="preserve">
+    <value>Завершить ловлю после...</value>
+  </data>
+  <data name="StopFishing" xml:space="preserve">
+    <value>Завершить ловлю</value>
+  </data>
+  <data name="AfterBeingCaught" xml:space="preserve">
+    <value>После успешной поимки...</value>
+  </data>
+  <data name="AfterBeingCaughtDescription" xml:space="preserve">
+    <value>Если это конфигурация наживки: остановить ловлю после того, как X любой рыбы было поймано 
+Если это конфигурация рыбы: остановить ловлю после того, как X конкретной рыбы было поймано</value>
+  </data>
+  <data name="TimeS" xml:space="preserve">
+    <value>попыток</value>
+    <comment>Quantity, example: 5 Time(s) </comment>
+  </data>
+  <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
+    <value>"Удар По Воде" и "Идентичный Улов"</value>
+  </data>
+  <data name="OverridesIdenticalCast" xml:space="preserve">
+    <value>Отмена "Идентичного Улова"</value>
+  </data>
+  <data name="OverridesSurfaceSlap" xml:space="preserve">
+    <value>Отмена "Удара по Воде"</value>
+  </data>
+  <data name="UseSurfaceSlap" xml:space="preserve">
+    <value>Использовать "Удар по Воде"</value>
+  </data>
+  <data name="UseIdenticalCast" xml:space="preserve">
+    <value>Использовать "Идентичный Улов"</value>
+  </data>
+  <data name="UseMoochII" xml:space="preserve">
+    <value>Использовать "Наживку II"</value>
+  </data>
+  <data name="OnlyUseWhenFisherSIntutionIsActive" xml:space="preserve">
+    <value>Использовать лишь в случае, если "Интуиция Рыбака" активна</value>
+  </data>
+  <data name="AutoMoochPresetDescription" xml:space="preserve">
+    <value>- Если это приманка (Пр.: Универсальная Блесна), вся пойманная при её помощи рыба будет использована в качестве наживки
+- Если это рыба/наживка (Пр.: Портовая Сельдь), вся пойманная при её помощи рыба будет использована в качестве наживки
+- Если настройка отключена, рыба НЕ будет использована в качестве наживки даже в том случае, если Авто-Наживка включена в общих настройках</value>
+  </data>
+  <data name="AutoMoochPresetHelpMarker" xml:space="preserve">
+    <value>Данная настройка имеет приоритет перед авто-кастом</value>
+  </data>
+  <data name="FisherSIntuitionSettings" xml:space="preserve">
+    <value>Настройки "Интуиции Рыбака"</value>
+  </data>
+  <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
+    <value>Установить Пользовательские Подсечки в случае если "Интуиция Рыбака" активна</value>
+  </data>
+  <data name="SpectralCurrentSettings" xml:space="preserve">
+    <value>Настройки Спектрального Течения</value>
+  </data>
+  <data name="HoldShiftBothDHTH" xml:space="preserve">
+    <value>Зажмите SHIFT для одновременной установки "Двойной Подсечки" и "Тройной Подсечки" (не рекомендуется)</value>
+  </data>
+  <data name="UseDoubleHookIfGp400" xml:space="preserve">
+    <value>Использовать "Двойную Подсечку" (если ОС &gt; 400)</value>
+  </data>
+  <data name="UseTripleHookIfGp700" xml:space="preserve">
+    <value>Использовать "Тройную Подсечку" (если ОС &gt; 700)</value>
+  </data>
+  <data name="UseWhenPatienceIsActiveNotRecommended" xml:space="preserve">
+    <value>Использовать, если "Терпение" активно (не рекомендуется)</value>
+  </data>
+  <data name="DHTHPatienceHelpMarker" xml:space="preserve">
+    <value>Важное сообщение!!!
+
+Если функция отключена, "Аккуратная/Мощная Подсечка" будет использована в случае активации "Терпения".</value>
+  </data>
+  <data name="LetTheFishEscape" xml:space="preserve">
+    <value>Отпустить рыбу, если количество ОС ниже уровня</value>
+  </data>
+  <data name="OnlyUseWhenIdenticalCastIsActive" xml:space="preserve">
+    <value>Использовать лишь в случае, когда "Идентичный Улов" активен</value>
+  </data>
+  <data name="DoubleTripleHookSettings" xml:space="preserve">
+    <value>Настройки Двойной/Тройной Подсечки</value>
+  </data>
+  <data name="EnabledConfigArrow" xml:space="preserve">
+    <value>Включённые функции -&gt;</value>
+  </data>
+  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
+    <value>Важное сообщение!!!
+
+Если функция отключена, рыба не будет поймана.</value>
+  </data>
+  <data name="ChumTimer" xml:space="preserve">
+    <value>Таймер "Прикормки"</value>
+  </data>
+  <data name="EnableChumTimers" xml:space="preserve">
+    <value>Включить таймер "Прикормки"</value>
+  </data>
+  <data name="EnableChumTimersHelpMarker" xml:space="preserve">
+    <value>То же, что и опция выше - но лишь в случае, если "Прикормка" активна</value>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Включить</value>
+  </data>
+  <data name="TabNameAutoGig" xml:space="preserve">
+    <value>Авто-Гарпун</value>
+  </data>
+  <data name="TabAutoGigDescription" xml:space="preserve">
+    <value>Данная опция носит экспериментальный характер, и рыба может быть не поймана при её включении. Если вам кажется, что пропускается слишком много рыбы, попробуйте изменить размер окна ловли гарпуном</value>
+  </data>
+  <data name="EnableAutoGig" xml:space="preserve">
+    <value>Включить Авто-Гарпун</value>
+  </data>
+  <data name="HideOverlayDuringSpearfishing" xml:space="preserve">
+    <value>Отключить оверлей во время ловли рыбы гарпуном</value>
+  </data>
+  <data name="AutoGigHideOverlayHelpMarker" xml:space="preserve">
+    <value>Оверлей будет скрыт только в случае, если опция Авто-Гарпуна отключена</value>
+  </data>
+  <data name="DrawFishHitbox" xml:space="preserve">
+    <value>Отрисовать хитбокс рыбы</value>
+  </data>
+  <data name="DrawFishHitboxHelpMarker" xml:space="preserve">
+    <value>Хитбокс будет отрисован лишь для рыбы установленного Размера и Скорости</value>
+  </data>
+  <data name="DrawGigHitbox" xml:space="preserve">
+    <value>Отрисовать хитбокс гарпуна</value>
+  </data>
+  <data name="SelectTheSizeAndSpeed" xml:space="preserve">
+    <value>Установить Размер и Скорость нужной вам рыбы (оверлей ловли гарпуном Gatherbuddy может помочь)</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Размер</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Скорость</value>
+  </data>
+  <data name="AutoCastCordialPriority" xml:space="preserve">
+    <value>Приоритет использования: (Разведённая Настойка) &gt; (Настойка) &gt; (Вс. Настойка)</value>
+  </data>
+  <data name="AutoCastCordialPriorityHelpMarker" xml:space="preserve">
+    <value>Если Настойки нет в инвентаре, Вс. Настойка будет использована вместо неё</value>
+  </data>
+  <data name="AutoCastUseCordial" xml:space="preserve">
+    <value>Использование Настойки (Вс. Настойки в приоритете)</value>
+  </data>
+  <data name="AutoCastUseCordialHelpMarker" xml:space="preserve">
+    <value>Если (Вс. Настойки) нет в инвентаре, (Настойка) будет использована вместо неё</value>
+  </data>
+  <data name="AutoCastUseFishEyes" xml:space="preserve">
+    <value>Использовать "Рыбий Взор"</value>
+  </data>
+  <data name="CancelsCurrentMooch" xml:space="preserve">
+    <value>Отменить текущую Наживку</value>
+  </data>
+  <data name="AutoCastUseChum" xml:space="preserve">
+    <value>Использовать "Прикормку"</value>
+  </data>
+  <data name="AutoCastExtraOptionPrizeCatch" xml:space="preserve">
+    <value>Используется только в случае, если "Наживка II" активна - ПЕРЕД ЭТИМ ПРОЧТИТЕ &gt;&gt;&gt;</value>
+  </data>
+  <data name="ExtraOptionPrizeCatchHelpMarker" xml:space="preserve">
+    <value>&gt; Удостоверьтесь, что "Наживка II" активна, или функция не будет работать &lt; Это может потенциально сохранить 100ОС, если вы ловите исключительно наживкой</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Enable_AutoHook" xml:space="preserve">
+    <value>Включить Авто-Подсечку</value>
+  </data>
+  <data name="Plugin_Enabled" xml:space="preserve">
+    <value>Плагин включён</value>
+  </data>
+  <data name="Plugin_Disabled" xml:space="preserve">
+    <value>Плагин отключён</value>
+  </data>
+  <data name="Plugin_Name_Settings" xml:space="preserve">
+    <value>{0} Настройки</value>
+  </data>
+  <data name="PluginUi_Draw_Enables_Disables" xml:space="preserve">
+    <value>Включает/отключает плагин</value>
+  </data>
+  <data name="Using_Chum_Timer" xml:space="preserve">
+    <value>Использование таймера "Прикормки"</value>
+  </data>
+  <data name="Disables_AutoHook" xml:space="preserve">
+    <value>Отключение Авто-Подсечки</value>
+  </data>
+  <data name="AutoHook_Disabled" xml:space="preserve">
+    <value>Авто-Подсечка отключена</value>
+  </data>
+  <data name="AutoHook_Enabled" xml:space="preserve">
+    <value>Авто-Подсечка включена</value>
+  </data>
+  <data name="Enables_AutoHook" xml:space="preserve">
+    <value>Включает Авто-Подсечку</value>
+  </data>
+  <data name="Opens_Config_Window" xml:space="preserve">
+    <value>Открыть окно конфигураций</value>
+  </data>
+  <data name="TabAutoCasts_When_Stack_Equals" xml:space="preserve">
+    <value>Когда стек равен = </value>
+  </data>
+  <data name="Use_Prize_Catch" xml:space="preserve">
+    <value>Использовать "Призовой Улов"</value>
+  </data>
+  <data name="Use_Prize_Catch_HelpText" xml:space="preserve">
+    <value>Отменяет текущую Наживку. "Терпение" и "Самодельная Приманка" не будут использованы в случае, если "Призовой Улов" активирован</value>
+  </data>
+  <data name="Toggles_AutoHook_On_Off" xml:space="preserve">
+    <value>Переключить Вкл/Выкл Авто-Подсечки</value>
+  </data>
+  <data name="Triple_Hook" xml:space="preserve">
+    <value>Тройная Подсечка</value>
+  </data>
+  <data name="Watered_Cordial" xml:space="preserve">
+    <value>Разведённая Настойка</value>
+  </data>
+  <data name="Cordial" xml:space="preserve">
+    <value>Настойка</value>
+  </data>
+  <data name="HQ_Cordial" xml:space="preserve">
+    <value>Настойка (Кач.)</value>
+  </data>
+  <data name="HQ_Watered_Cordial" xml:space="preserve">
+    <value>Разведённая Настойка (Кач.)</value>
+  </data>
+  <data name="Double_Hook" xml:space="preserve">
+    <value>Двойная Подсечка</value>
+  </data>
+  <data name="Patience_II" xml:space="preserve">
+    <value>Терпение II</value>
+  </data>
+  <data name="Hi_Cordial" xml:space="preserve">
+    <value>Вс. Настойка</value>
+  </data>
+  <data name="Patience_I" xml:space="preserve">
+    <value>Терпение I</value>
+  </data>
+  <data name="Prize_Catch" xml:space="preserve">
+    <value>Призовой Улов</value>
+  </data>
+  <data name="Surface_Slap" xml:space="preserve">
+    <value>Удар по Воде</value>
+  </data>
+  <data name="Surface_Slap_Options" xml:space="preserve">
+    <value>Параметры Удара по Воде</value>
+  </data>
+  <data name="Identical_Cast_Options" xml:space="preserve">
+    <value>Параметры "Идентичного Улова"</value>
+  </data>
+  <data name="Identical_Cast" xml:space="preserve">
+    <value>Идентичный Улов</value>
+  </data>
+  <data name="Fish_Eyes" xml:space="preserve">
+    <value>Рыбий Взор</value>
+  </data>
+  <data name="Chum" xml:space="preserve">
+    <value>Прикормка</value>
+  </data>
+  <data name="Thaliaks_Favor" xml:space="preserve">
+    <value>Расположение Талиака</value>
+  </data>
+  <data name="MakeShift_Bait" xml:space="preserve">
+    <value>Самодельная Приманка</value>
+  </data>
+  <data name="BaitName_Default" xml:space="preserve">
+    <value>Стандартный</value>
+  </data>
+  <data name="DecompressString_Invalid_Import" xml:space="preserve">
+    <value>Данное импортирование недопустимо.</value>
+  </data>
+  <data name="New_Preset" xml:space="preserve">
+    <value>Новый Шаблон</value>
+  </data>
+  <data name="Auto_Casts" xml:space="preserve">
+    <value>Авто-ловля</value>
+  </data>
+  <data name="TabAutoCasts_DrawAutoCast_HelpText" xml:space="preserve">
+    <value>"Ловля" (действие РБК) будет использовано после клёва рыбы
+
+Важное примечание!!!
+Если Авто-Наживка (Общий или Пользовательский шаблон) не включена, удочка будет закинута стандартным образом и вы потеряете возможность использовать наживку перед броском (если таковая возможность была)</value>
+  </data>
+  <data name="Global_Auto_Cast_Line" xml:space="preserve">
+    <value>Общий шаблон авто-ловли</value>
+  </data>
+  <data name="Use_Thaliaks_Favor" xml:space="preserve">
+    <value>Использовать "Расположение Талиака"</value>
+  </data>
+  <data name="Use_Natures_Bounty" xml:space="preserve">
+    <value>Использовать "Природное Богатство"</value>
+  </data>
+  <data name="Enable_AutoGig" xml:space="preserve">
+    <value>Включить Авто-Гарпун</value>
+  </data>
+  <data name="Hitbox" xml:space="preserve">
+    <value>Хитбокс</value>
+  </data>
+  <data name="GigHitbox" xml:space="preserve">
+    <value>Хитбокс гарпуна</value>
+  </data>
+  <data name="Use_Makeshift_Bait" xml:space="preserve">
+    <value>Использовать "Самодельную приманку"</value>
+  </data>
+  <data name="TabAutoCasts_DrawMakeShiftBait_HelpText" xml:space="preserve">
+    <value>Может конфликтовать с авто-использованием "Расположения Талиака"</value>
+  </data>
+  <data name="TabAutoCasts_DrawExtraOptionsThaliaksFavor_" xml:space="preserve">
+    <value>Если стек равен =</value>
+  </data>
+  <data name="TabAutoCasts_DrawThaliaksFavor_HelpText" xml:space="preserve">
+    <value>Может конфликтовать с авто-использованием "Самодельной Приманки"</value>
+  </data>
+  <data name="Use_Patience_I_II" xml:space="preserve">
+    <value>Использовать "Терпение I/II"</value>
+  </data>
+  <data name="TabAutoCasts_DrawPatience_HelpText" xml:space="preserve">
+    <value>"Терпение I/II" будет использовано, если количество ОС равно (или выше) действию +20 (220 ОС для "Терпения I", 580 - для II) - данное условие необходимо, чтобы избежать недостаточного количества ОС для подсечек</value>
+  </data>
+  <data name="TabAutoCasts_DrawExtraOptionsPatience" xml:space="preserve">
+    <value>Использовать, если "Самодельная Приманка" активна</value>
+  </data>
+  <data name="Enable_Auto_Casts" xml:space="preserve">
+    <value>Включить Авто-Ловлю</value>
+  </data>
+  <data name="Dont_Cancel_Mooch" xml:space="preserve">
+    <value>Не отменять "Наживку"</value>
+  </data>
+  <data name="TabAutoCasts_DrawHeader_HelpText" xml:space="preserve">
+    <value>Действия, которые отменяют "Наживку", не будут использоваться ("Прикормка", "Рыбий Взор", "Призовой Улов", и.т.д.)</value>
+  </data>
+  <data name="TabAutoCasts_DrawExtraOptionsAutoMooch_Extra_Only_Active" xml:space="preserve">
+    <value>Использовать, если "Интуиция Рыбака" активна</value>
+  </data>
+  <data name="Use_Mooch_II" xml:space="preserve">
+    <value>Использовать "Наживку II"</value>
+  </data>
+  <data name="Global_Auto_Mooch" xml:space="preserve">
+    <value>Общая Авто-Наживка</value>
+  </data>
+  <data name="TabAutoCasts_DrawHeader_Guide_Collectables" xml:space="preserve">
+    <value>Гайд: Как добавлять коллекционную рыбу автоматически</value>
+  </data>
+  <data name="AutoMooch_HelpText" xml:space="preserve">
+    <value>Ловите на наживку всё! Данная опция более приоритетна, чем "Авто-ловля".
+
+Если вы хотите использовать Авто-наживку для ловли специфической рыбы и игнорировать остальных, отключите данную опцию и используйте вкладку "Пойманная рыба".</value>
+  </data>
+  <data name="Support_me_on_Ko_fi" xml:space="preserve">
+    <value>Поддержать меня на Ko-fi</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Завершено</value>
+  </data>
+  <data name="Incomplete" xml:space="preserve">
+    <value>Не завершено</value>
+  </data>
+  <data name="AutoHook" xml:space="preserve">
+    <value>Авто-Подсечка</value>
+  </data>
+  <data name="PluginUi_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="TabGeneral_DrawHeader_Localization_Help" xml:space="preserve">
+    <value>Помочь с локализацией плагина (Crowdin)</value>
+  </data>
+  <data name="Add_new_bait" xml:space="preserve">
+    <value>Добавить новую приманку</value>
+  </data>
+  <data name="Add_new_mooch" xml:space="preserve">
+    <value>Добавить новую наживку</value>
+  </data>
+  <data name="Presets_Hook" xml:space="preserve">
+    <value>Подсечка</value>
+  </data>
+  <data name="Mooch" xml:space="preserve">
+    <value>Наживка</value>
+  </data>
+  <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
+    <value>Авто-ловля</value>
+  </data>
+  <data name="AutoMooch_HelpText_old" xml:space="preserve">
+    <value>Данная опция имеет приоритет перед Авто-ловлей</value>
+  </data>
+  <data name="Normal_Hook" xml:space="preserve">
+    <value>Стандартная подсечка</value>
+  </data>
+  <data name="GlobalPreset" xml:space="preserve">
+    <value>Общий шаблон</value>
+  </data>
+  <data name="Bait" xml:space="preserve">
+    <value>Приманка</value>
+  </data>
+  <data name="All_Baits" xml:space="preserve">
+    <value>Все приманки</value>
+  </data>
+  <data name="All_Mooches" xml:space="preserve">
+    <value>Все наживки</value>
+  </data>
+  <data name="AutoPatience_Patience" xml:space="preserve">
+    <value>Терпение</value>
+  </data>
+  <data name="Fish" xml:space="preserve">
+    <value>Рыба</value>
+  </data>
+  <data name="FishCaught" xml:space="preserve">
+    <value>Пойманная рыба</value>
+  </data>
+  <data name="Add_new_fish" xml:space="preserve">
+    <value>Добавить новую рыбу</value>
+  </data>
+  <data name="Cast_Line" xml:space="preserve">
+    <value>Ловля</value>
+    <comment>Cast (fisher action)</comment>
+  </data>
+  <data name="Mooch_II" xml:space="preserve">
+    <value>Наживка II</value>
+  </data>
+  <data name="Never_Mooch" xml:space="preserve">
+    <value>Не использовать "Наживку"</value>
+  </data>
+  <data name="Mooch_Setting" xml:space="preserve">
+    <value>Настройки "Наживки"</value>
+  </data>
+  <data name="Swap_Preset" xml:space="preserve">
+    <value>Сменить шаблон</value>
+  </data>
+  <data name="Swap_Bait" xml:space="preserve">
+    <value>Сменить приманку</value>
+  </data>
+  <data name="IdenticalCast_HelpText" xml:space="preserve">
+    <value>Если функция отключена, возможность использования наживки будет упущена</value>
+  </data>
+  <data name="Always_Mooch" xml:space="preserve">
+    <value>Использовать "Наживку" всегда</value>
+  </data>
+  <data name="Caught_Counter" xml:space="preserve">
+    <value>Поймано:</value>
+    <comment>It'll shows how many times the fish was caught. Example: Caught: 5x</comment>
+  </data>
+  <data name="Hooked_Counter" xml:space="preserve">
+    <value>На крючке:</value>
+    <comment>It'll shows how many times the fish was caught. Example: Hooked: 5x</comment>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Включено</value>
+  </data>
+  <data name="StopFishing_After_hooking" xml:space="preserve">
+    <value>После подсечки...</value>
+  </data>
+  <data name="Hooking_Limited_Reached_Chat_Message" xml:space="preserve">
+    <value>Лимит подсечек достиг ({0}). Ловля прекращена.</value>
+  </data>
+  <data name="Caught_Limited_Reached_Chat_Message" xml:space="preserve">
+    <value>Лимит пойманной рыбы достиг ({0}). Ловля прекращена.</value>
+  </data>
+  <data name="Stop_Casting" xml:space="preserve">
+    <value>Остановить ловлю</value>
+  </data>
+  <data name="Auto_Cast_Stopped" xml:space="preserve">
+    <value>Авто-ловля будет остановлена, но рыбалка не будет прекращена</value>
+  </data>
+  <data name="Quit_Fishing" xml:space="preserve">
+    <value>Прекратить рыбалку</value>
+  </data>
+  <data name="Quit_Action_HelpText" xml:space="preserve">
+    <value>Завершающее действие будет использовано, после чего рыбалка прекратится.</value>
+  </data>
+  <data name="Tab_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="TabDefaultPreset_Description" xml:space="preserve">
+    <value>Стандартный шаблон будет использован в том случае, если пользовательские приманки/наживки/рыба/авто-ловля не обнаружены. Здесь вы можете установить поведение ловли рыбы, которое будет распространяться на все приманки/наживки, если пользовательский шаблон не будет создан.
+
+Для гайдов проверьте вкладку "Руководства".</value>
+  </data>
+  <data name="TabGlobalPreset_Description" xml:space="preserve">
+    <value>Общий шаблон будет использован в том случае, если пользовательские приманки/наживки/рыба/авто-ловля не обнаружены. Здесь вы можете установить общее поведение ловли рыбы, которое будет распространяться на все приманки/наживки, если пользовательский шаблон не будет создан</value>
+  </data>
+  <data name="Old_Preset_Warning" xml:space="preserve">
+    <value>Данный импорт устарел, есть возможность что некоторые функции не будут включены.</value>
+  </data>
+  <data name="Show_Chat_Logs" xml:space="preserve">
+    <value>Показать логи чата</value>
+  </data>
+  <data name="Show_Current_Status_Header" xml:space="preserve">
+    <value>Показать нынешний статус в заголовке</value>
+  </data>
+  <data name="DrawConfigs_Max_" xml:space="preserve">
+    <value>Макс.</value>
+  </data>
+  <data name="DrawConfigs_Min_" xml:space="preserve">
+    <value>Мин.</value>
+  </data>
+  <data name="Delay_Between_Casts" xml:space="preserve">
+    <value>Задержка между бросками (в мс):</value>
+  </data>
+  <data name="Show_Debug_Console" xml:space="preserve">
+    <value>Открыть консоль отладки</value>
+  </data>
+  <data name="Show_Chat_Logs_HelpText" xml:space="preserve">
+    <value>Показывать сообщения вроде "Шаблон изменён" в чате</value>
+  </data>
+  <data name="TabName_Config_Guides" xml:space="preserve">
+    <value>Конфигурации / Руководства</value>
+  </data>
+  <data name="Open_Console" xml:space="preserve">
+    <value>Открыть консоль</value>
+  </data>
+  <data name="SubAuto_Disabled" xml:space="preserve">
+    <value>Авто-ловля отключена</value>
+  </data>
+  <data name="AllActionsDisabled" xml:space="preserve">
+    <value>Все действия отключены</value>
+  </data>
+  <data name="SubExtra_Disabled" xml:space="preserve">
+    <value>Дополнительные параметры отключены</value>
+  </data>
+  <data name="Default_AutoCast_Being_Used" xml:space="preserve">
+    <value>[Стандартный] шаблон авто-ловли будет использован</value>
+  </data>
+  <data name="Global_AutoCast_Being_Used" xml:space="preserve">
+    <value>[Общий] шаблон авто-ловли будет использован</value>
+  </data>
+  <data name="GlobalActionsBeingUsed" xml:space="preserve">
+    <value>Авто-действия из Общего шаблона будут использованы</value>
+  </data>
+  <data name="Custom_AutoCast_Being_Used" xml:space="preserve">
+    <value>Пользовательский шаблон [{0}] будет использован</value>
+  </data>
+  <data name="Default_Extra_Being_Used" xml:space="preserve">
+    <value>Дополнительные параметры [Стандартного] шаблона будут использованы</value>
+  </data>
+  <data name="Global_Extra_Being_Used" xml:space="preserve">
+    <value>Дополнительные параметры [Общего] шаблона будут использованы</value>
+  </data>
+  <data name="Custom_Extra_Being_Used" xml:space="preserve">
+    <value>Дополнительные параметры пользовательского шаблона [{0}] будут использованы</value>
+  </data>
+  <data name="Auto_Cast_Alert_Manual_Hook" xml:space="preserve">
+    <value>Важно! Авто-ловля не будет использоваться, если вы сделали бросок самостоятельно.</value>
+  </data>
+  <data name="Acton_Alert_Manual_Hook" xml:space="preserve">
+    <value>Важно! Действия не будут использоваться, если вы сделали бросок самостоятельно.</value>
+  </data>
+  <data name="Food_Buff" xml:space="preserve">
+    <value>Баффы от еды</value>
+  </data>
+  <data name="Only_When_Patience_Active" xml:space="preserve">
+    <value>Будет использоваться лишь в случае, если "Терпение" активно</value>
+  </data>
+  <data name="Stop_After_Caught" xml:space="preserve">
+    <value>Остановиться после поимки</value>
+  </data>
+  <data name="Search_Hint" xml:space="preserve">
+    <value>Поиск...</value>
+    <comment>Hint Text for search bar</comment>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Дополнительно</value>
+  </data>
+  <data name="ExtraOptions" xml:space="preserve">
+    <value>Дополнительные параметры</value>
+  </data>
+  <data name="NeverReleaseHelptext" xml:space="preserve">
+    <value>Данная рыба не будет отпущена, если "Отпустить Всю Рыбу" включена в функциях авто-ловли</value>
+  </data>
+  <data name="NeverRelease" xml:space="preserve">
+    <value>Не отпускать</value>
+  </data>
+  <data name="ReleaseAllFish" xml:space="preserve">
+    <value>Отпустить всю рыбу</value>
+  </data>
+  <data name="ReleaseAllFishHelpText" xml:space="preserve">
+    <value>Если вы не хотите отпускать определённую рыбу, добавьте её в шаблон и выберите "Не отпускать"</value>
+  </data>
+  <data name="Enable_Extra_Configs" xml:space="preserve">
+    <value>Добавить дополнительные параметры</value>
+  </data>
+  <data name="When_gaining_fishers_intuition" xml:space="preserve">
+    <value>Если "Интуиция рыбака" активна...</value>
+  </data>
+  <data name="When_losing_fishers_intuition" xml:space="preserve">
+    <value>Если "Интуиция рыбака" не активна...</value>
+  </data>
+  <data name="Draw_Configs" xml:space="preserve">
+    <value>Конфигурации</value>
+  </data>
+  <data name="Draw_Guides" xml:space="preserve">
+    <value>Руководства</value>
+  </data>
+  <data name="Delay_when_hooking" xml:space="preserve">
+    <value>Задержка между подсечкой (в мс)</value>
+  </data>
+  <data name="Preset_not_found" xml:space="preserve">
+    <value>Шаблон не найден</value>
+  </data>
+  <data name="Set_preset_command" xml:space="preserve">
+    <value>Установите пользовательский шаблон командой в чате ( -&gt; /ahpreset Имя Шаблона)</value>
+  </data>
+  <data name="Set_agpreset_command" xml:space="preserve">
+    <value>Установите пользовательский шаблон авто-гарпуна командой в чате ( -&gt; /agpreset Имя Шаблона)</value>
+  </data>
+  <data name="Starts_AutoHook" xml:space="preserve">
+    <value>Начать ловлю с данным шаблоном</value>
+  </data>
+  <data name="Preset_set_to_" xml:space="preserve">
+    <value>Установленный шаблон:</value>
+  </data>
+  <data name="Gig_preset_set_to_" xml:space="preserve">
+    <value>Установленный шаблон гарпуна:</value>
+  </data>
+  <data name="When_gaining_spectral_current" xml:space="preserve">
+    <value>Если Спектральный Поток активирован...</value>
+  </data>
+  <data name="When_losing_spectral_current" xml:space="preserve">
+    <value>Если Спектральный Поток не активен...</value>
+  </data>
+  <data name="UseWhenIntuitionTimeIsEqualOrGreaterThan" xml:space="preserve">
+    <value>Использовать, если время "Интуиции Рыбака" превышает (в секундах)</value>
+  </data>
+  <data name="OnlyUseWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>Использовать, если "Удар по Воде" активен</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>Использовать, если "Удар по Воде" не активен</value>
+  </data>
+  <data name="OnlyHookWhenActiveSurfaceSlap" xml:space="preserve">
+    <value>Использовать подсечку, если "Удар по Воде" активен</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>Использовать подсечку, если "Удар по Воде" не активен</value>
+  </data>
+  <data name="OnlyUseWhenActiveIdentical" xml:space="preserve">
+    <value>Использовать, если "Идентичный Улов" активен</value>
+  </data>
+  <data name="OnlyUseWhenNOTActiveIdentical" xml:space="preserve">
+    <value>Использовать, если "Идентичный Улов" не активен</value>
+  </data>
+  <data name="OnlyHookWhenActiveIdentical" xml:space="preserve">
+    <value>Использовать подсечку, если "Идентичный Улов" активен</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveIdentical" xml:space="preserve">
+    <value>Использовать подсечку, если "Идентичный Улов" не активен</value>
+  </data>
+  <data name="Collect" xml:space="preserve">
+    <value>Коллекционировать</value>
+  </data>
+  <data name="CollectHelpText" xml:space="preserve">
+    <value>"Перчатка Коллекционера" будет активирована при начале ловли рыбы</value>
+  </data>
+  <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
+    <value>Обновить, если таймер баффов ниже или равен</value>
+  </data>
+  <data name="Allow_Gp_Overcap" xml:space="preserve">
+    <value>Разрешить оверкап ОС, если "Идентичный Улов" активен</value>
+  </data>
+  <data name="Use_Cordials_First" xml:space="preserve">
+    <value>Использовать Настойки прежде "Расположения Талиака"</value>
+  </data>
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
+    <value>Использовать лишь в случае, если таймер Настоек в кулдауне</value>
+  </data>
+  <data name="Use_Cordials_First_Help" xml:space="preserve">
+    <value>Применять лишь в случае, если Настойки активированы</value>
+  </data>
+  <data name="Show_Presets_As_Sidebar" xml:space="preserve">
+    <value>Показать меню шаблонов в сайд-панели</value>
+  </data>
+  <data name="Hide_Tab_Description" xml:space="preserve">
+    <value>Скрывать описания вкладок</value>
+  </data>
+  <data name="Ignore_When_Intuition" xml:space="preserve">
+    <value>Игнорировать рыбу, если интуиция активна</value>
+  </data>
+  <data name="Reset_the_counter" xml:space="preserve">
+    <value>Сброс счётчика</value>
+  </data>
+  <data name="Reset_counter_after_swapping_presets" xml:space="preserve">
+    <value>Сбросить таймер рыбы/подсечек в случае смены шаблона</value>
+  </data>
+  <data name="Only_use_when_Cordial_is_available" xml:space="preserve">
+    <value>Использовать лишь в случае, если Настойки активированы</value>
+  </data>
+  <data name="Only_use_when_the_fish_is_caught" xml:space="preserve">
+    <value>Использовать лишь в случае, если рыба поймана</value>
+  </data>
+  <data name="UIUseCurrentBait" xml:space="preserve">
+    <value>Выбирает приманку, выделенную в игре</value>
+  </data>
+  <data name="AutoCastEndTime" xml:space="preserve">
+    <value>Время окончания перед активацией авто-ловли</value>
+  </data>
+  <data name="AutoCastStartTime" xml:space="preserve">
+    <value>Время начала перед активацией авто-ловли</value>
+  </data>
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+    <value>Использовать действия только в специфическое время (ET)</value>
+  </data>
+  <data name="Quit_Fishing_On_IntuitionLost" xml:space="preserve">
+    <value>Завершить рыбалку, если интуиция неактивна</value>
+  </data>
+  <data name="Stop_Fishing_On_IntuitionLost" xml:space="preserve">
+    <value>Остановить рыбалку, если интуиция неактивна</value>
+  </data>
+  <data name="Auto_Cast_Sort_Notice" xml:space="preserve">
+    <value>Действия будут активированы в порядке от верхнего к нижнему. Используйте стрелки, чтобы изменить порядок:</value>
+  </data>
+  <data name="Current_Selected_Preset" xml:space="preserve">
+    <value>Используемый шаблон:</value>
+  </data>
+  <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
+    <value>Использовать лишь в случае, если "Рыбий Взор" активен.</value>
+  </data>
+  <data name="HookType" xml:space="preserve">
+    <value>Тип Подсечки</value>
+  </data>
+  <data name="HookingTimer" xml:space="preserve">
+    <value>Таймер Подсечки</value>
+  </data>
+  <data name="EnableHookingTimer" xml:space="preserve">
+    <value>Использовать таймер Подсечки</value>
+  </data>
+  <data name="EnableChumTimer" xml:space="preserve">
+    <value>Использовать таймер "Прикормки"</value>
+  </data>
+  <data name="HookingTimerHelpText" xml:space="preserve">
+    <value>Подсечка будет использована лишь в случае, если поклёвка возникнет между мин. и макс. значениями</value>
+  </data>
+  <data name="UseDoubleHook" xml:space="preserve">
+    <value>Использовать "Двойную Подсечку"</value>
+  </data>
+  <data name="UseTripleHook" xml:space="preserve">
+    <value>Использовать "Тройную Подсечку"</value>
+  </data>
+  <data name="StopAfterHooking" xml:space="preserve">
+    <value>Остановиться после Подсечки...</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Время ожидания</value>
+  </data>
+  <data name="Chum Timeout" xml:space="preserve">
+    <value>Время ожидания "Прикормки"</value>
+  </data>
+  <data name="TimeoutOption" xml:space="preserve">
+    <value>Попытка ловли рыбы будет отменена после того, как истечёт установленное время</value>
+  </data>
+  <data name="Hook" xml:space="preserve">
+    <value>Подсечка</value>
+  </data>
+  <data name="Hooking" xml:space="preserve">
+    <value>Подсечка</value>
+  </data>
+  <data name="HookingTabHelpText" xml:space="preserve">
+    <value>Настройки подсечки в случае использования приманки/наживки</value>
+  </data>
+  <data name="BaitTabHelpText" xml:space="preserve">
+    <value>Настройки подсечки в случае использования приманки</value>
+  </data>
+  <data name="MoochTabHelpText" xml:space="preserve">
+    <value>Настройки подсечки в случае использования наживки</value>
+  </data>
+  <data name="RequiredStatusSettingHelpText" xml:space="preserve">
+    <value>Если функция отключена, будут использоваться [Стандартные] параметры подсечки</value>
+  </data>
+  <data name="AntiAfkOption" xml:space="preserve">
+    <value>Активация анти-AFK во время рыбалки</value>
+  </data>
+  <data name="AutoStartFishing" xml:space="preserve">
+    <value>Включить авто-ловлю, если рыбалка не в процессе</value>
+  </data>
+  <data name="AutoStartFishingHelpText" xml:space="preserve">
+    <value>Запускает процесс авто-ловли, если процесс рыбалки не запущен. Отключите функцию, если вы хотите использовать авто-подсечку постоянно.</value>
+  </data>
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
+    <value>Изменить древовидную структуру на кнопки</value>
+  </data>
+  <data name="LetFishEscapeHelpText" xml:space="preserve">
+    <value>Если функция отключена, Стандартная Подсечка будет использоваться в том случае, если количество ОС ниже предела</value>
+  </data>
+  <data name="UseConfigRequiredStatus" xml:space="preserve">
+    <value>Использовать функцию, если {0} активирована</value>
+    <comment>{0} Represents a status effect. For Example: Use this setting when Fisher's Intuition is active</comment>
+  </data>
+  <data name="NormalPatienceHookset" xml:space="preserve">
+    <value>Стандартная Подсечка / Подсечка при "Терпении"</value>
+  </data>
+  <data name="AutoCastOnlyUnderFishEyesHelpText" xml:space="preserve">
+    <value>Если фильтр по времени активирован, данная функция будет проигнорирована во временном окне</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Настройка</value>
+  </data>
+  <data name="Type_1" xml:space="preserve">
+    <value>Тип 1</value>
+  </data>
+  <data name="Type_2" xml:space="preserve">
+    <value>Тип 2</value>
+  </data>
+  <data name="CordialOutsideTimeWindow" xml:space="preserve">
+    <value>Использование Настойки вне указанного временного окна авто-ловли</value>
+  </data>
+  <data name="SpecificTimeWindowHelpText" xml:space="preserve">
+    <value>Затрагиваемые действия: Авто-ловля, Авто-Наживка (I/II), Настойка (опционально), "Рыбий Взор", "Самодельная Приманка", "Терпение" (I/II)</value>
+  </data>
+  <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
+    <value>По умолчанию, Настойки не используются вне временного окна (если функция включена). Данная опция меняет установленный порядок использования</value>
+  </data>
+  <data name="TimeLimit" xml:space="preserve">
+    <value>Ограничение по времени</value>
+  </data>
+  <data name="ChumTimeLimit" xml:space="preserve">
+    <value>Ограничение по времени "Прикормки"</value>
+  </data>
+  <data name="SetZeroToIgnore" xml:space="preserve">
+    <value>Установить значение (0) для игнорирования мин. и макс. значений таймеров</value>
+  </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>О плагине</value>
+  </data>
+  <data name="UseNaturesBounty" xml:space="preserve">
+    <value>Использование "Природного Богатства"</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="SettingsTab" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="EnableActions" xml:space="preserve">
+    <value>Включить действия</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>Не скрывать дополнительные параметры/функции авто-ловли при отключении</value>
+  </data>
+  <data name="IgnoreMooch" xml:space="preserve">
+    <value>Игнорировать Наживку</value>
+  </data>
+  <data name="IgnoreMoochHelpText" xml:space="preserve">
+    <value>В случае отключения, попытка приманить рыбу Наживкой не будет отменена, даже если функция авто-Наживки отключена</value>
+  </data>
+  <data name="NeverMoochHelpText" xml:space="preserve">
+    <value>При включении, действия будут отменять приманивание данной рыбы Наживкой</value>
+  </data>
+  <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
+    <value>Использовать только в случае, если "Самодельная Приманка" или "Терпение" активны</value>
+  </data>
+  <data name="IgnoreMoochFishEyes" xml:space="preserve">
+    <value>Fish Eyes will be used and cancel the mooch attempt.</value>
+  </data>
+  <data name="StartActions" xml:space="preserve">
+    <value>Начальные действия</value>
+  </data>
+  <data name="StartActionHelpText" xml:space="preserve">
+    <value>Начните авто-ловлю! Вы также можете сменить приманку автоматически для начала рыбалки во вкладке "Дополнительно"
+
+Вы также можете воспользоваться командой /ahstart для запуска. Попробуйте использовать это в макро!</value>
+  </data>
+  <data name="ForceBaitSwap" xml:space="preserve">
+    <value>Принудительная смена приманки при использовании "Начальных действий"</value>
+  </data>
+  <data name="SelectBaitStartFishing" xml:space="preserve">
+    <value>Выберите приманку для начала рыбалки:</value>
+  </data>
+  <data name="BaitPresetPriorityWarning" xml:space="preserve">
+    <value>Установки смены Приманки и Шаблонов имеют более высокий приоритет перед функциями вкладки "Пойманная рыба"</value>
+  </data>
+  <data name="WhenAnglersAt" xml:space="preserve">
+    <value>Если "Искусство Рыболова" достигло значения...</value>
+  </data>
+  <data name="StacksOrMore" xml:space="preserve">
+    <value>Равно или выше</value>
+  </data>
+  <data name="StopQuitFishing" xml:space="preserve">
+    <value>Остановить/Завершить рыбалку</value>
+  </data>
+  <data name="AnglersArt" xml:space="preserve">
+    <value>Искусство Рыболова</value>
+  </data>
+  <data name="CatchEverything" xml:space="preserve">
+    <value>Ловить всё</value>
+  </data>
+  <data name="IgnoresPresets" xml:space="preserve">
+    <value>Игнорировать шаблоны</value>
+  </data>
+  <data name="CatchAllNotice" xml:space="preserve">
+    <value>Функция "Ловить всё" включена. Функции ниже будут проигнорированы при использовании ловли гарпуном..</value>
+  </data>
+  <data name="CatchAllNaturesBountyHelpText" xml:space="preserve">
+    <value>Только в том случае, если функция "Ловить всё" включена</value>
+  </data>
+  <data name="CatchAllGigWindow" xml:space="preserve">
+    <value>Функция "Ловить всё" включена. Настройки шаблонов будут игнорироваться.</value>
+  </data>
+  <data name="Intuition" xml:space="preserve">
+    <value>Интуиция</value>
+  </data>
+  <data name="DelaySettings" xml:space="preserve">
+    <value>Настройки задержки</value>
+  </data>
+  <data name="GeneratePreset" xml:space="preserve">
+    <value>Сгенерировать шаблон</value>
+  </data>
+  <data name="OnlyWhenMoochNotAvailable" xml:space="preserve">
+    <value>Только в случае, если "Наживка" недоступна</value>
+  </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>Использовать, если таймер "Наживки II" на кулдауне</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>Использовать, если таймер "Наживки II" на кулдауне</value>
+  </data>
+  <data name="Fish_Hitbox_Offset" xml:space="preserve">
+    <value>Смещение хитбокса рыбы</value>
+  </data>
+  <data name="OffsetLR" xml:space="preserve">
+    <value>Смещение (Лв.-&gt;Пр.)</value>
+  </data>
+  <data name="OffsetRL" xml:space="preserve">
+    <value>Смещение (Пр.-&gt;Лв.)</value>
+  </data>
+  <data name="OffsetLRHelpText" xml:space="preserve">
+    <value>Смещение хитбокса для рыбы, которая направляется слева направо</value>
+  </data>
+  <data name="OffsetRLHelpText" xml:space="preserve">
+    <value>Смещение хитбокса для рыбы, которая направляется справа налево</value>
+  </data>
+  <data name="FishHitboxHelpText" xml:space="preserve">
+    <value>Отрегулируйте область хитбокса, если вы считаете, что авто-ловля пропускает слишком много рыбы</value>
+  </data>
+  <data name="NBBeforeFish" xml:space="preserve">
+    <value>Использовать "Природное Богатство" перед тем, как рыба появится</value>
+  </data>
+  <data name="NBBeforeFishHelpText" xml:space="preserve">
+    <value>Может растратить ОС, если нужная рыба не появится</value>
+  </data>
+  <data name="AutoCordialPandoras" xml:space="preserve">
+    <value>Авто-использование Настоек находится в плагине Pandora's Box</value>
+  </data>
+  <data name="LureStacks" xml:space="preserve">
+    <value>Стек приманки:</value>
+  </data>
+  <data name="UseLures" xml:space="preserve">
+    <value>Использовать приманки</value>
+  </data>
+  <data name="BigGameFishing" xml:space="preserve">
+    <value>Ловля Крупной Рыбы</value>
+  </data>
+  <data name="AmbitiousLure" xml:space="preserve">
+    <value>Амбициозная Приманка</value>
+  </data>
+  <data name="ModestLure" xml:space="preserve">
+    <value>Умеренная Приманка</value>
+  </data>
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
+    <value>Целевая рыба:</value>
+  </data>
+  <data name="AnyTarget" xml:space="preserve">
+    <value>Любая Мелкая/Крупная/Особая</value>
+  </data>
+  <data name="OnlySpecial" xml:space="preserve">
+    <value>Только Особая</value>
+  </data>
+  <data name="SpecialFishExemple" xml:space="preserve">
+    <value>Особая рыба с уникальным текстом при использовании приманки, например:</value>
+  </data>
+  <data name="NotSpecial" xml:space="preserve">
+    <value>Только Мелкая/Крупная</value>
+  </data>
+  <data name="MaxAttempts" xml:space="preserve">
+    <value>Макс. количество попыток</value>
+  </data>
+  <data name="CancelAttempt" xml:space="preserve">
+    <value>Отменить подсечку, если лимит стека достиг предела без успешного улова</value>
+  </data>
+  <data name="LureType" xml:space="preserve">
+    <value>Тип приманки:</value>
+  </data>
+  <data name="OnlyCastLarge" xml:space="preserve">
+    <value>Использовать только в случае, если "Терпение"/"Призовой улов" активен</value>
+  </data>
+  <data name="SparefulHand" xml:space="preserve">
+    <value>Запасливая Рука</value>
+  </data>
+  <data name="SparefulHand_Settings" xml:space="preserve">
+    <value>Настройки "Запасливой Руки"</value>
+  </data>
+  <data name="SparefulHand_HelpText" xml:space="preserve">
+    <value>Автоматически использовать "Запасливую Руку", если количество ОС достигнуто</value>
+  </data>
+  <data name="OnlyUseIfSwimbaitCountLessThan" xml:space="preserve">
+    <value>Использовать лишь в том случае, если количество живца меньше чем:</value>
+  </data>
+  <data name="OnlyUseIfSwimbaitCountLessThanHelpText" xml:space="preserve">
+    <value>Использовать "Запасливую Руку" лишь в том случае, если количество данного живца меньше чем (0-3)</value>
+  </data>
+  <data name="Swap_Preset_After_Swimbait" xml:space="preserve">
+    <value>Изменить шаблон после получения живца:</value>
+  </data>
+  <data name="WhenSwimbaitFills" xml:space="preserve">
+    <value>Если количество живца заполнено</value>
+  </data>
+  <data name="WhenSwimbaitIsOut" xml:space="preserve">
+    <value>Если живец закончился</value>
+  </data>
+  <data name="SwimbaitSettings" xml:space="preserve">
+    <value>Настройки живца</value>
+  </data>
+  <data name="UseSwimbait" xml:space="preserve">
+    <value>Использовать живца из инвентаря</value>
+  </data>
+  <data name="EnableUsingSwimbait" xml:space="preserve">
+    <value>Использовать данную рыбу в качестве живца</value>
+  </data>
+  <data name="UseSwimbaitHelpText" xml:space="preserve">
+    <value>При включении функции, данная рыба будет использована в качестве живца вместо наживки. Использует настройки наживки данной рыбы.</value>
+  </data>
+  <data name="OnlyUseWhenSwimbaitCount" xml:space="preserve">
+    <value>Использовать, если количество живца из данной рыбы как минимум:</value>
+  </data>
+  <data name="OnlyUseWhenSwimbaitCountHelpText" xml:space="preserve">
+    <value>Использовать, если количество данной раба как живца в инвентаре как минимум (1-3)</value>
+  </data>
+  <data name="OnlyUseWhenNoMoochAvailable" xml:space="preserve">
+    <value>Использовать, если стандартная наживка недоступна</value>
+  </data>
+  <data name="OnlyUseWhenNoMoochAvailableHelpText" xml:space="preserve">
+    <value>Использовать живца, если данная рыба не может быть поймана на наживку (ловля на наживку для данной рыбы недоступна или включена функция "Не использовать "Наживку"")</value>
+  </data>
+  <data name="EnableUsingSwimbaitGlobal" xml:space="preserve">
+    <value>Включить, используя наживку из инвентаря</value>
+  </data>
+  <data name="UseSwimbaitHelpTextGlobal" xml:space="preserve">
+    <value>При включении функции, живец из инвентаря будет использован вместо наживки для ловли рыбы. Использует настройки наживки данной рыбы.</value>
+  </data>
+  <data name="OnlyUseWhenSwimbaitCountGlobal" xml:space="preserve">
+    <value>Использовать, если количество живца составляет как минимум:</value>
+  </data>
+  <data name="OnlyUseWhenSwimbaitCountHelpTextGlobal" xml:space="preserve">
+    <value>Использовать, если количество данного живца в инвентаре как минимум (1-3)</value>
+  </data>
+  <data name="DelayBeforeCancel" xml:space="preserve">
+    <value>Задержка перед отменой ловли рыбы (в мс)</value>
+  </data>
+  <data name="DelayBeforeCancelInfo" xml:space="preserve">
+    <value>Данная функция задерживает действия Отдыха, если ненужная рыба начинает клевать, но подсечка не использована</value>
+  </data>
+  <data name="SwitchFishBait" xml:space="preserve">
+    <value>Поменять приманку (по имени или ID)</value>
+  </data>
+  <data name="Disabled" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="PresetCopied" xml:space="preserve">
+    <value>Шаблон сохранён в буфер</value>
+  </data>
+  <data name="RightClickOptions" xml:space="preserve">
+    <value>Щелкните ПКМ для настроек</value>
+  </data>
+  <data name="PresetImported" xml:space="preserve">
+    <value>Шаблон импортирован</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="CommunityPresets" xml:space="preserve">
+    <value>Шаблоны от сообщества</value>
+  </data>
+  <data name="PresetGen" xml:space="preserve">
+    <value>Генератор шаблонов</value>
+  </data>
+  <data name="PresetGenerator" xml:space="preserve">
+    <value>Генератор шаблонов</value>
+  </data>
+  <data name="FishingPresets" xml:space="preserve">
+    <value>Шаблоны ловли рыбы</value>
+  </data>
+  <data name="NewAccountWarning" xml:space="preserve">
+    <value>Для новых аккаунтов может потребоваться определённое время, прежде чем появится возможность редактировать вики</value>
+  </data>
+  <data name="Fishing" xml:space="preserve">
+    <value>Рыбалка</value>
+  </data>
+  <data name="Spearfishing" xml:space="preserve">
+    <value>Рыбалка с гарпуном</value>
+  </data>
+  <data name="ClickOpenWiki" xml:space="preserve">
+    <value>Нажмите здесь, чтобы открыть Wiki-страничку</value>
+  </data>
+  <data name="CommunityDescription" xml:space="preserve">
+    <value>Данная вкладка предназначена для шаблонов от сообщества. Вы можете загрузить пресеты из вики, или добавить туда собственные.</value>
+  </data>
+  <data name="UseIcActive" xml:space="preserve">
+    <value>Использовать только если "Идентичный Улов" активен</value>
+  </data>
+  <data name="UseSlapActive" xml:space="preserve">
+    <value>Использовать только если "Удар по Воде" активен</value>
+  </data>
+  <data name="CantFishHere" xml:space="preserve">
+    <value>Здесь нельзя ловить рыбу</value>
+  </data>
+  <data name="Deselect" xml:space="preserve">
+    <value>Снять выделение</value>
+  </data>
+  <data name="SetActive" xml:space="preserve">
+    <value>Указать как активный</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Переименовать</value>
+  </data>
+  <data name="GlobalPresetHelpText" xml:space="preserve">
+    <value>Если шаблон не выбран, будет использован общий шаблон</value>
+  </data>
+  <data name="AlreadySwapped" xml:space="preserve">
+    <value>(Уже переключено)</value>
+  </data>
+  <data name="AnimationCanceling" xml:space="preserve">
+    <value>Отмена анимации</value>
+  </data>
+  <data name="EnableRecastCancel" xml:space="preserve">
+    <value>Включить функцию отключения анимации рекаста ловли</value>
+  </data>
+  <data name="EnableRecastCancelHelp" xml:space="preserve">
+    <value>Не работает, если использована подсечка - только в случае, если рекаст отменён или рыба не поймана</value>
+  </data>
+  <data name="TurnCollectOff" xml:space="preserve">
+    <value>Выключить "Перчатку Коллекционера", если функция Авто-Коллекционирования отключена</value>
+  </data>
+  <data name="TurnCollectOffHelp" xml:space="preserve">
+    <value>Отключение анимации требует включить "Перчатку Коллекционера" перед тем, как закинуть удочку - данная функция гарантирует, что "Перчатка Коллекционера" будет отключена в процессе рыбалки</value>
+  </data>
+  <data name="EnableChumCancel" xml:space="preserve">
+    <value>Выключить анимацию "Прикормки"</value>
+  </data>
+  <data name="ChumCancelHelp" xml:space="preserve">
+    <value>Экспериментальная функция, которая может работать не всегда (возможная причина - пинг). Действие "Трофеи" будет активировано</value>
+  </data>
+  <data name="TurnCollectOffWithoutAnimCancel" xml:space="preserve">
+    <value>Выключить "Перчатку Коллекционера", если функция Авто-Коллекционирования отключена</value>
+  </data>
+  <data name="TurnCollectOffWithoutAnimCancelHelp" xml:space="preserve">
+    <value>Автоматически отключает "Перчатку Коллекционера" если функция Авто-Коллекционирования отключена - вне зависимости от настроек отмены анимации</value>
+  </data>
+  <data name="FishCaughtHelp" xml:space="preserve">
+    <value>Параметры в случае, если рыба будет поймана</value>
+  </data>
+  <data name="ExtraOptionsHelp" xml:space="preserve">
+    <value>Дополнительные параметры</value>
+  </data>
+  <data name="AutoCastsHelp" xml:space="preserve">
+    <value>Параметры действий авто-ловли</value>
+  </data>
+  <data name="GetWikiPresets" xml:space="preserve">
+    <value>Загрузить шаблоны с Wiki</value>
+  </data>
+  <data name="ClickToToggle" xml:space="preserve">
+    <value>Нажмите для включения/выключения</value>
+  </data>
+  <data name="PluginEnabledHelp" xml:space="preserve">
+    <value>Вы также можете нажать на изображение рыбы, чтобы включить/выключить плагин</value>
+  </data>
+  <data name="MakeACopy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="StatusNoPreset" xml:space="preserve">
+    <value>Нет активного шаблона, будет использоваться Общий шаблон</value>
+  </data>
+  <data name="LureSSActive" xml:space="preserve">
+    <value>Использовать приманку, если "Удар по Воде" активен:</value>
+  </data>
+  <data name="LureSSNotActive" xml:space="preserve">
+    <value>Использовать приманку, если "Удар по Воде" не активен</value>
+  </data>
+  <data name="LureICActive" xml:space="preserve">
+    <value>Использовать приманку, если "Идентичный Улов" активен</value>
+  </data>
+  <data name="LureICNotActive" xml:space="preserve">
+    <value>Использовать приманку, если "Идентичный Улов" не активен</value>
+  </data>
+  <data name="Prize_Catch_Options" xml:space="preserve">
+    <value>Параметры "Призового Улова"</value>
+  </data>
+  <data name="Prize_Catch_Required" xml:space="preserve">
+    <value>Использовать подсечку, если "Призовой Улов" активен</value>
+  </data>
+  <data name="Conditions" xml:space="preserve">
+    <value>Условия</value>
+  </data>
+  <data name="Conditions_HelpText" xml:space="preserve">
+    <value>Специфические условия для подсечки</value>
+  </data>
+  <data name="Status_NoHookEnabled" xml:space="preserve">
+    <value>Пропустить поклёвку - не подсекать, если активен данный вид клёва</value>
+  </data>
+  <data name="Status_PrizeCatchRequired" xml:space="preserve">
+    <value>Пропустить поклёвку - для подсечки нужен "Призовой Улов", но он не активирован</value>
+  </data>
+  <data name="Status_IdenticalCastRequired" xml:space="preserve">
+    <value>Пропустить поклёвку - для подсечки нужен "Идентичный Улов", но он не активирован</value>
+  </data>
+  <data name="Status_IdenticalCastNotRequired" xml:space="preserve">
+    <value>Пропустить поклёвку - "Идентичный Улов" активирован, но для данной подсечки он НЕ должен быть активен</value>
+  </data>
+  <data name="Status_SurfaceSlapRequired" xml:space="preserve">
+    <value>Пропустить поклёвку - для подсечки нужен "Удар по Воде", но он не активирован</value>
+  </data>
+  <data name="Status_SurfaceSlapNotRequired" xml:space="preserve">
+    <value>Пропустить поклёвку - "Удар по Воде" активирован, но для данной подсечки он НЕ должен быть активен</value>
+  </data>
+  <data name="PrizeCatchNotActive" xml:space="preserve">
+    <value>Подсекать лишь в случае, если "Призовой Улов" НЕ активирован</value>
+  </data>
+  <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
+    <value>Пропустить поклёвку - "Призовой Улов" активирован, но для данной подсечки он НЕ должен быть активен</value>
+  </data>
+  <data name="StellarHookset" xml:space="preserve">
+    <value>Звёздная Подсечка</value>
+  </data>
+  <data name="FolderMostBeEmpty" xml:space="preserve">
+    <value>Перед удалением, папка должна быть пустой</value>
+  </data>
+  <data name="FolderExported" xml:space="preserve">
+    <value>Папка экспортирована в буфер</value>
+  </data>
+  <data name="ExportFolderClipboard" xml:space="preserve">
+    <value>Экспорт папки в буфер</value>
+  </data>
+  <data name="EnterNewFolderName" xml:space="preserve">
+    <value>Введите новое имя для папки:</value>
+  </data>
+  <data name="RenameFolder" xml:space="preserve">
+    <value>Переименовать папку</value>
+  </data>
+  <data name="CreateNewFolder" xml:space="preserve">
+    <value>Создать новую папку</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="FolderNameHint" xml:space="preserve">
+    <value>Введите имя для новой папки:</value>
+  </data>
+  <data name="NoPresetsSelected" xml:space="preserve">
+    <value>Шаблоны для импорта не выбраны</value>
+  </data>
+  <data name="RenamePreset" xml:space="preserve">
+    <value>Переименовать шаблон</value>
+  </data>
+  <data name="ImportFolderAndPresets" xml:space="preserve">
+    <value>Импортировать эту папку и шаблоны внутри?</value>
+  </data>
+  <data name="Presets_" xml:space="preserve">
+    <value>Шаблоны:</value>
+  </data>
+  <data name="FolderName" xml:space="preserve">
+    <value>Название папки</value>
+  </data>
+  <data name="ImportPresetOrFolder" xml:space="preserve">
+    <value>Импортировать шаблон или папку из буфера</value>
+  </data>
+  <data name="CreateFolder" xml:space="preserve">
+    <value>Создать папку</value>
+  </data>
+  <data name="Moving_" xml:space="preserve">
+    <value>Переместить:</value>
+    <comment>Moving: PresetName</comment>
+  </data>
+  <data name="MovingFolder_" xml:space="preserve">
+    <value>Переместить папку:</value>
+    <comment>Moving folder: FolderName</comment>
+  </data>
+  <data name="Reset_Counter_Bait_Swap" xml:space="preserve">
+    <value>Сбросить счетчик после замены приманки</value>
+  </data>
+  <data name="GPlabel" xml:space="preserve">
+    <value>ОС</value>
   </data>
 </root>
