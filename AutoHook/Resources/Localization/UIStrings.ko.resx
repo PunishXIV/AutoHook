@@ -704,7 +704,7 @@
     <value>잡은 물고기</value>
   </data>
   <data name="Add_new_fish" xml:space="preserve">
-    <value>새로운 미끼 추가</value>
+    <value>새로운 물고기 추가</value>
   </data>
   <data name="Cast_Line" xml:space="preserve">
     <value>낚싯대 던지기</value>
@@ -1439,4 +1439,5 @@
   <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
     <value>입질 건너뛰기 - 대물 낚시가 활성화 되어 있지만, 해당 입질에선 필요하지 않음</value>
   </data>
+
 </root>
