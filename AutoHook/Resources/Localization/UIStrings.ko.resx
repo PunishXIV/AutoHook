@@ -1277,6 +1277,12 @@
   <data name="SparefulHand" xml:space="preserve">
     <value>낚시꾼의 묘안</value>
   </data>
+  <data name="SparefulHand_Settings" xml:space="preserve">
+    <value>낚시꾼의 묘안 설정</value>
+  </data>
+  <data name="OnlyUseIfSwimbaitCountLessThan" xml:space="preserve">
+    <value>보관된 생미끼가 해당 수치 미만일 경우 사용:</value>
+  </data>
   <data name="DelayBeforeCancel" xml:space="preserve">
     <value>낚시 시도 취소 전 지연 시간(ms)</value>
   </data>
