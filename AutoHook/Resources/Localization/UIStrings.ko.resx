@@ -1457,6 +1457,9 @@
   <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
     <value>입질 건너뛰기 - 대물 낚시가 활성화 되어 있지만, 해당 입질에선 필요하지 않음</value>
   </data>
+  <data name="ExportFolderClipboard" xml:space="preserve">
+    <value>폴더를 클립보드에 복사</value>
+  </data>
   <data name="RenameFolder" xml:space="preserve">
     <value>폴더 이름 수정</value>
   </data>
@@ -1477,6 +1480,12 @@
   </data>
   <data name="FolderName" xml:space="preserve">
     <value>폴더 이름</value>
+  </data>
+  <data name="ImportPresetOrFolder" xml:space="preserve">
+    <value>폴더 또는 프리셋 가져오기</value>
+  </data>
+  <data name="CreateFolder" xml:space="preserve">
+    <value>새 폴더</value>
   </data>
   <data name="Dtr_Show" xml:space="preserve">
     <value>Dtr 바에 표시</value>
