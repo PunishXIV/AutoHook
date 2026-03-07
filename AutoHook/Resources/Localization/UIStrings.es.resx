@@ -138,6 +138,9 @@
   <data name="ImportThisPreset" xml:space="preserve">
     <value>¿Importar este Preset?</value>
   </data>
+  <data name="AutoMooch" xml:space="preserve">
+    <value>Auto Mooch</value>
+  </data>
   <data name="AddLastCatch" xml:space="preserve">
     <value>Añadir última captura:</value>
   </data>
@@ -338,6 +341,9 @@ Si está desactivado, se utilizará Precision/Powerful Hookset cuando Patience e
   <data name="Enable" xml:space="preserve">
     <value>Activar</value>
   </data>
+  <data name="TabNameAutoGig" xml:space="preserve">
+    <value>AutoGig</value>
+  </data>
   <data name="TabAutoGigDescription" xml:space="preserve">
     <value>Esta funcion es experimental y a veces falla. Si crees que falla mucho, intenta ajustando la ventana de pesca a un tamaño distinto</value>
   </data>
@@ -450,6 +456,9 @@ Esto podria salvarte 100GP si solo estas yendo por mooches</value>
   <data name="New_Preset" xml:space="preserve">
     <value>Nuevo Preset</value>
   </data>
+  <data name="Auto_Casts" xml:space="preserve">
+    <value>Auto lanzamientos</value>
+  </data>
   <data name="TabAutoCasts_DrawAutoCast_HelpText" xml:space="preserve">
     <value>Cast (Acción de FSH) sera usado despues de una mordida
 
@@ -542,6 +551,9 @@ Si Auto Mooch (Global o Preset Personalizado) no está activado, se usara Cast n
   </data>
   <data name="All_Mooches" xml:space="preserve">
     <value>Todos los Mooches</value>
+  </data>
+  <data name="AutoPatience_Patience" xml:space="preserve">
+    <value>Paciencia</value>
   </data>
   <data name="Fish" xml:space="preserve">
     <value>Pez</value>
@@ -693,5 +705,20 @@ Comprueba la pestaña de guías para las guías.</value>
   </data>
   <data name="Draw_Guides" xml:space="preserve">
     <value>Guías</value>
+  </data>
+  <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
+    <value>Solo usar cuando Fish Eyes está activa.</value>
+  </data>
+  <data name="AutoStartFishing" xml:space="preserve">
+    <value>Lanzar automáticamente cuando no pescas</value>
+  </data>
+  <data name="AutoStartFishingHelpText" xml:space="preserve">
+    <value>Lanzar automáticamente cuando no pescas. Desactivar si mantiene encendido el AutoHook en todo momento.</value>
+  </data>
+  <data name="AutoLures_Target_Fish" xml:space="preserve">
+    <value>Peces de Destino:</value>
+  </data>
+  <data name="AutoCastsHelp" xml:space="preserve">
+    <value>Opciones para acciones de auto casting</value>
   </data>
 </root>
