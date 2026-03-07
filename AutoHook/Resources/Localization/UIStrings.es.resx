@@ -528,6 +528,9 @@ Si Auto Mooch (Global o Preset Personalizado) no está activado, se usara Cast n
   <data name="Incomplete" xml:space="preserve">
     <value>Incompleto</value>
   </data>
+  <data name="AutoHook" xml:space="preserve">
+    <value>Auto Hook (enganchar)</value>
+  </data>
   <data name="PluginUi_Language" xml:space="preserve">
     <value>Idioma</value>
   </data>
@@ -539,6 +542,9 @@ Si Auto Mooch (Global o Preset Personalizado) no está activado, se usara Cast n
   </data>
   <data name="Add_new_mooch" xml:space="preserve">
     <value>Añadir nuevo mooch</value>
+  </data>
+  <data name="AutoCastLine_Auto_Cast_Line" xml:space="preserve">
+    <value>Sedal de lanzar automática</value>
   </data>
   <data name="Normal_Hook" xml:space="preserve">
     <value>Hook normal</value>
@@ -706,6 +712,21 @@ Comprueba la pestaña de guías para las guías.</value>
   <data name="Draw_Guides" xml:space="preserve">
     <value>Guías</value>
   </data>
+  <data name="Set_agpreset_command" xml:space="preserve">
+    <value>Establecer preset de Autogig por comando de chat -&gt; /agpreset presetNombre</value>
+  </data>
+  <data name="Starts_AutoHook" xml:space="preserve">
+    <value>Empieza a lanzar con tu preset seleccionado</value>
+  </data>
+  <data name="AutoCastEndTime" xml:space="preserve">
+    <value>Tiempo de finalización para permitir el lanzamiento automático</value>
+  </data>
+  <data name="AutoCastStartTime" xml:space="preserve">
+    <value>Tiempo de inicio para permitir el lanzamiento automático</value>
+  </data>
+  <data name="AutoCastOnlyAtSpecificTimes" xml:space="preserve">
+    <value>Usar acciones sólo en momentos específicos (Eorzea Time)</value>
+  </data>
   <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
     <value>Solo usar cuando Fish Eyes está activa.</value>
   </data>
@@ -714,6 +735,12 @@ Comprueba la pestaña de guías para las guías.</value>
   </data>
   <data name="AutoStartFishingHelpText" xml:space="preserve">
     <value>Lanzar automáticamente cuando no pescas. Desactivar si mantiene encendido el AutoHook en todo momento.</value>
+  </data>
+  <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
+    <value>Usar solo cuando Mooch II está en tiempo de reutilización</value>
+  </data>
+  <data name="AutoCastExtraOptionPatience" xml:space="preserve">
+    <value>Usar solo cuando Mooch II está en tiempo de reutilización</value>
   </data>
   <data name="AutoLures_Target_Fish" xml:space="preserve">
     <value>Peces de Destino:</value>
