@@ -1,12 +1,12 @@
-name: Update Bite Timers
+name: Update Fish Data
 
 on:
   schedule:
-    - cron: '0 0 1 * *'  # Runs on the first day of each month
-  workflow_dispatch:
+    - cron: '0 0 * * SUN'  # Runs at 00:00 UTC every Sunday
+  workflow_dispatch:        # Allows manual trigger
   
 jobs:
-  update-bite-timers:
+  update-fish-data:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -26,18 +26,18 @@ jobs:
         pip install requests
         
     - name: Run update script
-      run: python update_bite_timers.py
+      run: python generate_fish_json.py
       
     - name: Check for changes
       id: check_changes
       run: |
-        git diff --quiet AutoHook/AutoHook/Data/FishData/bitetimers.json || echo "changes=true" >> $GITHUB_OUTPUT
+        git diff --quiet AutoHook/AutoHook/Data/FishData/fish_list.json || echo "changes=true" >> $GITHUB_OUTPUT
         
     - name: Commit and push if changed
       if: steps.check_changes.outputs.changes == 'true'
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
-        git add AutoHook/Data/FishData/bitetimers.json
-        git commit -m "Update bitetimers.json"
+        git add AutoHook/Data/FishData/fish_list.json
+        git commit -m "Update fish_list.json [skip ci]"
         git push

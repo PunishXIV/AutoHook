@@ -34,7 +34,6 @@ public static class SpearFishSpeedExtensions
             SpearfishSpeed.SuperFast => "Super Fast",
             SpearfishSpeed.HyperFast => "Hyper Fast",
             SpearfishSpeed.LynFast => "Mega Fast",
-
             _ => $"{(ushort)speed}",
         };
 }

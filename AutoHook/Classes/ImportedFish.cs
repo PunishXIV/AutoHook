@@ -18,6 +18,20 @@ public class ImportedFish
     public int SurfaceSlap { get; set; } = new();
     public bool OceanFish { get; set; } = new();
     public FishInterval Interval { get; set; } = new();
+    public List<int> SpotIds { get; set; } = [];
+    public List<int> Weathers { get; set; } = [];
+    public List<int> WeathersFrom { get; set; } = [];
+    public double? Spawn { get; set; }
+    public double? Duration { get; set; }
+    public string? Time { get; set; }
+    public int? MinGathering { get; set; }
+    public bool Snagging { get; set; }
+    public int MLure { get; set; }
+    public int ALure { get; set; }
+    public int? OceanFishingTime { get; set; }
+    public string? FruityVideo { get; set; }
+    public double BiteTimeMin { get; set; }
+    public double BiteTimeMax { get; set; }
 
     public string Name => MultiString.GetItemName(ItemId);
 
@@ -25,8 +39,8 @@ public class ImportedFish
 
     public class FishPredator
     {
-        public int itemId { get; set; }
-        public int qtd { get; set; }
+        public int ItemId { get; set; }
+        public int Quantity { get; set; }
     }
 
     public class FishInterval
