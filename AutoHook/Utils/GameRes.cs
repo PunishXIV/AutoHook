@@ -17,8 +17,6 @@ public static class GameRes
     public static List<BaitFishClass> MoochableFish { get; private set; } = [];
     public static List<ImportedFish> ImportedFishes { get; private set; } = [];
 
-    public static List<BiteTimers> BiteTimers { get; private set; } = [];
-
     public static void Initialize()
     {
         Baits = [.. FindRows<Item>(i => i.ItemSearchCategory.RowId == FishingTackleRow).ToList()
@@ -40,16 +38,6 @@ public static class GameRes
                 var json = File.ReadAllText(fishList);
 
                 ImportedFishes = JsonSerializer.Deserialize<List<ImportedFish>>(json)!;
-            }
-
-            var biteTimers = Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName!,
-                $"Data\\FishData\\bitetimers.json");
-
-            if (File.Exists(biteTimers))
-            {
-                var json = File.ReadAllText(biteTimers);
-
-                BiteTimers = JsonSerializer.Deserialize<List<BiteTimers>>(json)!;
             }
         }
         catch (Exception e)

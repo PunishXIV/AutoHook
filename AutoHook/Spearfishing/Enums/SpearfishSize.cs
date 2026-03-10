@@ -18,7 +18,6 @@ public static class SpearFishSizeExtensions
             SpearfishSize.Small => "Small",
             SpearfishSize.Average => "Average",
             SpearfishSize.Large => "Large",
-
             _ => throw new ArgumentOutOfRangeException(nameof(size), size, null),
         };
 }
