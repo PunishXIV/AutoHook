@@ -217,7 +217,10 @@ internal class AutoGig : Window, IDisposable
             Service.PrintDebug($"[AutoGig] Checking fish: {f.Fish?.Name ?? "null"}, Enabled: {f.Enabled}, Fish.Speed: {f.Fish?.Speed}, Fish.Size: {f.Fish?.Size}");
         }
 
-        var matched = fishes.FirstOrDefault(f => f.Fish?.Speed == info.Speed && f.Fish?.Size == info.Size);
+        var matched = fishes.FirstOrDefault(f =>
+            f.Fish != null &&
+            f.Fish.Speed == info.Speed &&
+            f.Fish.Size == info.Size);
         Service.PrintDebug($"[AutoGig] Matched fish: {(matched != null ? matched.Fish?.Name ?? "null" : "none")}, Enabled: {matched?.Enabled ?? false}");
 
         return matched;
