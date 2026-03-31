@@ -1909,6 +1909,24 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Folder and Contents.
+        /// </summary>
+        internal static string DeleteFolderAndContents {
+            get {
+                return ResourceManager.GetString("DeleteFolderAndContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hold SHIFT to delete the folder and all presets inside it..
+        /// </summary>
+        internal static string HoldShiftToDeleteFolderAndContents {
+            get {
+                return ResourceManager.GetString("HoldShiftToDeleteFolderAndContents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hook.
         /// </summary>
         internal static string Hook {
