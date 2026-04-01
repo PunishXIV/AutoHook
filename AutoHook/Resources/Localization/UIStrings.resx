@@ -180,6 +180,12 @@
   <data name="HoldShiftToDelete" xml:space="preserve">
     <value>Hold SHIFT to delete.</value>
   </data>
+  <data name="DeleteFolderAndContents" xml:space="preserve">
+    <value>Delete Folder and Contents</value>
+  </data>
+  <data name="HoldShiftToDeleteFolderAndContents" xml:space="preserve">
+    <value>Hold SHIFT to delete the folder and all presets inside it.</value>
+  </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
