@@ -1253,6 +1253,9 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="SparefulHand" xml:space="preserve">
     <value>Fischnatur</value>
   </data>
+  <data name="EnableUsingSwimbaitGlobal" xml:space="preserve">
+    <value>Gespeicherten Köderfisch verwenden</value>
+  </data>
   <data name="Disabled" xml:space="preserve">
     <value>Deaktiviert</value>
   </data>
