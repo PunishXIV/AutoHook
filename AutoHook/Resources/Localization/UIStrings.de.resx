@@ -1319,6 +1319,9 @@ Du kannst wahlweise auch das Kommando /ahstart zum Starten verwenden. Auch in Ma
   <data name="AnimationCanceling" xml:space="preserve">
     <value>Animation abbrechen</value>
   </data>
+  <data name="ChumCancelHelp" xml:space="preserve">
+    <value></value>
+  </data>
   <data name="ClickToToggle" xml:space="preserve">
     <value>Klicken zum ein/aus schalten</value>
   </data>
