@@ -850,23 +850,20 @@ public class TabFishingPresets : BaseTab
             Notify.Success(UIStrings.FolderExported);
         }
 
-        bool isEmpty = folder.PresetIds.Count == 0;
-        using (var disabled = ImRaii.Disabled(!isEmpty || !ImGui.GetIO().KeyShift))
+        using (var disabled = ImRaii.Disabled(!ImGui.GetIO().KeyShift))
         {
-            if (ImGui.Selectable(UIStrings.Delete, false, ImGuiSelectableFlags.DontClosePopups))
+            if (ImGui.Selectable(UIStrings.DeleteFolderAndContents, false, ImGuiSelectableFlags.DontClosePopups))
             {
-                _basePreset.RemoveFolder(folder.UniqueId);
+                if (displayed != null && folder.ContainsPreset(displayed.UniqueId))
+                    displayed = null;
+
+                _basePreset.RemoveFolderAndContents(folder.UniqueId);
                 Service.Save();
             }
         }
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-        {
-            if (!isEmpty)
-                ImGui.SetTooltip(UIStrings.FolderMostBeEmpty);
-            else
-                ImGui.SetTooltip(UIStrings.HoldShiftToDelete);
-        }
+            ImGui.SetTooltip(UIStrings.HoldShiftToDeleteFolderAndContents);
 
         ImGui.EndPopup();
     }

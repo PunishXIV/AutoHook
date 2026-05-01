@@ -86,6 +86,22 @@ public class FishingPresets : BasePreset
         Service.Save();
     }
 
+    public void RemoveFolderAndContents(Guid folderId)
+    {
+        var folder = Folders.Find(f => f.UniqueId == folderId);
+        if (folder == null)
+            return;
+
+        // Copy to avoid mutation during iteration (RemovePreset modifies folder.PresetIds)
+        foreach (var presetId in folder.PresetIds.ToList())
+        {
+            RemovePreset(presetId);
+        }
+
+        Folders.Remove(folder);
+        Service.Save();
+    }
+
     public bool IsPresetInAnyFolder(Guid presetId)
     {
         return Folders.Any(f => f.ContainsPreset(presetId));
