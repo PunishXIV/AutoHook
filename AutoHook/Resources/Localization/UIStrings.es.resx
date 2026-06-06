@@ -165,6 +165,9 @@
   <data name="TabPresets_DrawHeader_IsEnabledByDefault" xml:space="preserve">
     <value>se activa por defecto cuando se añade carnada/mooch nuevo </value>
   </data>
+  <data name="TabPresets_DrawHeader_CorrectlyEditTheBaitMoochName" xml:space="preserve">
+    <value>"Todos los Baits" y "Todos los Mooches" tienen la prioridad más baja</value>
+  </data>
   <data name="NewBaitMooch" xml:space="preserve">
     <value>Nueva carnada/mooch</value>
   </data>
@@ -195,6 +198,9 @@
   <data name="TabPresets_DrawHeader_TabDescription" xml:space="preserve">
     <value>Aquí puedes configurar qué anzuelo usar basado en el cebo o "mooch". Si no hay cebo especificado, se utilizará la configuración global.</value>
   </data>
+  <data name="TabPresets_DrawHeader_NewTabDescription" xml:space="preserve">
+    <value>Aquí puedes configurar qué anzuelo usar basado en el cebo o "mooch". Si no hay cebo especificado, se utilizará la configuración global.</value>
+  </data>
   <data name="NewPreset" xml:space="preserve">
     <value>Nuevo Preset</value>
   </data>
@@ -206,6 +212,9 @@
   </data>
   <data name="TabGPConfig_TabDescription" xml:space="preserve">
     <value>Aquí puedes elegir el límite de GP para las acciones e ítems usados por la función de AutoCast.</value>
+  </data>
+  <data name="GP" xml:space="preserve">
+    <value>GP</value>
   </data>
   <data name="Above" xml:space="preserve">
     <value>Por Encima De</value>
@@ -220,6 +229,9 @@
   <data name="None" xml:space="preserve">
     <value>Ninguno</value>
   </data>
+  <data name="TabnameGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
   <data name="DrawHeader_GeneralSettings" xml:space="preserve">
     <value>Ajustes Generales</value>
   </data>
@@ -228,6 +240,9 @@
   </data>
   <data name="DrawHeader_ClickToReportAnIssue" xml:space="preserve">
     <value>Haz clic aquí para reportar un problema o hacer una sugerencia</value>
+  </data>
+  <data name="Changelog" xml:space="preserve">
+    <value>Historial de cambios</value>
   </data>
   <data name="HookWeakExclamation" xml:space="preserve">
     <value>Hook Débil (!)</value>
@@ -240,6 +255,9 @@
   </data>
   <data name="HookWillBeUsedIfPatienceIsNotUp" xml:space="preserve">
     <value>"Hook" será utilizado si Patience no está activa</value>
+  </data>
+  <data name="PrecisionHookset" xml:space="preserve">
+    <value>Precision Hookset</value>
   </data>
   <data name="MoochBaitName" xml:space="preserve">
     <value>Nombre de Mooch/Carnada</value>
