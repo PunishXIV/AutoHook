@@ -1064,6 +1064,9 @@
   <data name="AntiAfkOption" xml:space="preserve">
     <value>钓鱼时不会进入挂机状态</value>
   </data>
+  <data name="AutoStartFishing" xml:space="preserve">
+    <value>当你没钓鱼时自动给你抛出浮漂</value>
+  </data>
   <data name="SwapTreeNodeButtons" xml:space="preserve">
     <value>树形设置UI↔按钮设置UI</value>
   </data>
