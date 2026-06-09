@@ -1507,4 +1507,7 @@
   <data name="GPlabel" xml:space="preserve">
     <value>采集力</value>
   </data>
+  <data name="Multihook_Settings" xml:space="preserve">
+    <value>加钩设置</value>
+  </data>
 </root>
