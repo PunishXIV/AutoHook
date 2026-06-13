@@ -35,13 +35,20 @@ public partial class FishingManager
         if (lastFishCatchCfg.SparefulHand.IsAvailableToCast())
             cast = lastFishCatchCfg.SparefulHand;
 
+        var multiHook = lastFishCatchCfg.Multihook;
+
+        if (cast == null && multiHook.Enabled && multiHook.CastCondition())
+        {
+            Service.TaskManager.Enqueue(() =>
+                PlayerRes.CastActionDelayed(multiHook.Id, multiHook.ActionType, multiHook.GetName()));
+            Service.TaskManager.Enqueue(() =>
+                CastLineMoochOrRelease(GetAutoCastCfg(), lastFishCatchCfg));
+            return true;
+        }
+
         if (cast != null)
         {
-            var preset = Presets.SelectedPreset ?? Presets.DefaultPreset;
-            var multiHook = preset.AutoCastsCfg.CastMultihook;
-
-            if (lastFishCatchCfg.Multihook.Enabled && multiHook.CastCondition() &&
-                (!lastFishCatchCfg.Multihook.OnlyUseWhenIdenticalCastActive || cast == lastFishCatchCfg.IdenticalCast))
+            if (multiHook.Enabled && multiHook.CastCondition() && (!multiHook.OnlyUseWhenIdenticalCastActive || cast == lastFishCatchCfg.IdenticalCast))
             {
                 Service.TaskManager.Enqueue(() =>
                     PlayerRes.CastActionDelayed(multiHook.Id, multiHook.ActionType, multiHook.GetName()));
@@ -65,14 +72,15 @@ public partial class FishingManager
         var guid = lastCatchCfg.UniqueId;
         var caughtCount = FishingHelper.GetFishCount(guid);
 
+        if (lastCatchCfg.SwapPresets && Presets.SelectedPreset?.PresetName == lastCatchCfg.PresetToSwap) // clear "already swapped"
+            FishingHelper.RemovePresetSwap(guid);
+
         if (lastCatchCfg.SwapPresets && !FishingHelper.SwappedPreset(guid) &&
             !_lastStep.HasFlag(FishingSteps.PresetSwapped))
         {
-            if (caughtCount >= lastCatchCfg.SwapPresetCount &&
-                lastCatchCfg.PresetToSwap != Presets.SelectedPreset?.PresetName)
+            if (caughtCount >= lastCatchCfg.SwapPresetCount && lastCatchCfg.PresetToSwap != Presets.SelectedPreset?.PresetName)
             {
-                var preset =
-                    Presets.CustomPresets.FirstOrDefault(preset => preset.PresetName == lastCatchCfg.PresetToSwap);
+                var preset = Presets.CustomPresets.FirstOrDefault(preset => preset.PresetName == lastCatchCfg.PresetToSwap);
 
                 FishingHelper.AddPresetSwap(guid); // one try per catch
                 _lastStep |= FishingSteps.PresetSwapped;

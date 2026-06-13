@@ -113,7 +113,8 @@ public class AutoHook : IDalamudPlugin
         );
 
 #if (DEBUG)
-        OnOpenConfigUi();
+    if (Svc.ClientState.IsLoggedIn)
+            OnOpenConfigUi();
 #endif
     }
 

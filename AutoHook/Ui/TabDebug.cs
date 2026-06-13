@@ -143,7 +143,7 @@ public class TabDebug : BaseTab
                     {
                         ImGui.TextWrapped($"Preset: {preset.Key}, Qtd: {preset.Value.Count}");
                         foreach (var item in preset.Value)
-                            ImGui.TextWrapped($"-> {item.PresetName}");
+                            ImGui.TextWrapped($"-> {item.Presets.FirstOrDefault()?.PresetName ?? "No preset name"}");
                         DrawUtil.SpacingSeparator();
                     }
                 }

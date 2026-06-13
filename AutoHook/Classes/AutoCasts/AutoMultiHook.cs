@@ -14,17 +14,9 @@ public class AutoMultiHook : BaseActionCast
     public override unsafe bool CastCondition()
     {
         if (DutyActionManager.GetInstanceIfReady() is not null and var dm)
-        {
             for (var i = 0; i < dm->NumValidSlots; i++)
-            {
                 if (dm->ActionId[i] is IDs.Actions.MultiHook && dm->CurCharges[i] > 0)
-                {
-                    if (OnlyUseWhenIdenticalCastActive && !PlayerRes.HasStatus(IDs.Status.IdenticalCast))
-                        return false;
-                    return true;
-                }
-            }
-        }
+                    return !OnlyUseWhenIdenticalCastActive || PlayerRes.HasStatus(IDs.Status.IdenticalCast);
         return false;
     }
 

@@ -279,11 +279,11 @@ public class Configuration : IPluginConfiguration
         return importActionStack;
     }
 
-    [NonSerialized] private const string ExportPrefixV2 = "AH_";
-    [NonSerialized] private const string ExportPrefixV3 = "AH3_";
-    [NonSerialized] private const string ExportPrefixV4 = "AH4_";
-    [NonSerialized] private const string ExportPrefixSf = "AHSF1_";
-    [NonSerialized] private const string ExportPrefixFolder = "AHFOLDER_";
+    [NonSerialized] public static string ExportPrefixV2 = "AH_";
+    [NonSerialized] public static string ExportPrefixV3 = "AH3_";
+    [NonSerialized] public static string ExportPrefixV4 = "AH4_";
+    [NonSerialized] public static string ExportPrefixSf = "AHSF1_";
+    [NonSerialized] public static string ExportPrefixFolder = "AHFOLDER_";
 
     [NonSerialized]
     private static readonly List<string> ExportPrefixes =

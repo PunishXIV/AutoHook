@@ -50,7 +50,9 @@ public class TabCommunity : BaseTab
                 foreach (var (key, value) in WikiPresets.Presets.Where(preset => preset.Value.Count != 0))
                 {
                     ImGui.Indent();
-                    DrawHeaderList(key, [.. value.Cast<BasePresetConfig>()]);
+                    DrawHeaderList(key, [.. value.Where(x => x.folder == null).SelectMany(x => x.Presets).Cast<BasePresetConfig>()],
+                        value.Where(x => x.folder != null).Select(x => new KeyValuePair<PresetFolder, List<BasePresetConfig>>(x.folder!, [.. x.Presets.Cast<BasePresetConfig>()])).ToDictionary(kv => kv.Key!, kv => kv.Value)
+                    );
                     ImGui.Unindent();
                 }
             }
@@ -69,7 +71,7 @@ public class TabCommunity : BaseTab
         }
     }
 
-    private void DrawHeaderList(string tab, List<BasePresetConfig> list)
+    private void DrawHeaderList(string tab, List<BasePresetConfig> list, Dictionary<PresetFolder, List<BasePresetConfig>>? folderedPresets = null)
     {
         if (ImGui.CollapsingHeader($"{tab}, Total: {list.Count}"))
         {
@@ -82,6 +84,9 @@ public class TabCommunity : BaseTab
                     _importAllFolderNames[tab] = tab;
                 ImGui.OpenPopup($"ImportAll###{tab}");
             }
+
+            ImGui.SameLine();
+            ImGui.TextDisabled("Imports non-folder presets only");
 
             // Popup content
             if (ImGui.BeginPopup($"ImportAll###{tab}"))
@@ -186,6 +191,127 @@ public class TabCommunity : BaseTab
                 }
 
                 ImGui.EndPopup();
+            }
+
+            if (folderedPresets != null)
+            {
+                foreach (var bundle in folderedPresets)
+                {
+                    if (ImGui.CollapsingHeader($"{bundle.Key.FolderName}, Total: {bundle.Value.Count}"))
+                    {
+                        using (ImRaii.PushIndent())
+                        {
+                            // Import-all with confirmation (and folder creation for fishing presets)
+                            if (ImGui.Button($"Import all###{tab}-{bundle.Key.FolderName}"))
+                            {
+                                if (!_importAllFolderNames.ContainsKey(tab))
+                                    _importAllFolderNames[tab] = tab;
+                                ImGui.OpenPopup($"ImportAll###{tab}-{bundle.Key.FolderName}");
+                            }
+
+                            ImGui.SameLine();
+                            ImGui.TextDisabled("Imports this folders presets only");
+
+                            foreach (var item in bundle.Value)
+                            {
+                                var color = ImGuiColors.DalamudWhite;
+                                // check if the preset is fishing or autogig and if already in the list
+                                if (item is CustomPresetConfig customPreset)
+                                {
+                                    if (_fishingPreset.PresetList.Any(p => p.PresetName == customPreset.PresetName))
+                                        color = ImGuiColors.ParsedGreen;
+                                }
+                                else if (item is AutoGigConfig gigPreset)
+                                {
+                                    if (_gigPreset.Presets.Any(p => p.PresetName == gigPreset.PresetName))
+                                        color = ImGuiColors.ParsedGreen;
+                                }
+                                using (var a = ImRaii.PushColor(ImGuiCol.Text, color))
+                                {
+                                    ImGui.Selectable($"- {item.PresetName}");
+                                    // Also open the import menu on left-click
+                                    var popupId = $"PresetOptions###{item.PresetName}";
+                                    if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
+                                        ImGui.OpenPopup(popupId);
+                                }
+                                ImportPreset(item);
+                            }
+
+                            // AHFOLDER IMPORTS
+                            using var folderPopup = ImRaii.Popup($"ImportAll###{tab}-{bundle.Key.FolderName}");
+                            if (!folderPopup) continue;
+
+                            var isFishing = bundle.Value.Count > 0 && bundle.Value[0] is CustomPresetConfig;
+
+                            ImGui.TextWrapped($"Import {bundle.Value.Count} preset(s) from '{tab} -> {bundle.Key.FolderName}'?");
+
+                            if (isFishing)
+                            {
+                                var name = bundle.Key.FolderName;
+                                if (ImGui.InputText(UIStrings.FolderName, ref name, 64, ImGuiInputTextFlags.ReadOnly))
+                                    _importAllFolderNames[tab] = name;
+                            }
+
+                            // Import / Cancel buttons
+                            if (ImGui.Button(UIStrings.Import))
+                            {
+                                if (isFishing)
+                                {
+                                    var importedGuids = new List<Guid>();
+                                    var imported = 0;
+                                    var skipped = 0;
+
+                                    foreach (var preset in bundle.Value)
+                                    {
+                                        if (preset is CustomPresetConfig custom)
+                                        {
+                                            // Skip duplicates by name
+                                            if (_fishingPreset.PresetList.Any(p => p.PresetName == custom.PresetName))
+                                            {
+                                                skipped++;
+                                                continue;
+                                            }
+
+                                            // Clone to new preset and add to list
+                                            var json = JsonConvert.SerializeObject(custom);
+                                            var copy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
+                                            copy!.UniqueId = Guid.NewGuid();
+                                            _fishingPreset.CustomPresets.Add(copy);
+                                            importedGuids.Add(copy.UniqueId);
+                                            imported++;
+                                        }
+                                    }
+
+                                    if (imported > 0)
+                                    {
+                                        // Create folder and add imported presets to it
+                                        var newFolder = new PresetFolder(bundle.Key.FolderName);
+                                        foreach (var id in importedGuids)
+                                            newFolder.AddPreset(id);
+
+                                        _fishingPreset.Folders.Add(newFolder);
+                                        Service.Save();
+                                        Notify.Success($"Imported {imported} preset(s) into folder '{bundle.Key.FolderName}'{(skipped > 0 ? $", skipped {skipped} duplicate(s)" : string.Empty)}.");
+                                    }
+                                    else
+                                    {
+                                        Notify.Info("No new presets to import.");
+                                    }
+
+                                    ImGui.CloseCurrentPopup();
+                                }
+                            }
+
+
+                            ImGui.SameLine();
+
+                            if (ImGui.Button(UIStrings.DrawImportExport_Cancel))
+                            {
+                                ImGui.CloseCurrentPopup();
+                            }
+                        }
+                    }
+                }
             }
 
             foreach (var item in list)

@@ -2395,6 +2395,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multihook Options.
+        /// </summary>
+        internal static string Multihook_Options {
+            get {
+                return ResourceManager.GetString("Multihook_Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multihook Settings.
         /// </summary>
         internal static string Multihook_Settings {
@@ -2629,6 +2638,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only hook when Multihook active.
+        /// </summary>
+        internal static string OnlyHookWhenActiveMultihook {
+            get {
+                return ResourceManager.GetString("OnlyHookWhenActiveMultihook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only hook when Surface Slap is active.
         /// </summary>
         internal static string OnlyHookWhenActiveSurfaceSlap {
@@ -2643,6 +2661,15 @@ namespace AutoHook.Resources.Localization {
         internal static string OnlyHookWhenNOTActiveIdentical {
             get {
                 return ResourceManager.GetString("OnlyHookWhenNOTActiveIdentical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only hook when Multihook not active.
+        /// </summary>
+        internal static string OnlyHookWhenNOTActiveMultihook {
+            get {
+                return ResourceManager.GetString("OnlyHookWhenNOTActiveMultihook", resourceCulture);
             }
         }
         
@@ -3450,6 +3477,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not available. Normal hook will be used instead.
+        /// </summary>
+        internal static string Status_HookNotAvailableNormalWillBeUsed {
+            get {
+                return ResourceManager.GetString("Status_HookNotAvailableNormalWillBeUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skipping bite - Identical Cast is active, but NOT active is required for hooking.
         /// </summary>
         internal static string Status_IdenticalCastNotRequired {
@@ -3464,6 +3500,24 @@ namespace AutoHook.Resources.Localization {
         internal static string Status_IdenticalCastRequired {
             get {
                 return ResourceManager.GetString("Status_IdenticalCastRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipping bite - Multihook is active, but NOT active is required for hooking.
+        /// </summary>
+        internal static string Status_MultihookNotRequired {
+            get {
+                return ResourceManager.GetString("Status_MultihookNotRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipping bite - Multihook is required for hooking, but is not active.
+        /// </summary>
+        internal static string Status_MultihookRequired {
+            get {
+                return ResourceManager.GetString("Status_MultihookRequired", resourceCulture);
             }
         }
         
@@ -4245,6 +4299,15 @@ namespace AutoHook.Resources.Localization {
         internal static string UseMoochII {
             get {
                 return ResourceManager.GetString("UseMoochII", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use multiple hook types by timer.
+        /// </summary>
+        internal static string UseMutlipleHooksByTimer {
+            get {
+                return ResourceManager.GetString("UseMutlipleHooksByTimer", resourceCulture);
             }
         }
         

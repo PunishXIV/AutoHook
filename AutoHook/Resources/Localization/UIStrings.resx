@@ -1511,6 +1511,21 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
     <value>Skipping bite - Prize Catch is active, but NOT active is required for hooking</value>
   </data>
+  <data name="Multihook_Options" xml:space="preserve">
+    <value>Multihook Options</value>
+  </data>
+  <data name="OnlyHookWhenActiveMultihook" xml:space="preserve">
+    <value>Only hook when Multihook active</value>
+  </data>
+  <data name="OnlyHookWhenNOTActiveMultihook" xml:space="preserve">
+    <value>Only hook when Multihook not active</value>
+  </data>
+  <data name="Status_MultihookRequired" xml:space="preserve">
+    <value>Skipping bite - Multihook is required for hooking, but is not active</value>
+  </data>
+  <data name="Status_MultihookNotRequired" xml:space="preserve">
+    <value>Skipping bite - Multihook is active, but NOT active is required for hooking</value>
+  </data>
   <data name="StellarHookset" xml:space="preserve">
     <value>Stellar Hookset</value>
   </data>
@@ -1596,5 +1611,11 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="Multihook_Settings" xml:space="preserve">
     <value>Multihook Settings</value>
+  </data>
+  <data name="Status_HookNotAvailableNormalWillBeUsed" xml:space="preserve">
+    <value>Not available. Normal hook will be used instead</value>
+  </data>
+  <data name="UseMutlipleHooksByTimer" xml:space="preserve">
+    <value>Use multiple hook types by timer</value>
   </data>
 </root>

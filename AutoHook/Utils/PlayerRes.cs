@@ -118,6 +118,19 @@ public static class PlayerRes
         return ActionStatus(IDs.Actions.Cast) == 0 && !ActionOnCoolDown(IDs.Actions.Cast) && !_blockCasting;
     }
 
+    public static unsafe bool HasMultihookAvailable()
+    {
+        if (DutyActionManager.GetInstanceIfReady() is not null and var dm)
+        {
+            for (var i = 0; i < dm->NumValidSlots; i++)
+            {
+                if (dm->ActionId[i] is IDs.Actions.MultiHook && dm->CurCharges[i] > 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public static unsafe bool ActionOnCoolDown(uint id, ActionType actionType = ActionType.Action)
     {
         var group = GetRecastGroups(id, actionType);

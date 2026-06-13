@@ -232,6 +232,10 @@ public static class DrawUtil
 
             ImGui.EndCombo();
         }
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(selectedItem);
+        }
     }
 
     public static void DrawComboSelectorPreset(BasePreset presetList)

@@ -74,7 +74,7 @@ public partial class FishingManager : IDisposable
     private void Enable()
     {
         Svc.Framework.Update += OnFrameworkUpdate;
-        Svc.Chat.CheckMessageHandled += OnMessageDelegate;
+        Svc.Chat.ChatMessage += OnMessageDelegate;
         UpdateCatch?.Enable();
         _useActionHook?.Enable();
     }
@@ -82,7 +82,7 @@ public partial class FishingManager : IDisposable
     private void Disable()
     {
         Svc.Framework.Update -= OnFrameworkUpdate;
-        Svc.Chat.CheckMessageHandled -= OnMessageDelegate;
+        Svc.Chat.ChatMessage -= OnMessageDelegate;
         _useActionHook?.Disable();
         UpdateCatch?.Disable();
     }
