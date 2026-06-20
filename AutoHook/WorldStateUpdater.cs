@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.Sheets;
+using System.Reflection;
 
 namespace AutoHook;
 
@@ -25,6 +26,9 @@ public sealed class WorldStateUpdater : IDisposable {
     private readonly Hook<AgentCatch.Delegates.UpdateCatch>? _updateCatchHook;
     private readonly Hook<FishingEventHandler.Delegates.PlayAnimation>? _playAnimationHook;
     private static IReadOnlyList<Lumina.Excel.Sheets.Action> FshActions = [];
+    private static readonly FieldInfo? WksMissionScoreField =
+        typeof(WKSMissionModule.MissionState).GetField("ScoreUInt") ??
+        typeof(WKSMissionModule.MissionState).GetField("Score");
 
     private bool _needInventoryUpdate = true;
 
@@ -305,16 +309,26 @@ public sealed class WorldStateUpdater : IDisposable {
                 devGrade = wks->State.DevGrade;
                 currentFateControlRowId = wks->State.CurrentFateControlRowId;
                 currentFateId = wks->State.CurrentFateId;
-                currentMissionUnitRowId = wks->State.CurrentMission.MissionUnitRowId;
-                currentScore = wks->State.CurrentMission.ScoreUInt;
-                currentRank = wks->State.CurrentMission.Rank;
-                collectedTotal = wks->State.CurrentMission.CollectedTotal;
-                collectedIndividual = wks->State.CurrentMission.CollectedIndividual;
+                var mission = wks->State.CurrentMission;
+                currentMissionUnitRowId = mission.MissionUnitRowId;
+                currentScore = GetWksMissionScore(mission);
+                currentRank = mission.Rank;
+                collectedTotal = mission.CollectedTotal;
+                collectedIndividual = mission.CollectedIndividual;
             }
         }
         catch { }
 
         return new WKSInfo.OpState(devGrade, currentFateControlRowId, currentFateId, currentMissionUnitRowId, currentScore, currentRank, collectedTotal, collectedIndividual);
+    }
+
+    private static uint GetWksMissionScore(WKSMissionModule.MissionState mission) {
+        var score = WksMissionScoreField?.GetValue(mission);
+        return score switch {
+            uint value => value,
+            ushort value => value,
+            _ => 0,
+        };
     }
 
     private static unsafe WorldState.OpZone CollectZone()
