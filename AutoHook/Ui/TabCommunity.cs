@@ -293,7 +293,7 @@ public class TabCommunity : BaseTab {
                             }
 
                             ImGui.SameLine();
-                            ImGui.TextDisabled("Imports this folders presets only");
+                            ImGui.TextDisabled("Imports this folder's presets only");
 
                             foreach (var item in bundle.Value) {
                                 var color = ImGuiColors.DalamudWhite;
