@@ -20,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="croizat.clib" Version="1.0.32" />
+        <PackageReference Include="croizat.clib" Version="1.0.50" />
         <PackageReference Include="ECommons" Version="3.2.0.16" />
         <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
         <PackageReference Include="NotificationMasterAPI" Version="1.0.0.1" />
