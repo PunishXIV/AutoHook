@@ -16,17 +16,7 @@ public class AutoGigConfig : BasePresetConfig {
     public AutoGigConfig(string presetName) => PresetName = presetName;
 
     public List<BaseGig> GetGigCurrentNode(int node) {
-        Service.PrintDebug($"[AutoGig] GetGigCurrentNode - node: {node}, Total Gigs: {Gigs.Count}");
-
-        var result = Gigs.Where(f => {
-            var hasFish = f.Fish != null;
-            var hasNode = f.Fish?.Nodes is not { Count: > 0 } || f.Fish.Nodes.Contains(node);
-            Service.PrintDebug($"[AutoGig] GetGigCurrentNode - Fish: {f.Fish?.Name ?? "null"}, Enabled: {f.Enabled}, HasFish: {hasFish}, HasNode: {hasNode}");
-            return hasFish && hasNode;
-        }).ToList();
-
-        Service.PrintDebug($"[AutoGig] GetGigCurrentNode - Returning {result.Count} fish(es)");
-        return result;
+        return Gigs.Where(f => f.Fish != null && (f.Fish.Nodes is not { Count: > 0 } || f.Fish.Nodes.Contains(node))).ToList();
     }
 
     public override void AddItem(BaseOption item) {

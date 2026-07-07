@@ -8,15 +8,11 @@ public class BaseGig(int itemId) : BaseOption {
     private int _itemId = itemId;
     public ImportedFish? Fish {
         get {
-            if (field == null && _itemId != 0) {
-                Service.PrintDebug($"[AutoGig] BaseGig.Fish - Lazy initializing for itemId: {_itemId}, SpearfishFishes count: {GameRes.SpearfishFishes.Count}");
+            if (field == null && _itemId != 0)
                 field = GameRes.SpearfishFishes.FirstOrDefault(f => f.ItemId == _itemId);
-                Service.PrintDebug($"[AutoGig] BaseGig.Fish - Found: {(field != null ? field.Name : "null")}");
-            }
             return field;
         }
         set {
-            Service.PrintDebug($"[AutoGig] BaseGig.Fish - Setting to: {(value != null ? value.Name : "null")}");
             field = value;
             _itemId = value?.ItemId ?? 0;
         }

@@ -12,6 +12,11 @@ using FFXIVClientStructs.FFXIV.Client.UI;
 namespace AutoHook.Spearfishing;
 
 internal class AutoGig : Window, IDisposable {
+    private const uint FishLaneNodeId = 43;
+    private const uint Fish1NodeId = 61;
+    private const uint Fish2NodeId = 60;
+    private const uint Fish3NodeId = 59;
+
     private const ImGuiWindowFlags WindowFlags = ImGuiWindowFlags.NoDecoration
                                                  | ImGuiWindowFlags.NoInputs
                                                  | ImGuiWindowFlags.AlwaysAutoResize
@@ -97,128 +102,103 @@ internal class AutoGig : Window, IDisposable {
             if (!Service.WorldState.HasStatus(IDs.Status.NaturesBounty) && _gigCfg.NatureBountyBeforeFish)
                 PlayerRes.CastActionDelayed(IDs.Actions.NaturesBounty);
             ;
-            GigFish(addon, addon->Fish[0], addon->GetNodeById(15));
-            GigFish(addon, addon->Fish[1], addon->GetNodeById(16));
-            GigFish(addon, addon->Fish[2], addon->GetNodeById(17));
+            GigFish(addon, addon->Fish[0], addon->GetNodeById(Fish1NodeId));
+            GigFish(addon, addon->Fish[1], addon->GetNodeById(Fish2NodeId));
+            GigFish(addon, addon->Fish[2], addon->GetNodeById(Fish3NodeId));
         }
     }
 
     private unsafe void GigFish(AddonSpearFishing* addon, AddonSpearFishing.FishInfo info, AtkResNode* node) {
+        if (node == null)
+            return;
+
         var drawList = ImGui.GetWindowDrawList();
         var gigHitbox = _gigCfg.SelectedPreset?.HitboxSize ?? 0;
+        var fishLines = addon->GetNodeById(FishLaneNodeId);
+        if (fishLines == null)
+            return;
 
-        DrawGigHitbox(addon, drawList, gigHitbox);
+        DrawGigHitbox(fishLines, drawList, gigHitbox);
 
         if (_gigCfg.ThaliaksFavor.IsAvailableToCast())
             PlayerRes.CastActionDelayed(_gigCfg.ThaliaksFavor.Id, _gigCfg.ThaliaksFavor.ActionType,
                 UIStrings.Thaliaks_Favor);
 
-        if (!info.Available) {
-            Service.PrintDebug("[AutoGig] GigFish - Fish not available");
+        if (!info.Available)
             return;
-        }
 
         var fish = _gigCfg.CatchAll ? GetCatchAllGig() : CheckFish(info);
-        Service.PrintDebug($"[AutoGig] GigFish - fish: {(fish != null ? fish.Fish?.Name ?? "null" : "null")}, Enabled: {fish?.Enabled ?? false}, CatchAll: {_gigCfg.CatchAll}");
 
-        if (fish == null || !fish.Enabled) {
-            Service.PrintDebug($"[AutoGig] GigFish - Skipping (fish is null: {fish == null}, enabled: {fish?.Enabled ?? false})");
+        if (fish == null || !fish.Enabled)
             return;
-        }
 
         if (!Service.WorldState.HasStatus(IDs.Status.NaturesBounty) && fish.UseNaturesBounty)
             PlayerRes.CastActionDelayed(IDs.Actions.NaturesBounty);
 
-        var centerX = _uiSize.X / 2;
-        float fishHitbox = 0;
+        var laneOriginX = fishLines->X * _uiScale;
+        var centerX = laneOriginX + fishLines->Width * fishLines->ScaleX * _uiScale / 2f;
+        var anchor = info.InverseDirection
+            ? 0.5f + fish.RightOffset / 10
+            : 0.4f - fish.LeftOffset / 10;
+        var fishHitbox = laneOriginX + node->X * _uiScale + node->Width * node->ScaleX * _uiScale * anchor;
 
-        // Im so tired of trying to figure this out someone help
-        /*if (!info.InverseDirection)
-            fishHitbox = (node->X * _uiScale) + (node->Width * node->ScaleX * _uiScale * 0.8f);
-        else*/
+        DrawFishHitbox(fishLines, drawList, fishHitbox);
 
-        // did i fucking do it?
-        if (info.InverseDirection)
-            fishHitbox = node->X * _uiScale + node->Width * node->ScaleX * _uiScale * (0.5f + fish.RightOffset / 10);
-        else
-            fishHitbox = node->X * _uiScale + node->Width * node->ScaleX * _uiScale * (0.4f - fish.LeftOffset / 10);
-
-        Service.PrintDebug($"[AutoGig] GigFish - Drawing hitbox at {fishHitbox}, centerX: {centerX}, gigHitbox: {gigHitbox}");
-        DrawFishHitbox(addon, drawList, fishHitbox);
-
-        if (fishHitbox >= (centerX - gigHitbox) && fishHitbox <= (centerX + gigHitbox)) {
-            Service.PrintDebug("[AutoGig] GigFish - Fish in range, casting gig");
+        if (fishHitbox >= centerX - gigHitbox && fishHitbox <= centerX + gigHitbox)
             _taskManager.Enqueue(() => { Chat.ExecuteCommand($"/ac \"{Gig}\""); });
-        }
     }
 
     private BaseGig? CheckFish(AddonSpearFishing.FishInfo info) {
-        Service.PrintDebug($"[AutoGig] CheckFish - currentNode: {currentNode}, Speed: {info.Speed}, Size: {info.Size}");
-
         var fishes = _gigCfg.SelectedPreset?.GetGigCurrentNode(currentNode);
-        Service.PrintDebug($"[AutoGig] GetGigCurrentNode returned {fishes?.Count ?? 0} fish(es)");
 
-        if (fishes is null || fishes.Count == 0) {
-            Service.PrintDebug("[AutoGig] No fish found for current node");
+        if (fishes is null || fishes.Count == 0)
             return null;
-        }
 
-        foreach (var f in fishes) {
-            Service.PrintDebug($"[AutoGig] Checking fish: {f.Fish?.Name ?? "null"}, Enabled: {f.Enabled}, Fish.Speed: {f.Fish?.Speed}, Fish.Size: {f.Fish?.Size}");
-        }
-
-        var matched = fishes.FirstOrDefault(f => f.Fish != null && (short)f.Fish.Speed == info.Speed && f.Fish.Size == (Enums.SpearfishSize)info.Size); // TODO convert over properly
-        Service.PrintDebug($"[AutoGig] Matched fish: {(matched != null ? matched.Fish?.Name ?? "null" : "none")}, Enabled: {matched?.Enabled ?? false}");
-
-        return matched;
+        return fishes.FirstOrDefault(f => f.Fish != null && (short)f.Fish.Speed == info.Speed && f.Fish.Size == (Enums.SpearfishSize)info.Size);
     }
 
     private BaseGig? GetCatchAllGig() {
         return new BaseGig(0) { Enabled = true, UseNaturesBounty = _gigCfg.CatchAllNaturesBounty };
     }
 
-    private unsafe void DrawGigHitbox(AddonSpearFishing* addon, ImDrawListPtr drawList, int gigHitbox) {
+    private unsafe void DrawGigHitbox(AtkResNode* fishLines, ImDrawListPtr drawList, int gigHitbox) {
         if (!_gigCfg.AutoGigDrawGigHitbox)
             return;
 
-        var space = gigHitbox;
-
-        var startX = _uiSize.X / 2;
-        var fishLines = addon->GetNodeById(3);
+        var laneOriginX = fishLines->X * _uiScale;
+        var startX = laneOriginX + fishLines->Width * fishLines->ScaleX * _uiScale / 2f;
         var centerY = fishLines->Y * _uiScale;
         var endY = fishLines->Height * _uiScale;
 
-        //Hitbox left
-        var lineStart = _uiPos + new Vector2(startX - space, centerY);
+        var lineStart = _uiPos + new Vector2(startX - gigHitbox, centerY);
         var lineEnd = lineStart + new Vector2(0, endY);
         drawList.AddLine(lineStart, lineEnd, 0xFF0000C0, 1.Scaled());
 
-        //Hitbox right
-        lineStart = _uiPos + new Vector2(startX + space, centerY);
+        lineStart = _uiPos + new Vector2(startX + gigHitbox, centerY);
         lineEnd = lineStart + new Vector2(0, endY);
         drawList.AddLine(lineStart, lineEnd, 0xFF0000C0, 1.Scaled());
     }
 
-    private unsafe void DrawFishHitbox(AddonSpearFishing* addon, ImDrawListPtr drawList, float fishHitbox) {
-        Service.PrintDebug($"[AutoGig] DrawFishHitbox - AutoGigDrawFishHitbox: {_gigCfg.AutoGigDrawFishHitbox}, fishHitbox: {fishHitbox}");
-
-        if (!_gigCfg.AutoGigDrawFishHitbox) {
-            Service.PrintDebug("[AutoGig] DrawFishHitbox - Setting is disabled, not drawing");
+    private unsafe void DrawFishHitbox(AtkResNode* fishLines, ImDrawListPtr drawList, float fishHitbox) {
+        if (!_gigCfg.AutoGigDrawFishHitbox)
             return;
-        }
 
-        var fishLines = addon->GetNodeById(3);
         var lineStart = _uiPos + new Vector2(fishHitbox, fishLines->Y * _uiScale);
         var lineEnd = lineStart + new Vector2(0, fishLines->Height * _uiScale);
         drawList.AddLine(lineStart, lineEnd, 0xFF20B020, 1.Scaled());
-        Service.PrintDebug($"[AutoGig] DrawFishHitbox - Green line drawn at {fishHitbox}");
     }
 
     private bool _isOpen = false;
 
     public override unsafe bool DrawConditions() {
         var lastOpen = _isOpen;
-        if (Svc.GameGui.TryGetAddon<AtkUnitBase>("Spearfishing", out _)) return false;
+
+        if (!Svc.GameGui.TryGetAddon<AtkUnitBase>("SpearFishing", out var addon)) {
+            _isOpen = false;
+            return false;
+        }
+
+        _isOpen = addon->WindowNode != null;
 
         if (!_isOpen)
             return false;
@@ -236,7 +216,7 @@ internal class AutoGig : Window, IDisposable {
     }
 
     public override unsafe void PreDraw() {
-        if (Svc.GameGui.TryGetAddon<AtkUnitBase>("Spearfishing", out var addon)) return;
+        if (!Svc.GameGui.TryGetAddon<AtkUnitBase>("SpearFishing", out var addon)) return;
         _uiScale = addon->Scale;
         _uiPos = new Vector2(addon->X, addon->Y);
         _uiSize = new Vector2(addon->WindowNode->AtkResNode.Width * _uiScale,
