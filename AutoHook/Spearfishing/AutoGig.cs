@@ -1,4 +1,3 @@
-using AutoHook.Spearfishing.Struct;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Interface.Colors;
@@ -217,9 +216,9 @@ internal class AutoGig : Window, IDisposable {
 
     private bool _isOpen = false;
 
-    public override bool DrawConditions() {
+    public override unsafe bool DrawConditions() {
         var lastOpen = _isOpen;
-        if (Svc.GameGui.TryGetAddon<AtkUnitBase>("Spearfishing", out var addon)) return false;
+        if (Svc.GameGui.TryGetAddon<AtkUnitBase>("Spearfishing", out _)) return false;
 
         if (!_isOpen)
             return false;

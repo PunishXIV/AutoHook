@@ -4,7 +4,6 @@ using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 using System.Threading;
 using AhCondition = AutoHook.Conditions.Condition;
-using static AutoHook.Conditions.IConditionDefinition;
 
 namespace AutoHook.Configurations;
 
@@ -61,9 +60,7 @@ public class ExtraTrigger {
 
     public string GetTriggerHeaderLabel(int index) {
         var summary = SummarizeTrigger();
-        return string.IsNullOrEmpty(summary)
-            ? $"Rule {index + 1}"
-            : $"Rule {index + 1} – {summary}";
+        return string.IsNullOrEmpty(summary) ? $"Rule {index + 1}" : $"Rule {index + 1} – {summary}";
     }
 
     public string DescribeActions() {
@@ -149,11 +146,10 @@ public class ExtraTrigger {
                     }
                 }
                 return "Status Stacks";
-            case "SwimbaitCountCD" or "SwimbaitCount": {
+            case "SwimbaitCountCD" or "SwimbaitCount":
                 var fishId = IConditionDefinition.GetInt(cond.Params, "id", 0);
                 var fishLabel = fishId == 0 ? "Slot Fish" : Item.GetRow((uint)fishId).Name.ToString();
                 return $"Swimbaits ({fishLabel}) {FormatIntCompare(cond.Params)}";
-            }
             default:
                 return cond.Describe(ConditionRegistry.Registry);
         }
