@@ -28,14 +28,14 @@ public sealed class GameExecutor(WorldState ws) {
             Service.PrintDebug($"[Executor] Casting Action: {actionName}, Id: {actionId}");
             try { CastAction(actionId, actionType); }
             catch (Exception e) { Service.PrintDebug($"[Executor] Error casting: {actionName}, Id: {actionId}, {e}"); }
-            DelayNextCast(actionId);
+            DelayNextCast();
         }
         else if (actionType == ActionType.Item) {
             ws.Execute(new WorldState.OpSetBlockCasting(true));
             Service.PrintDebug($"[Executor] Using Item: {actionName}, Id: {actionId}");
             try { UseItems(actionId); }
             catch (Exception e) { Service.PrintDebug($"[Executor] Error using item: {actionName}, Id: {actionId}, {e}"); }
-            DelayNextCast(actionId);
+            DelayNextCast();
         }
     }
 
@@ -53,7 +53,7 @@ public sealed class GameExecutor(WorldState ws) {
         _blockActionNoDelay = false;
     }
 
-    public async void DelayNextCast(uint actionId) {
+    public async void DelayNextCast() {
         var delay = 0;
         try {
             delay = new Random().Next(Service.Configuration.DelayBetweenCastsMin, Service.Configuration.DelayBetweenCastsMax);
@@ -61,21 +61,9 @@ public sealed class GameExecutor(WorldState ws) {
         catch (Exception e) {
             Svc.Log.Error($"[Executor] Error getting delay: {e}");
         }
-        await Task.Delay(delay + ConditionalDelay(actionId));
+        await Task.Delay(delay);
         ws.Execute(new WorldState.OpSetBlockCasting(false));
     }
-
-    private static int ConditionalDelay(uint id) => id switch {
-        IDs.Actions.ThaliaksFavor => 1100,
-        IDs.Actions.MakeshiftBait => 1100,
-        IDs.Actions.NaturesBounty => 1100,
-        IDs.Item.Cordial => 1100,
-        IDs.Item.HQCordial => 1100,
-        IDs.Item.HiCordial => 1100,
-        IDs.Item.WateredCordial => 1100,
-        IDs.Item.HQWateredCordial => 1100,
-        _ => 0,
-    };
 
     public ChangeBaitReturn ChangeBait(uint baitId) {
         if (baitId == ws.Fishing.BaitInfo.BaitId) return ChangeBaitReturn.AlreadyEquipped;

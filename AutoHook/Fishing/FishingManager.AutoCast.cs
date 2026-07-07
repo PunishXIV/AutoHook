@@ -73,7 +73,7 @@ public partial class FishingManager {
         if (!Ws.FishingStep.HasFlag(FishingSteps.StartedCasting) || Ws.FishingStep.HasFlag(FishingSteps.BeganFishing))
             return;
 
-        var delay = usedAction != null ? PlayerRes.GetPostCastDelayMs(usedAction.Id) : 0;
+        var delay = usedAction != null ? PlayerRes.GetPostCastDelayMs() : 0;
         Service.TaskManager.EnqueueDelay(delay);
         Service.TaskManager.Enqueue(() => {
             if (!Ws.FishingStep.HasFlag(FishingSteps.StartedCasting) || Ws.FishingStep.HasFlag(FishingSteps.BeganFishing))

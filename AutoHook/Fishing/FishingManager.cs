@@ -521,6 +521,6 @@ public partial class FishingManager : IDisposable {
         FishingHelper.Reset();
 
         PlayerRes.CastActionNoDelay(IDs.Actions.Quit);
-        PlayerRes.DelayNextCast(0);
+        PlayerRes.DelayNextCast();
     }
 }

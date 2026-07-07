@@ -52,7 +52,7 @@ public static class PlayerRes {
             try { CastAction(actionId, actionType); }
             catch (Exception e) { Service.PrintDebug(@$"Error casting action: {actionName}, Id: {actionId}, {e}"); }
 
-            DelayNextCast(actionId);
+            DelayNextCast();
             return true;
         }
 
@@ -66,7 +66,7 @@ public static class PlayerRes {
         Service.PrintDebug(@$"[PlayerResources] Using Item: {actionName}, Id: {actionId}");
         try { UseItems(actionId); }
         catch (Exception e) { Service.PrintDebug(@$"Error casting action: {actionName}, Id: {actionId}, {e}"); }
-        DelayNextCast(actionId);
+        DelayNextCast();
         return true;
     }
 
@@ -103,28 +103,17 @@ public static class PlayerRes {
         return casted;
     }
 
-    public static async void DelayNextCast(uint actionId) {
-        await Task.Delay(GetPostCastDelayMs(actionId));
+    public static async void DelayNextCast() {
+        await Task.Delay(GetPostCastDelayMs());
         WS.Execute(new WorldState.OpSetBlockCasting(false));
     }
 
     /// <summary>Delay after a delayed cast/item use before the next action (matches <see cref="DelayNextCast"/>).</summary>
-    public static int GetPostCastDelayMs(uint actionId) {
-        var delay = 0;
-        try { delay = new Random().Next(Service.Configuration.DelayBetweenCastsMin, Service.Configuration.DelayBetweenCastsMax); }
-        catch (Exception e) { Svc.Log.Error(@$"Error getting delay between casts: {e}"); }
-        return delay + ConditionalDelay(actionId);
+    public static int GetPostCastDelayMs() {
+        try { return new Random().Next(Service.Configuration.DelayBetweenCastsMin, Service.Configuration.DelayBetweenCastsMax); }
+        catch (Exception e) {
+            Svc.Log.Error(@$"Error getting delay between casts: {e}");
+            return 0;
+        }
     }
-
-    private static int ConditionalDelay(uint id) => id switch {
-        IDs.Actions.ThaliaksFavor => 1100,
-        IDs.Actions.MakeshiftBait => 1100,
-        IDs.Actions.NaturesBounty => 1100,
-        IDs.Item.Cordial => 1100,
-        IDs.Item.HQCordial => 1100,
-        IDs.Item.HiCordial => 1100,
-        IDs.Item.WateredCordial => 1100,
-        IDs.Item.HQWateredCordial => 1100,
-        _ => 0,
-    };
 }
