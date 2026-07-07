@@ -54,7 +54,7 @@ internal sealed class ReplayBinaryReader(Stream stream, FishingReplay replay, Ca
             "FRAM" => ParseFrame(),
             "EORZ" => new WorldState.OpEorzeaTime(ParseTimeOnly()),
             "TRTY" => new WorldState.OpTerritory(_reader.ReadUInt32()),
-            "WTHR" => new WorldState.OpWeather(_reader.ReadByte(), _reader.ReadByte(), _reader.ReadByte()),
+            "WTHR" => new WorldState.OpWeather(_reader.ReadByte(), _reader.ReadByte(), _reader.ReadByte(), _reader.ReadByte()),
             "ZONE" => new WorldState.OpZone(_reader.ReadByte(), _reader.ReadUInt32()),
             "GP  " => new PlayerInfo.OpGp(_reader.ReadUInt32(), _reader.ReadUInt32()),
             "LVL " => new PlayerInfo.OpLevel(_reader.ReadByte()),

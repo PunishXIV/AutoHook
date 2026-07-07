@@ -88,6 +88,7 @@ public class TabDebug : BaseTab {
                             ("Intuition", snap.IntuitionStatus.ToString()),
                             ("Weather (prev / cur / next)",
                                 $"{(snap.PreviousWeatherId == 0 ? "-" : Weather.GetRow(snap.PreviousWeatherId).Name.ToString())} / {(snap.CurrentWeatherId == 0 ? "-" : Weather.GetRow(snap.CurrentWeatherId).Name.ToString())} / {(snap.NextWeatherId == 0 ? "-" : Weather.GetRow(snap.NextWeatherId).Name.ToString())}"),
+                            ("Modified weather", snap.CurrentModifiedWeatherId == 0 ? "-" : Weather.GetRow(snap.CurrentModifiedWeatherId).Name.ToString()),
                             ("Eorzea", snap.EorzeaTime.ToString("HH:mm")),
                             ("Spectral", snap.SpectralCurrentStatus.ToString()),
                         ]);

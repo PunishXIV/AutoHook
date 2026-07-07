@@ -316,14 +316,15 @@ public sealed class WorldStateUpdater : IDisposable {
             ws.Execute(new WorldState.OpTerritory(territory));
     }
 
-    private static void UpdateWeather(WorldState ws) {
+    private static unsafe void UpdateWeather(WorldState ws) {
         var territory = TerritoryType.GetRow(ws.TerritoryId);
+        var currentModified = WeatherManager.Instance()->GetCurrentWeather();
         (var current, var previous, var next) = (territory.GetCurrentWeather().RowId, territory.GetPreviousWeather().RowId, territory.GetNextWeather().RowId);
 
-        if (ws.CurrentWeatherId == current && ws.PreviousWeatherId == previous && ws.NextWeatherId == next)
+        if (ws.CurrentModifiedWeatherId == currentModified && ws.CurrentWeatherId == current && ws.PreviousWeatherId == previous && ws.NextWeatherId == next)
             return;
 
-        ws.Execute(new WorldState.OpWeather(current, previous, next));
+        ws.Execute(new WorldState.OpWeather(currentModified, current, previous, next));
     }
 
     private static void UpdateBiteContext(WorldState ws, BiteContext biteContext) {

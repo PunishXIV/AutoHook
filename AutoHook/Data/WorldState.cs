@@ -15,6 +15,7 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
     public readonly OceanFishInfo Ocean = new();
     public readonly WKSInfo WKS = new();
 
+    public uint CurrentModifiedWeatherId;
     public uint CurrentWeatherId;
     public uint PreviousWeatherId;
     public uint NextWeatherId;
@@ -152,8 +153,8 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
             yield return new OpEorzeaTime(EorzeaTime);
         if (TerritoryId != 0)
             yield return new OpTerritory(TerritoryId);
-        if (CurrentWeatherId != 0 || PreviousWeatherId != 0 || NextWeatherId != 0)
-            yield return new OpWeather(CurrentWeatherId, PreviousWeatherId, NextWeatherId);
+        if (CurrentModifiedWeatherId != 0 || CurrentWeatherId != 0 || PreviousWeatherId != 0 || NextWeatherId != 0)
+            yield return new OpWeather(CurrentModifiedWeatherId, CurrentWeatherId, PreviousWeatherId, NextWeatherId);
         foreach (var o in Player.CompareToInitial())
             yield return o;
         foreach (var o in Fishing.CompareToInitial())
@@ -193,8 +194,9 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
             => output.EmitFourCC("TRTY").Emit(TerritoryId);
     }
 
-    public sealed record OpWeather(uint Current, uint Previous, uint Next) : Operation {
+    public sealed record OpWeather(uint CurrentModified, uint Current, uint Previous, uint Next) : Operation {
         protected override void Exec(WorldState ws) {
+            ws.CurrentModifiedWeatherId = CurrentModified;
             ws.CurrentWeatherId = Current;
             ws.PreviousWeatherId = Previous;
             ws.NextWeatherId = Next;
@@ -237,12 +239,7 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
             => output.EmitFourCC("FCLR").Emit((uint)Flag);
     }
 
-    public sealed record OpDecision(
-        string Context,
-        string PresetName,
-        string Action,
-        string Detail,
-        IReadOnlyList<(string ConditionId, bool Result)> ConditionResults) : Operation {
+    public sealed record OpDecision(string Context, string PresetName, string Action, string Detail, IReadOnlyList<(string ConditionId, bool Result)> ConditionResults) : Operation {
         protected override void Exec(WorldState ws) { }
 
         public override void Write(Replay.ReplayOutput output) {

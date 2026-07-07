@@ -5,6 +5,7 @@ public sealed class CastInfoSnapshot {
     public bool Active { get; private set; }
 
     public IntuitionStatus IntuitionStatus { get; private set; }
+    public uint CurrentModifiedWeatherId { get; private set; }
     public uint CurrentWeatherId { get; private set; }
     public uint PreviousWeatherId { get; private set; }
     public uint NextWeatherId { get; private set; }
@@ -14,6 +15,7 @@ public sealed class CastInfoSnapshot {
     public void Capture(WorldState ws) {
         EorzeaTime = ws.EorzeaTime;
         IntuitionStatus = ws.Fishing.Intuition.Status;
+        CurrentModifiedWeatherId = ws.CurrentModifiedWeatherId;
         CurrentWeatherId = ws.CurrentWeatherId;
         PreviousWeatherId = ws.PreviousWeatherId;
         NextWeatherId = ws.NextWeatherId;

@@ -17,12 +17,11 @@ public sealed class WeatherCD : SnapshottableConditionDefinition {
         var slot = GetOp(parameters, "slot", "current");
         var invert = GetBool(parameters, "inv", false);
 
-        var weatherId = slot switch {
-            "prev" => world.PreviousWeatherId,
-            "next" => world.NextWeatherId,
-            _ => world.CurrentWeatherId,
+        return slot switch {
+            "prev" => EvaluateWeather(ids, world.PreviousWeatherId, invert),
+            "next" => EvaluateWeather(ids, world.NextWeatherId, invert),
+            _ => EvaluateWeather(ids, [world.CurrentWeatherId, world.CurrentModifiedWeatherId], invert),
         };
-        return EvaluateWeather(ids, weatherId, invert);
     }
 
     protected override bool EvaluateSnapshot(CastInfoSnapshot snapshot, IReadOnlyDictionary<string, object> parameters) {
@@ -31,26 +30,47 @@ public sealed class WeatherCD : SnapshottableConditionDefinition {
 
         var slot = GetOp(parameters, "slot", "current");
         var invert = GetBool(parameters, "inv", false);
-        var targetWeatherId = slot switch {
-            "prev" => snapshot.PreviousWeatherId,
-            "next" => snapshot.NextWeatherId,
-            _ => snapshot.CurrentWeatherId,
+        return slot switch {
+            "prev" => EvaluateWeather(ids, snapshot.PreviousWeatherId, invert),
+            "next" => EvaluateWeather(ids, snapshot.NextWeatherId, invert),
+            _ => EvaluateWeather(ids, [snapshot.CurrentWeatherId, snapshot.CurrentModifiedWeatherId], invert),
         };
-        return EvaluateWeather(ids, targetWeatherId, invert);
     }
 
-    private static bool EvaluateWeather(List<uint> ids, uint targetWeatherId, bool invert) {
-        if (targetWeatherId == 0)
+    private static bool EvaluateWeather(List<uint> ids, uint targetWeatherId, bool invert)
+        => EvaluateWeather(ids, [targetWeatherId], invert);
+
+    // TODO: I don't like the list approach, but I need a way to know which weather actually affects fishing since some overrides do and some don't
+    private static bool EvaluateWeather(List<uint> ids, ReadOnlySpan<uint> targetWeatherIds, bool invert) {
+        if (targetWeatherIds.Length == 0)
             return invert;
+
+        var allZero = true;
+        var match = false;
+        foreach (var targetWeatherId in targetWeatherIds) {
+            if (targetWeatherId == 0)
+                continue;
+            allZero = false;
+            if (WeatherMatches(ids, targetWeatherId)) {
+                match = true;
+                break;
+            }
+        }
+
+        if (allZero)
+            return invert;
+
+        return invert ? !match : match;
+    }
+
+    private static bool WeatherMatches(List<uint> ids, uint targetWeatherId) {
+        if (targetWeatherId == 0)
+            return false;
 
         if (!Weather.TryGetRow(targetWeatherId, out var current))
-            return invert;
+            return false;
         var currentName = current.Name.ToString();
-        if (string.IsNullOrEmpty(currentName))
-            return invert;
-
-        var match = ids.Any(id => Weather.TryGetRow(id, out var row) && row.Name.ToString() == currentName);
-        return invert ? !match : match;
+        return !string.IsNullOrEmpty(currentName) && ids.Any(id => Weather.TryGetRow(id, out var row) && row.Name.ToString() == currentName);
     }
 
     public override void DrawParams(Condition condition) {
@@ -58,7 +78,7 @@ public sealed class WeatherCD : SnapshottableConditionDefinition {
         using var idScope = ImRaii.PushId($"weather{condition.UiId}");
 
         var ids = GetWeatherIds(condition.Params);
-        var currentId = ids.Count > 0 ? ids[0] : (byte)0;
+        var currentId = ids.Count > 0 ? ids[0] : 0;
 
         var slot = condition.Params.TryGetValue("slot", out var s) ? s?.ToString() ?? "current" : "current";
         var slotLabel = slot switch {
