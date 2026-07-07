@@ -63,6 +63,21 @@ public class AutoHookIPC {
     }
 
     [EzIPC]
+    public bool CreateAndSelectAutoAnonymousPreset(uint itemId, uint baitId, bool stopAfterCaughtOnce) {
+        if (CustomPresetConfig.CreateAutoPreset(baitId, itemId, stopAfterCaughtOnce) is not CustomPresetConfig preset)
+            return false;
+
+        WriteConfig(() => {
+            var nameMap = CustomPresetConfig.BuildAnonymousNameMap([preset]);
+            preset.RenamePreset(nameMap[preset.PresetName]);
+            _cfg.HookPresets.AddNewPreset(preset);
+            _cfg.HookPresets.SelectedPreset = _cfg.HookPresets.CustomPresets.FirstOrDefault(x => x.PresetName == preset.PresetName);
+        });
+        Service.Save();
+        return true;
+    }
+
+    [EzIPC]
     public void ImportAndSelectPreset(string preset) {
         var import = Configuration.ImportPreset(preset);
         if (import == null) return;

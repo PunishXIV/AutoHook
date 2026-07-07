@@ -33,6 +33,38 @@ public class CustomPresetConfig : BasePresetConfig {
         }
     }
 
+    public static CustomPresetConfig? CreateAutoPreset(uint baitId, uint itemId, bool stopAfterCaughtOnce) {
+        var bait = new BaitFishClass((int)baitId);
+        if (baitId == 0 || bait.BaitType == BaitType.Unknown)
+            return null;
+
+        if (stopAfterCaughtOnce && itemId == 0)
+            return null;
+
+        if (itemId > 0) {
+            var fish = new BaitFishClass((int)itemId);
+            if (fish.BaitType != BaitType.Mooch)
+                return null;
+        }
+
+        var presetName = itemId > 0 ? $"{new BaitFishClass((int)itemId).Name} ({bait.Name})" : bait.Name;
+        var preset = new CustomPresetConfig(presetName);
+        preset.AddItem(new HookConfig((int)baitId));
+
+        preset.ExtraCfg.Enabled = true;
+        preset.ExtraCfg.ForceBaitSwap = true;
+        preset.ExtraCfg.ForcedBaitId = (int)baitId;
+
+        if (itemId > 0) {
+            var fishConfig = new FishConfig((int)itemId);
+            if (stopAfterCaughtOnce)
+                fishConfig.StopAfterCaughtLimit.Value = (true, 1);
+            preset.AddItem(fishConfig);
+        }
+
+        return preset;
+    }
+
     public List<HookConfig> ListOfBaits { get; set; } = [];
     public List<HookConfig> ListOfMooch { get; set; } = [];
     public List<FishConfig> ListOfFish { get; set; } = [];
