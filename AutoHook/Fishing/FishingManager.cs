@@ -352,6 +352,13 @@ public partial class FishingManager : IDisposable {
         var casted = false;
         if (Ws.FishingStep.HasFlag(FishingSteps.FishCaught) && !Ws.FishingStep.HasFlag(FishingSteps.Quitting)) {
             casted = UseFishCaughtActions(lastCatchCfg);
+
+            if (!casted && lastCatchCfg is { Enabled: true } && HasGpBlockedFishCaughtAction(lastCatchCfg)) {
+                var acCfg = GetAutoCastCfg();
+                var ignoreMooch = lastCatchCfg.NeverMooch;
+                casted = acCfg.TryCastGpRestoringAction(ignoreMooch);
+            }
+
             CheckFishCaughtSwap(lastCatchCfg);
         }
 

@@ -25,27 +25,39 @@ public partial class FishingManager {
         return cfg.IgnoreConditionSet is { } ignoreSet && ignoreSet.HasAnyCondition() && ignoreSet.PassesOrUnconfigured();
     }
 
-    private bool UseFishCaughtActions(FishConfig? lastFishCatchCfg) {
+    private static bool HasGpBlockedFishCaughtAction(FishConfig cfg)
+        => SelectFishCaughtCast(cfg, gpBlockedOnly: true) != null;
+
+    private static BaseActionCast? SelectFishCaughtCast(FishConfig cfg, bool gpBlockedOnly = false) {
         BaseActionCast? cast = null;
 
+        bool Matches(BaseActionCast action)
+            => gpBlockedOnly ? action.IsGpBlocked() : action.IsAvailableToCast();
+
+        if (Matches(cfg.IdenticalCast))
+            cast = cfg.IdenticalCast;
+
+        if (Matches(cfg.SurfaceSlap))
+            cast = cfg.SurfaceSlap;
+
+        if (Matches(cfg.SparefulHand))
+            cast = cfg.SparefulHand;
+
+        return cast;
+    }
+
+    private bool UseFishCaughtActions(FishConfig? lastFishCatchCfg) {
         if (lastFishCatchCfg == null || !lastFishCatchCfg.Enabled || Ws.FishingStep.HasFlag(FishingSteps.PresetSwapped))
             return false;
 
         if (Ws.Fishing.LastCatch is { } lc && lc.FishId > 0)
             lastFishCatchCfg.SparefulHand.FishIdToCheck = lc.FishId;
 
-        if (lastFishCatchCfg.IdenticalCast.IsAvailableToCast())
-            cast = lastFishCatchCfg.IdenticalCast;
-
-        if (lastFishCatchCfg.SurfaceSlap.IsAvailableToCast())
-            cast = lastFishCatchCfg.SurfaceSlap;
-
-        if (lastFishCatchCfg.SparefulHand.IsAvailableToCast())
-            cast = lastFishCatchCfg.SparefulHand;
-
+        var cast = SelectFishCaughtCast(lastFishCatchCfg);
         var multiHook = lastFishCatchCfg.Multihook;
+        var waitingOnGp = cast == null && HasGpBlockedFishCaughtAction(lastFishCatchCfg);
 
-        if (cast == null && multiHook.Enabled && multiHook.CastCondition()) {
+        if (cast == null && !waitingOnGp && multiHook.Enabled && multiHook.CastCondition()) {
             Service.TaskManager.Enqueue(() => PlayerRes.CastActionDelayed(multiHook.Id, multiHook.ActionType, multiHook.GetName()));
             Service.TaskManager.Enqueue(() => CastLineMoochOrRelease(GetAutoCastCfg(), lastFishCatchCfg));
             return true;

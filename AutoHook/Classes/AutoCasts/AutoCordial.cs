@@ -45,6 +45,8 @@ public sealed class AutoCordial : BaseActionCast {
 
     public override string GetName() => UIStrings.Cordial;
 
+    public override bool RestoresGp => true;
+
     public override bool CastCondition() {
         if (!EvaluateConditionSet())
             return false;

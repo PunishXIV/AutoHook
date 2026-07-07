@@ -48,13 +48,15 @@ public class AutoCastsConfig {
         return output;
     }
 
-    public BaseActionCast? GetNextAutoCast(bool ignoreCurrentMooch) {
+    public BaseActionCast? GetNextAutoCast(bool ignoreCurrentMooch)
+        => GetNextAutoCast(GetAutoCastOrder(), ignoreCurrentMooch);
+
+    public BaseActionCast? GetNextGpRestoringCast(bool ignoreCurrentMooch)
+        => GetNextAutoCast(GetAutoCastOrder().Where(action => action.RestoresGp), ignoreCurrentMooch);
+
+    private BaseActionCast? GetNextAutoCast(IEnumerable<BaseActionCast> order, bool ignoreCurrentMooch) {
         if (!EnableAll)
             return null;
-
-        BaseActionCast? cast = null;
-
-        var order = GetAutoCastOrder();
 
         foreach (var action in order.Where(action => action.IsAvailableToCast(ignoreCurrentMooch))) {
             if (action.RequiresTimeWindow() && !TimeWindow.BackingSet.PassesOrUnconfigured())
@@ -64,8 +66,11 @@ public class AutoCastsConfig {
             return action;
         }
 
-        return cast;
+        return null;
     }
+
+    public bool TryCastGpRestoringAction(bool ignoreCurrentMooch = false)
+        => TryCastAction(GetNextGpRestoringCast(ignoreCurrentMooch), ignoreCurrentMooch: ignoreCurrentMooch);
 
     [JsonProperty("TimeWindowConditionSet")]
     [JsonConverter(typeof(SingleConditionConverter))]

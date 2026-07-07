@@ -38,6 +38,8 @@ public abstract class BaseActionCast {
 
     public virtual bool RequiresTimeWindow() => false;
 
+    public virtual bool RestoresGp => false;
+
     public virtual int Priority { get; set; }
 
     [NonSerialized] public ActionType ActionType;
@@ -76,6 +78,23 @@ public abstract class BaseActionCast {
             Service.PrintDebug(@$"[BaseAction] {GetName()} - GpCheck:{hasGp}, ActionAvailable: {actionAvailable}, OtherConditions: {condition}");
 
         return hasGp && actionAvailable && condition;
+    }
+
+    public bool IsGpBlocked(bool ignoreCurrentMooch = false) {
+        if (!Enabled)
+            return false;
+
+        if (DoesCancelMooch() && Service.WorldState.IsMoochAvailable() && DontCancelMooch && !ignoreCurrentMooch)
+            return false;
+
+        if (!CastCondition())
+            return false;
+
+        if (!Service.WorldState.ActionAvailable(Id, ActionType))
+            return false;
+
+        var currentGp = Service.WorldState.CurrentGp;
+        return GpThresholdAbove ? currentGp < GpThreshold : currentGp > GpThreshold;
     }
 
     public abstract bool CastCondition();

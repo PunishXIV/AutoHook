@@ -14,6 +14,8 @@ public sealed class AutoThaliaksFavor : BaseActionCast {
 
     public override string GetHelpText() => UIStrings.TabAutoCasts_DrawThaliaksFavor_HelpText;
 
+    public override bool RestoresGp => true;
+
     public override bool CastCondition() {
         if (!EvaluateConditionSet())
             return false;
