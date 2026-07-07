@@ -246,7 +246,7 @@ public partial class FishingManager : IDisposable {
         Service.WorldStateUpdater.Update();
 
         if (Player.ClassJob.RowId != FisherJobId) {
-            SanitizeWorldStateWhenNotFisher();
+            ClearWorldState();
             return;
         }
 
@@ -254,6 +254,10 @@ public partial class FishingManager : IDisposable {
         if (currentState == FishingState.None) {
             if (EzThrottler.Throttle(@"CheckExtraActionsNone", 500) && Ws.IsCastAvailable())
                 CheckExtraActions();
+
+            // cordial can be done while None, but the rest of autocasts are PoleReady-only, so retry them here
+            if (Ws.FishingStep.HasFlag(FishingSteps.StartedCasting) && !Ws.FishingStep.HasFlag(FishingSteps.BeganFishing))
+                CheckPluginActions();
 
             if (Service.Configuration.AutoStartFishing && !ShouldSuppressAutoStartFishing() && EzThrottler.Throttle("AutoStartFishing", 1000)) {
                 var autoCastCfg = GetAutoCastCfg();
@@ -310,7 +314,7 @@ public partial class FishingManager : IDisposable {
     private bool ShouldSuppressAutoStartFishing() => Service.Configuration.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
 
     // WSU doesn't refresh when not on fisher so gotta clear block casting cause it will affect other jobs
-    private void SanitizeWorldStateWhenNotFisher() {
+    private void ClearWorldState() {
         var f = Ws.Fishing;
         if (!Ws.Player.BlockCasting && f.FishingState == FishingState.None && f.FishingStep == FishingSteps.None && f.PreviousFishingState == FishingState.None)
             return;

@@ -60,11 +60,27 @@ public partial class FishingManager {
             var ignoreMooch = lastFishCatchCfg?.NeverMooch ?? false;
             var autoCast = acCfg.GetNextAutoCast(ignoreMooch);
 
-            if (acCfg.TryCastAction(autoCast, false, ignoreMooch))
+            if (acCfg.TryCastAction(autoCast, false, ignoreMooch)) {
+                ContinueStartFishing(autoCast);
                 return;
+            }
 
             CastLineMoochOrRelease(acCfg, lastFishCatchCfg);
         }, "AutoCasting");
+    }
+
+    private void ContinueStartFishing(BaseActionCast? usedAction) {
+        if (!Ws.FishingStep.HasFlag(FishingSteps.StartedCasting) || Ws.FishingStep.HasFlag(FishingSteps.BeganFishing))
+            return;
+
+        var delay = usedAction != null ? PlayerRes.GetPostCastDelayMs(usedAction.Id) : 0;
+        Service.TaskManager.EnqueueDelay(delay);
+        Service.TaskManager.Enqueue(() => {
+            if (!Ws.FishingStep.HasFlag(FishingSteps.StartedCasting) || Ws.FishingStep.HasFlag(FishingSteps.BeganFishing))
+                return;
+
+            UseAutoCasts();
+        }, "ContinueStartFishing");
     }
 
     private void CastLineMoochOrRelease(AutoCastsConfig acCfg, FishConfig? lastFishCatchCfg) {
