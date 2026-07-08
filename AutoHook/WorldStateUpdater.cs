@@ -563,8 +563,12 @@ public sealed class WorldStateUpdater : IDisposable {
     }
 
     private void HandleActorControlPacketDetour(uint entityId, uint category, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5, uint arg6, uint arg7, uint arg8, GameObjectId targetId, bool isRecorded) {
-        if (category is 3501) { // WKSMissionItemGain or something. arg1 is the itemid. Doesn't trigger when the mission ends and you lose the item
-            _needInventoryUpdate = true;
+        _handleActorControlPacketHook!.Original(entityId, category, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, targetId, isRecorded);
+        switch (category) {
+            case 3702: // WKSMissionEnd? there's also 3500 but that triggers on start and end but with a different a1
+            case 3501: // WKSMissionItemGain or something. a1 is the itemid
+                _needInventoryUpdate = true;
+                break;
         }
     }
 
