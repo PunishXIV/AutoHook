@@ -5,7 +5,9 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
+using FFXIVClientStructs.FFXIV.Client.Network;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.Interop;
@@ -29,6 +31,7 @@ public sealed class WorldStateUpdater : IDisposable {
     private readonly Hook<ActionManager.Delegates.UseAction>? _useActionHook;
     private readonly Hook<AgentCatch.Delegates.UpdateCatch>? _updateCatchHook;
     private readonly Hook<FishingEventHandler.Delegates.PlayAnimation>? _playAnimationHook;
+    private readonly Hook<PacketDispatcher.Delegates.HandleActorControlPacket>? _handleActorControlPacketHook;
     private static IReadOnlyList<Lumina.Excel.Sheets.Action> FshActions = [];
     private static readonly (uint Id, ActionType Type)[] TrackedFishingActions = BuildTrackedFishingActions();
     private static readonly (uint Id, ActionType Type)[] TrackedAutoCastItems =
@@ -57,9 +60,11 @@ public sealed class WorldStateUpdater : IDisposable {
         _updateCatchHook = Svc.Hook.HookFromAddress<AgentCatch.Delegates.UpdateCatch>((nint)AgentCatch.MemberFunctionPointers.UpdateCatch, UpdateCatchDetour);
         _useActionHook = Svc.Hook.HookFromAddress<ActionManager.Delegates.UseAction>((nint)ActionManager.MemberFunctionPointers.UseAction, UseActionDetour);
         _playAnimationHook = Svc.Hook.HookFromAddress<FishingEventHandler.Delegates.PlayAnimation>((nint)FishingEventHandler.StaticVirtualTablePointer->PlayAnimation, PlayAnimationDetour);
+        _handleActorControlPacketHook = Svc.Hook.HookFromAddress<PacketDispatcher.Delegates.HandleActorControlPacket>((nint)PacketDispatcher.MemberFunctionPointers.HandleActorControlPacket, HandleActorControlPacketDetour);
         _updateCatchHook?.Enable();
         _useActionHook?.Enable();
         _playAnimationHook?.Enable();
+        _handleActorControlPacketHook?.Enable();
         FshActions = ClassJob.Get(18).GetActions();
 
         Svc.GameInventory.InventoryChanged += OnInventoryChanged;
@@ -69,6 +74,7 @@ public sealed class WorldStateUpdater : IDisposable {
         _useActionHook?.Dispose();
         _updateCatchHook?.Dispose();
         _playAnimationHook?.Dispose();
+        _handleActorControlPacketHook?.Dispose();
         Svc.GameInventory.InventoryChanged -= OnInventoryChanged;
     }
 
@@ -138,8 +144,8 @@ public sealed class WorldStateUpdater : IDisposable {
     }
 
     private static bool CastSnapshotTransition(FishingState previous, FishingState current)
-        => (previous != FishingState.LineInWater && current == FishingState.LineInWater)
-           || (previous == FishingState.LineInWater && current != FishingState.LineInWater);
+        => previous != FishingState.LineInWater && current == FishingState.LineInWater
+           || previous == FishingState.LineInWater && current != FishingState.LineInWater;
 
     public void RefreshFishingStateSnapshot() {
         if (Player.ClassJob.RowId is not 18 || Svc.Objects.LocalPlayer is null)
@@ -175,9 +181,7 @@ public sealed class WorldStateUpdater : IDisposable {
         ws.Execute(new PlayerInfo.OpStatuses(new Dictionary<uint, (float, int)>(_statusScratch)));
     }
 
-    private static bool StatusesEqual(
-        IReadOnlyDictionary<uint, (float Time, int Stacks)> current,
-        IReadOnlyDictionary<uint, (float Time, int Stacks)> next) {
+    private static bool StatusesEqual(Dictionary<uint, (float Time, int Stacks)> current, Dictionary<uint, (float Time, int Stacks)> next) {
         if (current.Count != next.Count)
             return false;
 
@@ -249,16 +253,10 @@ public sealed class WorldStateUpdater : IDisposable {
         if (ActionStatesEqual(ws.Player.ActionStatus, ws.Player.ActionRecastGroup, _actionStatusScratch, _actionRecastScratch))
             return;
 
-        ws.Execute(new PlayerInfo.OpActionStates(
-            new Dictionary<ulong, uint>(_actionStatusScratch),
-            new Dictionary<ulong, int>(_actionRecastScratch)));
+        ws.Execute(new PlayerInfo.OpActionStates(new Dictionary<ulong, uint>(_actionStatusScratch), new Dictionary<ulong, int>(_actionRecastScratch)));
     }
 
-    private static bool ActionStatesEqual(
-        IReadOnlyDictionary<ulong, uint> currentStatus,
-        IReadOnlyDictionary<ulong, int> currentGroups,
-        IReadOnlyDictionary<ulong, uint> nextStatus,
-        IReadOnlyDictionary<ulong, int> nextGroups) {
+    private static bool ActionStatesEqual(Dictionary<ulong, uint> currentStatus, Dictionary<ulong, int> currentGroups, Dictionary<ulong, uint> nextStatus, Dictionary<ulong, int> nextGroups) {
         if (currentStatus.Count != nextStatus.Count || currentGroups.Count != nextGroups.Count)
             return false;
 
@@ -291,7 +289,7 @@ public sealed class WorldStateUpdater : IDisposable {
         ws.Execute(new PlayerInfo.OpDutyActions(active, new Dictionary<uint, ushort>(_dutyChargesScratch)));
     }
 
-    private static bool DutyChargesEqual(IReadOnlyDictionary<uint, ushort> current, IReadOnlyDictionary<uint, ushort> next) {
+    private static bool DutyChargesEqual(Dictionary<uint, ushort> current, Dictionary<uint, ushort> next) {
         if (current.Count != next.Count)
             return false;
         foreach (var (id, charges) in next) {
@@ -468,7 +466,7 @@ public sealed class WorldStateUpdater : IDisposable {
         ws.Execute(new FishingInfo.OpSwimbaitIds([.. _swimbaitScratch]));
     }
 
-    private static bool SwimbaitIdsEqual(IReadOnlyList<uint> current, IReadOnlyList<uint> next) {
+    private static bool SwimbaitIdsEqual(List<uint> current, List<uint> next) {
         if (current.Count != next.Count)
             return false;
         for (var i = 0; i < current.Count; i++) {
@@ -562,6 +560,12 @@ public sealed class WorldStateUpdater : IDisposable {
         }
 
         return _playAnimationHook!.Original(thisPtr, chara, actionTimelineId, a4);
+    }
+
+    private void HandleActorControlPacketDetour(uint entityId, uint category, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5, uint arg6, uint arg7, uint arg8, GameObjectId targetId, bool isRecorded) {
+        if (category is 3501) { // WKSMissionItemGain or something. arg1 is the itemid. Doesn't trigger when the mission ends and you lose the item
+            _needInventoryUpdate = true;
+        }
     }
 
     private static readonly HashSet<uint> FishIdSet = [];
