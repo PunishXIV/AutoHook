@@ -9,14 +9,20 @@ public sealed class OceanTimeOfDayCD : IConditionDefinition {
     public string Name => "Ocean time of day";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
+    private const int DefaultTod = (int)TimeOfDay.Day;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
-        var wanted = (TimeOfDay)GetInt(parameters, "tod", 0);
+        var wanted = (TimeOfDay)GetInt(parameters, "tod", DefaultTod);
         var result = world.OceanFishing.TimeOfDay == wanted;
         return GetBool(parameters, "inv", false) ? !result : result;
     }
 
     public void DrawParams(Condition condition) {
-        var tod = (TimeOfDay)Math.Clamp(GetInt(condition.Params, "tod", 1), 1, 3);
+        // if this isn't set, it'll default to TimeOfDay.None, which will never be true
+        if (!condition.Params.ContainsKey("tod"))
+            condition.Params["tod"] = (long)DefaultTod;
+
+        var tod = (TimeOfDay)Math.Clamp(GetInt(condition.Params, "tod", DefaultTod), 1, 3);
 
         ImGui.SetNextItemWidth(80.Scaled());
         var label = tod switch {
@@ -44,7 +50,7 @@ public sealed class OceanTimeOfDayCD : IConditionDefinition {
     }
 
     public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
-        var tod = (TimeOfDay)GetInt(parameters, "tod", 0);
+        var tod = (TimeOfDay)GetInt(parameters, "tod", DefaultTod);
         return tod switch {
             TimeOfDay.Day => "day",
             TimeOfDay.Sunset => "sunset",
