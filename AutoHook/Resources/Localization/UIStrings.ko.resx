@@ -187,7 +187,7 @@
     <value>마우스 우클릭으로 이름 변경하기</value>
   </data>
   <data name="EnterToConfirm" xml:space="preserve">
-    <value>사전 설정 이름 수정하기 (Enter를 눌러야 적용됩니다)</value>
+    <value>이름 바꾸기 (Enter를 눌러야 적용)</value>
   </data>
   <data name="HookPresets" xml:space="preserve">
     <value>낚아채기 사전 설정</value>
@@ -876,7 +876,7 @@
     <value>특정 물고기를 방생하지 않으려면 프리셋에 추가하고 "놓아주지 않음"을 선택하세요.</value>
   </data>
   <data name="Enable_Extra_Configs" xml:space="preserve">
-    <value>추가 설정 켜기</value>
+    <value>추가 설정 활성화</value>
   </data>
   <data name="When_gaining_fishers_intuition" xml:space="preserve">
     <value>어부의 직감이 활성화될 때...</value>
@@ -1383,7 +1383,7 @@
     <value>활성 상태로 설정</value>
   </data>
   <data name="Rename" xml:space="preserve">
-    <value>이름변경</value>
+    <value>이름 바꾸기</value>
   </data>
   <data name="GlobalPresetHelpText" xml:space="preserve">
     <value>프리셋이 선택되지 않은 경우 글로벌 프리셋이 사용됩니다.</value>
