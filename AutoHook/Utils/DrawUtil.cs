@@ -149,11 +149,14 @@ public static class DrawUtil {
     private static string _filterText = "";
 
     public static void DrawComboSelector<T>(List<T> itemList, Func<T, string> getItemName, string selectedItem, Action<T> onSelect) {
-        ImGui.SetNextItemWidth(220.Scaled());
+        var padding = ImGui.GetStyle().FramePadding.X * 2 + ImGui.GetFrameHeight();
+        var width = Math.Max(220.Scaled(), itemList.Select(i => getItemName(i) ?? "").Append(selectedItem).Max(n => ImGui.CalcTextSize(n).X + padding));
+
+        ImGui.SetNextItemWidth(width);
 
         using (var combo = ImRaii.Combo("###search", selectedItem)) {
             if (combo.Success) {
-                ImGui.SetNextItemWidth(190.Scaled());
+                ImGui.SetNextItemWidth(width - 30.Scaled());
                 ImGui.InputTextWithHint("##filter", UIStrings.Search_Hint, ref _filterText, 100);
                 ImGui.Separator();
 

@@ -288,8 +288,7 @@ public class SubTabExtra {
         using var _ = ImRaii.PushId(@$"{nameof(DrawPresetSwap)}");
 
         var text = presetName;
-        DrawUtil.DrawCheckboxTree(UIStrings.Swap_Preset, ref enable,
-            () => DrawUtil.DrawPresetSwapSelector(text, preset => text = preset));
+        DrawUtil.DrawCheckboxTree(UIStrings.Swap_Preset, ref enable, () => DrawUtil.DrawPresetSwapSelector(text, preset => text = preset));
 
         presetName = text;
     }
