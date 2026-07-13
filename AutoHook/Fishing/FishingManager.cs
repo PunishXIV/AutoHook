@@ -76,6 +76,9 @@ public partial class FishingManager : IDisposable {
         var ocean = Ws.OceanFishing;
         Service.PrintDebug($"[AutoOceanFish] OnZoneStarted zone={op.ZoneIndex + 1}, {OceanStopUtil.FormatStateLog(ocean)}");
 
+        if (ocean != OceanFishingState.Empty) // prefetch immediately so it's cached by the time we're at the railing (hopefully)
+            OceanGoalCatalog.PrefetchRouteAchievements(ocean.CurrentRoute);
+
         if (!Service.Configuration.PluginEnabled) {
             Service.PrintDebug("[AutoOceanFish] Task not started: plugin disabled");
             return;
@@ -143,6 +146,11 @@ public partial class FishingManager : IDisposable {
                 break;
             case FishingInfo.OpSetLastCatch:
                 OnCatch();
+                break;
+            case WorldState.OpAchievementProgress:
+                // try to reapply the preset in case we received achievement progress that changes which one we should use
+                if (Ws.OceanFishing != OceanFishingState.Empty)
+                    TryApplyOceanFishingPreset();
                 break;
         }
     }

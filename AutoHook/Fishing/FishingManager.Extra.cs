@@ -28,11 +28,12 @@ public partial class FishingManager {
 
         OceanGoalCatalog.PrefetchRouteAchievements(ocean.CurrentRoute);
 
+        var settingsGoal = Service.Configuration.AutoOceanFishGoal;
         CustomPresetConfig? match = null;
-        var matchedTier = OceanFishGoalKind.Points;
+        OceanFishGoalKind? matchedTier = null;
         uint matchedGoalId = 0;
 
-        foreach (var tier in OceanGoalCatalog.GetCascade(Service.Configuration.AutoOceanFishGoal)) {
+        foreach (var tier in OceanGoalCatalog.GetCascade(settingsGoal)) {
             match = FindOceanPresetForTier(ocean, tier, out matchedGoalId);
             if (match != null) {
                 matchedTier = tier;
@@ -40,22 +41,27 @@ public partial class FishingManager {
             }
         }
 
-        if (match == null)
+        if (match == null) {
+            ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, null, alreadySelected: false, selectedGlobal: false);
             return;
+        }
 
         if (match.IsGlobal) {
-            if (Presets.SelectedPreset == null)
-                return;
-            Presets.SelectedPreset = null;
+            var alreadyGlobal = Presets.SelectedPreset == null;
+            if (!alreadyGlobal)
+                Presets.SelectedPreset = null;
+            ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, match.PresetName, alreadyGlobal, selectedGlobal: true);
             Service.PrintDebug($"[AutoOceanFish] Preset set to global (tier={matchedTier}, goalId={matchedGoalId}, zone {ocean.CurrentZone}, spot {ocean.CurrentSpotId}, time {ocean.CurrentTimeId})");
             return;
         }
 
-        if (Presets.SelectedPreset?.UniqueId == match.UniqueId)
-            return;
+        var alreadySelected = Presets.SelectedPreset?.UniqueId == match.UniqueId;
+        if (!alreadySelected)
+            Presets.SelectedPreset = match;
 
-        Presets.SelectedPreset = match;
-        Service.PrintDebug($"[AutoOceanFish] Preset set to {match.PresetName} (tier={matchedTier}, goalId={matchedGoalId}, zone {ocean.CurrentZone}, spot {ocean.CurrentSpotId}, time {ocean.CurrentTimeId})");
+        ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, match.PresetName, alreadySelected, selectedGlobal: false);
+        if (!alreadySelected)
+            Service.PrintDebug($"[AutoOceanFish] Preset set to {match.PresetName} (tier={matchedTier}, goalId={matchedGoalId}, zone {ocean.CurrentZone}, spot {ocean.CurrentSpotId}, time {ocean.CurrentTimeId})");
     }
 
     private CustomPresetConfig? FindOceanPresetForTier(OceanFishingState ocean, OceanFishGoalKind tier, out uint matchedGoalId) {

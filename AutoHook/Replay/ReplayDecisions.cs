@@ -61,4 +61,36 @@ public static class ReplayDecisions {
         var fish = fishId == 0 ? "unknown fish" : Item.GetRow(fishId).Name.ToString();
         Emit("Swimbait", $"Selected slot {slotIndex} for {fish}", conditions: conditions, presetName: presetName);
     }
+
+    public static void OceanPresetApply(OceanFishingState ocean, OceanFishGoalKind settingsGoal, OceanFishGoalKind? matchedTier, uint matchedGoalId, string? matchedPresetName, bool alreadySelected, bool selectedGlobal) {
+        var stop = OceanStopUtil.FormatStopLabel(ocean.CurrentSpotId, ocean.CurrentTimeId);
+        var detail = $"settingsGoal={settingsGoal} route={ocean.CurrentRoute} zone={ocean.CurrentZone + 1} stop={stop}";
+
+        if (OceanGoalCatalog.GetCascade(settingsGoal).Contains(OceanFishGoalKind.Achievement))
+            detail += $"; achievements={OceanGoalCatalog.DescribeAchievements(ocean.CurrentRoute)}";
+
+        if (matchedTier is { } tier)
+            detail += $"; tier={tier} goalId={matchedGoalId}";
+
+        string action;
+        string presetName;
+        if (matchedPresetName is null) {
+            action = "No matching preset";
+            presetName = Service.Configuration.HookPresets.SelectedPreset?.PresetName ?? Service.GlobalPresetName;
+        }
+        else if (selectedGlobal) {
+            action = alreadySelected ? "Already on global" : "Selected global";
+            presetName = Service.GlobalPresetName;
+        }
+        else if (alreadySelected) {
+            action = $"Already on {matchedPresetName}";
+            presetName = matchedPresetName;
+        }
+        else {
+            action = $"Selected {matchedPresetName}";
+            presetName = matchedPresetName;
+        }
+
+        Emit("Auto Ocean Fish", action, detail, presetName: presetName);
+    }
 }

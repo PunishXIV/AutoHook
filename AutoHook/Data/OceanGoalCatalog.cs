@@ -73,7 +73,29 @@ public static class OceanGoalCatalog {
 
     public static List<uint> GetEligibleAchievementIds(uint routeId) {
         var partySize = Math.Max(1, Service.WorldState.Party.QueuedWithContentIds.Count);
-        return [.. GetAchievementsForRoute(routeId).Where(def => partySize >= def.MinPartySize && IsAchievementIncomplete(def.AchievementId) == true).Select(def => def.AchievementId)];
+        // treat unk as incomplete so z1 doesn't skip past Achievements before the server response
+        return [.. GetAchievementsForRoute(routeId)
+            .Where(def => partySize >= def.MinPartySize && IsAchievementIncomplete(def.AchievementId) != false)
+            .Select(def => def.AchievementId)];
+    }
+
+    public static string DescribeAchievements(uint routeId) {
+        var partySize = Math.Max(1, Service.WorldState.Party.QueuedWithContentIds.Count);
+        var parts = new List<string>();
+        foreach (var def in GetAchievementsForRoute(routeId)) {
+            if (partySize < def.MinPartySize) {
+                parts.Add($"{def.AchievementId}:party<{def.MinPartySize}");
+                continue;
+            }
+
+            parts.Add(IsAchievementIncomplete(def.AchievementId) switch {
+                true => $"{def.AchievementId}:incomplete",
+                false => $"{def.AchievementId}:complete",
+                null => $"{def.AchievementId}:unknown",
+            });
+        }
+
+        return parts.Count == 0 ? "none" : string.Join(", ", parts);
     }
 
     public static unsafe bool? IsAchievementIncomplete(uint achievementId) {
