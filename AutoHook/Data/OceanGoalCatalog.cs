@@ -33,16 +33,16 @@ public static class OceanGoalCatalog {
     public static readonly ImmutableArray<OceanAchievementDef> Achievements = [
         new(2563, 7, [0]),       // Octopodes
         new(2564, 7, [5]),       // Shark
-        new(2565, 1, [4]),       // Jellyfish
-        new(2566, 1, [2, 3]),    // Seahorse
-        new(2754, 1, [10, 11]),  // Fugu
+        new(2565, 7, [4]),       // Jellyfish
+        new(2566, 7, [2, 3]),    // Seahorse
+        new(2754, 7, [10, 11]),  // Fugu
         new(2755, 7, [8]),       // Crabs
-        new(2756, 7, [7, 11]),   // Mantas
+        new(2756, 1, [7, 11]),   // Mantas
         new(3267, 7, [13, 15]),  // Shellfish
         new(3268, 7, [16, 17]),  // Squid
-        new(3269, 7, [15, 18]),  // Shrimp
+        new(3269, 1, [15, 18]),  // Shrimp
         new(3975, 7, [20]),      // Prehistoric
-        new(3976, 1, [19, 21]),  // Mantis
+        new(3976, 1, [19, 21]),  // Stomatopods
     ];
 
     public static IEnumerable<OceanFishGoalKind> GetCascade(OceanFishGoalKind settingsGoal) {
