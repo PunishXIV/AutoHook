@@ -563,7 +563,7 @@
     <value>숙련 낚시꾼</value>
   </data>
   <data name="BaitName_Default" xml:space="preserve">
-    <value>기본값</value>
+    <value>일반</value>
   </data>
   <data name="DecompressString_Invalid_Import" xml:space="preserve">
     <value>불러오기가 유효하지 않습니다.</value>
@@ -642,9 +642,9 @@
     <value>가이드: 자동으로 소장품 낚시 하는 법</value>
   </data>
   <data name="AutoMooch_HelpText" xml:space="preserve">
-    <value>모든 생미끼 낚시를 시도합니다! 이 옵션은 '자동 낚싯대 던지기'보다 우선합니다.
-
-특정 물고기만 생미끼 낚시로 자동 시도하고 나머지는 무시하려면, 이 옵션을 비활성화하고 '잡은 물고기' 탭을 사용하세요.</value>
+    <value>생미끼 낚시가 가능한 물고기를 낚으면 '생미끼 낚시'를 실행합니다.
+'낚싯대 던지기'보다 우선적으로 실행됩니다.
+특정 물고기만 생미끼 낚시로 사용하려면, 이 설정을 끄고 '잡은 물고기' 탭에서 생미끼로 사용할 물고기를 추가해 생미끼 낚시를 설정하세요.</value>
   </data>
   <data name="Support_me_on_Ko_fi" xml:space="preserve">
     <value>Ko-fi를 통해 후원하기</value>
@@ -987,7 +987,7 @@
     <value>프리셋 변경 시 낚아채기/물고기 카운팅 초기화</value>
   </data>
   <data name="Reset_fish_caught_counter" xml:space="preserve">
-    <value>잡은 물고기 카운터 초기화</value>
+    <value>잡은 물고기 카운팅 초기화</value>
   </data>
   <data name="Only_use_when_Cordial_is_available" xml:space="preserve">
     <value>강장제를 사용 가능한 경우에만 사용</value>
@@ -1014,7 +1014,7 @@
     <value>직감이 사라지면 낚시를 종료</value>
   </data>
   <data name="Auto_Cast_Sort_Notice" xml:space="preserve">
-    <value>작업은 위에서 아래로 진행됩니다. 화살표 버튼을 클릭하여 순서를 변경하세요.</value>
+    <value>아래의 스킬은 윗쪽부터 먼저 사용합니다. ▲▼ 버튼으로 우선순위를 변경할 수 있습니다.</value>
   </data>
   <data name="Current_Selected_Preset" xml:space="preserve">
     <value>현재 선택된 프리셋:</value>
@@ -1086,7 +1086,7 @@
     <value>트리 노드(Tree Node)를 버튼으로 전환</value>
   </data>
   <data name="LetFishEscapeHelpText" xml:space="preserve">
-    <value>비활성화된 경우 GP가 요구치보다 낮으면 일반 훅이 사용됩니다.</value>
+    <value>이 설정을 켜면 '다중 낚아채기'에 사용할 GP가 부족할 때 '일반 낚아채기'를 사용하지 않고 물고기를 놓아줍니다</value>
   </data>
   <data name="UseConfigRequiredStatus" xml:space="preserve">
     <value>{0}이 가능한 경우 이 설정 사용</value>
@@ -1150,7 +1150,7 @@
     <value>비활성화된 경우, 생미끼 낚시 시도가 취소되지 않으며 자동 생미끼 낚시 옵션도 무시됩니다.</value>
   </data>
   <data name="NeverMoochHelpText" xml:space="preserve">
-    <value>활성화시, 해당 물고기의 생미끼 낚시를 사용하지 않습니다</value>
+    <value>활성화시, 해당 물고기로 생미끼 낚시를 실행하지 않습니다</value>
   </data>
   <data name="OnlyWhenMakeshiftOrPatience" xml:space="preserve">
     <value>숙련 낚시꾼 또는 인내가 활성화된 경우에만 사용합니다.</value>
