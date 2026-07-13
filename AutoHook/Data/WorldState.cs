@@ -11,6 +11,7 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
     public TimeOnly EorzeaTime { get; set; }
 
     public readonly PlayerInfo Player = new();
+    public readonly PartyState Party = new();
     public readonly FishingInfo Fishing = new();
     public readonly OceanFishInfo Ocean = new();
     public readonly WKSInfo WKS = new();
@@ -155,6 +156,8 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
             yield return new OpTerritory(TerritoryId);
         if (CurrentModifiedWeatherId != 0 || CurrentWeatherId != 0 || PreviousWeatherId != 0 || NextWeatherId != 0)
             yield return new OpWeather(CurrentModifiedWeatherId, CurrentWeatherId, PreviousWeatherId, NextWeatherId);
+        foreach (var o in Party.CompareToInitial())
+            yield return o;
         foreach (var o in Player.CompareToInitial())
             yield return o;
         foreach (var o in Fishing.CompareToInitial())
@@ -277,5 +280,17 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
 
         public override void Write(Replay.ReplayOutput output)
             => output.EmitFourCC("SPCH").Emit((byte)Change);
+    }
+
+    public readonly Dictionary<uint, (uint Current, uint Max)> AchievementProgress = [];
+    public Event<OpAchievementProgress> AchievementProgressReceived = new();
+    public sealed record OpAchievementProgress(uint Id, uint Current, uint Max) : Operation {
+        protected override void Exec(WorldState ws) {
+            ws.AchievementProgress[Id] = (Current, Max);
+            ws.AchievementProgressReceived.Fire(this);
+        }
+
+        public override void Write(Replay.ReplayOutput output)
+            => output.EmitFourCC("ACHP").Emit(Id).Emit(Current).Emit(Max);
     }
 }

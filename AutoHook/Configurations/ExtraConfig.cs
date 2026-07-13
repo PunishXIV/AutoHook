@@ -183,6 +183,8 @@ public class ExtraConfig : BaseOption {
     public uint AutoOceanFishSpotId;
     public uint AutoOceanFishTimeId;
     public ConditionSet? AutoOceanFishConditionSet;
+    public OceanFishGoalKind AutoOceanFishGoal = OceanFishGoalKind.Points;
+    public uint AutoOceanFishGoalId;
 
     [JsonIgnore] public List<bool> LastTriggerStates { get; } = [];
 

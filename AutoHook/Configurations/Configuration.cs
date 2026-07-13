@@ -45,6 +45,7 @@ public partial class Configuration : IPluginConfiguration {
     public bool BlockInputWhileFishing = false;
     public bool AutoStartFishing = false;
     public bool AutoOceanFish = false;
+    public OceanFishGoalKind AutoOceanFishGoal = OceanFishGoalKind.Points;
     public bool SpectralRest = false;
     public bool DtrBarEnabled = false;
     public bool DtrPresetBarEnabled = false;

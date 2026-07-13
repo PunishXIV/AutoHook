@@ -1693,6 +1693,18 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="AutoOceanFishHelpText" xml:space="preserve">
     <value>Handles everything on the boat itself: moving into position, casting, preset management.</value>
   </data>
+  <data name="UseForGoal" xml:space="preserve">
+    <value>Use for goal</value>
+  </data>
+  <data name="OceanFishGoal_Points" xml:space="preserve">
+    <value>Points</value>
+  </data>
+  <data name="OceanFishGoal_Legendary" xml:space="preserve">
+    <value>Legendary</value>
+  </data>
+  <data name="OceanFishGoal_Achievements" xml:space="preserve">
+    <value>Achievements</value>
+  </data>
   <data name="SpectralRestOnGain" xml:space="preserve">
     <value>Spectral Rest</value>
   </data>
@@ -1728,5 +1740,8 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="Opens_Replay_Window" xml:space="preserve">
     <value>Opens Replay Window</value>
+  </data>
+  <data name="Prioritise" xml:space="preserve">
+    <value>Prioritise</value>
   </data>
 </root>

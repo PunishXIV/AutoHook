@@ -2719,6 +2719,33 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Achievements.
+        /// </summary>
+        internal static string OceanFishGoal_Achievements {
+            get {
+                return ResourceManager.GetString("OceanFishGoal_Achievements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legendary.
+        /// </summary>
+        internal static string OceanFishGoal_Legendary {
+            get {
+                return ResourceManager.GetString("OceanFishGoal_Legendary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Points.
+        /// </summary>
+        internal static string OceanFishGoal_Points {
+            get {
+                return ResourceManager.GetString("OceanFishGoal_Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset (L-&gt;R).
         /// </summary>
         internal static string OffsetLR {
@@ -3291,6 +3318,15 @@ namespace AutoHook.Resources.Localization {
         internal static string Previous {
             get {
                 return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prioritise.
+        /// </summary>
+        internal static string Prioritise {
+            get {
+                return ResourceManager.GetString("Prioritise", resourceCulture);
             }
         }
         
@@ -4578,6 +4614,15 @@ namespace AutoHook.Resources.Localization {
         internal static string UseForAllZoneTimes {
             get {
                 return ResourceManager.GetString("UseForAllZoneTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use for goal.
+        /// </summary>
+        internal static string UseForGoal {
+            get {
+                return ResourceManager.GetString("UseForGoal", resourceCulture);
             }
         }
         

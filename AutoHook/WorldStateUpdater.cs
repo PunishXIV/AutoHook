@@ -4,6 +4,7 @@ using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.Game.WKS;
@@ -13,6 +14,7 @@ using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.Interop;
 using Lumina.Excel.Sheets;
 using System.Reflection;
+using AchievementStruct = FFXIVClientStructs.FFXIV.Client.Game.UI.Achievement;
 
 namespace AutoHook;
 
@@ -32,6 +34,7 @@ public sealed class WorldStateUpdater : IDisposable {
     private readonly Hook<AgentCatch.Delegates.UpdateCatch>? _updateCatchHook;
     private readonly Hook<FishingEventHandler.Delegates.PlayAnimation>? _playAnimationHook;
     private readonly Hook<PacketDispatcher.Delegates.HandleActorControlPacket>? _handleActorControlPacketHook;
+    private readonly Hook<AchievementStruct.Delegates.ReceiveAchievementProgress>? _receiveAchievementProgressHook;
     private static IReadOnlyList<Lumina.Excel.Sheets.Action> FshActions = [];
     private static readonly (uint Id, ActionType Type)[] TrackedFishingActions = BuildTrackedFishingActions();
     private static readonly (uint Id, ActionType Type)[] TrackedAutoCastItems =
@@ -47,6 +50,7 @@ public sealed class WorldStateUpdater : IDisposable {
     private readonly long _startQpc;
     private readonly Dictionary<uint, (float Time, int Stacks)> _statusScratch = [];
     private readonly List<uint> _swimbaitScratch = [];
+    private readonly List<ulong> _partyScratch = [];
     private readonly List<InstanceContentOceanFishing.FishDataStruct> _fishDataScratch = [];
     private readonly Cooldown[] _cooldownScratch = new Cooldown[PlayerInfo.NumCooldownGroups];
     private readonly Dictionary<ulong, uint> _actionStatusScratch = [];
@@ -61,10 +65,12 @@ public sealed class WorldStateUpdater : IDisposable {
         _useActionHook = Svc.Hook.HookFromAddress<ActionManager.Delegates.UseAction>((nint)ActionManager.MemberFunctionPointers.UseAction, UseActionDetour);
         _playAnimationHook = Svc.Hook.HookFromAddress<FishingEventHandler.Delegates.PlayAnimation>((nint)FishingEventHandler.StaticVirtualTablePointer->PlayAnimation, PlayAnimationDetour);
         _handleActorControlPacketHook = Svc.Hook.HookFromAddress<PacketDispatcher.Delegates.HandleActorControlPacket>((nint)PacketDispatcher.MemberFunctionPointers.HandleActorControlPacket, HandleActorControlPacketDetour);
+        _receiveAchievementProgressHook = Svc.Hook.HookFromAddress<AchievementStruct.Delegates.ReceiveAchievementProgress>((nint)AchievementStruct.MemberFunctionPointers.ReceiveAchievementProgress, ReceiveAchievementProgressDetour);
         _updateCatchHook?.Enable();
         _useActionHook?.Enable();
         _playAnimationHook?.Enable();
         _handleActorControlPacketHook?.Enable();
+        _receiveAchievementProgressHook?.Enable();
         FshActions = ClassJob.Get(18).GetActions();
 
         Svc.GameInventory.InventoryChanged += OnInventoryChanged;
@@ -75,6 +81,7 @@ public sealed class WorldStateUpdater : IDisposable {
         _updateCatchHook?.Dispose();
         _playAnimationHook?.Dispose();
         _handleActorControlPacketHook?.Dispose();
+        _receiveAchievementProgressHook?.Dispose();
         Svc.GameInventory.InventoryChanged -= OnInventoryChanged;
     }
 
@@ -111,6 +118,7 @@ public sealed class WorldStateUpdater : IDisposable {
         UpdateCooldowns(ws);
         UpdateActionStates(ws);
         UpdateDutyActions(ws);
+        UpdatePartyAndInstance(ws);
         UpdateOceanFishing(ws);
         UpdateWKS(ws);
         UpdateTerritory(ws);
@@ -312,6 +320,38 @@ public sealed class WorldStateUpdater : IDisposable {
         var territory = Svc.ClientState.TerritoryType;
         if (ws.TerritoryId != territory)
             ws.Execute(new WorldState.OpTerritory(territory));
+    }
+
+    private unsafe void UpdatePartyAndInstance(WorldState ws) {
+        var inInstance = EventFramework.Instance()->GetInstanceContentDirector() != null;
+        if (inInstance != ws.Party.InInstanceContent) {
+            // snapshot who we queued with when we enter an instance, clear it when we leave
+            ws.Execute(new PartyState.OpQueuedWith(inInstance ? ws.Party.ContentIds : []));
+            ws.Execute(new PartyState.OpInInstanceContent(inInstance));
+        }
+
+        _partyScratch.Clear();
+        var group = GroupManager.Instance()->MainGroup;
+        for (var i = 0; i < group.MemberCount; i++) {
+            var member = group.GetPartyMemberByIndex(i);
+            if (member != null)
+                _partyScratch.Add(member->ContentId);
+        }
+
+        if (PartyContentIdsEqual(ws.Party.ContentIds, _partyScratch))
+            return;
+
+        ws.Execute(new PartyState.OpMembers([.. _partyScratch]));
+    }
+
+    private static bool PartyContentIdsEqual(IReadOnlyList<ulong> current, List<ulong> next) {
+        if (current.Count != next.Count)
+            return false;
+        for (var i = 0; i < next.Count; i++) {
+            if (current[i] != next[i])
+                return false;
+        }
+        return true;
     }
 
     private static unsafe void UpdateWeather(WorldState ws) {
@@ -547,6 +587,11 @@ public sealed class WorldStateUpdater : IDisposable {
             Service.WorldState.Execute(new FishingInfo.OpSetLastCatch(new CatchInfo(id, amount, isLarge, size, level, stars, oceanStars, isMoochable, isFirstTimeCatch)));
         }
         Service.WorldState.Execute(new FishingInfo.OpSetFishingStep(FishingSteps.FishCaught));
+    }
+
+    private unsafe void ReceiveAchievementProgressDetour(AchievementStruct* thisPtr, uint id, uint current, uint max) {
+        _receiveAchievementProgressHook!.Original(thisPtr, id, current, max);
+        Service.WorldState.Execute(new WorldState.OpAchievementProgress(id, current, max));
     }
 
     private unsafe bool PlayAnimationDetour(FishingEventHandler* thisPtr, Character* chara, ushort actionTimelineId, ulong a4) {

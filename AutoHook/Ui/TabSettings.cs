@@ -43,6 +43,10 @@ public class TabSettings : BaseTab {
         DrawUtil.Checkbox(UIStrings.AntiAfkOption, ref Service.Configuration.ResetAfkTimer);
         DrawUtil.Checkbox(UIStrings.AutoStartFishing, ref Service.Configuration.AutoStartFishing, UIStrings.AutoStartFishingHelpText);
         DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Service.Configuration.AutoOceanFish, UIStrings.AutoOceanFishHelpText);
+        if (Service.Configuration.AutoOceanFish) {
+            using (ImRaii.PushIndent())
+                DrawAutoOceanFishGoal();
+        }
         DrawUtil.Checkbox(UIStrings.SpectralRestOnGain, ref Service.Configuration.SpectralRest, UIStrings.SpectralRestOnGainHelpText);
         DrawUtil.Checkbox(UIStrings.AutoHandleCollectables, ref Service.Configuration.AutoCollectablesEnabled, UIStrings.AutoHandleCollectablesHelpText);
         DrawUtil.Checkbox(UIStrings.DontHideExtraAutoCast, ref Service.Configuration.DontHideOptionsDisabled);
@@ -68,6 +72,28 @@ public class TabSettings : BaseTab {
         DrawUtil.Checkbox(UIStrings.Dtr_Show, ref Service.Configuration.DtrBarEnabled, UIStrings.Dtr_Settings_Help_Text);
         DrawUtil.Checkbox(UIStrings.Dtr_Show_Preset, ref Service.Configuration.DtrPresetBarEnabled, UIStrings.Dtr_Preset_Setting_Help);
         DrawUtil.TextV(UIStrings.Dtr_Help);
+    }
+
+    private static void DrawAutoOceanFishGoal() {
+        ImGui.TextV($"{UIStrings.Prioritise}:");
+        ImGui.SameLine();
+
+        var goal = Service.Configuration.AutoOceanFishGoal;
+
+        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Points, goal == OceanFishGoalKind.Points)) {
+            Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Points;
+            Service.Save();
+        }
+        ImGui.SameLine();
+        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Legendary, goal == OceanFishGoalKind.Legendary)) {
+            Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Legendary;
+            Service.Save();
+        }
+        ImGui.SameLine();
+        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Achievements, goal == OceanFishGoalKind.Achievement)) {
+            Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Achievement;
+            Service.Save();
+        }
     }
 
     private static void DrawDelayHook() {

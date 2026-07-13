@@ -5,6 +5,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Common.Math;
+using Lumina.Excel.Sheets;
 
 namespace AutoHook.Ui;
 
@@ -61,7 +62,7 @@ public class SubTabExtra {
                 () => {
                     DrawUtil.TextV(UIStrings.SelectBaitStartFishing);
                     DrawUtil.DrawComboSelector(GameRes.Baits, bait => $"[#{bait.Id}] {bait.Name}",
-                        config.ForcedBaitId <= 0 ? UIStrings.None : Lumina.Excel.Sheets.Item.GetRow((uint)config.ForcedBaitId).Name.ToString(),
+                        config.ForcedBaitId <= 0 ? UIStrings.None : Item.GetRow((uint)config.ForcedBaitId).Name.ToString(),
                         bait => config.ForcedBaitId = bait.Id);
                 }
             );
@@ -111,12 +112,54 @@ public class SubTabExtra {
                 }
             }
 
+            DrawUtil.TextV($"{UIStrings.UseForGoal}:");
+            ImGui.SameLine();
+            DrawOceanFishGoalSelector(config);
+
             config.AutoOceanFishConditionSet = ConditionUi.DrawConditionSet(UIStrings.When, config.AutoOceanFishConditionSet, ConditionScope.Hook, showAdvanced: true);
         })) {
             config.AutoOceanFishEnabled = enabled;
             Service.Save();
         }
     }
+
+    private static void DrawOceanFishGoalSelector(ExtraConfig config) {
+        ImGui.SetNextItemWidth(280.Scaled());
+        var label = FormatGoalLabel(config.AutoOceanFishGoal, config.AutoOceanFishGoalId);
+        using var combo = ImRaii.Combo($"##OceanFishGoalSelector", label);
+        if (!combo)
+            return;
+
+        if (ImGui.Selectable(UIStrings.OceanFishGoal_Points, config.AutoOceanFishGoal == OceanFishGoalKind.Points)) {
+            config.AutoOceanFishGoal = OceanFishGoalKind.Points;
+            config.AutoOceanFishGoalId = 0;
+            Service.Save();
+        }
+
+        if (ImGui.Selectable(UIStrings.OceanFishGoal_Legendary, config.AutoOceanFishGoal == OceanFishGoalKind.Legendary)) {
+            config.AutoOceanFishGoal = OceanFishGoalKind.Legendary;
+            config.AutoOceanFishGoalId = 0;
+            Service.Save();
+        }
+
+        ImGui.Separator();
+        ImGui.TextDisabled(UIStrings.OceanFishGoal_Achievements);
+        foreach (var def in OceanGoalCatalog.Achievements.OrderBy(a => a.AchievementId)) {
+            var name = Achievement.GetRow(def.AchievementId).Name.ToString();
+            var selected = config.AutoOceanFishGoal == OceanFishGoalKind.Achievement && config.AutoOceanFishGoalId == def.AchievementId;
+            if (ImGui.Selectable(name, selected)) {
+                config.AutoOceanFishGoal = OceanFishGoalKind.Achievement;
+                config.AutoOceanFishGoalId = def.AchievementId;
+                Service.Save();
+            }
+        }
+    }
+
+    private static string FormatGoalLabel(OceanFishGoalKind kind, uint goalId) => kind switch {
+        OceanFishGoalKind.Legendary => UIStrings.OceanFishGoal_Legendary,
+        OceanFishGoalKind.Achievement => Achievement.GetRow(goalId).Name.ToString(),
+        _ => UIStrings.OceanFishGoal_Points,
+    };
 
     private static void DrawTriggers(ExtraConfig config) {
         ImGui.TextV(ImGuiColors.DalamudYellow, UIStrings.SwapStopRules);
