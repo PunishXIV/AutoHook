@@ -25,7 +25,7 @@ public static class ReplayTimelineMarkers {
                 case WorldState.OpEndedSession:
                     markers.Add(new(op.Timestamp, 0xff0000ff, "Session end"));
                     break;
-                case WorldState.OpDecision d: {
+                case WorldState.OpDecision d when HasTimelineMarker(d): {
                         var label = $"Decision: {d.Context} → {d.Action}";
                         if (!string.IsNullOrEmpty(d.Detail))
                             label += $" [{d.Detail}]";
@@ -35,9 +35,9 @@ public static class ReplayTimelineMarkers {
                         break;
                     }
                 case FishingInfo.OpPlayerUsedAction act when act.Value.ActionId != 0: {
-                        var decision = FindNearestDecision(decisions, op.Timestamp, UIStrings.Auto_Casts, maxDeltaMs: 500);
+                        var decision = FindNearestSuccessfulAutoCast(decisions, op.Timestamp, maxDeltaMs: 500);
                         var extra = decision is { ConditionResults.Count: > 0 }
-                            ? ReplayDecisions.FormatConditionTrace(decision.ConditionResults)
+                            ? DecisionLog.FormatConditionTrace(decision.ConditionResults)
                             : null;
                         markers.Add(new(op.Timestamp, ActionColor, $"Action: {ActionLabel(act.Value.ActionId)}", extra));
                         break;
@@ -131,11 +131,15 @@ public static class ReplayTimelineMarkers {
         return spans;
     }
 
-    private static WorldState.OpDecision? FindNearestDecision(IReadOnlyList<WorldState.OpDecision> decisions, DateTime time, string context, double maxDeltaMs) {
+    /// <summary>Successful Auto Casts keep markers; failed attempts stay in the decision list only.</summary>
+    private static bool HasTimelineMarker(WorldState.OpDecision d)
+        => d.Context != UIStrings.Auto_Casts || d.Action.StartsWith("Cast ", StringComparison.Ordinal);
+
+    private static WorldState.OpDecision? FindNearestSuccessfulAutoCast(IReadOnlyList<WorldState.OpDecision> decisions, DateTime time, double maxDeltaMs) {
         WorldState.OpDecision? best = null;
         var bestDelta = maxDeltaMs;
         foreach (var d in decisions) {
-            if (d.Context != context)
+            if (d.Context != UIStrings.Auto_Casts || !d.Action.StartsWith("Cast ", StringComparison.Ordinal))
                 continue;
             var delta = Math.Abs((d.Timestamp - time).TotalMilliseconds);
             if (delta >= bestDelta)

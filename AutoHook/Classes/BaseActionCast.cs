@@ -61,13 +61,16 @@ public abstract class BaseActionCast {
         Service.Save();
     }
 
-    public bool IsAvailableToCast(bool ignoreCurrentMooch = false) {
-        if (!Enabled)
-            return false;
+    public bool IsAvailableToCast(bool ignoreCurrentMooch = false)
+        => DescribeUnavailable(ignoreCurrentMooch) == null;
 
-        if (DoesCancelMooch() && Service.WorldState.IsMoochAvailable() && DontCancelMooch && !ignoreCurrentMooch) {
-            return false;
-        }
+    /// <summary>Null when the action can be cast; otherwise a short reason for the replay decision log.</summary>
+    public string? DescribeUnavailable(bool ignoreCurrentMooch = false) {
+        if (!Enabled)
+            return "Disabled";
+
+        if (DoesCancelMooch() && Service.WorldState.IsMoochAvailable() && DontCancelMooch && !ignoreCurrentMooch)
+            return "Would cancel mooch";
 
         var condition = CastCondition();
         var currentGp = Service.WorldState.CurrentGp;
@@ -77,7 +80,19 @@ public abstract class BaseActionCast {
         if (EzThrottler.Throttle("LogActions", 1000))
             Service.PrintDebug(@$"[BaseAction] {GetName()} - GpCheck:{hasGp}, ActionAvailable: {actionAvailable}, OtherConditions: {condition}");
 
-        return hasGp && actionAvailable && condition;
+        if (!condition) {
+            if (ConditionSet != null && !ConditionSet.PassesOrUnconfigured())
+                return "Condition set failed";
+            return "Cast conditions not met";
+        }
+
+        if (!hasGp)
+            return GpThresholdAbove ? $"GP {currentGp} < {GpThreshold}" : $"GP {currentGp} > {GpThreshold}";
+
+        if (!actionAvailable)
+            return "Action not available";
+
+        return null;
     }
 
     public bool IsGpBlocked(bool ignoreCurrentMooch = false) {

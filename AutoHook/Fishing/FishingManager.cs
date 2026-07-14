@@ -424,7 +424,8 @@ public partial class FishingManager : IDisposable {
     private void OnBite() {
         UpdateStatusAndTimer();
         var currentHook = GetHookCfg();
-        ReplayDecisions.HookPresetOnBite(currentHook.Enabled);
+        DecisionLog.Start("Hook Preset")
+            .Chose(currentHook.Enabled ? "Enabled preset on bite" : "No enabled preset on bite");
         _fishingTimer.Stop();
 
         if (Ws.Player.HasStatus(IDs.Status.Salvage) && GetAutoCastCfg().ChumAnimationCancel)
@@ -448,7 +449,7 @@ public partial class FishingManager : IDisposable {
 
         if (hook is null or HookType.None) {
             delay = _rng.Next(Service.Configuration.DelayBeforeCancelMin, Service.Configuration.DelayBeforeCancelMax);
-            ReplayDecisions.HookPresetChoice(bite, null);
+            DecisionLog.Start("Hook Preset").Chose($"No hook for {bite} bite");
 
             Service.TaskManager.EnqueueDelay(delay);
             Service.TaskManager.Enqueue(() => PlayerRes.CastAction(IDs.Actions.Rest));
@@ -457,7 +458,7 @@ public partial class FishingManager : IDisposable {
             return;
         }
 
-        ReplayDecisions.HookPresetChoice(bite, hook);
+        DecisionLog.Start("Hook Preset").Chose($"Use {hook} for {bite} bite");
         Service.TaskManager.EnqueueDelay(delay);
         Service.TaskManager.Enqueue(() => {
             if (hook == HookType.Stellar)

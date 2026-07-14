@@ -272,7 +272,10 @@ public partial class FishingManager {
             if (!fire)
                 continue;
 
-            ReplayDecisions.ExtraTrigger(i, trig, GetExtraOwnerPreset().PresetName);
+            DecisionLog.Start(UIStrings.ExtraOptions, GetExtraOwnerPreset().PresetName)
+                .About(trig.DescribeActions())
+                .WithConditions(trig.ConditionSet)
+                .Chose(trig.GetRuleLabel(i));
             ExecuteExtraTriggerActions(extraCfg, trig);
         }
     }

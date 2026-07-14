@@ -18,6 +18,9 @@ public sealed class DecisionLog : IDisposable {
     public static DecisionLog Start(string context, string? presetName = null)
         => new(context, presetName);
 
+    public static string FormatConditionTrace(IReadOnlyList<(string Label, bool Result)> trace)
+        => trace.Count == 0 ? string.Empty : string.Join("\n", trace.Select(t => $"{t.Label}: {(t.Result ? "T" : "F")}"));
+
     public DecisionLog About(string summary) {
         _about = summary;
         return this;
@@ -36,6 +39,12 @@ public sealed class DecisionLog : IDisposable {
     public DecisionLog WithConditions(ConditionSet? set) {
         if (set != null)
             _conditions = set.DescribeEvaluation(Service.WorldState, ConditionRegistry.Registry);
+        return this;
+    }
+
+    public DecisionLog WithConditionResults(IReadOnlyList<(string Label, bool Result)>? results) {
+        if (results is { Count: > 0 })
+            _conditions = results;
         return this;
     }
 

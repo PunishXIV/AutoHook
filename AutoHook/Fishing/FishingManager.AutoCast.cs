@@ -185,7 +185,10 @@ public partial class FishingManager {
             Ws.SwimbaitEvaluationFishId = fishId;
             try {
                 if (activeSwimbaitCfg.ConditionSet.Fails()) {
-                    ReplayDecisions.SwimbaitSlotFailed(fishId, activeSwimbaitCfg.ConditionSet, presetName);
+                    var fishName = fishId == 0 ? "unknown fish" : Item.GetRow(fishId).Name.ToString();
+                    DecisionLog.Start("Swimbait", presetName)
+                        .WithConditions(activeSwimbaitCfg.ConditionSet)
+                        .Chose($"Conditions failed for {fishName}");
                     Service.PrintDebug($"[Swimbait] Fish {fishId}: conditions failed (source={configSource}), trying next slot");
                     continue;
                 }
@@ -195,7 +198,10 @@ public partial class FishingManager {
             }
 
             if (ChangeSwimbait((uint)slotIndex) == ChangeBaitReturn.Success) {
-                ReplayDecisions.SwimbaitSlotSelected(slotIndex, fishId, activeSwimbaitCfg.ConditionSet, presetName);
+                var fishName = fishId == 0 ? "unknown fish" : Item.GetRow(fishId).Name.ToString();
+                DecisionLog.Start("Swimbait", presetName)
+                    .WithConditions(activeSwimbaitCfg.ConditionSet)
+                    .Chose($"Selected slot {slotIndex} for {fishName}");
                 Service.WorldStateUpdater?.RefreshFishingStateSnapshot();
                 UpdateStatusAndTimer();
                 Service.PrintDebug($"[Swimbait] Using slot {slotIndex} (fish ID: {fishId}, source={configSource})");

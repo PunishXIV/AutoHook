@@ -72,8 +72,11 @@ public class FishingPresets : BasePreset {
 
         var from = oldPreset?.PresetName ?? Service.GlobalPresetName;
         var to = newPreset?.PresetName ?? Service.GlobalPresetName;
-        if (from != to)
-            ReplayDecisions.PresetSwitched(from, to, _selectReason ?? ReasonManual);
+        if (from != to) {
+            DecisionLog.Start("Preset Switch", to)
+                .About($"Reason: {_selectReason ?? ReasonManual}")
+                .Chose($"{from} → {to}");
+        }
 
         Service.Save();
     }
