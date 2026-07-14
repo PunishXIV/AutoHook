@@ -29,29 +29,115 @@ public partial class FishingManager {
         OceanGoalCatalog.PrefetchRouteAchievements(ocean.CurrentRoute);
 
         var settingsGoal = Service.Configuration.AutoOceanFishGoal;
-        CustomPresetConfig? match = null;
-        OceanFishGoalKind? matchedTier = null;
-        uint matchedGoalId = 0;
+        var stop = OceanStopUtil.FormatStopLabel(ocean.CurrentSpotId, ocean.CurrentTimeId);
+        using var decision = DecisionLog.Start("Auto Ocean Fish");
+        decision.About($"{settingsGoal} · route {ocean.CurrentRoute} · zone {ocean.CurrentZone + 1} · {stop}");
 
         foreach (var tier in OceanGoalCatalog.GetCascade(settingsGoal)) {
-            match = FindOceanPresetForTier(ocean, tier, out matchedGoalId);
-            if (match != null) {
-                matchedTier = tier;
-                break;
+            if (tier == OceanFishGoalKind.Achievement) {
+                if (!TryMatchAchievementTier(ocean, decision, out var achPreset, out var achId))
+                    continue;
+                ApplyOceanPresetChoice(decision, achPreset, OceanFishGoalKind.Achievement, achId);
+                return;
             }
-        }
 
-        if (match == null) {
-            ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, null, alreadySelected: false, selectedGlobal: false);
+            if (tier == OceanFishGoalKind.Legendary) {
+                if (!TryMatchLegendaryTier(ocean, decision, out var legPreset))
+                    continue;
+                ApplyOceanPresetChoice(decision, legPreset, OceanFishGoalKind.Legendary, 0);
+                return;
+            }
+
+            // Points (or other residual tier)
+            var pointsPreset = FindOceanPresetForGoal(ocean, tier, goalId: null);
+            if (pointsPreset == null) {
+                decision.Skipped($"{tier} — no matching preset");
+                continue;
+            }
+
+            ApplyOceanPresetChoice(decision, pointsPreset, tier, pointsPreset.ExtraCfg.AutoOceanFishGoalId);
             return;
         }
 
+        decision.Chose("No matching preset");
+    }
+
+    private bool TryMatchAchievementTier(OceanFishingState ocean, DecisionLog decision, out CustomPresetConfig preset, out uint achievementId) {
+        preset = null!;
+        achievementId = 0;
+
+        var forRoute = OceanGoalCatalog.GetAchievementsForRoute(ocean.CurrentRoute).ToList();
+        if (forRoute.Count == 0) {
+            decision.Skipped("Achievement — none on this route");
+            return false;
+        }
+
+        var partySize = Math.Max(1, Ws.Party.QueuedWithContentIds.Count);
+        var statusParts = forRoute.Select(def => {
+            if (partySize < def.MinPartySize)
+                return $"#{def.AchievementId} party<{def.MinPartySize}";
+            return OceanGoalCatalog.IsAchievementIncomplete(def.AchievementId) switch {
+                true => $"#{def.AchievementId} incomplete",
+                false => $"#{def.AchievementId} obtained",
+                null => $"#{def.AchievementId} unknown",
+            };
+        });
+        var status = string.Join(", ", statusParts);
+
+        var eligible = OceanGoalCatalog.GetEligibleAchievementIds(ocean.CurrentRoute);
+        if (eligible.Count == 0) {
+            decision.Skipped($"Achievement — not eligible ({status})");
+            return false;
+        }
+
+        foreach (var achId in eligible) {
+            var match = FindOceanPresetForGoal(ocean, OceanFishGoalKind.Achievement, achId);
+            if (match == null)
+                continue;
+            preset = match;
+            achievementId = achId;
+            return true;
+        }
+
+        decision.Skipped($"Achievement — no matching preset (eligible {string.Join(",", eligible)}; {status})");
+        return false;
+    }
+
+    private bool TryMatchLegendaryTier(OceanFishingState ocean, DecisionLog decision, out CustomPresetConfig preset) {
+        preset = null!;
+
+        var forRoute = OceanGoalCatalog.GetLegendariesForRoute(ocean.CurrentRoute).ToList();
+        if (forRoute.Count == 0) {
+            decision.Skipped("Legendary — none on this route");
+            return false;
+        }
+
+        var status = string.Join(", ", forRoute.Select(f =>
+            $"#{f.FishParameterId} {(OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId) ? "caught" : "uncaught")}"));
+
+        var eligible = OceanGoalCatalog.GetEligibleLegendaryIds(ocean.CurrentRoute);
+        if (eligible.Count == 0) {
+            decision.Skipped($"Legendary — already caught ({status})");
+            return false;
+        }
+
+        var match = FindOceanPresetForGoal(ocean, OceanFishGoalKind.Legendary, goalId: null);
+        if (match == null) {
+            decision.Skipped($"Legendary — no matching preset (still need {string.Join(",", eligible)}; {status})");
+            return false;
+        }
+
+        preset = match;
+        return true;
+    }
+
+    private void ApplyOceanPresetChoice(DecisionLog decision, CustomPresetConfig match, OceanFishGoalKind tier, uint goalId) {
         if (match.IsGlobal) {
             var alreadyGlobal = Presets.SelectedPreset == null;
             if (!alreadyGlobal)
                 Presets.Select(null, FishingPresets.ReasonAutoOceanFish);
-            ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, match.PresetName, alreadyGlobal, selectedGlobal: true);
-            Service.PrintDebug($"[AutoOceanFish] Preset set to global (tier={matchedTier}, goalId={matchedGoalId}, zone {ocean.CurrentZone}, spot {ocean.CurrentSpotId}, time {ocean.CurrentTimeId})");
+            decision.WithPreset(Service.GlobalPresetName).Chose(alreadyGlobal ? $"Already on global ({tier})" : $"Selected global ({tier})");
+            Service.PrintDebug($"[AutoOceanFish] Preset set to global (tier={tier}, goalId={goalId})");
             return;
         }
 
@@ -59,50 +145,19 @@ public partial class FishingManager {
         if (!alreadySelected)
             Presets.Select(match, FishingPresets.ReasonAutoOceanFish);
 
-        ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, match.PresetName, alreadySelected, selectedGlobal: false);
+        decision.WithPreset(match.PresetName).Chose(alreadySelected ? $"Already on {match.PresetName} ({tier})" : $"Selected {match.PresetName} ({tier})");
         if (!alreadySelected)
-            Service.PrintDebug($"[AutoOceanFish] Preset set to {match.PresetName} (tier={matchedTier}, goalId={matchedGoalId}, zone {ocean.CurrentZone}, spot {ocean.CurrentSpotId}, time {ocean.CurrentTimeId})");
+            Service.PrintDebug($"[AutoOceanFish] Preset set to {match.PresetName} (tier={tier}, goalId={goalId})");
     }
 
-    private CustomPresetConfig? FindOceanPresetForTier(OceanFishingState ocean, OceanFishGoalKind tier, out uint matchedGoalId) {
-        matchedGoalId = 0;
-
-        if (tier == OceanFishGoalKind.Achievement) {
-            foreach (var achId in OceanGoalCatalog.GetEligibleAchievementIds(ocean.CurrentRoute)) {
-                foreach (var preset in EnumerateHookPresets()) {
-                    if (!MatchesOceanBase(preset.ExtraCfg, ocean))
-                        continue;
-                    if (preset.ExtraCfg.AutoOceanFishGoal != OceanFishGoalKind.Achievement)
-                        continue;
-                    if (preset.ExtraCfg.AutoOceanFishGoalId != achId)
-                        continue;
-                    matchedGoalId = achId;
-                    return preset;
-                }
-            }
-            return null;
-        }
-
-        if (tier == OceanFishGoalKind.Legendary) {
-            if (OceanGoalCatalog.GetEligibleLegendaryIds(ocean.CurrentRoute).Count == 0)
-                return null;
-            foreach (var preset in EnumerateHookPresets()) {
-                if (!MatchesOceanBase(preset.ExtraCfg, ocean))
-                    continue;
-                if (preset.ExtraCfg.AutoOceanFishGoal != OceanFishGoalKind.Legendary)
-                    continue;
-                return preset;
-            }
-            return null;
-        }
-
+    private CustomPresetConfig? FindOceanPresetForGoal(OceanFishingState ocean, OceanFishGoalKind tier, uint? goalId) {
         foreach (var preset in EnumerateHookPresets()) {
-            var extra = preset.ExtraCfg;
-            if (!MatchesOceanBase(extra, ocean))
+            if (!MatchesOceanBase(preset.ExtraCfg, ocean))
                 continue;
-            if (extra.AutoOceanFishGoal != tier)
+            if (preset.ExtraCfg.AutoOceanFishGoal != tier)
                 continue;
-            matchedGoalId = extra.AutoOceanFishGoalId;
+            if (goalId is { } id && preset.ExtraCfg.AutoOceanFishGoalId != id)
+                continue;
             return preset;
         }
 
@@ -112,12 +167,9 @@ public partial class FishingManager {
     private static bool MatchesOceanBase(ExtraConfig extra, OceanFishingState ocean) {
         if (!extra.AutoOceanFishEnabled)
             return false;
-        if (!extra.AutoOceanFishAllStops
-            && !OceanStopUtil.MatchesStop(extra.AutoOceanFishSpotId, extra.AutoOceanFishTimeId, ocean))
+        if (!extra.AutoOceanFishAllStops && !OceanStopUtil.MatchesStop(extra.AutoOceanFishSpotId, extra.AutoOceanFishTimeId, ocean))
             return false;
-        if (extra.AutoOceanFishConditionSet is { } set && set.HasAnyCondition() && set.Fails())
-            return false;
-        return true;
+        return !(extra.AutoOceanFishConditionSet is { } set) || !set.HasAnyCondition() || !set.Fails();
     }
 
     private IEnumerable<CustomPresetConfig> EnumerateHookPresets() {

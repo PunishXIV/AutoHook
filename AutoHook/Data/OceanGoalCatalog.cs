@@ -15,10 +15,10 @@ public sealed record OceanAchievementDef(uint AchievementId, int MinPartySize, I
 
 public static class OceanGoalCatalog {
     public static readonly ImmutableArray<OceanLegendaryDef> Legendaries = [
-        new(904, [1, 6]),        // Sothis
-        new(905, [2, 5]),        // Coral Manta
+        new(904, [2, 6]),        // Sothis
+        new(905, [3, 5]),        // Coral Manta
         new(906, [6, 10]),       // Stonescale
-        new(907, [1]),           // Elasmosaurus
+        new(907, [2]),           // Elasmosaurus
         new(990, [9, 12]),       // Hafgufa
         new(991, [8]),           // Seafaring Toad
         new(992, [9, 12]),       // Placodus
@@ -31,10 +31,10 @@ public static class OceanGoalCatalog {
     ];
 
     public static readonly ImmutableArray<OceanAchievementDef> Achievements = [
-        new(2563, 7, [0]),       // Octopodes
+        new(2563, 7, [1]),       // Octopodes
         new(2564, 7, [5]),       // Shark
         new(2565, 7, [4]),       // Jellyfish
-        new(2566, 7, [2, 3]),    // Seahorse
+        new(2566, 7, [3]),       // Seahorse
         new(2754, 7, [10, 11]),  // Fugu
         new(2755, 7, [8]),       // Crabs
         new(2756, 1, [7, 11]),   // Mantas
@@ -69,7 +69,10 @@ public static class OceanGoalCatalog {
         => Achievements.Where(d => d.RouteIds.Contains(routeId)).OrderByDescending(d => d.MinPartySize).ThenBy(d => d.AchievementId);
 
     public static unsafe List<uint> GetEligibleLegendaryIds(uint routeId)
-        => [.. GetLegendariesForRoute(routeId).Where(f => !PlayerState.Instance()->IsFishCaught(f.FishParameterId)).Select(f => f.FishParameterId)];
+        => [.. GetLegendariesForRoute(routeId).Where(f => !IsLegendaryCaught(f.FishParameterId)).Select(f => f.FishParameterId)];
+
+    public static unsafe bool IsLegendaryCaught(uint fishParameterId)
+        => PlayerState.Instance()->IsFishCaught(fishParameterId);
 
     public static List<uint> GetEligibleAchievementIds(uint routeId) {
         var partySize = Math.Max(1, Service.WorldState.Party.QueuedWithContentIds.Count);
@@ -77,25 +80,6 @@ public static class OceanGoalCatalog {
         return [.. GetAchievementsForRoute(routeId)
             .Where(def => partySize >= def.MinPartySize && IsAchievementIncomplete(def.AchievementId) != false)
             .Select(def => def.AchievementId)];
-    }
-
-    public static string DescribeAchievements(uint routeId) {
-        var partySize = Math.Max(1, Service.WorldState.Party.QueuedWithContentIds.Count);
-        var parts = new List<string>();
-        foreach (var def in GetAchievementsForRoute(routeId)) {
-            if (partySize < def.MinPartySize) {
-                parts.Add($"{def.AchievementId}:party<{def.MinPartySize}");
-                continue;
-            }
-
-            parts.Add(IsAchievementIncomplete(def.AchievementId) switch {
-                true => $"{def.AchievementId}:incomplete",
-                false => $"{def.AchievementId}:complete",
-                null => $"{def.AchievementId}:unknown",
-            });
-        }
-
-        return parts.Count == 0 ? "none" : string.Join(", ", parts);
     }
 
     public static unsafe bool? IsAchievementIncomplete(uint achievementId) {
