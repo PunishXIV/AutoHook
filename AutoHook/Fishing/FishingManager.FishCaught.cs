@@ -103,7 +103,7 @@ public partial class FishingManager {
                     Service.PrintChat(@$"Preset {lastCatchCfg.PresetToSwap} not found.");
                 else {
                     Service.Save();
-                    Presets.SelectedPreset = preset;
+                    Presets.Select(preset, FishingPresets.ReasonFishCaught);
                     Service.PrintChat(@$"[Fish Caught] Swapping current preset to {lastCatchCfg.PresetToSwap}");
                     Service.Save();
                 }

@@ -49,7 +49,7 @@ public partial class FishingManager {
         if (match.IsGlobal) {
             var alreadyGlobal = Presets.SelectedPreset == null;
             if (!alreadyGlobal)
-                Presets.SelectedPreset = null;
+                Presets.Select(null, FishingPresets.ReasonAutoOceanFish);
             ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, match.PresetName, alreadyGlobal, selectedGlobal: true);
             Service.PrintDebug($"[AutoOceanFish] Preset set to global (tier={matchedTier}, goalId={matchedGoalId}, zone {ocean.CurrentZone}, spot {ocean.CurrentSpotId}, time {ocean.CurrentTimeId})");
             return;
@@ -57,7 +57,7 @@ public partial class FishingManager {
 
         var alreadySelected = Presets.SelectedPreset?.UniqueId == match.UniqueId;
         if (!alreadySelected)
-            Presets.SelectedPreset = match;
+            Presets.Select(match, FishingPresets.ReasonAutoOceanFish);
 
         ReplayDecisions.OceanPresetApply(ocean, settingsGoal, matchedTier, matchedGoalId, match.PresetName, alreadySelected, selectedGlobal: false);
         if (!alreadySelected)
@@ -252,7 +252,7 @@ public partial class FishingManager {
 
                 if (preset != null) {
                     Service.Save();
-                    Presets.SelectedPreset = preset;
+                    Presets.Select(preset, FishingPresets.ReasonExtraTrigger);
                     preset.ExtraCfg.LastTriggerStates.Clear();
                     Service.PrintChat(@$"[Extra] Trigger: Swapping preset to {trig.PresetToSwap}");
                     Service.Save();

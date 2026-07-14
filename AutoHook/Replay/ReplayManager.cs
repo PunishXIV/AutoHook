@@ -1,6 +1,3 @@
-using System.IO;
-using System.Reflection;
-using System.Threading;
 using AutoHook.Replay;
 using AutoHook.Ui;
 using Dalamud.Bindings.ImGui;
@@ -9,6 +6,14 @@ using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Plugin.Services;
 using Newtonsoft.Json;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using static AutoHook.Data.WorldState;
+using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
+using static FFXIVClientStructs.FFXIV.Client.Graphics.Render.Skeleton;
+using static FFXIVClientStructs.FFXIV.Component.GUI.AtkTimer.Delegates;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AutoHook;
 
@@ -61,6 +66,8 @@ public sealed class ReplayManager : IDisposable {
     private readonly List<ReplayEntry> _entries = [];
     private string _path = "";
     private string _fileDialogStartPath;
+    /// <summary>Defer stop so <see cref="WorldState.OpEndedSession"/> can enqueue via Modified before we unsubscribe.</summary>
+    private int _stopAfterFrames;
 
     public bool IsRecording => _recorder != null;
     public string? LastRecordedPath { get; private set; }
@@ -76,6 +83,7 @@ public sealed class ReplayManager : IDisposable {
         var ws = Service.WorldState;
         _subs = new(
             ws.BeganSession.Subscribe(_ => TryAutoStart()),
+            ws.OceanZoneStarted.Subscribe(_ => TryAutoStart()), // zone start happens before BeganSession. capture OZON / ACHP during walk to railing
             ws.EndedSession.Subscribe(_ => TryAutoStop()));
 
         Svc.Framework.Update += OnFrameworkUpdate;
@@ -84,11 +92,14 @@ public sealed class ReplayManager : IDisposable {
 
     private void OnFrameworkUpdate(IFramework _) {
         _recorder?.FlushPending();
+        if (_stopAfterFrames > 0 && --_stopAfterFrames == 0)
+            StopRecording();
         Update();
     }
 
     public void Dispose() {
         Svc.Framework.Update -= OnFrameworkUpdate;
+        _stopAfterFrames = 0;
         StopRecording();
         _subs.Dispose();
         foreach (var e in _entries)
@@ -239,13 +250,16 @@ public sealed class ReplayManager : IDisposable {
     }
 
     private void TryAutoStart() {
+        _stopAfterFrames = 0;
         if (_recorder == null)
             StartRecording(manual: false);
     }
 
     private void TryAutoStop() {
-        if (_recorder != null)
-            StopRecording();
+        if (_recorder == null)
+            return;
+        // OpEndedSession.Fire runs before Modified enqueues FEND, so stop next frame so FlushPending can write FEND before disposal
+        _stopAfterFrames = 1;
     }
 
     private void PruneOldReplays() {

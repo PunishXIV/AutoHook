@@ -162,7 +162,7 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
             return;
         }
 
-        Service.Configuration.HookPresets.SelectedPreset = preset;
+        Service.Configuration.HookPresets.Select(preset, FishingPresets.ReasonManual);
         Svc.Chat.Print(@$"{UIStrings.Preset_set_to_} {preset.PresetName}");
         Configuration.FlushAsync().GetAwaiter().GetResult();
     }

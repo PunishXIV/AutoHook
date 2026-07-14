@@ -1,8 +1,15 @@
+using AutoHook.Replay;
 using Newtonsoft.Json;
 
 namespace AutoHook.Fishing;
 
 public class FishingPresets : BasePreset {
+    public const string ReasonManual = "Manual";
+    public const string ReasonAutoOceanFish = "Auto Ocean Fish";
+    public const string ReasonExtraTrigger = "Extra Options";
+    public const string ReasonFishCaught = "Fish Caught";
+    public const string ReasonIpc = "IPC";
+
     // Global preset, cant rename rn 
     public CustomPresetConfig DefaultPreset = new(Service.GlobalPresetName);
 
@@ -12,6 +19,20 @@ public class FishingPresets : BasePreset {
 
     [JsonIgnore] public override CustomPresetConfig? SelectedPreset => base.SelectedPreset as CustomPresetConfig;
     [JsonIgnore] public CustomPresetConfig CurrentPreset => SelectedPreset ?? DefaultPreset;
+
+    [ThreadStatic] private static string? _selectReason;
+
+    /// <summary>Set the selected preset and tag the switch reason for replay decisions.</summary>
+    public void Select(CustomPresetConfig? preset, string reason) {
+        var previous = _selectReason;
+        _selectReason = reason;
+        try {
+            SelectedPreset = preset;
+        }
+        finally {
+            _selectReason = previous;
+        }
+    }
 
     public override void AddNewPreset(string presetName) {
         var newPreset = new CustomPresetConfig(presetName);
@@ -48,6 +69,11 @@ public class FishingPresets : BasePreset {
     public override void OnSelectedPreset(BasePresetConfig? newPreset, BasePresetConfig? oldPreset) {
         if (oldPreset is CustomPresetConfig old)
             old.TryResetCounter();
+
+        var from = oldPreset?.PresetName ?? Service.GlobalPresetName;
+        var to = newPreset?.PresetName ?? Service.GlobalPresetName;
+        if (from != to)
+            ReplayDecisions.PresetSwitched(from, to, _selectReason ?? ReasonManual);
 
         Service.Save();
     }

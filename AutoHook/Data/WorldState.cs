@@ -254,7 +254,11 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
 
     public Event<OpBeganSession> BeganSession = new();
     public sealed record OpBeganSession() : Operation {
-        protected override void Exec(WorldState ws) => ws.BeganSession.Fire(this);
+        protected override void Exec(WorldState ws) {
+            ws.BeganSession.Fire(this);
+            foreach (var op in AchievementProgressSnapshot.Collect())
+                ws.Execute(op);
+        }
 
         public override void Write(Replay.ReplayOutput output) => output.EmitFourCC("FBGN");
     }

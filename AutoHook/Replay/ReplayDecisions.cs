@@ -93,4 +93,8 @@ public static class ReplayDecisions {
 
         Emit("Auto Ocean Fish", action, detail, presetName: presetName);
     }
+
+    public static void PresetSwitched(string from, string to, string reason) {
+        Emit("Preset Switch", $"{from} → {to}", detail: $"reason={reason}", presetName: to);
+    }
 }
