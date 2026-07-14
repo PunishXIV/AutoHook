@@ -31,7 +31,8 @@ public partial class FishingManager {
         var settingsGoal = Service.Configuration.AutoOceanFishGoal;
         var stop = OceanStopUtil.FormatStopLabel(ocean.CurrentSpotId, ocean.CurrentTimeId);
         using var decision = DecisionLog.Start("Auto Ocean Fish");
-        decision.About($"{settingsGoal} · route {ocean.CurrentRoute} · zone {ocean.CurrentZone + 1} · {stop}");
+        var fallthrough = Service.Configuration.AOF_Fallthrough ? "fallthrough if acquired" : "keep goal if acquired";
+        decision.About($"{settingsGoal} · route {ocean.CurrentRoute} · zone {ocean.CurrentZone + 1} · {stop} · {fallthrough}");
 
         foreach (var tier in OceanGoalCatalog.GetCascade(settingsGoal)) {
             if (tier == OceanFishGoalKind.Achievement) {
@@ -84,9 +85,12 @@ public partial class FishingManager {
         });
         var status = string.Join(", ", statusParts);
 
-        var eligible = OceanGoalCatalog.GetEligibleAchievementIds(ocean.CurrentRoute);
+        var skipIfAcquired = Service.Configuration.AOF_Fallthrough;
+        var eligible = OceanGoalCatalog.GetEligibleAchievementIds(ocean.CurrentRoute, skipIfAcquired);
         if (eligible.Count == 0) {
-            decision.Skipped($"Achievement — not eligible ({status})");
+            decision.Skipped(skipIfAcquired
+                ? $"Achievement — not eligible ({status})"
+                : $"Achievement — not eligible, party size ({status})");
             return false;
         }
 
@@ -115,7 +119,8 @@ public partial class FishingManager {
         var status = string.Join(", ", forRoute.Select(f =>
             $"#{f.FishParameterId} {(OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId) ? "caught" : "uncaught")}"));
 
-        var eligible = OceanGoalCatalog.GetEligibleLegendaryIds(ocean.CurrentRoute);
+        var skipIfAcquired = Service.Configuration.AOF_Fallthrough;
+        var eligible = OceanGoalCatalog.GetEligibleLegendaryIds(ocean.CurrentRoute, skipIfAcquired);
         if (eligible.Count == 0) {
             decision.Skipped($"Legendary — already caught ({status})");
             return false;

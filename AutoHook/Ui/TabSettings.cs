@@ -44,8 +44,10 @@ public class TabSettings : BaseTab {
         DrawUtil.Checkbox(UIStrings.AutoStartFishing, ref Service.Configuration.AutoStartFishing, UIStrings.AutoStartFishingHelpText);
         DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Service.Configuration.AutoOceanFish, UIStrings.AutoOceanFishHelpText);
         if (Service.Configuration.AutoOceanFish) {
-            using (ImRaii.PushIndent())
+            using (ImRaii.PushIndent()) {
                 DrawAutoOceanFishGoal();
+                DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Service.Configuration.AOF_Fallthrough);
+            }
         }
         DrawUtil.Checkbox(UIStrings.SpectralRestOnGain, ref Service.Configuration.SpectralRest, UIStrings.SpectralRestOnGainHelpText);
         DrawUtil.Checkbox(UIStrings.AutoHandleCollectables, ref Service.Configuration.AutoCollectablesEnabled, UIStrings.AutoHandleCollectablesHelpText);

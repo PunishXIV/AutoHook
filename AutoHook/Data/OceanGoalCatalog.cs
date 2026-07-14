@@ -68,17 +68,20 @@ public static class OceanGoalCatalog {
     public static IEnumerable<OceanAchievementDef> GetAchievementsForRoute(uint routeId)
         => Achievements.Where(d => d.RouteIds.Contains(routeId)).OrderByDescending(d => d.MinPartySize).ThenBy(d => d.AchievementId);
 
-    public static unsafe List<uint> GetEligibleLegendaryIds(uint routeId)
-        => [.. GetLegendariesForRoute(routeId).Where(f => !IsLegendaryCaught(f.FishParameterId)).Select(f => f.FishParameterId)];
+    public static unsafe List<uint> GetEligibleLegendaryIds(uint routeId, bool skipIfAcquired = true)
+        => [.. GetLegendariesForRoute(routeId)
+            .Where(f => !skipIfAcquired || !IsLegendaryCaught(f.FishParameterId))
+            .Select(f => f.FishParameterId)];
 
     public static unsafe bool IsLegendaryCaught(uint fishParameterId)
         => PlayerState.Instance()->IsFishCaught(fishParameterId);
 
-    public static List<uint> GetEligibleAchievementIds(uint routeId) {
+    public static List<uint> GetEligibleAchievementIds(uint routeId, bool skipIfAcquired = true) {
         var partySize = Math.Max(1, Service.WorldState.Party.QueuedWithContentIds.Count);
         // treat unk as incomplete so z1 doesn't skip past Achievements before the server response
         return [.. GetAchievementsForRoute(routeId)
-            .Where(def => partySize >= def.MinPartySize && IsAchievementIncomplete(def.AchievementId) != false)
+            .Where(def => partySize >= def.MinPartySize
+                          && (!skipIfAcquired || IsAchievementIncomplete(def.AchievementId) != false))
             .Select(def => def.AchievementId)];
     }
 

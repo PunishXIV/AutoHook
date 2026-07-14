@@ -1693,6 +1693,9 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="AutoOceanFishHelpText" xml:space="preserve">
     <value>Handles everything on the boat itself: moving into position, casting, preset management.</value>
   </data>
+  <data name="AutoOceanFish_Fallthrough" xml:space="preserve">
+    <value>Fall through to next priority if already acquired</value>
+  </data>
   <data name="UseForGoal" xml:space="preserve">
     <value>Use for goal</value>
   </data>

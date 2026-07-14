@@ -678,6 +678,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fall through to next priority if already acquired.
+        /// </summary>
+        internal static string AutoOceanFish_Fallthrough {
+            get {
+                return ResourceManager.GetString("AutoOceanFish_Fallthrough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Handles everything on the boat itself: moving into position, casting, preset management..
         /// </summary>
         internal static string AutoOceanFishHelpText {
