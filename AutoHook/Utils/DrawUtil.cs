@@ -379,7 +379,7 @@ public static class DrawUtil {
 
     public static void DrawCheckboxTree(string treeName, ref bool enable, Action? action = null, string helpText = "", bool forceOpen = false, bool highlightLabel = false) {
         using var id = ImRaii.PushId(treeName);
-        if (ImGui.Checkbox($"###checkbox{treeName}", ref enable)) {
+        if (ImGui.Checkbox("###checkbox", ref enable)) {
             if (enable) ImGui.SetNextItemOpen(true);
             Service.Save();
         }
@@ -442,7 +442,7 @@ public static class DrawUtil {
     public static bool DrawCheckboxHeader(string headerLabel, ref bool enable, ImGuiTreeNodeFlags flags, Action body, string helpText = "", bool forceOpen = false) {
         using var id = ImRaii.PushId(headerLabel);
 
-        var changed = ImGui.Checkbox($"###checkbox{headerLabel}", ref enable);
+        var changed = ImGui.Checkbox("###checkbox", ref enable);
         if (!string.IsNullOrEmpty(helpText))
             ImGui.TooltipOnHover(helpText);
 

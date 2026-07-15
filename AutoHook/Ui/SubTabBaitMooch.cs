@@ -58,7 +58,7 @@ public class SubTabBaitMooch {
             var count = FishingManager.FishingHelper.GetFishCount(hook.UniqueId);
             var hookCounter = count > 0 ? @$"({UIStrings.Hooked_Counter} {count})" : "";
 
-            if (DrawUtil.DrawCheckboxHeader(@$"{baitName} {hookCounter}###{idx}", ref hook.Enabled, ImGuiTreeNodeFlags.FramePadding, () => {
+            if (DrawUtil.DrawCheckboxHeader(@$"{baitName} {hookCounter}", ref hook.Enabled, ImGuiTreeNodeFlags.FramePadding, () => {
                 if (!_preset.IsGlobal) {
                     ImGui.Spacing();
                     DrawInputSearchBar(hook, isMooch);
