@@ -256,7 +256,7 @@
     <value>대형 입질 (!!!)</value>
   </data>
   <data name="HookWillBeUsedIfPatienceIsNotUp" xml:space="preserve">
-    <value>인내를 사용하지 않았다면 "낚아채기"를 사용합니다</value>
+    <value>인내를 사용하지 않은 상태에선 기본적으로 "낚아채기"를 사용합니다</value>
   </data>
   <data name="PrecisionHookset" xml:space="preserve">
     <value>섬세한 낚아채기</value>
@@ -1023,7 +1023,7 @@
     <value>물고기 눈이 활성화된 경우에만 사용</value>
   </data>
   <data name="HookType" xml:space="preserve">
-    <value>낚시 유형</value>
+    <value>인내 중 낚기 유형 선택</value>
   </data>
   <data name="HookingTimer" xml:space="preserve">
     <value>낚아채기 타이머</value>
@@ -1272,7 +1272,7 @@
     <value>특수 물고기만</value>
   </data>
   <data name="SpecialFishExemple" xml:space="preserve">
-    <value>특수 물고기는 루어를 사용할 때 고유한 설명을 가진 물고기를 의미합니다.</value>
+    <value>특수 물고기는 루어 사용시 확률적으로 고유 메시지를 출력하는 물고기를 뜻합니다. 예시:</value>
   </data>
   <data name="NotSpecial" xml:space="preserve">
     <value>소형/대형 물고기만</value>
