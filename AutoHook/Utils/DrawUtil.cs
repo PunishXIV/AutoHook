@@ -440,8 +440,7 @@ public static class DrawUtil {
     /// Returns true if 'enable' changed.
     /// </summary>
     public static bool DrawCheckboxHeader(string headerLabel, ref bool enable, ImGuiTreeNodeFlags flags, Action body, string helpText = "", bool forceOpen = false) {
-        using var id = ImRaii.PushId(headerLabel);
-
+        using var id = ImRaii.PushId("DrawCheckboxHeader");
         var changed = ImGui.Checkbox("###checkbox", ref enable);
         if (!string.IsNullOrEmpty(helpText))
             ImGui.TooltipOnHover(helpText);
@@ -450,7 +449,7 @@ public static class DrawUtil {
         var x = ImGui.GetCursorPosX();
         if (forceOpen)
             ImGui.SetNextItemOpen(true, ImGuiCond.Always);
-        if (ImGui.CollapsingHeader(headerLabel, flags)) {
+        if (ImGui.CollapsingHeader($"{headerLabel}###hdr", flags)) {
             ImGui.SetCursorPosX(x);
             using (ImRaii.Group()) {
                 body();

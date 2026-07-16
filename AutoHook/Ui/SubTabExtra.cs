@@ -88,38 +88,40 @@ public class SubTabExtra {
         }
 
         var enabled = config.AutoOceanFishEnabled;
-        if (DrawUtil.DrawCheckboxHeader(UIStrings.UseWithOceanFishing, ref enabled, ImGuiTreeNodeFlags.DefaultOpen, () => {
-            if (DrawUtil.Checkbox(UIStrings.UseForAllZoneTimes, ref config.AutoOceanFishAllStops)) {
-                Service.Save();
-            }
+        using (ImRaii.PushId("AutoOceanFish")) {
+            if (DrawUtil.DrawCheckboxHeader(UIStrings.UseWithOceanFishing, ref enabled, ImGuiTreeNodeFlags.DefaultOpen, () => {
+                if (DrawUtil.Checkbox(UIStrings.UseForAllZoneTimes, ref config.AutoOceanFishAllStops)) {
+                    Service.Save();
+                }
 
-            if (!config.AutoOceanFishAllStops) {
-                ImGui.SetNextItemWidth(280.Scaled());
-                var stopLabel = config.AutoOceanFishSpotId != 0 && config.AutoOceanFishTimeId != 0
-                    ? OceanStopUtil.FormatStopLabel(config.AutoOceanFishSpotId, config.AutoOceanFishTimeId)
-                    : UIStrings.SelectZoneAndTime;
+                if (!config.AutoOceanFishAllStops) {
+                    ImGui.SetNextItemWidth(280.Scaled());
+                    var stopLabel = config.AutoOceanFishSpotId != 0 && config.AutoOceanFishTimeId != 0
+                        ? OceanStopUtil.FormatStopLabel(config.AutoOceanFishSpotId, config.AutoOceanFishTimeId)
+                        : UIStrings.SelectZoneAndTime;
 
-                var selected = new OceanStopKey(config.AutoOceanFishSpotId, config.AutoOceanFishTimeId);
-                using var combo = ImRaii.Combo($"##ZoneTimeSelector", stopLabel);
-                if (combo) {
-                    foreach (var stop in OceanStopUtil.GetUniqueStops().OrderBy(s => s.SpotId).ThenBy(s => s.TimeId)) {
-                        if (ImGui.Selectable(OceanStopUtil.FormatStopLabel(stop.SpotId, stop.TimeId), stop.SpotId == selected.SpotId && stop.TimeId == selected.TimeId)) {
-                            config.AutoOceanFishSpotId = stop.SpotId;
-                            config.AutoOceanFishTimeId = stop.TimeId;
-                            Service.Save();
+                    var selected = new OceanStopKey(config.AutoOceanFishSpotId, config.AutoOceanFishTimeId);
+                    using var combo = ImRaii.Combo($"##ZoneTimeSelector", stopLabel);
+                    if (combo) {
+                        foreach (var stop in OceanStopUtil.GetUniqueStops().OrderBy(s => s.SpotId).ThenBy(s => s.TimeId)) {
+                            if (ImGui.Selectable(OceanStopUtil.FormatStopLabel(stop.SpotId, stop.TimeId), stop.SpotId == selected.SpotId && stop.TimeId == selected.TimeId)) {
+                                config.AutoOceanFishSpotId = stop.SpotId;
+                                config.AutoOceanFishTimeId = stop.TimeId;
+                                Service.Save();
+                            }
                         }
                     }
                 }
+
+                DrawUtil.TextV($"{UIStrings.UseForGoal}:");
+                ImGui.SameLine();
+                DrawOceanFishGoalSelector(config);
+
+                config.AutoOceanFishConditionSet = ConditionUi.DrawConditionSet(UIStrings.When, config.AutoOceanFishConditionSet, ConditionScope.Hook, showAdvanced: true);
+            })) {
+                config.AutoOceanFishEnabled = enabled;
+                Service.Save();
             }
-
-            DrawUtil.TextV($"{UIStrings.UseForGoal}:");
-            ImGui.SameLine();
-            DrawOceanFishGoalSelector(config);
-
-            config.AutoOceanFishConditionSet = ConditionUi.DrawConditionSet(UIStrings.When, config.AutoOceanFishConditionSet, ConditionScope.Hook, showAdvanced: true);
-        })) {
-            config.AutoOceanFishEnabled = enabled;
-            Service.Save();
         }
     }
 
