@@ -2746,6 +2746,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Levelling.
+        /// </summary>
+        internal static string OceanFishGoal_Levelling {
+            get {
+                return ResourceManager.GetString("OceanFishGoal_Levelling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Points.
         /// </summary>
         internal static string OceanFishGoal_Points {

@@ -87,13 +87,18 @@ public class TabSettings : BaseTab {
             Service.Save();
         }
         ImGui.SameLine();
+        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Achievements, goal == OceanFishGoalKind.Achievement)) {
+            Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Achievement;
+            Service.Save();
+        }
+        ImGui.SameLine();
         if (ImGui.RadioButton(UIStrings.OceanFishGoal_Legendary, goal == OceanFishGoalKind.Legendary)) {
             Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Legendary;
             Service.Save();
         }
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Achievements, goal == OceanFishGoalKind.Achievement)) {
-            Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Achievement;
+        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Levelling, goal == OceanFishGoalKind.Levelling)) {
+            Service.Configuration.AutoOceanFishGoal = OceanFishGoalKind.Levelling;
             Service.Save();
         }
     }

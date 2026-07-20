@@ -1708,6 +1708,9 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanFishGoal_Achievements" xml:space="preserve">
     <value>Achievements</value>
   </data>
+  <data name="OceanFishGoal_Levelling" xml:space="preserve">
+    <value>Levelling</value>
+  </data>
   <data name="SpectralRestOnGain" xml:space="preserve">
     <value>Spectral Rest</value>
   </data>

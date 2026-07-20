@@ -1,5 +1,6 @@
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
+using Lumina.Excel.Sheets;
 using System.Collections.Immutable;
 
 namespace AutoHook.Data;
@@ -8,6 +9,7 @@ public enum OceanFishGoalKind {
     Points = 1,
     Legendary = 2,
     Achievement = 3,
+    Levelling = 4,
 }
 
 public sealed record OceanLegendaryDef(uint FishParameterId, ImmutableArray<uint> RouteIds);
@@ -50,10 +52,19 @@ public static class OceanGoalCatalog {
             case OceanFishGoalKind.Achievement:
                 yield return OceanFishGoalKind.Achievement;
                 yield return OceanFishGoalKind.Legendary;
+                yield return OceanFishGoalKind.Levelling;
+                yield return OceanFishGoalKind.Points;
+                break;
+            case OceanFishGoalKind.Levelling:
+                yield return OceanFishGoalKind.Levelling;
+                yield return OceanFishGoalKind.Legendary;
+                yield return OceanFishGoalKind.Achievement;
                 yield return OceanFishGoalKind.Points;
                 break;
             case OceanFishGoalKind.Legendary:
                 yield return OceanFishGoalKind.Legendary;
+                yield return OceanFishGoalKind.Achievement;
+                yield return OceanFishGoalKind.Levelling;
                 yield return OceanFishGoalKind.Points;
                 break;
             default:
@@ -76,6 +87,9 @@ public static class OceanGoalCatalog {
     public static unsafe bool IsLegendaryCaught(uint fishParameterId)
         => PlayerState.Instance()->IsFishCaught(fishParameterId);
 
+    public static unsafe bool IsLevellingNeeded()
+        => Svc.PlayerState.GetClassJobLevel(ClassJob.GetRow(18)) < PlayerState.Instance()->MaxLevel;
+
     public static List<uint> GetEligibleAchievementIds(uint routeId, bool skipIfAcquired = true) {
         var partySize = Math.Max(1, Service.WorldState.Party.QueuedWithContentIds.Count);
         // treat unk as incomplete so z1 doesn't skip past Achievements before the server response
@@ -89,7 +103,7 @@ public static class OceanGoalCatalog {
         if (Service.WorldState.AchievementProgress.TryGetValue(achievementId, out var progress) && progress.Max > 0)
             return progress.Current < progress.Max;
 
-        var ach = Achievement.Instance();
+        var ach = FFXIVClientStructs.FFXIV.Client.Game.UI.Achievement.Instance();
         if (ach == null)
             return null;
         if (ach->IsLoaded())

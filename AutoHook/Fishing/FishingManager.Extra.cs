@@ -14,10 +14,6 @@ public partial class FishingManager {
     public ExtraConfig GetExtraCfg()
         => Presets.SelectedPreset?.ExtraCfg.Enabled ?? false ? Presets.SelectedPreset.ExtraCfg : Presets.DefaultPreset.ExtraCfg;
 
-    /// <summary>
-    /// When <see cref="Configuration.AutoOceanFish"/> is on, select a preset whose Extra config
-    /// matches the current zone/time and Settings goal cascade (Achievements → Legendary → Points → None).
-    /// </summary>
     private void TryApplyOceanFishingPreset() {
         if (!Service.Configuration.AutoOceanFish)
             return;
@@ -46,6 +42,13 @@ public partial class FishingManager {
                 if (!TryMatchLegendaryTier(ocean, decision, out var legPreset))
                     continue;
                 ApplyOceanPresetChoice(decision, legPreset, OceanFishGoalKind.Legendary, 0);
+                return;
+            }
+
+            if (tier == OceanFishGoalKind.Levelling) {
+                if (!TryMatchLevellingTier(ocean, decision, out var levPreset))
+                    continue;
+                ApplyOceanPresetChoice(decision, levPreset, OceanFishGoalKind.Levelling, 0);
                 return;
             }
 
@@ -105,6 +108,26 @@ public partial class FishingManager {
 
         decision.Skipped($"Achievement — no matching preset (eligible {string.Join(",", eligible)}; {status})");
         return false;
+    }
+
+    private bool TryMatchLevellingTier(OceanFishingState ocean, DecisionLog decision, out CustomPresetConfig preset) {
+        preset = null!;
+
+        if (!OceanGoalCatalog.IsLevellingNeeded()) {
+            if (Service.Configuration.AOF_Fallthrough) {
+                decision.Skipped("Levelling — max level");
+                return false;
+            }
+        }
+
+        var match = FindOceanPresetForGoal(ocean, OceanFishGoalKind.Levelling, goalId: null);
+        if (match == null) {
+            decision.Skipped("Levelling — no matching preset");
+            return false;
+        }
+
+        preset = match;
+        return true;
     }
 
     private bool TryMatchLegendaryTier(OceanFishingState ocean, DecisionLog decision, out CustomPresetConfig preset) {

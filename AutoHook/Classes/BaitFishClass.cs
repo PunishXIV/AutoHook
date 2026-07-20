@@ -1,5 +1,5 @@
 ﻿using ECommons.MathHelpers;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using FishRow = Lumina.Excel.Sheets.FishParameter;
 using ItemRow = Lumina.Excel.Sheets.Item;
 

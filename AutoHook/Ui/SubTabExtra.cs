@@ -144,6 +144,12 @@ public class SubTabExtra {
             Service.Save();
         }
 
+        if (ImGui.Selectable(UIStrings.OceanFishGoal_Levelling, config.AutoOceanFishGoal == OceanFishGoalKind.Levelling)) {
+            config.AutoOceanFishGoal = OceanFishGoalKind.Levelling;
+            config.AutoOceanFishGoalId = 0;
+            Service.Save();
+        }
+
         ImGui.Separator();
         ImGui.TextDisabled(UIStrings.OceanFishGoal_Achievements);
         foreach (var def in OceanGoalCatalog.Achievements.OrderBy(a => a.AchievementId)) {
@@ -159,6 +165,7 @@ public class SubTabExtra {
 
     private static string FormatGoalLabel(OceanFishGoalKind kind, uint goalId) => kind switch {
         OceanFishGoalKind.Legendary => UIStrings.OceanFishGoal_Legendary,
+        OceanFishGoalKind.Levelling => UIStrings.OceanFishGoal_Levelling,
         OceanFishGoalKind.Achievement => Achievement.GetRow(goalId).Name.ToString(),
         _ => UIStrings.OceanFishGoal_Points,
     };
