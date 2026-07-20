@@ -1,4 +1,5 @@
 using AutoHook.Replay;
+using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 
 namespace AutoHook.Fishing;
@@ -76,6 +77,10 @@ public class FishingPresets : BasePreset {
             DecisionLog.Start("Preset Switch", to)
                 .About($"Reason: {_selectReason ?? ReasonManual}")
                 .Chose($"{from} → {to}");
+        }
+
+        if (newPreset is CustomPresetConfig { ListOfFish: var fishCaught } && fishCaught.Any(c => c.Fish.IsLocked)) {
+            Svc.Chat.PrintError($"[AutoHook] Unable to catch one or more fish under Fish Caught. Folklore tome not unlocked.");
         }
 
         Service.Save();

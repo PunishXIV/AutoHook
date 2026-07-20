@@ -14,6 +14,9 @@ public class BaitFishClass : IComparable<BaitFishClass> {
         _ => ItemRow.GetRow((uint)Id).Name.ToString()
     };
 
+    [JsonIgnore]
+    public bool IsLocked => FishRow.FirstOrNull(r => r.Item.RowId == Id) is { GatheringSubCategory.Value.Item.RowId: not 0, GatheringSubCategory.Value.Item.Value: var book } && !Svc.UnlockState.IsItemUnlocked(book);
+
     public int Id;
 
     [JsonIgnore] public string LureMessage = "";
