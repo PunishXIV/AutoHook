@@ -180,7 +180,7 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
             Configuration.FlushAsync().GetAwaiter().GetResult();
         }
         catch (Exception e) {
-            Svc.Log.Error(e.Message);
+            Svc.Log.Error(e, "[AutoHook] SetGigPreset failed.");
         }
     }
 

@@ -60,7 +60,7 @@ public partial class FishingManager : IDisposable {
             Ws.Modified += OnWorldStateModified;
         }
         catch (Exception e) {
-            Svc.Log.Error(@$"{e.Message}");
+            Svc.Log.Error(e, "[FishingManager] Init failed.");
         }
     }
 

@@ -28,7 +28,7 @@ public class TabDebug : BaseTab {
                 DrawTools();
         }
         catch (Exception e) {
-            Svc.Log.Error(e.Message);
+            Svc.Log.Error(e, "[TabDebug] Draw failed.");
         }
     }
 

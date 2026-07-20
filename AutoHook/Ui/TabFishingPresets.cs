@@ -59,7 +59,7 @@ public class TabFishingPresets : BaseTab {
             DrawList();
         }
         catch (Exception e) {
-            Svc.Log.Error(e.Message);
+            Svc.Log.Error(e, "[TabFishingPresets] Draw failed.");
         }
     }
 
@@ -519,7 +519,7 @@ public class TabFishingPresets : BaseTab {
                         }
                     }
                     catch (Exception ex) {
-                        Svc.Log.Error($"Error reordering presets: {ex.Message}");
+                        Svc.Log.Error(ex, "[TabFishingPresets] Error reordering presets.");
                     }
                 }
             }

@@ -60,7 +60,7 @@ public class PluginUi : Window, IDisposable {
             DrawNewLayout();
         }
         catch (Exception e) {
-            Svc.Log.Error(e.Message);
+            Svc.Log.Error(e, "[PluginUI] Draw failed.");
         }
     }
     private void Debug() {
@@ -206,7 +206,7 @@ public class PluginUi : Window, IDisposable {
                     }
                 }
                 catch (Exception e) {
-                    Svc.Log.Error(e.Message);
+                    Svc.Log.Error(e, "[PluginUI] DrawStatus failed.");
                 }
             }
             else

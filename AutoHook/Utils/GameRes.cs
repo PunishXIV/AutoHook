@@ -59,7 +59,7 @@ public static class GameRes {
         }
         catch (Exception e) {
             ImGui.SetClipboardText(e.Message);
-            Svc.Log.Error($"{e.Message}");
+            Svc.Log.Error(e, "[GameRes] Init failed.");
         }
     }
 }

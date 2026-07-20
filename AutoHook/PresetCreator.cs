@@ -114,7 +114,7 @@ public class PresetCreator {
             }
         }
         catch (Exception e) {
-            Svc.Log.Error(e.Message);
+            Svc.Log.Error(e, "[PresetCreator] Draw failed.");
         }
     }
 
