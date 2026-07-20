@@ -20,10 +20,10 @@ public static class OceanGoalCatalog {
         new(904, [2, 6]),        // Sothis
         new(905, [3, 5]),        // Coral Manta
         new(906, [6, 10]),       // Stonescale
-        new(907, [2]),           // Elasmosaurus
+        new(907, [2, 9]),        // Elasmosaurus
         new(990, [9, 12]),       // Hafgufa
         new(991, [8]),           // Seafaring Toad
-        new(992, [9, 12]),       // Placodus
+        new(992, [12]),          // Placodus
         new(1253, [13, 16, 21]), // Taniwha
         new(1254, [14, 17]),     // Glass Dragon
         new(1255, [18]),         // Hells' Claw
