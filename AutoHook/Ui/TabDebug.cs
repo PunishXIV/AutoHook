@@ -495,8 +495,12 @@ public class TabDebug : BaseTab {
 
             foreach (var preset in WikiPresets.Presets) {
                 ImGui.TextWrapped($"{preset.Key} ({preset.Value.Count} entries)");
-                foreach (var item in preset.Value)
-                    ImGui.BulletText(item.Presets.FirstOrDefault()?.PresetName ?? "No preset name");
+                foreach (var item in preset.Value) {
+                    if (item.Folder != null)
+                        ImGui.BulletText($"{item.Folder.Root.FolderName} ({item.Folder.Presets.Count} presets, {item.Folder.Folders.Count} folders)");
+                    else
+                        ImGui.BulletText(item.Presets.FirstOrDefault()?.PresetName ?? "No preset name");
+                }
             }
         }
     }

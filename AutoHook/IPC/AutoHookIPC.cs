@@ -52,13 +52,14 @@ public class AutoHookIPC {
     public void CreateAndSelectAnonymousPreset(string preset) {
         if (Configuration.ImportPreset(preset) is not CustomPresetConfig customPreset) return;
 
-        WriteConfig(() => {
-            var nameMap = CustomPresetConfig.BuildAnonymousNameMap([customPreset]);
-            customPreset.RenamePreset(nameMap[customPreset.PresetName]);
-            CustomPresetConfig.RemapPresetSwapReferences(customPreset, nameMap);
-            _cfg.HookPresets.AddNewPreset(customPreset);
-            _cfg.HookPresets.Select(_cfg.HookPresets.CustomPresets.FirstOrDefault(x => x.PresetName == nameMap.Values.First()), FishingPresets.ReasonIpc);
-        });
+        WriteConfig(() => PresetImport.ImportPresets(
+            _cfg.HookPresets,
+            [customPreset],
+            new PresetImportOptions {
+                MakeAnonymous = true,
+                SelectFirst = true,
+                SelectReason = FishingPresets.ReasonIpc
+            }));
         Service.Save();
     }
 
@@ -67,12 +68,14 @@ public class AutoHookIPC {
         if (CustomPresetConfig.CreateAutoPreset(baitId, itemId, stopAfterCaughtOnce) is not CustomPresetConfig preset)
             return false;
 
-        WriteConfig(() => {
-            var nameMap = CustomPresetConfig.BuildAnonymousNameMap([preset]);
-            preset.RenamePreset(nameMap[preset.PresetName]);
-            _cfg.HookPresets.AddNewPreset(preset);
-            _cfg.HookPresets.Select(_cfg.HookPresets.CustomPresets.FirstOrDefault(x => x.PresetName == preset.PresetName), FishingPresets.ReasonIpc);
-        });
+        WriteConfig(() => PresetImport.ImportPresets(
+            _cfg.HookPresets,
+            [preset],
+            new PresetImportOptions {
+                MakeAnonymous = true,
+                SelectFirst = true,
+                SelectReason = FishingPresets.ReasonIpc
+            }));
         Service.Save();
         return true;
     }
@@ -83,28 +86,55 @@ public class AutoHookIPC {
         if (import == null) return;
 
         WriteConfig(() => {
-            import.RenamePreset(import.PresetName);
-
-            if (import is CustomPresetConfig customPreset)
-                _cfg.HookPresets.AddNewPreset(customPreset);
-            else if (import is AutoGigConfig gigPreset)
+            if (import is CustomPresetConfig customPreset) {
+                PresetImport.ImportPresets(
+                    _cfg.HookPresets,
+                    [customPreset],
+                    new PresetImportOptions {
+                        SelectFirst = true,
+                        SelectReason = FishingPresets.ReasonIpc
+                    });
+            }
+            else if (import is AutoGigConfig gigPreset) {
                 _cfg.AutoGigConfig.AddNewPreset(gigPreset);
+            }
         });
         Service.Save();
     }
 
     [EzIPC]
     public void ImportAndSelectFolder(string folder) {
-        if (Configuration.ImportFolder(folder) is { } import) {
-            WriteConfig(() => ImportFolder(import, anonymous: false));
-        }
+        if (Configuration.ImportFolder(folder) is not { } import)
+            return;
+
+        WriteConfig(() => PresetImport.ImportFolderTree(
+            _cfg.HookPresets,
+            import.Folder,
+            import.Folders,
+            import.Presets,
+            new PresetImportOptions {
+                SelectFirst = true,
+                SelectReason = FishingPresets.ReasonIpc
+            }));
+        Service.Save();
     }
 
     [EzIPC]
     public void CreateAndSelectAnonymousFolder(string folder) {
-        if (Configuration.ImportFolder(folder) is { } import) {
-            WriteConfig(() => ImportFolder(import, anonymous: true));
-        }
+        if (Configuration.ImportFolder(folder) is not { } import)
+            return;
+
+        WriteConfig(() => PresetImport.ImportFolderTree(
+            _cfg.HookPresets,
+            import.Folder,
+            import.Folders,
+            import.Presets,
+            new PresetImportOptions {
+                MakeAnonymous = true,
+                SelectFirst = true,
+                SelectReason = FishingPresets.ReasonIpc
+            }));
+        Service.Save();
     }
 
     [EzIPC]
@@ -147,27 +177,6 @@ public class AutoHookIPC {
     [EzIPC]
     public bool SwapSwimbaitByIndex(byte index)
         => FishingManager.ChangeSwimbait(index) is FishingManager.ChangeBaitReturn.Success or FishingManager.ChangeBaitReturn.AlreadyEquipped;
-
-    private void ImportFolder((PresetFolder Folder, List<PresetFolder> Folders, List<CustomPresetConfig> Presets) folderImport, bool anonymous) {
-        if (anonymous) {
-            var nameMap = CustomPresetConfig.BuildAnonymousNameMap(folderImport.Presets);
-            foreach (var preset in folderImport.Presets)
-                preset.RenamePreset(nameMap[preset.PresetName]);
-            CustomPresetConfig.RemapPresetSwapReferences(folderImport.Presets, nameMap);
-
-            foreach (var preset in folderImport.Presets)
-                _cfg.HookPresets.CustomPresets.Add(preset);
-        }
-        else {
-            foreach (var preset in folderImport.Presets)
-                _cfg.HookPresets.CustomPresets.Add(preset);
-            foreach (var importedFolder in folderImport.Folders)
-                _cfg.HookPresets.Folders.Add(importedFolder);
-        }
-
-        if (folderImport.Presets.FirstOrDefault() is { } first)
-            _cfg.HookPresets.Select(first, FishingPresets.ReasonIpc);
-    }
 
     private static void WriteConfig(Action action) {
         Configuration.MutateSerialized(action);

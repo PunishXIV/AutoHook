@@ -5,13 +5,19 @@ using System.Text.RegularExpressions;
 
 namespace AutoHook.Utils;
 
+public sealed class WikiFolderExport {
+    public required PresetFolder Root { get; init; }
+    public required List<PresetFolder> Folders { get; init; }
+    public required List<CustomPresetConfig> Presets { get; init; }
+}
+
 public static class WikiPresets {
     private const string BaseUrl = "https://github.com/PunishXIV/AutoHook/wiki";
     private const string RawWiki = "https://raw.githubusercontent.com/wiki/PunishXIV/AutoHook";
     private static readonly HttpClient httpClient = new(); // Reuse HttpClient
     private static readonly Lazy<Regex> PresetBlockRegex = new(BuildPresetBlockRegex);
 
-    public static Dictionary<string, List<(PresetFolder? folder, List<CustomPresetConfig> Presets)>> Presets = [];
+    public static Dictionary<string, List<(WikiFolderExport? Folder, List<CustomPresetConfig> Presets)>> Presets = [];
     public static Dictionary<string, List<AutoGigConfig>> PresetsSf = [];
 
     public static async Task ListWikiPages() {
@@ -19,7 +25,7 @@ public static class WikiPresets {
             return;
 
         try {
-            var newPresets = new Dictionary<string, List<(PresetFolder? folder, List<CustomPresetConfig> Presets)>>();
+            var newPresets = new Dictionary<string, List<(WikiFolderExport? Folder, List<CustomPresetConfig> Presets)>>();
             var newPresetsSf = new Dictionary<string, List<AutoGigConfig>>();
             var mdUrls = await GetWikiPageUrls(BaseUrl);
 
@@ -27,10 +33,14 @@ public static class WikiPresets {
                 try {
                     var base64 = await ExtractBase64FromWikiPage($"{RawWiki}/{mdUrl}.md");
 
-                    static (PresetFolder? Folder, List<CustomPresetConfig> Presets) selector(string x) {
+                    static (WikiFolderExport? Folder, List<CustomPresetConfig> Presets) selector(string x) {
                         if (x.StartsWith(Configuration.ExportPrefixFolder)) {
                             var imported = Configuration.ImportFolder(x) ?? throw new Exception("Failed to import"); // Kill wiki shouldn't have broken presets
-                            return (imported.Folder, imported.Presets);
+                            return (new WikiFolderExport {
+                                Root = imported.Folder,
+                                Folders = imported.Folders,
+                                Presets = imported.Presets
+                            }, imported.Presets);
                         }
                         var presets = Configuration.ImportPreset(x) ?? throw new Exception("Failed to import");
 

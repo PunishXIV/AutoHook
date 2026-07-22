@@ -107,9 +107,7 @@ public class TabFishingPresets : BaseTab {
         bool MatchesSearch(string name) => !searchActive || name.Contains(searchFilter, StringComparison.InvariantCultureIgnoreCase);
 
         var presetsInFolders = BuildPresetsInFoldersSet();
-        Dictionary<Guid, CustomPresetConfig>? presetById = searchActive
-            ? _basePreset.CustomPresets.ToDictionary(p => p.UniqueId)
-            : null;
+        var presetById = searchActive ? _basePreset.CustomPresets.ToDictionary(p => p.UniqueId) : null;
 
         DrawGlobalPresetItem(searchActive, MatchesSearch);
 
@@ -135,9 +133,7 @@ public class TabFishingPresets : BaseTab {
                 var anyPresetMatches = GetAllPresetIdsInFolderTree(folder).Any(id => {
                     if (presetById == null || !presetById.TryGetValue(id, out var p))
                         return false;
-                    if (IsAnonymousPreset(p))
-                        return false;
-                    return MatchesSearch(p.PresetName);
+                    return !IsAnonymousPreset(p) && MatchesSearch(p.PresetName);
                 });
                 if (!folderNameMatches && !anyPresetMatches)
                     continue;
@@ -232,7 +228,7 @@ public class TabFishingPresets : BaseTab {
         return result;
     }
 
-    private IEnumerable<Guid> GetAllPresetIdsInFolderTree(PresetFolder rootFolder) {
+    private List<Guid> GetAllPresetIdsInFolderTree(PresetFolder rootFolder) {
         var result = new List<Guid>();
         Collect(rootFolder, result);
         return result;
@@ -273,15 +269,6 @@ public class TabFishingPresets : BaseTab {
 
         foreach (var childFolder in _basePreset.Folders.Where(f => f.ParentFolderId == source.UniqueId))
             CopyFolderTree(childFolder, newFolder.UniqueId, prefixName: false);
-    }
-
-    private static bool FolderTreeHasSelectedPresets(PresetFolder folder, List<PresetFolder> allFolders, HashSet<Guid> selectedPresetIds) {
-        if (folder.PresetIds.Any(selectedPresetIds.Contains))
-            return true;
-
-        return allFolders
-            .Where(f => f.ParentFolderId == folder.UniqueId)
-            .Any(child => FolderTreeHasSelectedPresets(child, allFolders, selectedPresetIds));
     }
 
     private bool IsFolderDescendantOf(PresetFolder potentialAncestor, PresetFolder candidate) {
@@ -664,10 +651,110 @@ public class TabFishingPresets : BaseTab {
         DrawCombinedImport();
     }
 
+    private void ClearFolderImportSelectionState() {
+        _selectedPresetsForImport.Clear();
+        _presetImportNames.Clear();
+        _renamePresetId = null;
+    }
+
+    private void ClearFolderImportState() {
+        _tempImportFolder = null;
+        ClearFolderImportSelectionState();
+    }
+
+    private void EnsureFolderImportSelectionState(IReadOnlyList<CustomPresetConfig> presets) {
+        // ImportFolder regens GUIDs so if you rebuild only on count then you get stale keys on a re-import
+        var needsInit = _selectedPresetsForImport.Count != presets.Count || presets.Any(p => !_selectedPresetsForImport.ContainsKey(p.UniqueId));
+        if (!needsInit)
+            return;
+
+        _selectedPresetsForImport = [];
+        _presetImportNames = [];
+        foreach (var preset in presets) {
+            _selectedPresetsForImport[preset.UniqueId] = true;
+            _presetImportNames[preset.UniqueId] = preset.PresetName;
+        }
+    }
+
+    private void DrawImportPresetRow(CustomPresetConfig preset) {
+        using var presetId = ImRaii.PushId(preset.UniqueId.ToString());
+
+        if (!_selectedPresetsForImport.TryGetValue(preset.UniqueId, out var isSelected))
+            isSelected = true;
+
+        if (ImGui.Checkbox("##selectPreset", ref isSelected))
+            _selectedPresetsForImport[preset.UniqueId] = isSelected;
+
+        ImGui.SameLine();
+
+        if (_renamePresetId == preset.UniqueId) {
+            ImGui.SetNextItemWidth(200.Scaled());
+            if (ImGui.InputText("##renameField", ref _tempImportName, 100,
+                    ImGuiInputTextFlags.EnterReturnsTrue | ImGuiInputTextFlags.AutoSelectAll)) {
+                _presetImportNames[preset.UniqueId] = _tempImportName;
+                _renamePresetId = null;
+            }
+
+            if (!ImGui.IsItemActive() && ImGui.IsMouseClicked(ImGuiMouseButton.Left)) {
+                _presetImportNames[preset.UniqueId] = _tempImportName;
+                _renamePresetId = null;
+            }
+        }
+        else {
+            var displayName = _presetImportNames.TryGetValue(preset.UniqueId, out var n) ? n : preset.PresetName;
+            ImGui.Text(displayName);
+
+            ImGui.SameLine();
+
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Edit)) {
+                _renamePresetId = preset.UniqueId;
+                _tempImportName = displayName;
+            }
+
+            if (ImGui.IsItemHovered())
+                ImGui.SetTooltip(UIStrings.RenamePreset);
+        }
+    }
+
+    private void DrawImportFolderNode(PresetFolder folder, List<PresetFolder> allFolders, List<CustomPresetConfig> allPresets) {
+        var children = allFolders.Where(f => f.ParentFolderId == folder.UniqueId).ToList();
+        var directPresets = allPresets.Where(p => folder.PresetIds.Contains(p.UniqueId)).ToList();
+        var flags = ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.FramePadding;
+
+        using var tree = ImRaii.TreeNode($"{folder.FolderName} ({directPresets.Count + children.Count})###import-folder-{folder.UniqueId}", flags);
+        if (!tree)
+            return;
+
+        foreach (var child in children)
+            DrawImportFolderNode(child, allFolders, allPresets);
+
+        foreach (var preset in directPresets)
+            DrawImportPresetRow(preset);
+    }
+
+    private void DrawImportFolderTree(PresetFolder root, List<PresetFolder> allFolders, List<CustomPresetConfig> allPresets) {
+        var children = allFolders.Where(f => f.ParentFolderId == root.UniqueId).ToList();
+        var directPresets = allPresets.Where(p => root.PresetIds.Contains(p.UniqueId)).ToList();
+
+        if (children.Count == 0) {
+            foreach (var preset in directPresets)
+                DrawImportPresetRow(preset);
+            return;
+        }
+
+        foreach (var child in children)
+            DrawImportFolderNode(child, allFolders, allPresets);
+
+        foreach (var preset in directPresets)
+            DrawImportPresetRow(preset);
+    }
+
     private void DrawCombinedImport() {
         try {
             if (ImGuiComponents.IconButton(FontAwesomeIcon.FileImport)) {
                 var clipboardText = ImGui.GetClipboardText();
+                ClearFolderImportSelectionState();
+                _tempImportPreset = null;
 
                 // Try folder import first
                 _tempImportFolder = Configuration.ImportFolder(clipboardText);
@@ -690,138 +777,72 @@ public class TabFishingPresets : BaseTab {
 
             ImGui.TooltipOnHover(UIStrings.ImportPresetOrFolder);
 
+            ImGui.SetNextWindowSize(new Vector2(520.Scaled(), 460.Scaled()), ImGuiCond.FirstUseEver);
             using var popup = ImRaii.Popup("import_new_preset");
 
             if (popup.Success) {
                 if (_isImportingFolder && _tempImportFolder.HasValue) {
                     // Handle folder import
                     var folder = _tempImportFolder.Value.Folder;
+                    var folders = _tempImportFolder.Value.Folders;
+                    var presets = _tempImportFolder.Value.Presets;
                     var name = folder.FolderName;
+                    var childFolderCount = folders.Count(f => f.ParentFolderId == folder.UniqueId);
 
                     ImGui.TextWrapped(UIStrings.ImportFolderAndPresets);
 
                     if (ImGui.InputText(UIStrings.FolderName, ref name, 64, ImGuiInputTextFlags.AutoSelectAll))
                         folder.FolderName = name;
 
-                    // List of presets with checkboxes using TreeNodeEx
-                    if (ImGui.TreeNodeEx($"{UIStrings.Presets_} {_tempImportFolder.Value.Presets.Count}", ImGuiTreeNodeFlags.DefaultOpen)) {
-                        // Initialize selection states if not done yet
-                        if (_selectedPresetsForImport == null || _selectedPresetsForImport.Count != _tempImportFolder.Value.Presets.Count) {
-                            _selectedPresetsForImport = [];
-                            _presetImportNames = [];
+                    ImGui.TextDisabled($"{presets.Count} presets · {folders.Count} folders" + (childFolderCount > 0 ? $" · {childFolderCount} subfolders" : string.Empty));
 
-                            foreach (var preset in _tempImportFolder.Value.Presets) {
-                                _selectedPresetsForImport[preset.UniqueId] = true; // Selected by default
-                                _presetImportNames[preset.UniqueId] = preset.PresetName;
-                            }
-                        }
+                    EnsureFolderImportSelectionState(presets);
 
-                        ImGui.Indent(10.Scaled());
-
-                        foreach (var preset in _tempImportFolder.Value.Presets) {
-                            using var presetId = ImRaii.PushId(preset.UniqueId.ToString());
-
-                            // Checkbox for selection
-                            var isSelected = _selectedPresetsForImport[preset.UniqueId];
-                            if (ImGui.Checkbox("##selectPreset", ref isSelected)) {
-                                _selectedPresetsForImport[preset.UniqueId] = isSelected;
-                            }
-
-                            ImGui.SameLine();
-
-                            // Check if this preset is being renamed
-                            if (_renamePresetId == preset.UniqueId) {
-                                // Show input field for renaming
-                                ImGui.SetNextItemWidth(200.Scaled());
-                                if (ImGui.InputText("##renameField", ref _tempImportName, 100,
-                                    ImGuiInputTextFlags.EnterReturnsTrue | ImGuiInputTextFlags.AutoSelectAll)) {
-                                    // Apply rename on Enter
-                                    _presetImportNames[preset.UniqueId] = _tempImportName;
-                                    _renamePresetId = null;
-                                }
-
-                                // Also handle focus loss or clicking elsewhere
-                                if (!ImGui.IsItemActive() && ImGui.IsMouseClicked(ImGuiMouseButton.Left)) {
-                                    _presetImportNames[preset.UniqueId] = _tempImportName;
-                                    _renamePresetId = null;
-                                }
-                            }
-                            else {
-                                // Normal display of preset name
-                                ImGui.Text(_presetImportNames[preset.UniqueId]);
-
-                                ImGui.SameLine();
-
-                                // Edit button
-                                if (ImGuiComponents.IconButton(FontAwesomeIcon.Edit)) {
-                                    _renamePresetId = preset.UniqueId;
-                                    _tempImportName = _presetImportNames[preset.UniqueId];
-                                }
-
-                                if (ImGui.IsItemHovered())
-                                    ImGui.SetTooltip(UIStrings.RenamePreset);
-                            }
-                        }
-
-                        ImGui.Unindent(10.Scaled());
-                        ImGui.TreePop();
+                    var treeHeight = Math.Max(180.Scaled(), ImGui.GetContentRegionAvail().Y - 52.Scaled());
+                    using (var treeChild = ImRaii.Child("##import_folder_tree", new Vector2(0, treeHeight), true)) {
+                        if (treeChild)
+                            DrawImportFolderTree(folder, folders, presets);
                     }
 
                     ImGui.Separator();
 
                     if (ImGui.Button(UIStrings.Import, new Vector2(120.Scaled(), 0))) {
-                        // Count how many presets are actually selected for import
-                        var selectedCount = _tempImportFolder.Value.Presets.Count(p => _selectedPresetsForImport[p.UniqueId]);
+                        var selectedPresetIds = presets
+                            .Where(p => _selectedPresetsForImport.TryGetValue(p.UniqueId, out var selected) && selected)
+                            .Select(p => p.UniqueId)
+                            .ToHashSet();
 
-                        // Create a new folder with the selected count in its name if no presets are selected
-                        if (selectedCount == 0) {
+                        if (selectedPresetIds.Count == 0) {
                             Notify.Error(UIStrings.NoPresetsSelected);
                             return;
                         }
 
-                        var selectedPresetIds = _tempImportFolder.Value.Presets
-                            .Where(p => _selectedPresetsForImport[p.UniqueId])
-                            .Select(p => p.UniqueId)
-                            .ToHashSet();
-
-                        foreach (var preset in _tempImportFolder.Value.Presets) {
-                            if (!_selectedPresetsForImport[preset.UniqueId])
+                        foreach (var preset in presets) {
+                            if (!selectedPresetIds.Contains(preset.UniqueId))
                                 continue;
 
                             if (_presetImportNames.TryGetValue(preset.UniqueId, out var newName))
                                 preset.PresetName = newName;
-
-                            _basePreset.CustomPresets.Add(preset);
                         }
 
-                        foreach (var importedFolder in _tempImportFolder.Value.Folders) {
-                            importedFolder.PresetIds = [.. importedFolder.PresetIds.Where(selectedPresetIds.Contains)];
-                        }
-
-                        var foldersToAdd = _tempImportFolder.Value.Folders
-                            .Where(f => FolderTreeHasSelectedPresets(f, _tempImportFolder.Value.Folders, selectedPresetIds))
-                            .ToList();
-
-                        foreach (var importedFolder in foldersToAdd)
-                            _basePreset.Folders.Add(importedFolder);
+                        var result = PresetImport.ImportFolderTree(
+                            _basePreset,
+                            folder,
+                            folders,
+                            presets,
+                            new PresetImportOptions { SelectedPresetIds = selectedPresetIds });
 
                         Service.Save();
-                        Notify.Success($"Folder imported with {selectedPresetIds.Count} presets");
+                        Notify.Success($"Folder imported with {result.ImportedPresets} presets");
 
-                        _tempImportFolder = null;
-                        _selectedPresetsForImport.Clear();
-                        _presetImportNames.Clear();
-                        _renamePresetId = null;
+                        ClearFolderImportState();
                         ImGui.CloseCurrentPopup();
                     }
 
                     ImGui.SameLine();
 
                     if (ImGui.Button(UIStrings.DrawImportExport_Cancel, new Vector2(120.Scaled(), 0))) {
-                        _tempImportFolder = null;
-                        _selectedPresetsForImport.Clear();
-                        _presetImportNames.Clear();
-                        _renamePresetId = null;
+                        ClearFolderImportState();
                         ImGui.CloseCurrentPopup();
                     }
                 }
@@ -838,9 +859,16 @@ public class TabFishingPresets : BaseTab {
                         _tempImportPreset.RenamePreset(name);
 
                     if (ImGui.Button(UIStrings.Import, new Vector2(120.Scaled(), 0))) {
-                        Service.Save();
-                        _basePreset.AddNewPreset(_tempImportPreset);
-                        _basePreset.SelectedPreset = (CustomPresetConfig)_tempImportPreset;
+                        if (_tempImportPreset is CustomPresetConfig custom) {
+                            PresetImport.ImportPresets(
+                                _basePreset,
+                                [custom],
+                                new PresetImportOptions { SelectFirst = true });
+                        }
+                        else {
+                            _basePreset.AddNewPreset(_tempImportPreset);
+                        }
+
                         _tempImportPreset = null;
                         Service.Save();
                         ImGui.CloseCurrentPopup();
@@ -849,6 +877,7 @@ public class TabFishingPresets : BaseTab {
                     ImGui.SameLine();
 
                     if (ImGui.Button(UIStrings.DrawImportExport_Cancel, new Vector2(120.Scaled(), 0))) {
+                        _tempImportPreset = null;
                         ImGui.CloseCurrentPopup();
                     }
                 }

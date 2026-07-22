@@ -16,7 +16,7 @@ public class AutoGigConfig : BasePresetConfig {
     public AutoGigConfig(string presetName) => PresetName = presetName;
 
     public List<BaseGig> GetGigCurrentNode(int node) {
-        return Gigs.Where(f => f.Fish != null && (f.Fish.Nodes is not { Count: > 0 } || f.Fish.Nodes.Contains(node))).ToList();
+        return [.. Gigs.Where(f => f.Fish != null && (f.Fish.Nodes is not { Count: > 0 } || f.Fish.Nodes.Contains(node)))];
     }
 
     public override void AddItem(BaseOption item) {
