@@ -434,11 +434,7 @@ public static class DrawUtil {
         }
     }
 
-    /// <summary>
-    /// Draws a checkbox and an inline collapsing header sharing a single label.
-    /// The checkbox controls the 'enable' flag; the header expands/collapses the body.
-    /// Returns true if 'enable' changed.
-    /// </summary>
+    // checkbox + inline collapsing header sharing one label. returns true if enable changed.
     public static bool DrawCheckboxHeader(string headerLabel, ref bool enable, ImGuiTreeNodeFlags flags, Action body, string helpText = "", bool forceOpen = false) {
         using var id = ImRaii.PushId("DrawCheckboxHeader");
         var changed = ImGui.Checkbox("###checkbox", ref enable);

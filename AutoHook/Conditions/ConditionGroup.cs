@@ -2,9 +2,7 @@ using Newtonsoft.Json;
 
 namespace AutoHook.Conditions;
 
-/// <summary>
-/// A group of conditions combined with AND or OR. (X or Y) in "(X or Y) AND (A or B)".
-/// </summary>
+// conditions AND/OR'd. (X or Y) in "(X or Y) AND (A or B)".
 public class ConditionGroup {
     [JsonProperty("m")]
     public ConditionCombineMode CombineMode { get; set; } = ConditionCombineMode.All;
@@ -12,7 +10,7 @@ public class ConditionGroup {
     [JsonProperty("c")]
     public List<Condition> Conditions { get; set; } = [];
 
-    /// <summary>When false, this group is skipped in evaluation (UI: toggle without deleting).</summary>
+    // false = skipped in eval (toggle without deleting).
     [JsonProperty("a")]
     public bool Enabled { get; set; } = true;
 

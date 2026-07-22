@@ -111,9 +111,7 @@ public partial class FishingManager {
             return;
     }
 
-    /// <summary>
-    /// Mooching the same fish again does not consume swimbait; prefer mooch when the last catch is also in a swimbait slot.
-    /// </summary>
+    // same-fish mooch doesn't eat swimbait; prefer mooch when last catch is also in a swimbait slot.
     private bool TryMoochBeforeSwimbaitForSameFish(AutoCastsConfig acCfg, FishConfig? lastFishCatchCfg, bool blockMooch) {
         if (blockMooch)
             return false;

@@ -64,7 +64,7 @@ public abstract class BaseActionCast {
     public bool IsAvailableToCast(bool ignoreCurrentMooch = false)
         => DescribeUnavailable(ignoreCurrentMooch) == null;
 
-    /// <summary>Null when the action can be cast; otherwise a short reason for the replay decision log.</summary>
+    // null if castable; else short reason for replay decision log.
     public string? DescribeUnavailable(bool ignoreCurrentMooch = false) {
         if (!Enabled)
             return "Disabled";

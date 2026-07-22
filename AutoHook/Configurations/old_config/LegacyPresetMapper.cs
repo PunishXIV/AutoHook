@@ -1,9 +1,6 @@
 namespace AutoHook.Configurations.Legacy;
 
-/// <summary>
-/// Helpers to convert very old preset formats (v1/v2/v3) into the current preset model.
-/// Kept next to the legacy DTOs so that runtime config types stay clean.
-/// </summary>
+// converts very old presets (v1/v2/v3) into the current model; lives next to legacy DTOs.
 internal static class LegacyPresetMapper {
     private static void SetFieldNewClass(HookConfig newOne, BaitConfig old) {
         var oldType = old.GetType();

@@ -1,9 +1,6 @@
 namespace AutoHook.Conditions;
 
-/// <summary>
-/// Overcap overrides use <see cref="ConditionSet"/> storage but must not treat "no enabled conditions"
-/// as "allow overcap" (unlike normal condition sets where empty groups evaluate true).
-/// </summary>
+// overcap overrides use ConditionSet storage, but empty ≠ allow (unlike normal sets).
 public static class ConditionSetOvercapHelper {
     public static bool HasAnyEnabledCondition(ConditionSet? set) {
         if (set?.Groups is not { Count: > 0 } groups)
@@ -21,9 +18,7 @@ public static class ConditionSetOvercapHelper {
         return false;
     }
 
-    /// <summary>
-    /// When true, cordial may overcap GP. When false, fall back to default GP math.
-    /// </summary>
+    // true = cordial may overcap GP; false = default GP math.
     public static bool EvaluateAllowsOvercap(ConditionSet? set, WorldState world)
         => HasAnyEnabledCondition(set) && set!.Evaluate(world, ConditionRegistry.Registry);
 }

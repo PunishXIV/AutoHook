@@ -61,7 +61,7 @@ public sealed class ReplayManager : IDisposable {
     private readonly List<ReplayEntry> _entries = [];
     private string _path = "";
     private string _fileDialogStartPath;
-    /// <summary>Defer stop so <see cref="WorldState.OpEndedSession"/> can enqueue via Modified before we unsubscribe.</summary>
+    // defer stop so OpEndedSession can enqueue via Modified before we unsubscribe.
     private int _stopAfterFrames;
 
     public bool IsRecording => _recorder != null;

@@ -80,7 +80,7 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
 
     public IReadOnlyList<uint> SwimbaitIds => Fishing.SwimbaitIds;
 
-    /// <summary>Fish id used while evaluating swimbait slot conditions (0 = unset).</summary>
+    // fish id while evaluating swimbait slot conditions (0 = unset).
     public uint SwimbaitEvaluationFishId { get; set; }
 
     public int GetSwimbaitCount() => Fishing.SwimbaitIds.Count(id => id != 0);
@@ -209,7 +209,7 @@ public sealed class WorldState(ulong qpf, string gameVersion) {
             => output.EmitFourCC("WTHR").Emit(Current).Emit(Previous).Emit(Next);
     }
 
-    /// <summary>Legacy combined op; only emitted by older replay logs.</summary>
+    // legacy combined op; only from older replay logs.
     public sealed record OpZone(byte WeatherId, uint TerritoryId) : Operation {
         protected override void Exec(WorldState ws) {
             ws.CurrentWeatherId = WeatherId;

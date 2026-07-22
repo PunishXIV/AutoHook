@@ -131,7 +131,7 @@ public static class ReplayTimelineMarkers {
         return spans;
     }
 
-    /// <summary>Successful Auto Casts keep markers; failed attempts stay in the decision list only.</summary>
+    // successful auto casts keep markers; failed attempts stay in the decision list only.
     private static bool HasTimelineMarker(WorldState.OpDecision d)
         => d.Context != UIStrings.Auto_Casts || d.Action.StartsWith("Cast ", StringComparison.Ordinal);
 

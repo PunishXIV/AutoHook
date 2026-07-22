@@ -37,7 +37,7 @@ public static class SingleConditionSetHelper {
         return set;
     }
 
-    /// <summary>Removes empty groups. Returns null when nothing remains.</summary>
+    // drop empty groups. null if nothing left.
     public static ConditionSet? CompactOrNull(ConditionSet? set) {
         if (!set.HasGroups())
             return null;

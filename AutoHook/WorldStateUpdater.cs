@@ -85,7 +85,7 @@ public sealed class WorldStateUpdater : IDisposable {
         Svc.GameInventory.InventoryChanged -= OnInventoryChanged;
     }
 
-    /// <summary>Push current game state into WorldState. Call every frame.</summary>
+    // push current game state into WorldState. call every frame.
     public unsafe void Update() {
         if (Player.ClassJob.RowId is not 18 || Svc.Objects.LocalPlayer is null)
             return;

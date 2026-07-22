@@ -3,27 +3,25 @@ using System.Threading;
 
 namespace AutoHook.Conditions;
 
-/// <summary>
-/// One condition: type id + minimal params. Only serialized keys are stored.
-/// </summary>
+// one condition: type id + params. only serialized keys stored.
 public class Condition {
     [JsonIgnore]
     private static int _nextUiId = 1;
 
-    /// <summary>Registry key, e.g. "StatusActive", "BiteTimer", "Weather".</summary>
+    // registry key, e.g. "StatusActive", "BiteTimer".
     [JsonProperty("t")]
     public string TypeId { get; set; } = "";
 
-    /// <summary>Type-specific params. Only include non-default keys when serializing.</summary>
+    // type-specific params; only non-defaults when serializing.
     [JsonProperty("p")]
     [JsonConverter(typeof(ConditionParamConverter))]
     public Dictionary<string, object> Params { get; set; } = [];
 
-    /// <summary>When false, this condition is skipped in evaluation (UI can use for toggle-without-delete).</summary>
+    // false = skipped in eval (toggle without deleting).
     [JsonProperty("e")]
     public bool Enabled { get; set; } = true;
 
-    /// <summary>UI-only identifier used for stable ImGui IDs; prevents reusing open/closed state across deleted/recreated conditions.</summary>
+    // ui: stable imgui id so open/closed state doesn't reuse across recreate.
     [JsonIgnore]
     public int UiId { get; set; }
 

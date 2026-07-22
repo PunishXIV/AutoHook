@@ -138,7 +138,7 @@ public partial class Configuration {
             };
         }
 
-        /// <summary>True when the action still has remaining cooldown (e.g. Mooch II on CD).</summary>
+        // true while the action still has remaining CD (e.g. Mooch II on CD).
         public static Condition ActionOnCooldown(uint actionId, int minSecondsRemaining = 1) {
             return new Condition {
                 TypeId = Registry.GetId<ActionCooldownCD>(),

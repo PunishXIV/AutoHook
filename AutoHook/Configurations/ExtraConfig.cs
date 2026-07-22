@@ -177,7 +177,7 @@ public class ExtraConfig : BaseOption {
 
     public List<ExtraTrigger> Triggers { get; set; } = [];
 
-    /// <summary>Use this preset when auto ocean fishing starts a stop matching zone/time and optional conditions.</summary>
+    // use this preset when auto ocean fishing hits a matching zone/time (+ optional conditions).
     public bool AutoOceanFishEnabled;
     public bool AutoOceanFishAllStops;
     public uint AutoOceanFishSpotId;

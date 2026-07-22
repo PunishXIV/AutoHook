@@ -2,9 +2,7 @@ using Newtonsoft.Json;
 
 namespace AutoHook.Conditions;
 
-/// <summary>
-/// Serializes <see cref="SingleCondition{TCD,TValue}"/> as its <see cref="ConditionSet"/> only, so the JSON is the same as if the property were ConditionSet?
-/// </summary>
+// serializes as ConditionSet only — same JSON as ConditionSet?.
 public sealed class SingleConditionConverter : JsonConverter {
     public override bool CanConvert(Type objectType)
         => objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(SingleCondition<,>);

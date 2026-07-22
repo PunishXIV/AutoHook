@@ -132,9 +132,7 @@ public class HookConfig : BaseOption {
         return UsesIntuitionHookConfig() ? IntuitionHook : NormalHook;
     }
 
-    /// <summary>
-    /// Same intuition vs normal window as <see cref="GetHookset"/> — used for swimbait selection.
-    /// </summary>
+    // same intuition vs normal window as GetHookset — for swimbait selection.
     public SwimbaitConfig GetSwimbaitConfig()
         => UsesIntuitionHookConfig() ? SwimbaitIntuition : SwimbaitNormal;
 

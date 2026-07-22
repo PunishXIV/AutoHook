@@ -8,9 +8,7 @@ using static AutoHook.Conditions.ConditionRegistry;
 
 namespace AutoHook.Configurations;
 
-/// <summary>
-/// Migrates raw JSON up to the latest cfg version before deserializing into <see cref="Configuration"/>
-/// </summary>
+// bumps raw JSON to latest cfg version before deserializing into Configuration.
 public static class ConfigurationJsonMigrator {
     public static string MigrateToLatest(string json, string? configDirectory = null) {
         JObject root;
@@ -79,9 +77,7 @@ public static class ConfigurationJsonMigrator {
         }
     }
 
-    /// <summary>
-    /// Migrates a single exported preset JSON (AH4/AH6/etc.) to the latest preset schema before deserialization.
-    /// </summary>
+    // migrate one exported preset JSON (AH4/AH6/etc.) to latest schema before deserialize.
     public static string MigrateImportedPreset(string json) {
         try {
             if (JToken.Parse(json) is not JObject preset)

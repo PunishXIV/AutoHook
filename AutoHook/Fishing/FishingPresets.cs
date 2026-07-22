@@ -22,7 +22,7 @@ public class FishingPresets : BasePreset {
 
     [ThreadStatic] private static string? _selectReason;
 
-    /// <summary>Set the selected preset and tag the switch reason for replay decisions.</summary>
+    // select preset and tag switch reason for replay decisions.
     public void Select(CustomPresetConfig? preset, string reason) {
         var previous = _selectReason;
         _selectReason = reason;

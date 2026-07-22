@@ -9,9 +9,7 @@ public interface IConditionDefinition {
     string Name { get; }
     ConditionScopeFlags AllowedScopes { get; }
 
-    /// <summary>
-    /// When true, <see cref="Evaluate"/> uses <see cref="FishingInfo.CastSnapshot"/> while the line is in the water.
-    /// </summary>
+    // when true, Evaluate uses CastSnapshot while line is in water.
     bool SnapshottableOnCast => false;
 
     bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters);

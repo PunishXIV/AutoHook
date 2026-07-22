@@ -2,39 +2,33 @@ using Newtonsoft.Json;
 
 namespace AutoHook.Conditions;
 
-/// <summary>
-/// Top-level condition set: groups combined with AND or OR. (X or Y) AND (A or B) = two groups, top-level AND.
-/// Empty groups list = no conditions = evaluate to true.
-/// </summary>
+// groups AND/OR'd. empty = always true.
 public class ConditionSet {
-    /// <summary>How to combine groups: All = AND, Any = OR.</summary>
+    // All = AND, Any = OR.
     [JsonProperty("m")]
     public ConditionCombineMode CombineMode { get; set; } = ConditionCombineMode.All;
 
-    /// <summary>Only store non-empty groups (minimal config).</summary>
+    // non-empty groups only (minimal config).
     [JsonProperty("g")]
     public List<ConditionGroup> Groups { get; set; } = [];
 
-    /// <summary>
-    /// Optional boolean expression over groups (A, B, C...) using &&, || and parentheses.
-    /// Example: "A && B && (C || D)". When set, this overrides CombineMode for evaluation.
-    /// </summary>
+    // optional expr over groups (A && B && (C || D)). overrides CombineMode when set.
     [JsonProperty("e")]
     public string? Expression { get; set; }
 
-    /// <summary>UI-only: current expression selection start (token index).</summary>
+    // ui: expr selection start (token idx).
     [JsonIgnore]
     public int? ExprSelectionStart { get; set; }
 
-    /// <summary>UI-only: current expression selection end (token index).</summary>
+    // ui: expr selection end (token idx).
     [JsonIgnore]
     public int? ExprSelectionEnd { get; set; }
 
-    /// <summary>UI-only: whether advanced expression editor is expanded.</summary>
+    // ui: advanced expr editor expanded.
     [JsonIgnore]
     public bool ExprVisible { get; set; }
 
-    /// <summary>UI-only: slim editor "Advanced" section expanded (DrawCheckboxTree style).</summary>
+    // ui: slim "Advanced" section expanded.
     [JsonIgnore]
     public bool SlimAdvancedExpanded { get; set; }
 

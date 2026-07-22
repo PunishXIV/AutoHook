@@ -21,13 +21,13 @@ public partial class Configuration {
 
     internal static readonly object SerializationSync = new(); // lock for capturing snapshot
 
-    /// <summary>Run config mutations under the same lock used when serializing to disk.</summary>
+    // mutate config under the same lock used for disk serialization.
     internal static void MutateSerialized(Action action) {
         lock (SerializationSync)
             action();
     }
 
-    /// <summary>Suppresses coalesced saves while bulk-building presets (AddItem/ReplaceBaitConfig call Save).</summary>
+    // pause coalesced saves while bulk-building presets (AddItem/ReplaceBaitConfig call Save).
     internal static SaveSuppressionScope SuppressSave() => new();
 
     internal readonly struct SaveSuppressionScope : IDisposable {
@@ -76,7 +76,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>Queues a coalesced background write of <see cref="Service.Configuration"/>.</summary>
+    // queue a coalesced background write of Service.Configuration.
     public static void Save() {
         if (Volatile.Read(ref _saveSuppressionDepth) > 0)
             return;
@@ -91,7 +91,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>Waits for any in-prog save, then writes if still dirty.</summary>
+    // wait for any in-prog save, then write if still dirty.
     public static async Task FlushAsync() {
         var task = _saveTask;
         if (task != null)

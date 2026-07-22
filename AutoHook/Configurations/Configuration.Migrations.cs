@@ -3,14 +3,12 @@ using System.Threading;
 namespace AutoHook.Configurations;
 
 public partial class Configuration {
-    /// <summary>
-    /// Single migration step that upgrades a configuration to a specific Version.
-    /// </summary>
+    // one step that bumps config to a target Version.
     private interface IConfigMigration {
-        /// <summary>Target configuration version after this migration has successfully run.</summary>
+        // version after this migration succeeds.
         int Version { get; }
 
-        /// <summary>Apply this migration to the given configuration if applicable.</summary>
+        // run the migration if applicable.
         void Apply(Configuration config);
     }
 
@@ -33,7 +31,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v1 -> v2: backup only.</summary>
+    // v1→v2: backup only.
     private sealed class V2Migration : IConfigMigration {
         public int Version => 2;
 
@@ -46,7 +44,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v2 -> v3: now done in ConfigurationJsonMigrator.MigrateV2ToV3Json. No-op here.</summary>
+    // v2→v3: handled in JsonMigrator.MigrateV2ToV3Json; mostly a version bump here.
     private sealed class V3Migration : IConfigMigration {
         public int Version => 3;
 
@@ -58,7 +56,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v3 -> v4: backup then re-save using the new schema.</summary>
+    // v3→v4: backup then re-save under new schema.
     private sealed class V4Migration : IConfigMigration {
         public int Version => 4;
 
@@ -73,7 +71,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v4 -> v5: AutoGig preset rename + default preset name update.</summary>
+    // v4→v5: autogig rename + default name.
     private sealed class V5Migration : IConfigMigration {
         public int Version => 5;
 

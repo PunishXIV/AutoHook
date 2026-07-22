@@ -4,10 +4,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace AutoHook;
 
-/// <summary>
-/// Single place for executing fishing actions: cast, use item, change bait/swimbait.
-/// Reads BlockCasting and action availability from <see cref="WorldState"/>.
-/// </summary>
+// fishing action executor: cast, use item, change bait/swimbait. block-casting/availability from WorldState.
 public sealed class GameExecutor(WorldState ws) {
     private bool _blockActionNoDelay;
 

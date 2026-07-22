@@ -4,9 +4,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace AutoHook.Utils;
 
-/// <summary>
-/// Cast, use item, and delay helpers only. Uses <see cref="Service.WorldState"/> for block-casting only.
-/// </summary>
+// cast/item/delay helpers. block-casting from WorldState.
 public static class PlayerRes {
     private static WorldState WS => Service.WorldState;
 
@@ -70,7 +68,7 @@ public static class PlayerRes {
         return true;
     }
 
-    /// <summary>Returns whether a delayed cast was started (block set and post-cast delay scheduled).</summary>
+    // true if delayed cast started (block set + post-cast delay scheduled).
     public static bool TryUseStellarHookset(string actionName = "Stellar Hookset") {
         if (WS.GetAvailableStellarHooksetId() is not { } actionId)
             return false;
@@ -108,7 +106,7 @@ public static class PlayerRes {
         WS.Execute(new WorldState.OpSetBlockCasting(false));
     }
 
-    /// <summary>Delay after a delayed cast/item use before the next action (matches <see cref="DelayNextCast"/>).</summary>
+    // delay after delayed cast/item before next action (same as DelayNextCast).
     public static int GetPostCastDelayMs() {
         try { return new Random().Next(Service.Configuration.DelayBetweenCastsMin, Service.Configuration.DelayBetweenCastsMax); }
         catch (Exception e) {
