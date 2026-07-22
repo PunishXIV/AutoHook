@@ -17,16 +17,18 @@ public partial class Configuration {
             return Single(cond);
         }
 
-        public static ConditionSet SingleStatusStacks(uint statusId, int minStacks) {
-            var cond = new Condition {
+        public static ConditionSet SingleStatusStacks(uint statusId, int minStacks)
+            => Single(StatusStacks(statusId, minStacks));
+
+        public static Condition StatusStacks(uint statusId, int stacks, string op = ">=") {
+            return new Condition {
                 TypeId = Registry.GetId<StatusStacksCD>(),
                 Params = new Dictionary<string, object> {
                     ["ids"] = new List<object> { (long)statusId },
-                    ["minStacks"] = minStacks,
-                }
+                    ["minStacks"] = stacks,
+                    ["op"] = op,
+                },
             };
-
-            return Single(cond);
         }
 
         public static ConditionSet SingleStatus(uint statusId, bool inverse = false)
@@ -88,6 +90,96 @@ public partial class Configuration {
             };
 
             return Single(cond);
+        }
+
+        public static ConditionSet All(params Condition[] conditions) {
+            return new ConditionSet {
+                CombineMode = ConditionCombineMode.All,
+                Groups =
+                [
+                    new ConditionGroup {
+                        CombineMode = ConditionCombineMode.All,
+                        Conditions = [.. conditions],
+                    }
+                ],
+            };
+        }
+
+        public static ConditionSet Any(params Condition[] conditions) {
+            return new ConditionSet {
+                CombineMode = ConditionCombineMode.All,
+                Groups =
+                [
+                    new ConditionGroup {
+                        CombineMode = ConditionCombineMode.Any,
+                        Conditions = [.. conditions],
+                    }
+                ],
+            };
+        }
+
+        public static Condition Gp(int value, string op = ">=") {
+            var dict = new IConditionDefinition.IntCompareParams(value, op, false).ToParams();
+            return new Condition {
+                TypeId = Registry.GetId<GpCD>(),
+                Params = dict,
+            };
+        }
+
+        public static Condition ItemCooldownReady(uint itemId) {
+            return new Condition {
+                TypeId = Registry.GetId<ActionCooldownCD>(),
+                Params = new Dictionary<string, object> {
+                    ["id"] = (long)itemId,
+                    ["type"] = 1L,
+                    ["sec"] = 0L,
+                    ["op"] = "<=",
+                },
+            };
+        }
+
+        /// <summary>True when the action still has remaining cooldown (e.g. Mooch II on CD).</summary>
+        public static Condition ActionOnCooldown(uint actionId, int minSecondsRemaining = 1) {
+            return new Condition {
+                TypeId = Registry.GetId<ActionCooldownCD>(),
+                Params = new Dictionary<string, object> {
+                    ["id"] = (long)actionId,
+                    ["type"] = 0L,
+                    ["sec"] = (long)minSecondsRemaining,
+                    ["op"] = ">=",
+                },
+            };
+        }
+
+        public static Condition IntuitionActive(bool inverse = false) {
+            var cond = new Condition {
+                TypeId = Registry.GetId<IntuitionActiveCD>(),
+                Params = [],
+            };
+            if (inverse)
+                cond.Params["inv"] = true;
+            return cond;
+        }
+
+        public static Condition FishCount(int fishId, int count, string op = ">=") {
+            var dict = new IConditionDefinition.IntCompareParams(count, op, false).ToParams();
+            dict["id"] = (long)fishId;
+            return new Condition {
+                TypeId = Registry.GetId<FishCaughtCounterCD>(),
+                Params = dict,
+            };
+        }
+
+        public static Condition CurrentBait(int baitId, bool inverse = false) {
+            var cond = new Condition {
+                TypeId = Registry.GetId<CurrentBaitCD>(),
+                Params = new Dictionary<string, object> {
+                    ["ids"] = new List<object> { (long)baitId },
+                },
+            };
+            if (inverse)
+                cond.Params["inv"] = true;
+            return cond;
         }
 
         public static Condition StatusActive(uint statusId, bool inverse = false) {

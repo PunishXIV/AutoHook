@@ -79,10 +79,10 @@ public class ExtraTrigger {
             parts.Add(UIStrings.Reset_fish_caught_counter);
 
         if (SwapPreset && !string.IsNullOrEmpty(PresetToSwap) && PresetToSwap != "-")
-            parts.Add($"Swap preset → {PresetToSwap}");
+            parts.Add($"Swap preset -> {PresetToSwap}");
 
         if (SwapBait)
-            parts.Add($"Swap bait → {BaitToSwap.Name}");
+            parts.Add($"Swap bait -> {BaitToSwap.Name}");
 
         if (RemoveStatus && StatusToRemove != 0)
             parts.Add($"Remove {Status.GetRow(StatusToRemove).Name}");

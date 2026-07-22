@@ -55,8 +55,10 @@ public class HookConfig : BaseOption {
             hook.ph.HooksetEnabled = true;
             hook.ph.HooksetType = hookType;
 
-            hook.dh.HooksetEnabled = true;
-            hook.th.HooksetEnabled = true;
+            if (hookset.UseDoubleHook)
+                hook.dh.HooksetEnabled = true;
+            if (hookset.UseTripleHook)
+                hook.th.HooksetEnabled = true;
         }
     }
 
@@ -73,8 +75,18 @@ public class HookConfig : BaseOption {
 
         var maxSec = max + 1;
         var biteTimerId = ConditionRegistry.Registry.GetId<BiteTimerCD>();
-        foreach (var biteCfg in new[] { hook.ph, hook.dh, hook.th })
+        foreach (var biteCfg in HookConfigsForTimer(hookset, hook))
             SetBiteTimerInConditionSet(biteCfg, biteTimerId, min, maxSec);
+    }
+
+    private static IEnumerable<BaseBiteConfig> HookConfigsForTimer(
+        BaseHookset hookset,
+        (BaseBiteConfig th, BaseBiteConfig dh, BaseBiteConfig ph) hook) {
+        yield return hook.ph;
+        if (hookset.UseDoubleHook)
+            yield return hook.dh;
+        if (hookset.UseTripleHook)
+            yield return hook.th;
     }
 
     private static void SetBiteTimerInConditionSet(BaseBiteConfig biteCfg, string biteTimerId, double min, double max) {

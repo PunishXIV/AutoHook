@@ -1,3 +1,4 @@
+using AutoHook.FishSolverIntegration;
 using Dalamud.Bindings.ImGui;
 using Lumina.Excel.Sheets;
 using System.IO;
@@ -18,6 +19,7 @@ public static class GameRes {
     public static List<ImportedFish> ImportedFishes { get; private set; } = [];
     public static List<ImportedFish> SpearfishFishes { get; private set; } = [];
     public static List<uint> FishingStatuses { get; private set; } = [];
+    public static FishSolverBridge FishSolver { get; private set; } = new();
 
     public static void Initialize() {
         FishingStatuses = [.. typeof(IDs.Status).GetFields(BindingFlags.Public | BindingFlags.Static)
@@ -42,6 +44,7 @@ public static class GameRes {
 
             if (File.Exists(fishList)) {
                 ImportedFishes = JsonSerializer.Deserialize<List<ImportedFish>>(File.ReadAllText(fishList))!;
+                FishSolver.EnsureLoaded(fishList);
             }
 
             // fish_list is wrong when it comes to most timeworn maps not being spearfish so build a list of actual spearfish and match fish_list to it

@@ -9,11 +9,6 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using static AutoHook.Data.WorldState;
-using static ECommons.UIHelpers.AddonMasterImplementations.AddonMaster;
-using static FFXIVClientStructs.FFXIV.Client.Graphics.Render.Skeleton;
-using static FFXIVClientStructs.FFXIV.Component.GUI.AtkTimer.Delegates;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AutoHook;
 

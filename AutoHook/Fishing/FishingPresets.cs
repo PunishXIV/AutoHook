@@ -1,5 +1,4 @@
 using AutoHook.Replay;
-using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 
 namespace AutoHook.Fishing;
@@ -36,38 +35,136 @@ public class FishingPresets : BasePreset {
     }
 
     public override void AddNewPreset(string presetName) {
-        var newPreset = new CustomPresetConfig(presetName);
-        CustomPresets.Add(newPreset);
-        InvalidatePresetListCache();
+        Configuration.MutateSerialized(() => {
+            var newPreset = new CustomPresetConfig(presetName);
+            CustomPresets.Add(newPreset);
+            InvalidatePresetListCache();
+        });
         Service.Save();
     }
 
     public override void AddNewPreset(BasePresetConfig preset) {
-        // i needed a way to copy the object without reference, im too dumb to think of another way
-        var json = JsonConvert.SerializeObject(preset);
-        var copy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
-        copy!.UniqueId = Guid.NewGuid();
-        CustomPresets.Add(copy);
-        InvalidatePresetListCache();
+        Configuration.MutateSerialized(() => {
+            // i needed a way to copy the object without reference, im too dumb to think of another way
+            var json = JsonConvert.SerializeObject(preset);
+            var copy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
+            copy!.UniqueId = Guid.NewGuid();
+            CustomPresets.Add(copy);
+            InvalidatePresetListCache();
+        });
         Service.Save();
     }
 
     public override void RemovePreset(Guid value) {
-        var preset = CustomPresets.Find(p => p.UniqueId == value);
-        if (preset == null)
-            return;
+        Configuration.MutateSerialized(() => {
+            var preset = CustomPresets.Find(p => p.UniqueId == value);
+            if (preset == null)
+                return;
 
-        // Remove from any folders
-        foreach (var folder in Folders) {
-            folder.RemovePreset(value);
-        }
+            if (SelectedGuid == value.ToString()) {
+                SelectedGuid = "";
+                Service.Status = string.Empty;
+            }
 
-        CustomPresets.Remove(preset);
-        InvalidatePresetListCache();
+            foreach (var folder in Folders)
+                folder.RemovePreset(value);
+
+            CustomPresets.Remove(preset);
+            InvalidatePresetListCache();
+        });
         Service.Save();
     }
 
     public override void OnSelectedPreset(BasePresetConfig? newPreset, BasePresetConfig? oldPreset) {
+        NotifyPresetSelected(newPreset, oldPreset);
+        Service.Save();
+    }
+
+    public override void SwapIndex(int itemIndex, int targetIndex) {
+        Configuration.MutateSerialized(() => {
+            var moved = CustomPresets[itemIndex];
+            if (moved == null)
+                return;
+
+            CustomPresets.RemoveAt(itemIndex);
+            CustomPresets.Insert(targetIndex, moved);
+            InvalidatePresetListCache();
+        });
+        Service.Save();
+    }
+
+    public void AddNewFolder(string folderName) {
+        Configuration.MutateSerialized(() => Folders.Add(new PresetFolder(folderName)));
+        Service.Save();
+    }
+
+    public void AddNewFolder(string folderName, Guid? parentFolderId) {
+        Configuration.MutateSerialized(() => {
+            Folders.Add(new PresetFolder(folderName) {
+                ParentFolderId = parentFolderId,
+            });
+        });
+        Service.Save();
+    }
+
+    public void RemoveFolder(Guid folderId) {
+        Configuration.MutateSerialized(() => {
+            var folder = Folders.Find(f => f.UniqueId == folderId);
+            if (folder != null)
+                Folders.Remove(folder);
+        });
+        Service.Save();
+    }
+
+    private void RemoveFolderWithContentsRecursive(PresetFolder folder) {
+        var childFolders = Folders.Where(f => f.ParentFolderId == folder.UniqueId).ToList();
+        foreach (var child in childFolders)
+            RemoveFolderWithContentsRecursive(child);
+
+        foreach (var presetId in folder.PresetIds.ToList()) {
+            var preset = CustomPresets.Find(p => p.UniqueId == presetId);
+            if (preset != null) {
+                if (SelectedGuid == presetId.ToString()) {
+                    SelectedGuid = "";
+                    Service.Status = string.Empty;
+                }
+                CustomPresets.Remove(preset);
+            }
+            folder.RemovePreset(presetId);
+        }
+
+        Folders.Remove(folder);
+        InvalidatePresetListCache();
+    }
+
+    public void RemoveFolderWithContents(Guid folderId) {
+        Configuration.MutateSerialized(() => {
+            var folder = Folders.Find(f => f.UniqueId == folderId);
+            if (folder != null)
+                RemoveFolderWithContentsRecursive(folder);
+        });
+        Service.Save();
+    }
+
+    public void RegisterPreset(CustomPresetConfig preset, bool select = true) {
+        CustomPresetConfig? oldPreset = null;
+        Configuration.MutateSerialized(() => {
+            oldPreset = SelectedPreset;
+            CustomPresets.Add(preset);
+            InvalidatePresetListCache();
+            if (select) {
+                SelectedGuid = preset.UniqueId.ToString();
+                Service.Status = string.Empty;
+            }
+        });
+
+        if (select)
+            NotifyPresetSelected(preset, oldPreset);
+
+        Service.Save();
+    }
+
+    private void NotifyPresetSelected(BasePresetConfig? newPreset, BasePresetConfig? oldPreset) {
         if (oldPreset is CustomPresetConfig old)
             old.TryResetCounter();
 
@@ -76,72 +173,12 @@ public class FishingPresets : BasePreset {
         if (from != to) {
             DecisionLog.Start("Preset Switch", to)
                 .About($"Reason: {_selectReason ?? ReasonManual}")
-                .Chose($"{from} → {to}");
+                .Chose($"{from} -> {to}");
         }
 
         if (newPreset is CustomPresetConfig { ListOfFish: var fishCaught } && fishCaught.Any(c => c.Fish.IsLocked)) {
             Svc.Chat.PrintError($"[AutoHook] Unable to catch one or more fish under Fish Caught. Folklore tome not unlocked.");
         }
-
-        Service.Save();
-    }
-
-    public override void SwapIndex(int itemIndex, int targetIndex) {
-        var moved = CustomPresets[itemIndex];
-
-        if (moved == null)
-            return;
-
-        RemovePreset(moved.UniqueId);
-        CustomPresets.Insert(targetIndex, moved);
-        InvalidatePresetListCache();
-        Service.Save();
-    }
-
-    public void AddNewFolder(string folderName) {
-        var newFolder = new PresetFolder(folderName);
-        Folders.Add(newFolder);
-        Service.Save();
-    }
-
-    public void AddNewFolder(string folderName, Guid? parentFolderId) {
-        var newFolder = new PresetFolder(folderName) {
-            ParentFolderId = parentFolderId
-        };
-        Folders.Add(newFolder);
-        Service.Save();
-    }
-
-    public void RemoveFolder(Guid folderId) {
-        var folder = Folders.Find(f => f.UniqueId == folderId);
-        if (folder == null)
-            return;
-
-        Folders.Remove(folder);
-        Service.Save();
-    }
-
-    public void RemoveFolderWithContents(Guid folderId) {
-        var folder = Folders.Find(f => f.UniqueId == folderId);
-        if (folder == null)
-            return;
-
-        RemoveFolderWithContentsRecursive(folder);
-        Service.Save();
-    }
-
-    private void RemoveFolderWithContentsRecursive(PresetFolder folder) {
-        // Remove child folders first
-        var childFolders = Folders.Where(f => f.ParentFolderId == folder.UniqueId).ToList();
-        foreach (var child in childFolders)
-            RemoveFolderWithContentsRecursive(child);
-
-        // Remove presets contained in this folder
-        foreach (var presetId in folder.PresetIds.ToList())
-            RemovePreset(presetId);
-
-        // Finally remove this folder
-        Folders.Remove(folder);
     }
 
     public bool IsPresetInAnyFolder(Guid presetId) {

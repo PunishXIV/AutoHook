@@ -47,8 +47,9 @@ public class TabFishingPresets : BaseTab {
 
     private void DrawPresetGenTab() {
         using var id = ImRaii.PushId(@"PresetGen");
-        ImGui.SetNextItemWidth(500.Scaled());
-        if (ImGui.Begin(UIStrings.PresetGen, ref OpenPresetGen, ImGuiWindowFlags.AlwaysUseWindowPadding))
+        ImGui.SetNextWindowSize(new Vector2(420.Scaled(), 0), ImGuiCond.FirstUseEver);
+        ImGui.SetNextWindowSizeConstraints(new Vector2(360.Scaled(), 180.Scaled()), new Vector2(480.Scaled(), 720.Scaled()));
+        if (ImGui.Begin(UIStrings.PresetGen, ref OpenPresetGen, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.AlwaysUseWindowPadding))
             PresetCreator.DrawPresetGenerator();
 
         ImGui.End();

@@ -25,6 +25,7 @@
         <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
         <PackageReference Include="NotificationMasterAPI" Version="1.0.0.1" />
         <ProjectReference Include="..\PunishLib\PunishLib\PunishLib.csproj" />
+        <ProjectReference Include="..\AutoHook.FishSolver\AutoHook.FishSolver.csproj" />
     </ItemGroup>
 
     <ItemGroup>

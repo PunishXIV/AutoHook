@@ -196,15 +196,22 @@ def main():
     print(f"Fetched GatherBuddy spearfish mappings for {len(gatherbuddy_spearfish)} fish.")
 
     bite_map = {}
+    bite_map_by_spot = {}
     for r in bite_rows:
         try:
             item = int(r.get("itemId"))
             time = int(r.get("flooredBiteTime"))
             count = int(r.get("occurences"))
+            spot = int(r.get("spot"))
         except Exception:
             continue
         bite_map.setdefault(item, {})
         bite_map[item][time] = bite_map[item].get(time, 0) + count
+        bite_map_by_spot.setdefault(item, {})
+        bite_map_by_spot[item].setdefault(str(spot), {})
+        bite_map_by_spot[item][str(spot)][str(time)] = (
+            bite_map_by_spot[item][str(spot)].get(str(time), 0) + count
+        )
 
     print("Fetching all Allagan reports (single query)...")
     allagan_map = fetch_allagan_reports_all()
@@ -222,6 +229,7 @@ def main():
         times = sorted(int(t) for t in bite_map.get(fish_id, {}).keys())
         bite_time_min = float(times[0]) if times else 0.0
         bite_time_max = float(times[-1]) if times else 0.0
+        bite_histogram = bite_map_by_spot.get(fish_id)
 
         reports = allagan_map.get(fish_id, [])
         is_spearfishing = any(r.get("source") == "SPEARFISHING" for r in reports)
@@ -311,6 +319,9 @@ def main():
             "BiteTimeMin": bite_time_min,
             "BiteTimeMax": bite_time_max,
         }
+
+        if bite_histogram:
+            entry["BiteTimeHistogram"] = bite_histogram
 
         results.append(entry)
 

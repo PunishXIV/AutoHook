@@ -33,7 +33,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v1 → v2: backup only.</summary>
+    /// <summary>v1 -> v2: backup only.</summary>
     private sealed class V2Migration : IConfigMigration {
         public int Version => 2;
 
@@ -46,7 +46,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v2 → v3: now done in ConfigurationJsonMigrator.MigrateV2ToV3Json. No-op here.</summary>
+    /// <summary>v2 -> v3: now done in ConfigurationJsonMigrator.MigrateV2ToV3Json. No-op here.</summary>
     private sealed class V3Migration : IConfigMigration {
         public int Version => 3;
 
@@ -58,7 +58,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v3 → v4: backup then re-save using the new schema.</summary>
+    /// <summary>v3 -> v4: backup then re-save using the new schema.</summary>
     private sealed class V4Migration : IConfigMigration {
         public int Version => 4;
 
@@ -73,7 +73,7 @@ public partial class Configuration {
         }
     }
 
-    /// <summary>v4 → v5: AutoGig preset rename + default preset name update.</summary>
+    /// <summary>v4 -> v5: AutoGig preset rename + default preset name update.</summary>
     private sealed class V5Migration : IConfigMigration {
         public int Version => 5;
 

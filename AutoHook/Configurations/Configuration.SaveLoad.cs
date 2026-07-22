@@ -14,11 +14,26 @@ public partial class Configuration {
     };
 
     private static int _savePending;
+    private static int _saveSuppressionDepth;
     private static Task? _saveTask;
     private static readonly object _lock = new();
     private static readonly object _diskWriteLock = new();
 
     internal static readonly object SerializationSync = new(); // lock for capturing snapshot
+
+    /// <summary>Run config mutations under the same lock used when serializing to disk.</summary>
+    internal static void MutateSerialized(Action action) {
+        lock (SerializationSync)
+            action();
+    }
+
+    /// <summary>Suppresses coalesced saves while bulk-building presets (AddItem/ReplaceBaitConfig call Save).</summary>
+    internal static SaveSuppressionScope SuppressSave() => new();
+
+    internal readonly struct SaveSuppressionScope : IDisposable {
+        public SaveSuppressionScope() => Interlocked.Increment(ref _saveSuppressionDepth);
+        public void Dispose() => Interlocked.Decrement(ref _saveSuppressionDepth);
+    }
 
     public static async Task<Configuration> LoadAsync(CancellationToken cancellationToken = default) {
         try {
@@ -63,6 +78,9 @@ public partial class Configuration {
 
     /// <summary>Queues a coalesced background write of <see cref="Service.Configuration"/>.</summary>
     public static void Save() {
+        if (Volatile.Read(ref _saveSuppressionDepth) > 0)
+            return;
+
         Interlocked.Exchange(ref _savePending, 1);
 
         lock (_lock) {

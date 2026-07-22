@@ -26,7 +26,7 @@ public static class ConfigurationJsonMigrator {
         if (version >= Configuration.LatestVersion)
             return json;
 
-        // v2 → v3: convert BaitPresetList into HookPresets.CustomPresets
+        // v2 -> v3: convert BaitPresetList into HookPresets.CustomPresets
         if (version < 3) {
             MigrateV2ToV3Json(root);
             root["Version"] = 3;
@@ -45,7 +45,7 @@ public static class ConfigurationJsonMigrator {
             version = (int?)(root["Version"] ?? 5) ?? 5;
         }
 
-        // v5 → v6: JSON-based, converting all trigger based bools into ConditionSets
+        // v5 -> v6: JSON-based, converting all trigger based bools into ConditionSets
         if (version < 6) {
             if (!string.IsNullOrEmpty(configDirectory))
                 WriteV5Backup(configDirectory, root);
@@ -54,7 +54,7 @@ public static class ConfigurationJsonMigrator {
             version = 6;
         }
 
-        // v6 → v7: swimbait count thresholds, spareful hand swimbait limits, surface slap / identical cast enabled
+        // v6 -> v7: swimbait count thresholds, spareful hand swimbait limits, surface slap / identical cast enabled
         if (version < Configuration.LatestVersion) {
             MigrateV7(root);
             root["Version"] = Configuration.LatestVersion;

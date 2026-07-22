@@ -170,7 +170,6 @@ public class AutoHookIPC {
     }
 
     private static void WriteConfig(Action action) {
-        lock (Configuration.SerializationSync)
-            action();
+        Configuration.MutateSerialized(action);
     }
 }

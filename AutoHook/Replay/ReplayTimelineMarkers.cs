@@ -26,7 +26,7 @@ public static class ReplayTimelineMarkers {
                     markers.Add(new(op.Timestamp, 0xff0000ff, "Session end"));
                     break;
                 case WorldState.OpDecision d when HasTimelineMarker(d): {
-                        var label = $"Decision: {d.Context} → {d.Action}";
+                        var label = $"Decision: {d.Context} -> {d.Action}";
                         if (!string.IsNullOrEmpty(d.Detail))
                             label += $" [{d.Detail}]";
                         if (!string.IsNullOrEmpty(d.PresetName))
