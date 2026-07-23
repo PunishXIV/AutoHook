@@ -1,6 +1,9 @@
+using System.ComponentModel;
+
 namespace AutoHook.Classes.AutoCasts;
 
 public sealed class AutoBigGameFishing : BaseActionCast {
+    [DefaultValue(2)]
     public int AnglersStacks = 2;
 
     public AutoBigGameFishing() : base(IDs.Actions.BigGameFishing) { }
@@ -27,6 +30,7 @@ public sealed class AutoBigGameFishing : BaseActionCast {
         DrawAutoCastConditions();
     };
 
+    [DefaultValue(18)]
     public override int Priority { get; set; } = 18;
     public override bool IsExcludedPriority { get; set; } = false;
 }

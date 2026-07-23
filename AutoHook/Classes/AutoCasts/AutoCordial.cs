@@ -1,6 +1,7 @@
 using AutoHook.Conditions;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
@@ -102,6 +103,7 @@ public sealed class AutoCordial : BaseActionCast {
         }
     };
 
+    [DefaultValue(4)]
     public override int Priority { get; set; } = 4;
     public override bool IsExcludedPriority { get; set; } = false;
 }

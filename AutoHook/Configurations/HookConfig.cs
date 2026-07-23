@@ -2,6 +2,7 @@ using AutoHook.Conditions;
 using AutoHook.Conditions.Definitions;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace AutoHook.Configurations;
 
@@ -11,6 +12,7 @@ public class SwimbaitConfig {
 }
 
 public class HookConfig : BaseOption {
+    [DefaultValue(true)]
     public bool Enabled = true;
 
     public BaitFishClass BaitFish = new();
@@ -23,6 +25,8 @@ public class HookConfig : BaseOption {
     public NotificationConfig NotifyOnSuccess { get; set; } = new();
 
     public bool StopAfterResetCount;
+
+    [DefaultValue(FishingSteps.None)]
     public FishingSteps StopFishingStep = FishingSteps.None;
 
     [JsonProperty("StopConditionSet")]

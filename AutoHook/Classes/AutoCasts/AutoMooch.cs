@@ -1,4 +1,5 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
@@ -40,6 +41,8 @@ public sealed class AutoMooch : BaseActionCast {
         DrawAutoCastConditions();
     };
 
+    [DefaultValue(10)]
     public override int Priority { get; set; } = 10;
+    [DefaultValue(true)]
     public override bool IsExcludedPriority { get; set; } = true;
 }

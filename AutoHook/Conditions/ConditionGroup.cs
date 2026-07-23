@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace AutoHook.Conditions;
 
@@ -12,6 +13,7 @@ public class ConditionGroup {
 
     // false = skipped in eval (toggle without deleting).
     [JsonProperty("a")]
+    [DefaultValue(true)]
     public bool Enabled { get; set; } = true;
 
     public bool Evaluate(WorldState world, ConditionRegistry registry) {

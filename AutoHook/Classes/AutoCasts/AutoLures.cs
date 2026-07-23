@@ -2,10 +2,12 @@ using Dalamud.Bindings.ImGui;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
 public sealed class AutoLures : BaseActionCast {
+    [DefaultValue(3)]
     public int LureStacks = 3;
     public bool CancelAttempt;
 
@@ -96,5 +98,6 @@ public sealed class AutoLures : BaseActionCast {
     }
 
     public override int Priority { get; set; } = 0;
+    [DefaultValue(true)]
     public override bool IsExcludedPriority { get; set; } = true;
 }

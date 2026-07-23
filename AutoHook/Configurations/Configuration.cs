@@ -86,15 +86,20 @@ public partial class Configuration : IPluginConfiguration {
         HookPresets.DefaultPreset.ListOfMooch.Add(new HookConfig(mooch));
     }
 
+    private static readonly JsonSerializerSettings NewExportSettings = new() {
+        DefaultValueHandling = DefaultValueHandling.Ignore,
+        NullValueHandling = NullValueHandling.Ignore
+    };
+
     // Got the export/import function from the UnknownX7's ReAction repo
     public static string ExportPreset(BasePresetConfig preset) {
-        var exported = CompressString(JsonConvert.SerializeObject(preset, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Include }));
+        var exported = CompressString(JsonConvert.SerializeObject(preset, NewExportSettings), true);
 
         // check if preset is type of AutoGigConfig or CustomPresetConfig
         if (preset is AutoGigConfig)
-            return ExportPrefixSf + exported;
+            return ExportPrefixSf2 + exported;
         else if (preset is CustomPresetConfig)
-            return ExportPrefixV6 + exported;
+            return ExportPrefixV7 + exported;
 
         return "Something went wrong while exporting the preset";
     }
@@ -108,9 +113,9 @@ public partial class Configuration : IPluginConfiguration {
     public static string ExportFolder(PresetFolder folder, List<CustomPresetConfig> presets, List<PresetFolder> allFolders) {
         var folderExport = BuildFolderExport(folder, presets, allFolders);
 
-        var exported = CompressString(JsonConvert.SerializeObject(folderExport, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Include }));
+        var exported = CompressString(JsonConvert.SerializeObject(folderExport, NewExportSettings), true);
 
-        return ExportPrefixFolder + exported;
+        return ExportPrefixFolderV2 + exported;
     }
 
     private static FolderExport BuildFolderExport(PresetFolder folder, List<CustomPresetConfig> presets, List<PresetFolder> allFolders) {
@@ -138,7 +143,7 @@ public partial class Configuration : IPluginConfiguration {
 
     public static (PresetFolder Folder, List<PresetFolder> Folders, List<CustomPresetConfig> Presets)? ImportFolder(string import) {
         import = import.Trim();
-        if (!import.StartsWith(ExportPrefixFolder))
+        if (!import.StartsWith(ExportPrefixFolder) && !import.StartsWith(ExportPrefixFolderV2))
             return null;
 
         try {
@@ -193,7 +198,7 @@ public partial class Configuration : IPluginConfiguration {
             return old == null ? null : LegacyPresetMapper.ConvertOldPresetV3(old);
         }
 
-        if (import.StartsWith(ExportPrefixSf))
+        if (import.StartsWith(ExportPrefixSf) || import.StartsWith(ExportPrefixSf2))
             return DeserializePresetImport<AutoGigConfig>(json);
 
         json = ConfigurationJsonMigrator.MigrateImportedPreset(json);
@@ -204,41 +209,59 @@ public partial class Configuration : IPluginConfiguration {
     [NonSerialized] public const string ExportPrefixV3 = "AH3_";
     [NonSerialized] public const string ExportPrefixV4 = "AH4_";
     [NonSerialized] public const string ExportPrefixV6 = "AH6_";
+    [NonSerialized] public const string ExportPrefixV7 = "AH7_";
     [NonSerialized] public const string ExportPrefixSf = "AHSF1_";
+    [NonSerialized] public const string ExportPrefixSf2 = "AHSF2_";
     [NonSerialized] public const string ExportPrefixFolder = "AHFOLDER_";
+    [NonSerialized] public const string ExportPrefixFolderV2 = "AHFOLDER2_";
 
     [NonSerialized]
-    public static readonly IReadOnlyList<string> ExportPrefixes =
+    public static readonly IReadOnlyList<string> OldExportPrefixes =
     [
         ExportPrefixV2,
         ExportPrefixV3,
         ExportPrefixV4,
         ExportPrefixV6,
+        ExportPrefixV7,
         ExportPrefixSf,
-        ExportPrefixFolder
+        ExportPrefixSf2,
+        ExportPrefixFolder,
+        ExportPrefixFolderV2
     ];
 
-    public static string CompressString(string s) {
+    [NonSerialized]
+    private static readonly IReadOnlyList<string> ExportPrefixes =
+    [
+        ExportPrefixV7,
+        ExportPrefixSf2,
+        ExportPrefixFolderV2
+    ];
+
+    public static string CompressString(string s, bool useBrotli = false) {
         var bytes = Encoding.UTF8.GetBytes(s);
         using var ms = new MemoryStream();
-        using (var gs = new GZipStream(ms, CompressionMode.Compress))
-            gs.Write(bytes, 0, bytes.Length);
+        using (Stream compressor = useBrotli
+                   ? new BrotliStream(ms, CompressionMode.Compress)
+                   : new GZipStream(ms, CompressionMode.Compress))
+            compressor.Write(bytes, 0, bytes.Length);
 
         return Convert.ToBase64String(ms.ToArray());
     }
 
     public static string DecompressString(string s) {
         s = s.Trim();
-        if (!ExportPrefixes.Any(s.StartsWith))
+        if (!OldExportPrefixes.Any(s.StartsWith))
             throw new ApplicationException(UIStrings.DecompressString_Invalid_Import);
 
-        var prefix = ExportPrefixes.First(s.StartsWith);
+        var prefix = OldExportPrefixes.First(s.StartsWith);
         var data = Convert.FromBase64String(s[prefix.Length..].Trim());
 
         using var ms = new MemoryStream(data);
-        using var gzip = new GZipStream(ms, CompressionMode.Decompress);
+        using Stream decompressor = ExportPrefixes.Contains(prefix)
+            ? new BrotliStream(ms, CompressionMode.Decompress)
+            : new GZipStream(ms, CompressionMode.Decompress);
         using var result = new MemoryStream();
-        gzip.CopyTo(result);
+        decompressor.CopyTo(result);
         return Encoding.UTF8.GetString(result.ToArray());
     }
 

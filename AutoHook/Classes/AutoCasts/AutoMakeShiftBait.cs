@@ -1,8 +1,11 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 
+using System.ComponentModel;
+
 namespace AutoHook.Classes.AutoCasts;
 
 public sealed class AutoMakeShiftBait : BaseActionCast {
+    [DefaultValue(5)]
     public int MakeshiftBaitStacks = 5;
 
     public override bool RequiresTimeWindow() => true;
@@ -36,6 +39,7 @@ public sealed class AutoMakeShiftBait : BaseActionCast {
         DrawAutoCastConditions();
     };
 
+    [DefaultValue(9)]
     public override int Priority { get; set; } = 9;
     public override bool IsExcludedPriority { get; set; } = false;
 }

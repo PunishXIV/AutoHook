@@ -1,4 +1,5 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
@@ -26,6 +27,7 @@ public sealed class AutoPrizeCatch : BaseActionCast {
 
     protected override DrawOptionsDelegate DrawOptions => () => DrawAutoCastConditions();
 
+    [DefaultValue(13)]
     public override int Priority { get; set; } = 13;
     public override bool IsExcludedPriority { get; set; } = false;
 }

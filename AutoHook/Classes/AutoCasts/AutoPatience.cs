@@ -1,5 +1,6 @@
 using Dalamud.Bindings.ImGui;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
@@ -49,6 +50,7 @@ public sealed class AutoPatience : BaseActionCast {
         DrawAutoCastConditions();
     };
 
+    [DefaultValue(12)]
     public override int Priority { get; set; } = 12;
     public override bool IsExcludedPriority { get; set; } = false;
 }

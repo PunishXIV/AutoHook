@@ -3,10 +3,12 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
+using System.ComponentModel;
 
 namespace AutoHook.Classes;
 
 public class BaseBiteConfig(HookType type) {
+    [DefaultValue(true)]
     public bool HooksetEnabled = true;
 
     public bool EnableHooksetSwap;

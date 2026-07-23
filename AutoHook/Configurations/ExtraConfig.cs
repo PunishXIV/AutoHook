@@ -2,6 +2,7 @@ using AutoHook.Conditions;
 using AutoHook.Conditions.Definitions;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Threading;
 using AhCondition = AutoHook.Conditions.Condition;
 
@@ -17,6 +18,7 @@ public class ExtraTrigger {
     [JsonIgnore]
     private static int _nextUiId = 1;
 
+    [DefaultValue(true)]
     public bool Enabled { get; set; } = true;
 
     [JsonIgnore]
@@ -25,6 +27,8 @@ public class ExtraTrigger {
     public ConditionSet? ConditionSet { get; set; }
 
     public bool SwapPreset { get; set; }
+
+    [DefaultValue("-")]
     public string PresetToSwap { get; set; } = @"-";
 
     public bool SwapBait { get; set; }
@@ -183,6 +187,8 @@ public class ExtraConfig : BaseOption {
     public uint AutoOceanFishSpotId;
     public uint AutoOceanFishTimeId;
     public ConditionSet? AutoOceanFishConditionSet;
+
+    [DefaultValue(OceanFishGoalKind.Points)]
     public OceanFishGoalKind AutoOceanFishGoal = OceanFishGoalKind.Points;
     public uint AutoOceanFishGoalId;
 
