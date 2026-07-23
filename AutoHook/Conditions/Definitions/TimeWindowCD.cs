@@ -103,7 +103,7 @@ public sealed class TimeWindowCD : SnapshottableConditionDefinition, ISimpleCond
     public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
         var (start, end) = GetTimeWindowFromParams(parameters);
         if (start == default && end == default)
-            return "no window";
+            return "all day";
         return $"{start:HH:mm}–{end:HH:mm}";
     }
 }
