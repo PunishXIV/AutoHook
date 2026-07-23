@@ -92,7 +92,7 @@ public static class WikiPresets {
     }
 
     static Regex BuildPresetBlockRegex() {
-        var prefixPattern = string.Join("|", Configuration.OldExportPrefixes.OrderByDescending(p => p.Length).Select(Regex.Escape));
+        var prefixPattern = string.Join("|", Configuration.ExportPrefixes.OrderByDescending(p => p.Length).Select(Regex.Escape));
         return new Regex($@"```\s*((?:{prefixPattern})[\s\S]*?)\s*```", RegexOptions.Multiline | RegexOptions.Compiled);
     }
 }

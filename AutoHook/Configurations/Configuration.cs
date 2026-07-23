@@ -216,7 +216,7 @@ public partial class Configuration : IPluginConfiguration {
     [NonSerialized] public const string ExportPrefixFolderV2 = "AHFOLDER2_";
 
     [NonSerialized]
-    public static readonly IReadOnlyList<string> OldExportPrefixes =
+    public static readonly IReadOnlyList<string> ExportPrefixes =
     [
         ExportPrefixV2,
         ExportPrefixV3,
@@ -230,7 +230,7 @@ public partial class Configuration : IPluginConfiguration {
     ];
 
     [NonSerialized]
-    private static readonly IReadOnlyList<string> ExportPrefixes =
+    private static readonly IReadOnlyList<string> BroccoliExportPrefixes =
     [
         ExportPrefixV7,
         ExportPrefixSf2,
@@ -250,14 +250,14 @@ public partial class Configuration : IPluginConfiguration {
 
     public static string DecompressString(string s) {
         s = s.Trim();
-        if (!OldExportPrefixes.Any(s.StartsWith))
+        if (!ExportPrefixes.Any(s.StartsWith))
             throw new ApplicationException(UIStrings.DecompressString_Invalid_Import);
 
-        var prefix = OldExportPrefixes.First(s.StartsWith);
+        var prefix = ExportPrefixes.First(s.StartsWith);
         var data = Convert.FromBase64String(s[prefix.Length..].Trim());
 
         using var ms = new MemoryStream(data);
-        using Stream decompressor = ExportPrefixes.Contains(prefix)
+        using Stream decompressor = BroccoliExportPrefixes.Contains(prefix)
             ? new BrotliStream(ms, CompressionMode.Decompress)
             : new GZipStream(ms, CompressionMode.Decompress);
         using var result = new MemoryStream();
