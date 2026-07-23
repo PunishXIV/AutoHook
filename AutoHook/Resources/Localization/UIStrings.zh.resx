@@ -944,6 +944,12 @@
   <data name="CollectHelpText" xml:space="preserve">
     <value>开始钓鱼时自动开启收藏品采集</value>
   </data>
+  <data name="Snagging" xml:space="preserve">
+    <value>钓组</value>
+  </data>
+  <data name="SnaggingHelpText" xml:space="preserve">
+    <value>开始钓鱼时自动激活钓组</value>
+  </data>
   <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
     <value>当buff计时器小于或等于.. 时刷新</value>
   </data>
@@ -1059,7 +1065,10 @@
     <value>钓鱼时不会进入挂机状态</value>
   </data>
   <data name="AutoStartFishing" xml:space="preserve">
-    <value>当你没钓鱼时自动给你抛出浮漂</value>
+    <value>当你没钓鱼时自动抛杆</value>
+  </data>
+  <data name="AutoStartFishingHelpText" xml:space="preserve">
+    <value>非钓鱼状态下自动抛杆。如果你一直开着AutoHook，就把这个关掉。</value>
   </data>
   <data name="SwapTreeNodeButtons" xml:space="preserve">
     <value>树形设置UI↔按钮设置UI</value>
@@ -1271,6 +1280,9 @@
   <data name="SparefulHand" xml:space="preserve">
     <value>熟练妙招</value>
   </data>
+  <data name="SparefulHand_Settings" xml:space="preserve">
+    <value>熟练妙招设置</value>
+  </data>
   <data name="SparefulHand_HelpText" xml:space="preserve">
     <value></value>
   </data>
@@ -1442,6 +1454,9 @@
   <data name="Status_PrizeCatchNotRequired" xml:space="preserve">
     <value>跳过咬钩 - 大鱼猎手已激活，但提钩无需其激活</value>
   </data>
+  <data name="Multihook_Options" xml:space="preserve">
+    <value>加钩设置</value>
+  </data>
   <data name="StellarHookset" xml:space="preserve">
     <value>Stellar Hookset</value>
   </data>
@@ -1503,6 +1518,21 @@
   </data>
   <data name="GPlabel" xml:space="preserve">
     <value>采集力</value>
+  </data>
+  <data name="Dtr_Show" xml:space="preserve">
+    <value>在Dtr状态栏中显示</value>
+  </data>
+  <data name="Dtr_Show_Preset" xml:space="preserve">
+    <value>将当前预设显示在Dtr状态栏中</value>
+  </data>
+  <data name="Dtr_Help" xml:space="preserve">
+    <value>Dtr显示项的顺序可以在卫月设置中调整。</value>
+  </data>
+  <data name="Multihook" xml:space="preserve">
+    <value>加钩</value>
+  </data>
+  <data name="Use_Multihook" xml:space="preserve">
+    <value>使用加钩</value>
   </data>
   <data name="Multihook_Settings" xml:space="preserve">
     <value>加钩设置</value>

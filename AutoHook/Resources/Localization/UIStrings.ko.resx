@@ -145,10 +145,10 @@
     <value>마지막으로 잡은 물고기 추가하기:</value>
   </data>
   <data name="ExportPresetToClipboard" xml:space="preserve">
-    <value>클립보드에 해당 사전 설정 내보내기.</value>
+    <value>클립보드에 프리셋을 복사.</value>
   </data>
   <data name="PresetExportedToTheClipboard" xml:space="preserve">
-    <value>해당 사전 설정은 클립보드로 내보냈습니다</value>
+    <value>클립보드에 프리셋을 복사했습니다</value>
   </data>
   <data name="APresetWithTheSameNameAlreadyExists" xml:space="preserve">
     <value>같은 이름의 프리셋이 이미 존재합니다</value>
