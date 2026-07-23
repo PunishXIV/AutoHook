@@ -17,8 +17,6 @@ namespace AutoHook;
  * stop movement while fishing
  * auto extract materia
  * move around to reduce fish weary
- * BUGS:
- * start fishing rule doesn't seem to work?
  */
 
 public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPlugin {
