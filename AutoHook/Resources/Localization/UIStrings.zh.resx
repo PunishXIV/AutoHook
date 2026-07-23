@@ -944,6 +944,12 @@
   <data name="CollectHelpText" xml:space="preserve">
     <value>开始钓鱼时自动开启收藏品采集</value>
   </data>
+  <data name="Snagging" xml:space="preserve">
+    <value>钓组</value>
+  </data>
+  <data name="SnaggingHelpText" xml:space="preserve">
+    <value>开始钓鱼时自动激活钓组</value>
+  </data>
   <data name="RefreshWhenTimeIsLessThanOrEqual" xml:space="preserve">
     <value>当buff计时器小于或等于.. 时刷新</value>
   </data>
@@ -1503,6 +1509,12 @@
   </data>
   <data name="GPlabel" xml:space="preserve">
     <value>采集力</value>
+  </data>
+  <data name="Dtr_Show" xml:space="preserve">
+    <value>在Dtr状态栏中显示</value>
+  </data>
+  <data name="Dtr_Show_Preset" xml:space="preserve">
+    <value>将当前预设显示在Dtr状态栏中</value>
   </data>
   <data name="Multihook_Settings" xml:space="preserve">
     <value>加钩设置</value>
