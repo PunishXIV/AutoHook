@@ -192,7 +192,7 @@ public class SubTabExtra {
             trig.EnsureUiId();
             using var id = ImRaii.PushId(trig.UiId);
 
-            var headerLabel = trig.GetTriggerHeaderLabel(i);
+            var headerLabel = trig.GetRuleLabel(i);
             var enabled = trig.Enabled;
             var forceOpen = i == newlyAddedIndex;
             var removed = false;

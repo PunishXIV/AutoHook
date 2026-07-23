@@ -53,16 +53,8 @@ public class ExtraTrigger {
 
     public string GetRuleLabel(int index) {
         var summary = SummarizeTrigger();
-        return string.IsNullOrEmpty(summary)
-            ? $"Rule {index + 1}"
-            : $"Rule {index + 1}: {summary}";
+        return string.IsNullOrEmpty(summary) ? $"Rule {index + 1}" : $"Rule {index + 1}: {summary}";
     }
-
-    public string GetTriggerHeaderLabel(int index) {
-        var summary = SummarizeTrigger();
-        return string.IsNullOrEmpty(summary) ? $"Rule {index + 1}" : $"Rule {index + 1} – {summary}";
-    }
-
     public string DescribeActions() {
         var parts = new List<string>();
 
