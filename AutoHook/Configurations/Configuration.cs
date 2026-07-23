@@ -241,7 +241,7 @@ public partial class Configuration : IPluginConfiguration {
         var bytes = Encoding.UTF8.GetBytes(s);
         using var ms = new MemoryStream();
         using (Stream compressor = useBrotli
-                   ? new BrotliStream(ms, CompressionMode.Compress)
+                   ? new BrotliStream(ms, CompressionLevel.SmallestSize)
                    : new GZipStream(ms, CompressionMode.Compress))
             compressor.Write(bytes, 0, bytes.Length);
 
