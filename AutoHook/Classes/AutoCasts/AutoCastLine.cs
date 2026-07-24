@@ -1,6 +1,9 @@
+using System.ComponentModel;
+
 namespace AutoHook.Classes.AutoCasts;
 
 public sealed class AutoCastLine : BaseActionCast {
+    [DefaultValue(true)]
     public bool IgnoreMooch = true;
 
     public override bool DoesCancelMooch() => !IgnoreMooch;
@@ -16,6 +19,7 @@ public sealed class AutoCastLine : BaseActionCast {
 
     public override int Priority { get; set; } = 0;
 
+    [DefaultValue(true)]
     public override bool IsExcludedPriority { get; set; } = true;
 
     public override bool CastCondition() => EvaluateConditionSet();

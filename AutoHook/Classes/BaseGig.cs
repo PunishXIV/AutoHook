@@ -1,8 +1,10 @@
 using AutoHook.Spearfishing.Enums;
+using System.ComponentModel;
 
 namespace AutoHook.Classes;
 
 public class BaseGig(int itemId) : BaseOption {
+    [DefaultValue(true)]
     public bool Enabled = true;
 
     private int _itemId = itemId;

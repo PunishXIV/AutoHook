@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace AutoHook.Classes.AutoCasts;
 
 public sealed class AutoChum : BaseActionCast {
@@ -13,6 +15,7 @@ public sealed class AutoChum : BaseActionCast {
 
     protected override DrawOptionsDelegate DrawOptions => () => DrawAutoCastConditions();
 
+    [DefaultValue(1)]
     public override int Priority { get; set; } = 1;
     public override bool IsExcludedPriority { get; set; } = false;
 }

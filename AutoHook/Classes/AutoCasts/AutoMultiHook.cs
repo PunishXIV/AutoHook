@@ -1,4 +1,5 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
@@ -8,6 +9,7 @@ public sealed class AutoMultiHook : BaseActionCast {
     public override string GetName() => UIStrings.Multihook;
 
     public override int Priority { get; set; } = 0;
+    [DefaultValue(true)]
     public override bool IsExcludedPriority { get; set; } = true;
 
     public override bool CastCondition() {

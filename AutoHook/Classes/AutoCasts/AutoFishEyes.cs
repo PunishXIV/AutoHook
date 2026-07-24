@@ -1,8 +1,10 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
 public sealed class AutoFishEyes : BaseActionCast {
+    [DefaultValue(6)]
     public override int Priority { get; set; } = 6;
     public override bool IsExcludedPriority { get; set; } = false;
 

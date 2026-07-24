@@ -2,12 +2,14 @@ using AutoHook.Conditions;
 using AutoHook.Conditions.Definitions;
 using AutoHook.Replay;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace AutoHook.Configurations;
 
 public class AutoCastsConfig {
     public bool EnableAll = false;
 
+    [DefaultValue(true)]
     public bool DontCancelMooch = true;
 
     public bool RecastAnimationCancel;

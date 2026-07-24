@@ -1,10 +1,12 @@
 using AutoHook.Conditions;
 using AutoHook.Conditions.Definitions;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace AutoHook.Configurations;
 
 public class FishConfig : BaseOption {
+    [DefaultValue(true)]
     public bool Enabled = true;
 
     public ConditionSet? IgnoreConditionSet { get; set; }
@@ -23,10 +25,12 @@ public class FishConfig : BaseOption {
     public BaitFishClass BaitToSwap = new();
     public bool SwapBaitResetCount = false;
 
+    [DefaultValue("-")]
     public string PresetToSwap = "-";
 
     public bool NeverMooch = false;
 
+    [DefaultValue(FishingSteps.None)]
     public FishingSteps StopFishingStep = FishingSteps.None;
 
     public FishConfig() { }

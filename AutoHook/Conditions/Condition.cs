@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Threading;
 
 namespace AutoHook.Conditions;
@@ -19,6 +20,7 @@ public class Condition {
 
     // false = skipped in eval (toggle without deleting).
     [JsonProperty("e")]
+    [DefaultValue(true)]
     public bool Enabled { get; set; } = true;
 
     // ui: stable imgui id so open/closed state doesn't reuse across recreate.

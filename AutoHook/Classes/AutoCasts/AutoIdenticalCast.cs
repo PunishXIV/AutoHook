@@ -1,4 +1,5 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.ComponentModel;
 
 namespace AutoHook.Classes.AutoCasts;
 
@@ -15,6 +16,7 @@ public sealed class AutoIdenticalCast : BaseActionCast {
 
     protected override DrawOptionsDelegate DrawOptions => () => DrawAutoCastConditions();
 
+    [DefaultValue(8)]
     public override int Priority { get; set; } = 8;
     public override bool IsExcludedPriority { get; set; } = false;
 }
