@@ -1283,6 +1283,12 @@
   <data name="CancelAttempt" xml:space="preserve">
     <value>스택 한도에 도달했으나 성공하지 못한 경우 낚기 시도 취소</value>
   </data>
+  <data name="ForceAttemptLimit" xml:space="preserve">
+    <value>최대 시도 횟수까지 사용</value>
+  </data>
+  <data name="ForceAttemptLimitHelp" xml:space="preserve">
+    <value>고유 메시지가 출력되어도 최대 시도 횟수에 도달할 때까지 루어를 계속 사용합니다. 예를 들어 최대 중첩 횟수를 3회로 설정한 상태에서, 2중첩에 특수 물고기의 고유 메시지가 출력되어도 최대 중첩인 3중첩까지 루어를 사용하여 더 높은 물고기 가중치를 노립니다.</value>
+  </data>
   <data name="LureType" xml:space="preserve">
     <value>루어 유형:</value>
   </data>
