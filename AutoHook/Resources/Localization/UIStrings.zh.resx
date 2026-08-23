@@ -1525,6 +1525,9 @@
   <data name="Dtr_Show_Preset" xml:space="preserve">
     <value>将当前预设显示在Dtr状态栏中</value>
   </data>
+  <data name="Dtr_Settings_Help_Text" xml:space="preserve">
+    <value>左键单击启用/禁用，右键单击切换UI。</value>
+  </data>
   <data name="Dtr_Help" xml:space="preserve">
     <value>Dtr显示项的顺序可以在卫月设置中调整。</value>
   </data>
@@ -1536,5 +1539,14 @@
   </data>
   <data name="Multihook_Settings" xml:space="preserve">
     <value>加钩设置</value>
+  </data>
+  <data name="AutoOceanFish" xml:space="preserve">
+    <value>自动海钓</value>
+  </data>
+  <data name="OceanFishGoal_Points" xml:space="preserve">
+    <value>冲分</value>
+  </data>
+  <data name="Prioritise" xml:space="preserve">
+    <value>优先考虑</value>
   </data>
 </root>
