@@ -1525,6 +1525,12 @@
   <data name="Dtr_Show_Preset" xml:space="preserve">
     <value>将当前预设显示在Dtr状态栏中</value>
   </data>
+  <data name="Dtr_Settings_Help_Text" xml:space="preserve">
+    <value>左键单击启用/禁用，右键单击切换UI。</value>
+  </data>
+  <data name="Dtr_Preset_Setting_Help" xml:space="preserve">
+    <value>左键单击向前循环切换，右键单击向后循环切换。</value>
+  </data>
   <data name="Dtr_Help" xml:space="preserve">
     <value>Dtr显示项的顺序可以在卫月设置中调整。</value>
   </data>
@@ -1536,5 +1542,41 @@
   </data>
   <data name="Multihook_Settings" xml:space="preserve">
     <value>加钩设置</value>
+  </data>
+  <data name="UseWithOceanFishing" xml:space="preserve">
+    <value>使用自动海钓</value>
+  </data>
+  <data name="UseForAllZoneTimes" xml:space="preserve">
+    <value>应用于所有钓场/时段</value>
+  </data>
+  <data name="SelectZoneAndTime" xml:space="preserve">
+    <value>选择钓场和时段</value>
+  </data>
+  <data name="AutoOceanFish" xml:space="preserve">
+    <value>自动海钓</value>
+  </data>
+  <data name="AutoOceanFishHelpText" xml:space="preserve">
+    <value>自动处理船上的所有事务：移动到位，抛杆，管理预设。</value>
+  </data>
+  <data name="AutoOceanFish_Fallthrough" xml:space="preserve">
+    <value>当前目标完成时切换至下一目标</value>
+  </data>
+  <data name="UseForGoal" xml:space="preserve">
+    <value>目标</value>
+  </data>
+  <data name="OceanFishGoal_Points" xml:space="preserve">
+    <value>冲分</value>
+  </data>
+  <data name="OceanFishGoal_Legendary" xml:space="preserve">
+    <value>蓝鱼</value>
+  </data>
+  <data name="OceanFishGoal_Achievements" xml:space="preserve">
+    <value>成就</value>
+  </data>
+  <data name="OceanFishGoal_Levelling" xml:space="preserve">
+    <value>练级</value>
+  </data>
+  <data name="Prioritise" xml:space="preserve">
+    <value>优先目标</value>
   </data>
 </root>
