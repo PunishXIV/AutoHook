@@ -1759,4 +1759,10 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="Prioritise" xml:space="preserve">
     <value>Prioritise</value>
   </data>
+  <data name="Availability" xml:space="preserve">
+    <value>Availability</value>
+  </data>
+  <data name="Cooldown" xml:space="preserve">
+    <value>Cooldown</value>
+  </data>
 </root>

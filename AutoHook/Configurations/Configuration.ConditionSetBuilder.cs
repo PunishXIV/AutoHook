@@ -132,8 +132,7 @@ public partial class Configuration {
                 Params = new Dictionary<string, object> {
                     ["id"] = (long)itemId,
                     ["type"] = 1L,
-                    ["sec"] = 0L,
-                    ["op"] = "<=",
+                    ["chk"] = ActionCooldownCD.CheckAvailability,
                 },
             };
         }
@@ -145,6 +144,7 @@ public partial class Configuration {
                 Params = new Dictionary<string, object> {
                     ["id"] = (long)actionId,
                     ["type"] = 0L,
+                    ["chk"] = ActionCooldownCD.CheckCooldown,
                     ["sec"] = (long)minSecondsRemaining,
                     ["op"] = ">=",
                 },
@@ -157,8 +157,7 @@ public partial class Configuration {
                 Params = new Dictionary<string, object> {
                     ["id"] = (long)actionId,
                     ["type"] = 0L,
-                    ["sec"] = 0L,
-                    ["op"] = "<=",
+                    ["chk"] = ActionCooldownCD.CheckAvailability,
                 },
             };
         }

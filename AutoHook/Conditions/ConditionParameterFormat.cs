@@ -1,5 +1,4 @@
 using Lumina.Excel.Sheets;
-using LuminaAction = Lumina.Excel.Sheets.Action;
 using static AutoHook.Conditions.IConditionDefinition;
 
 namespace AutoHook.Conditions;
@@ -67,12 +66,6 @@ public static class ConditionParameterFormat {
         var fishId = GetInt(p, "id", 0);
         var fish = fishId == 0 ? "slot fish" : Item.GetRow((uint)fishId).Name.ToString();
         return $"{fish} {FormatIntCompare(p)}";
-    }
-
-    public static string FormatActionCooldown(IReadOnlyDictionary<string, object> p) {
-        var actionId = GetUInt(p, "id", 0);
-        var action = actionId == 0 ? "action" : LuminaAction.GetRow(actionId).Name.ToString();
-        return $"{action} {FormatIntCompare(p, valueKey: "sec", defaultValue: 0, defaultOp: "=")}s remaining";
     }
 
     public static string FormatGenericParams(IReadOnlyDictionary<string, object> p) {

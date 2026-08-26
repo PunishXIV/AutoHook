@@ -10,12 +10,17 @@ using static AutoHook.Conditions.IConditionDefinition;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class ActionCooldownCD : IConditionDefinition {
+    public const string CheckAvailability = "avail";
+    public const string CheckCooldown = "cd";
+
     public string Id => nameof(ActionCooldownCD);
     public string Name => "Action";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCast;
 
-    public readonly record struct ActionCooldownParams(uint Id, int Type, int Seconds, string Op, bool Invert) {
+    public readonly record struct ActionCooldownParams(uint Id, int Type, string Check, int Seconds, string Op, bool Invert) {
         public bool Apply(bool result) => Invert ? !result : result;
+
+        public bool IsAvailability => Check == CheckAvailability;
 
         public Dictionary<string, object> ToParams() {
             var dict = new Dictionary<string, object>();
@@ -26,10 +31,14 @@ public sealed class ActionCooldownCD : IConditionDefinition {
             if (Type != 0)
                 dict["type"] = (long)Type;
 
-            dict["sec"] = (long)Seconds;
+            dict["chk"] = IsAvailability ? CheckAvailability : CheckCooldown;
 
-            if (!string.IsNullOrEmpty(Op) && Op != "=")
-                dict["op"] = Op;
+            if (!IsAvailability) {
+                dict["sec"] = (long)Seconds;
+
+                if (!string.IsNullOrEmpty(Op) && Op != "=")
+                    dict["op"] = Op;
+            }
 
             if (Invert)
                 dict["inv"] = true;
@@ -45,19 +54,13 @@ public sealed class ActionCooldownCD : IConditionDefinition {
 
         var actionType = GetActionType(args.Type, args.Id);
 
-        if (IsReadyCheck(args.Seconds, args.Op, args.Invert)) // =0, <=0, NOT >0, etc
-            return world.ActionAvailable(args.Id, actionType); // 0 is treated as off CD and actually available. I don't think only 0 cd is useful
+        if (args.IsAvailability)
+            return args.Apply(world.ActionAvailable(args.Id, actionType));
 
         var lhs = GetCooldownSeconds(world, args.Id, actionType);
         var rhs = args.Seconds;
         var result = CompareInt(lhs, rhs, args.Op);
         return args.Apply(result);
-    }
-
-    private static bool IsReadyCheck(int seconds, string op, bool invert) {
-        static bool apply(bool result, bool inv) => inv ? !result : result;
-        var rhs = Math.Max(0, seconds);
-        return apply(CompareInt(0, rhs, op), invert) && !apply(CompareInt(1, rhs, op), invert);
     }
 
     public void DrawParams(Condition condition) {
@@ -127,6 +130,26 @@ public sealed class ActionCooldownCD : IConditionDefinition {
                 });
         }
 
+        ImGui.SameLine();
+        var checkLabel = args.IsAvailability ? UIStrings.Availability : UIStrings.Cooldown;
+        ImGui.SetNextItemWidth(110.Scaled());
+        using (var comboCheck = ImRaii.Combo("##act_cd_chk", checkLabel)) {
+            if (comboCheck.Success) {
+                if (ImGui.Selectable(UIStrings.Availability, args.IsAvailability)) {
+                    args = args with { Check = CheckAvailability };
+                    condition.Params = args.ToParams();
+                }
+
+                if (ImGui.Selectable(UIStrings.Cooldown, !args.IsAvailability)) {
+                    args = args with { Check = CheckCooldown };
+                    condition.Params = args.ToParams();
+                }
+            }
+        }
+
+        if (args.IsAvailability)
+            return;
+
         var opLabel = args.Op is ">" or ">=" or "<" or "<=" or "=" ? args.Op : "=";
         ImGui.SetNextItemWidth(50.Scaled());
         using (var comboOp = ImRaii.Combo("##act_cd_op", opLabel)) {
@@ -159,7 +182,8 @@ public sealed class ActionCooldownCD : IConditionDefinition {
         var op = GetOp(p, "op", "=");
         var inv = GetBool(p, "inv", false);
         var secondsInt = (int)Math.Floor(sec);
-        return new ActionCooldownParams(id, type, secondsInt, op, inv);
+        var check = GetOp(p, "chk", CheckCooldown) is CheckAvailability ? CheckAvailability : CheckCooldown;
+        return new ActionCooldownParams(id, type, check, secondsInt, op, inv);
     }
 
     private static string GetIdLabel(int type, uint id) => type switch {
@@ -184,6 +208,12 @@ public sealed class ActionCooldownCD : IConditionDefinition {
         }
     }
 
-    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
-        => ConditionParameterFormat.FormatActionCooldown(parameters);
+    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
+        var args = GetParams(parameters);
+        var action = args.Id == 0 ? "action" : LuminaAction.GetRow(args.Id).Name.ToString();
+        if (args.IsAvailability)
+            return $"{action} available";
+
+        return $"{action} {ConditionParameterFormat.FormatIntCompare(parameters, valueKey: "sec", defaultValue: 0, defaultOp: "=")}s remaining";
+    }
 }

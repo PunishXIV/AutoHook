@@ -60,8 +60,15 @@ public static class ConfigurationJsonMigrator {
         }
 
         // v7 -> v8: nested lure type/target configs
-        if (version < Configuration.LatestVersion) {
+        if (version < 8) {
             MigrateV8(root);
+            root["Version"] = 8;
+            version = 8;
+        }
+
+        // v8 -> v9: ActionCooldownCD gets chk
+        if (version < Configuration.LatestVersion) {
+            MigrateV9(root);
             root["Version"] = Configuration.LatestVersion;
         }
 
@@ -156,6 +163,7 @@ public static class ConfigurationJsonMigrator {
             MigratePresetFishCaughtActionEnabled(preset);
         }),
         new PresetImportMigration(8, MigratePresetLuresToNested),
+        new PresetImportMigration(9, MigratePresetActionCooldownChecks),
     ];
 
     private static void MigrateV2ToV3Json(JObject root) {
@@ -262,6 +270,31 @@ public static class ConfigurationJsonMigrator {
         }
     }
 
+    private static void MigrateV9(JObject root)
+        => MigrateActionCooldownChecks(root);
+
+    private static void MigratePresetActionCooldownChecks(JObject preset)
+        => MigrateActionCooldownChecks(preset);
+
+    private static void MigrateActionCooldownChecks(JObject root) {
+        var typeId = Registry.GetId<ActionCooldownCD>();
+        foreach (var cond in root.DescendantsAndSelf().OfType<JObject>()) {
+            if ((string?)cond["t"] != typeId)
+                continue;
+
+            var p = cond["p"] as JObject;
+            if (p == null) {
+                p = [];
+                cond["p"] = p;
+            }
+
+            if (p["chk"] != null)
+                continue;
+
+            p["chk"] = ActionCooldownCD.CheckCooldown;
+        }
+    }
+
     private static void MigratePresetConditions(JObject preset) {
         foreach (var hook in EnumerateArray(preset["ListOfBaits"]).Concat(EnumerateArray(preset["ListOfMooch"]))) {
             if (hook is JObject hookObj) {
@@ -303,10 +336,10 @@ public static class ConfigurationJsonMigrator {
     }
 
     private static Condition ActionOnCd(uint actionId)
-        => new() { TypeId = Registry.GetId<ActionCooldownCD>(), Params = new Dictionary<string, object> { ["id"] = (long)actionId, ["type"] = (long)0, ["sec"] = (long)0, ["op"] = ">" } };
+        => new() { TypeId = Registry.GetId<ActionCooldownCD>(), Params = new Dictionary<string, object> { ["id"] = (long)actionId, ["type"] = (long)0, ["chk"] = ActionCooldownCD.CheckCooldown, ["sec"] = (long)0, ["op"] = ">" } };
 
     private static Condition ItemOnCd(uint itemId)
-        => new() { TypeId = Registry.GetId<ActionCooldownCD>(), Params = new Dictionary<string, object> { ["id"] = (long)itemId, ["type"] = (long)1, ["sec"] = (long)0, ["op"] = ">" } };
+        => new() { TypeId = Registry.GetId<ActionCooldownCD>(), Params = new Dictionary<string, object> { ["id"] = (long)itemId, ["type"] = (long)1, ["chk"] = ActionCooldownCD.CheckCooldown, ["sec"] = (long)0, ["op"] = ">" } };
 
     private static ConditionSet Single(Condition c)
         => new() { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = [c] }] };

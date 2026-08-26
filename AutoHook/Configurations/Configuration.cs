@@ -11,7 +11,7 @@ namespace AutoHook.Configurations;
 
 [Serializable]
 public partial class Configuration : IPluginConfiguration {
-    public const int LatestVersion = 8;
+    public const int LatestVersion = 9;
 
     public int Version { get; set; } = LatestVersion;
     public string CurrentLanguage { get; set; } = @"en";
@@ -103,6 +103,7 @@ public partial class Configuration : IPluginConfiguration {
         new(6, "AH6_"),
         new(7, "AH7_", UseBrotli: true),
         new(8, "AH8_", UseBrotli: true),
+        new(9, "AH9_", UseBrotli: true),
     ];
 
     private static readonly ExportSchema[] FolderExportSchemas =
@@ -110,6 +111,7 @@ public partial class Configuration : IPluginConfiguration {
         new(1, "AHFOLDER_"),
         new(2, "AHFOLDER2_", UseBrotli: true),
         new(3, "AHFOLDER3_", UseBrotli: true),
+        new(4, "AHFOLDER4_", UseBrotli: true),
     ];
 
     private static readonly ExportSchema[] SpearfishingSchemas =
@@ -257,6 +259,7 @@ public partial class Configuration : IPluginConfiguration {
                 var fromVer = schema.Version switch {
                     <= 1 => 0, // before condition sets
                     2 => 7, // before lure-nesting
+                    3 => 8, // before ActionCooldownCD chk field
                     _ => LatestFishingPresetSchema.Version
                 };
                 json = ConfigurationJsonMigrator.MigrateImportedFolderExport(json, fromVer);

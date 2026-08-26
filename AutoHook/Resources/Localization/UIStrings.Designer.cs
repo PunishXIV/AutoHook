@@ -723,6 +723,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Availability.
+        /// </summary>
+        internal static string Availability {
+            get {
+                return ResourceManager.GetString("Availability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bait.
         /// </summary>
         internal static string Bait {
@@ -1034,6 +1043,15 @@ namespace AutoHook.Resources.Localization {
         internal static string Configure {
             get {
                 return ResourceManager.GetString("Configure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cooldown.
+        /// </summary>
+        internal static string Cooldown {
+            get {
+                return ResourceManager.GetString("Cooldown", resourceCulture);
             }
         }
         
