@@ -15,6 +15,7 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
     ];
 
     protected override async Task Execute() {
+        using var scope = BeginScope(nameof(AutoOceanFish));
         Service.PrintDebug($"[AutoOceanFish] Task execute zone={ZoneIndex + 1}, walkToRailing={ZoneIndex == 0}");
 
         if (ZoneIndex == 0) {
@@ -24,8 +25,7 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
         }
 
         Status = "Starting fishing";
-        var ws = Service.WorldState;
-        await WaitUntil(() => (Svc.Objects.LocalPlayer?.IsTargetable ?? false) && ws.IsCastAvailable(), nameof(Execute), checkFrequency: 5);
+        await WaitUntil(() => Service.WorldState.Fishing.CanFish, "WaitForCanFish", checkFrequency: 50);
         Service.PrintDebug("[AutoOceanFish] Calling StartFishing");
         fishingManager.StartFishing();
         Service.PrintDebug("[AutoOceanFish] StartFishing returned");
@@ -39,6 +39,7 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
     }
 
     private async Task WalkToRailing() {
+        using var scope = BeginScope(nameof(WalkToRailing));
         var position = GetFishingPosition();
         var rotation = position.X > 0 ? 1.5f : -1.5f;
         await MoveToDirectly(position, 0.25f);
@@ -51,6 +52,7 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
     private const float MinFishingSpotDistance = 0.6f;
     private const float NudgeStepDistance = 1.2f;
     private async Task AvoidStacking(float rotation, int maxAttempts = 3) {
+        using var scope = BeginScope(nameof(AvoidStacking));
         for (var attempt = 0; attempt < maxAttempts; attempt++) {
             var blockers = Svc.Objects.OfType<IPlayerCharacter>().Where(x => x.EntityId != Player.Object?.GameObjectId).Where(x => Vector3.Distance(Player.Position, x.Position) < MinFishingSpotDistance).ToList();
             if (blockers.Count == 0) return;
