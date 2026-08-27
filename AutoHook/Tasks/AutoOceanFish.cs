@@ -1,4 +1,5 @@
 using clib.TaskSystem;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using System.Numerics;
 
 namespace AutoHook.Tasks;
@@ -40,11 +41,49 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
     private async Task WalkToRailing() {
         var position = GetFishingPosition();
         var rotation = position.X > 0 ? 1.5f : -1.5f;
-        await MoveToDirectly(position, () => Player.Object.WithinRange(position, 1) && Service.WorldState.IsCastAvailable());
-        await NextFrame(500);
+        await MoveToDirectly(position, 0.25f);
         unsafe {
             Svc.Objects.LocalPlayer?.Character->SetRotation(rotation);
         }
+        await AvoidStacking(rotation);
+    }
+
+    private const float MinFishingSpotDistance = 0.6f;
+    private const float NudgeStepDistance = 1.2f;
+    private async Task AvoidStacking(float rotation, int maxAttempts = 3) {
+        for (var attempt = 0; attempt < maxAttempts; attempt++) {
+            var blockers = Svc.Objects.OfType<IPlayerCharacter>().Where(x => x.EntityId != Player.Object?.GameObjectId).Where(x => Vector3.Distance(Player.Position, x.Position) < MinFishingSpotDistance).ToList();
+            if (blockers.Count == 0) return;
+
+            var centroid = blockers.Aggregate(Vector3.Zero, (sum, x) => sum + x.Position) / blockers.Count;
+            var away = Player.Position - centroid;
+            if (away.LengthSquared() < 0.01f) away = new Vector3(1, 0, 0);
+
+            var onLeft = Player.Position.X > 0;
+            var step = Player.Position + Vector3.Normalize(away) * NudgeStepDistance;
+            ClampToValidFishingRegions(ref step, onLeft);
+
+            await MoveToDirectly(step, 0.1f);
+            unsafe {
+                Svc.Objects.LocalPlayer?.Character->SetRotation(rotation);
+            }
+        }
+    }
+
+    private static void ClampToValidFishingRegions(ref Vector3 step, bool onLeft) {
+        var regions = onLeft ? [.. ValidFishingRegions.Where(r => r.MinX > 0)] : ValidFishingRegions.Where(r => r.MaxX < 0).ToArray();
+        if (regions.Length == 0)
+            return;
+
+        step.X = Math.Clamp(step.X, regions.Min(r => r.MinX), regions.Max(r => r.MaxX));
+
+        var z = step.Z;
+        var nearest = regions.MinBy(r => {
+            if (z < r.MinZ) return r.MinZ - z;
+            if (z > r.MaxZ) return z - r.MaxZ;
+            return 0f;
+        });
+        step.Z = Math.Clamp(z, nearest.MinZ, nearest.MaxZ);
     }
 }
 
