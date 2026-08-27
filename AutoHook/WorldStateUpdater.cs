@@ -1,5 +1,4 @@
 using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Inventory.InventoryEventArgTypes;
 using Dalamud.Hooking;
 using Dalamud.Utility;

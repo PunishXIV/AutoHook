@@ -34,6 +34,9 @@ public class TabDebug : BaseTab {
 
     private static void DrawTools() {
         using (ImRaii.PushIndent()) {
+            var showSpots = OceanFishingSpotOverlay.Enabled;
+            if (ImGui.Checkbox("Show fishing spot overlay", ref showSpots))
+                OceanFishingSpotOverlay.Enabled = showSpots;
             DrawAutomationTask();
             DrawUtil.SpacingSeparator();
             DrawNotificationMaster();

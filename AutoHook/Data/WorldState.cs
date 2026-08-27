@@ -1,5 +1,4 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Event;
 
 namespace AutoHook.Data;
 

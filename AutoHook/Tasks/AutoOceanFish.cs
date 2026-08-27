@@ -7,6 +7,12 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
     public uint ZoneIndex { get; } = zoneIndex;
     private static readonly Random Rng = new();
 
+    internal static readonly FishingSpotRegion[] ValidFishingRegions = [
+        new("Left A", 7f, 7.25f, 6.711f, -12f, -4f),
+        new("Left B", 7f, 7.25f, 6.711f, -2f, 3f),
+        new("Right", -7.25f, -7f, 6.711f, -12f, 3.5f),
+    ];
+
     protected override async Task Execute() {
         Service.PrintDebug($"[AutoOceanFish] Task execute zone={ZoneIndex + 1}, walkToRailing={ZoneIndex == 0}");
 
@@ -26,9 +32,9 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
 
     // https://github.com/Knightmore/Henchman/blob/4aa8cf33b6164536acca81afefa0df5da6740e89/Henchman/Features/OnABoat/OnABoat.cs#L120
     internal static Vector3 GetFishingPosition() {
-        var left = new Vector3(7 + Rng.NextSingle() * 0.25f, 6.711f, Rng.Next(2) == 0 ? Rng.NextSingle() * 10f + -14f : Rng.NextSingle() * 7f + -2f);
-        var right = new Vector3(-7 - Rng.NextSingle() * 0.25f, 6.711f, Rng.NextSingle() * 15.5f + -10f);
-        return Rng.Next(2) == 0 ? left : right;
+        if (Rng.Next(2) == 0)
+            return ValidFishingRegions[Rng.Next(2)].Sample(Rng);
+        return ValidFishingRegions[2].Sample(Rng);
     }
 
     private async Task WalkToRailing() {
@@ -40,4 +46,20 @@ public sealed class AutoOceanFish(FishingManager fishingManager, uint zoneIndex)
             Svc.Objects.LocalPlayer?.Character->SetRotation(rotation);
         }
     }
+}
+
+internal readonly record struct FishingSpotRegion(string Name, float MinX, float MaxX, float Y, float MinZ, float MaxZ) {
+    public Vector3 Sample(Random rng) => new(MinX + rng.NextSingle() * (MaxX - MinX), Y, MinZ + rng.NextSingle() * (MaxZ - MinZ));
+
+    public bool ContainsXZ(Vector3 pos, float margin = 0f)
+        => pos.X >= MinX - margin && pos.X <= MaxX + margin && pos.Z >= MinZ - margin && pos.Z <= MaxZ + margin;
+
+    public Vector3 Centroid => new((MinX + MaxX) * 0.5f, Y, (MinZ + MaxZ) * 0.5f);
+
+    public Vector3[] Corners => [
+        new(MinX, Y, MinZ),
+        new(MaxX, Y, MinZ),
+        new(MaxX, Y, MaxZ),
+        new(MinX, Y, MaxZ),
+    ];
 }

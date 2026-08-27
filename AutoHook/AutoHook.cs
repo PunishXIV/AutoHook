@@ -182,6 +182,7 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
     private static void DrawUi() {
         Service.WindowSystem.Draw();
         Service.FileDialog.Draw();
+        OceanFishingSpotOverlay.Draw();
     }
 
     private void SetupDtr() {
