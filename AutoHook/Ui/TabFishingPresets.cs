@@ -287,6 +287,18 @@ public class TabFishingPresets : BaseTab {
         return false;
     }
 
+    private bool FolderContainsSelectedPreset(PresetFolder folder) {
+        var selected = _basePreset.SelectedPreset;
+        if (selected == null)
+            return false;
+
+        if (folder.PresetIds.Contains(selected.UniqueId))
+            return true;
+
+        var containingFolder = _basePreset.Folders.FirstOrDefault(f => f.PresetIds.Contains(selected.UniqueId));
+        return containingFolder != null && IsFolderDescendantOf(folder, containingFolder);
+    }
+
     private int GetFolderImmediateItemCount(PresetFolder folder) {
         var directChildFolderCount = _basePreset.Folders.Count(f => f.ParentFolderId == folder.UniqueId);
         return folder.PresetIds.Count + directChildFolderCount;
@@ -297,13 +309,7 @@ public class TabFishingPresets : BaseTab {
         using (var id = ImRaii.PushId($"folder_{folder.UniqueId}")) {
             var icon = folder.IsExpanded ? FontAwesomeIcon.FolderOpen : FontAwesomeIcon.Folder;
 
-            // Check if this folder contains the selected preset
-            var containsSelectedPreset = false;
-            if (_basePreset.SelectedPreset != null) {
-                containsSelectedPreset = folder.PresetIds.Contains(_basePreset.SelectedPreset.UniqueId);
-            }
-
-            // Use orange color for folders containing the selected preset
+            var containsSelectedPreset = FolderContainsSelectedPreset(folder);
             using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudOrange, containsSelectedPreset)) {
                 // Display folder name with item count
                 var displayName = $"{folder.FolderName} ({GetFolderImmediateItemCount(folder)})";
