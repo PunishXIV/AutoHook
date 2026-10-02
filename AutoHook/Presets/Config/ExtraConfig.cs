@@ -2,7 +2,6 @@ using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Threading;
-using AhCondition = AutoHook.Conditions.Model.Condition;
 
 namespace AutoHook.Presets.Config;
 
@@ -54,10 +53,16 @@ public class ExtraTrigger {
     }
 
     public string GetRuleLabel(int index) {
-        var summary = SummarizeTrigger();
+        var summary = SummarizeActions();
         return string.IsNullOrEmpty(summary) ? $"Rule {index + 1}" : $"Rule {index + 1}: {summary}";
     }
+
     public string DescribeActions() {
+        var summary = SummarizeActions();
+        return string.IsNullOrEmpty(summary) ? "(no actions configured)" : summary;
+    }
+
+    private string SummarizeActions() {
         var parts = new List<string>();
 
         switch (StopAction) {
@@ -93,71 +98,7 @@ public class ExtraTrigger {
         if (NotifyOnSuccess.Enabled)
             parts.Add("Notify");
 
-        return parts.Count == 0 ? "(no actions configured)" : string.Join("; ", parts);
-    }
-
-    private string SummarizeTrigger() {
-        if (ResetFishCaughtCounter)
-            return UIStrings.Reset_fish_caught_counter;
-
-        if (ReduceFish)
-            return UIStrings.AetherialReduction_ReduceFish;
-
-        if (RemoveStatus && StatusToRemove != 0)
-            return $"Remove {Status.GetRow(StatusToRemove).Name}";
-
-        if (ConditionSet is not { } set || !set.HasGroups())
-            return string.Empty;
-
-        if (set.Groups.Count != 1)
-            return string.Empty;
-
-        var group = set.Groups[0];
-        if (group.Conditions.Count != 1)
-            return string.Empty;
-
-        var cond = group.Conditions[0];
-        return SummarizeCondition(cond);
-    }
-
-    private static string SummarizeCondition(AhCondition cond) {
-        var inv = GetBool(cond.Params, "inv", false);
-        switch (cond.TypeId) {
-            case "IntuitionActive" or nameof(IntuitionActiveCD):
-                return inv ? "While Fisher's Intuition inactive" : "While Fisher's Intuition";
-            case nameof(IntuitionEventCD):
-                return inv ? "On Lose Fisher's Intuition" : "On Gain Fisher's Intuition";
-            case "SpectralActive" or nameof(SpectralActiveCD):
-                return inv ? "While Spectral Current inactive" : "While Spectral Current";
-            case "StatusStacksCD" or "StatusStacks":
-                if (cond.Params.TryGetValue("ids", out var idsObj) && idsObj is List<object> list && list.Count == 1) {
-                    var id = Convert.ToUInt32(list[0]);
-                    if (id == IDs.Status.AnglersArt) {
-                        var stacks = GetInt(cond.Params, "minStacks", 1);
-                        return $"Angler's Art ≥ {stacks} Stacks";
-                    }
-                }
-                return "Status Stacks";
-            case "SwimbaitCountCD" or "SwimbaitCount":
-                var fishId = GetInt(cond.Params, "id", 0);
-                var fishLabel = fishId == 0 ? "Slot Fish" : Item.GetRow((uint)fishId).Name.ToString();
-                return $"Swimbaits ({fishLabel}) {FormatIntCompare(cond.Params)}";
-            default:
-                var desc = cond.Describe(Registry);
-                return inv ? $"NOT {desc}" : desc;
-        }
-    }
-
-    private static string FormatIntCompare(IReadOnlyDictionary<string, object> p) {
-        var args = GetIntCompareParams(p);
-        var cmp = args.Op switch {
-            ">" => ">",
-            "<" => "<",
-            "<=" => "≤",
-            "=" => "=",
-            _ => "≥",
-        };
-        return $"{cmp} {args.Value}";
+        return parts.Count == 0 ? string.Empty : string.Join("; ", parts);
     }
 }
 
