@@ -89,6 +89,8 @@ public class TabDebug : BaseTab {
                         ("Collectable window", ws.Fishing.CollectableWindowOpen.ToString()),
                     ]);
 
+                    ImGui.Text($"current route: {IKDRoute.CurrentIndigo.RowId} {IKDRoute.CurrentRuby.RowId}");
+
                     var snap = f.CastSnapshot;
                     if (snap.Active) {
                         ImGui.Spacing();
