@@ -24,7 +24,7 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
         if (!Rod.SpectralRestPending) return;
 
         var midCast = Ws.Fishing.FishingState is FishingState.LineInWater or FishingState.AmbitiousLure or FishingState.ModestLure;
-        var canceling = (Ws.Fishing.FishingStep & (FishingSteps.Reeling | FishingSteps.TimeOut)) != 0;
+        var canceling = (Ws.Fishing.FishingStep & (FishingSteps.CancelPending | FishingSteps.TimeOut)) != 0;
         if (!Configuration.C.PluginEnabled || !Configuration.C.SpectralRest || !midCast) {
             Rod.SpectralRestPending = false;
             return;
@@ -37,7 +37,7 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
             return;
 
         PluginUi.Status = UIStrings.SpectralRestOnGain;
-        Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.Reeling));
+        Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.CancelPending));
     }
 
     public unsafe void UpdateStatusAndTimer(bool forceMooching = false) {
@@ -64,14 +64,14 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
     }
 
     public void OnBeganFishing(bool mooching) {
-        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing) && Ws.Fishing.PreviousFishingState != FishingState.PoleReady && Ws.Fishing.PreviousFishingState != FishingState.None)
+        if (Rod.FishingTimer.IsRunning && Ws.Fishing.PreviousFishingState is not (FishingState.PoleReady or FishingState.None))
             return;
 
         Ws.Execute(new RodState.OpSetLureSuccess(false));
         Ws.Execute(new RodState.OpSetLastLureCastBiteTime(null));
         Ws.Execute(new RodState.OpBiteContext(0, Ws.Player.HasStatus(IDs.Status.Chum)));
 
-        Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.BeganFishing));
+        Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.None));
         if (Rod.StopAfterNextFish == RodFishingModule.StopAfterState.Pending)
             Rod.StopAfterNextFish = RodFishingModule.StopAfterState.Armed;
 
@@ -92,9 +92,7 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
             Rod.FishingTimer.Start();
 
         var maxTime = Math.Truncate(GetTimeoutMax(Rod.GetHookCfg()) * 100) / 100;
-
-        if (!(maxTime > 0) || !(Rod.FishTimerSecs > maxTime) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.TimeOut) ||
-            Ws.Fishing.FishingStep.HasFlag(FishingSteps.Reeling))
+        if (!(maxTime > 0) || !(Rod.FishTimerSecs > maxTime) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.TimeOut) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.CancelPending))
             return;
 
         PluginUi.Status = @$"Timeout reached - using Rest";

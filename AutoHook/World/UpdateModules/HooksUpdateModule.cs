@@ -85,7 +85,6 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
     private unsafe bool PlayAnimationDetour(FishingEventHandler* thisPtr, Character* chara, ushort actionTimelineId, ulong a4) {
         var tugType = (FishingHookStrength)actionTimelineId;
         if (tugType is FishingHookStrength.Weak or FishingHookStrength.Strong or FishingHookStrength.Legendary) {
-            WorldState.Get().Execute(new RodState.OpSetFishingStep(FishingSteps.FishBit));
             WorldState.Get().Execute(new RodState.OpTugType(tugType));
         }
         else {

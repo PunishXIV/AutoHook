@@ -1092,10 +1092,8 @@ public static class ConfigurationJsonMigrator {
 
             var stop = ExtraStopAction.None;
             if (stopAfterAnglersArt) {
-                var step = (extra["AnglerStopFishingStep"]?.ToObject<FishingSteps>()) ?? FishingSteps.None;
-                stop = step == FishingSteps.Quitting
-                    ? ExtraStopAction.QuitFishing
-                    : ExtraStopAction.StopOnly;
+                var step = (extra["AnglerStopFishingStep"]?.ToObject<FishingSteps>()) ?? FishingSteps.StopCasting;
+                stop = step == FishingSteps.QuitRequested ? ExtraStopAction.QuitFishing : ExtraStopAction.StopOnly;
             }
 
             var trig = new ExtraTrigger {
@@ -1114,10 +1112,7 @@ public static class ConfigurationJsonMigrator {
         if (swimbaitFillsAction != SwimbaitAction.None && triggers.Count < 16) {
             var set = Configuration.ConditionSetBuilder.SingleSwimbaitCount(3, above: true);
 
-            var stop = swimbaitFillsAction == SwimbaitAction.Stop
-                ? ExtraStopAction.StopOnly
-                : ExtraStopAction.None;
-
+            var stop = swimbaitFillsAction == SwimbaitAction.Stop ? ExtraStopAction.StopOnly : ExtraStopAction.None;
             var trig = new ExtraTrigger {
                 ConditionSet = set,
                 SwapPreset = swimbaitFillsAction == SwimbaitAction.SwapPreset,
@@ -1133,10 +1128,7 @@ public static class ConfigurationJsonMigrator {
         if (swimbaitRunsOutAction != SwimbaitAction.None && triggers.Count < 16) {
             var set = Configuration.ConditionSetBuilder.SingleSwimbaitCount(0, above: false);
 
-            var stop = swimbaitRunsOutAction == SwimbaitAction.Stop
-                ? ExtraStopAction.StopOnly
-                : ExtraStopAction.None;
-
+            var stop = swimbaitRunsOutAction == SwimbaitAction.Stop ? ExtraStopAction.StopOnly : ExtraStopAction.None;
             var trig = new ExtraTrigger {
                 ConditionSet = set,
                 SwapPreset = swimbaitRunsOutAction == SwimbaitAction.SwapPreset,

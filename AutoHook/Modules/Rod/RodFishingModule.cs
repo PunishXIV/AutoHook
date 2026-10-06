@@ -81,7 +81,8 @@ public sealed class RodFishingModule : FishingModule {
         if (!Configuration.C.PluginEnabled)
             return;
 
-        StopAfterNextFish = Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing) ? StopAfterState.Armed : StopAfterState.Pending;
+        var midCast = Ws.Fishing.FishingState is FishingState.LineInWater or FishingState.AmbitiousLure or FishingState.ModestLure or FishingState.CastingOut or FishingState.Bite or FishingState.Hooking;
+        StopAfterNextFish = midCast ? StopAfterState.Armed : StopAfterState.Pending;
     }
 
     public void ClearStopAfterNextFish() => StopAfterNextFish = StopAfterState.None;
@@ -133,7 +134,7 @@ public sealed class RodFishingModule : FishingModule {
                         case IDs.Actions.Rest:
                             if (Ws.Player.HasStatus(IDs.Status.CollectorsGlove))
                                 LureChat.AnimationCancel();
-                            Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.Reeling));
+                            Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.CancelPending));
                             break;
                         case IDs.Actions.Cast:
                             BiteHook.OnBeganFishing(false);
@@ -181,7 +182,7 @@ public sealed class RodFishingModule : FishingModule {
                 IChatGui.Get().PrintStatus(@$"[AutoHook] Failed to change bait for forced bait swap. Result: {result}");
         }
 
-        Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StartedCasting));
+        Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StartPending));
         AutoCast.UseAutoCasts();
     }
 
@@ -235,7 +236,7 @@ public sealed class RodFishingModule : FishingModule {
                 Extra.ProcessExtraActions(Hints, Resolver);
             }
 
-            if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartedCasting) && !Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing))
+            if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartPending))
                 CheckPluginActions();
 
             if (Configuration.C.AutoStartFishing && !ShouldSuppressAutoStartFishing() && EzThrottler.Throttle("AutoStartFishing", 1000)) {
@@ -248,14 +249,14 @@ public sealed class RodFishingModule : FishingModule {
             return;
         }
 
-        if (currentState != FishingState.Quitting && Ws.Fishing.FishingStep.HasFlag(FishingSteps.Quitting)) {
+        if (currentState != FishingState.Quitting && Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested)) {
             if (Ws.ActionAvailable(IDs.Actions.Quit, ActionType.Action) && !Ws.Player.BlockCasting) {
                 Enqueue(new ActionRequest(IDs.Actions.Quit, ActionType.Action, @"Quit"));
                 currentState = FishingState.Quitting;
             }
         }
 
-        if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.Quitting) && currentState == FishingState.PoleReady)
+        if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested) && currentState == FishingState.PoleReady)
             CheckPluginActions();
 
         if (SpectralRestPending)
@@ -273,9 +274,9 @@ public sealed class RodFishingModule : FishingModule {
 
         switch (currentState) {
             case FishingState.PullingPoleIn:
-                if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing))
-                    Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.None));
-                else LureChat.AnimationCancel();
+                var canceling = (Ws.Fishing.FishingStep & (FishingSteps.CancelPending | FishingSteps.TimeOut)) != 0;
+                if (!canceling)
+                    LureChat.AnimationCancel();
                 FishingTimer.Reset();
                 break;
             case FishingState.CastingOut:
@@ -285,8 +286,8 @@ public sealed class RodFishingModule : FishingModule {
                 EnqueueCallback(BiteHook.OnBite);
                 break;
             case FishingState.Quitting:
-                if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.Quitting))
-                    Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.Quitting));
+                if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested))
+                    Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.QuitRequested));
                 BiteHook.OnFishingStop();
                 break;
         }
@@ -301,8 +302,7 @@ public sealed class RodFishingModule : FishingModule {
         if (!Ws.IsCastAvailable())
             return;
 
-        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.FishCaught) &&
-            (Ws.Fishing.FishingStep & (FishingSteps.None | FishingSteps.Quitting)) == 0)
+        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.FishCaught) && (Ws.Fishing.FishingStep & (FishingSteps.StopCasting | FishingSteps.QuitRequested)) == 0)
             BiteHook.CheckStopCondition();
 
         Hints.Clear();
@@ -310,8 +310,7 @@ public sealed class RodFishingModule : FishingModule {
 
         // contrib fish caught/atuto cast against the final preset after the recursive extra swaps
         var lastCatchCfg = GetEffectiveCatchConfig();
-
-        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.FishCaught) && !Ws.Fishing.FishingStep.HasFlag(FishingSteps.Quitting)) {
+        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.FishCaught) && !Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested)) {
             FishCaught.ContributeCastHints(Hints, lastCatchCfg);
 
             if (!Hints.HasCastProposal && lastCatchCfg is { Enabled: true } && FishCaughtComponent.HasGpBlockedFishCaughtAction(lastCatchCfg)) {

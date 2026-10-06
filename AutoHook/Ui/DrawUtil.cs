@@ -465,16 +465,16 @@ public static class DrawUtil {
         var step = stopStep;
         var reset = resetCount;
         DrawCaughtCountLimitTree(label, condition, () => {
-            if (ImGui.RadioButton(UIStrings.Stop_Casting, step == FishingSteps.None)) {
-                step = FishingSteps.None;
+            if (ImGui.RadioButton(UIStrings.Stop_Casting, step == FishingSteps.StopCasting)) {
+                step = FishingSteps.StopCasting;
                 Configuration.Save();
             }
 
             ImGui.SameLine();
             ImGuiComponents.HelpMarker(UIStrings.Auto_Cast_Stopped);
 
-            if (ImGui.RadioButton(UIStrings.Quit_Fishing, step == FishingSteps.Quitting)) {
-                step = FishingSteps.Quitting;
+            if (ImGui.RadioButton(UIStrings.Quit_Fishing, step == FishingSteps.QuitRequested)) {
+                step = FishingSteps.QuitRequested;
                 Configuration.Save();
             }
 

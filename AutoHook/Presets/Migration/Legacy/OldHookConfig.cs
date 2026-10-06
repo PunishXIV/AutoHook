@@ -59,7 +59,7 @@ public class OldHookConfig {
     public int StopAfterCaughtLimit = 1;
     public bool StopAfterResetCount = false;
 
-    public FishingSteps StopFishingStep = FishingSteps.None;
+    public FishingSteps StopFishingStep = FishingSteps.StopCasting;
 
     /*public HookConfig(string bait)
     {

@@ -28,8 +28,8 @@ public class FishConfig : BaseOption {
 
     public bool NeverMooch = false;
 
-    [DefaultValue(FishingSteps.None)]
-    public FishingSteps StopFishingStep = FishingSteps.None;
+    [DefaultValue(FishingSteps.StopCasting)]
+    public FishingSteps StopFishingStep = FishingSteps.StopCasting;
 
     public FishConfig() { }
 

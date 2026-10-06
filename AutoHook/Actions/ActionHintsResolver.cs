@@ -67,9 +67,9 @@ public sealed class ActionHintsResolver {
         switch (effect) {
             case StopFishingHint stop:
                 if (stop.Action == ExtraStopAction.StopOnly)
-                    ws.Execute(new RodState.OpSetFishingStep(FishingSteps.None));
+                    ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StopCasting));
                 else if (stop.Action == ExtraStopAction.QuitFishing)
-                    ws.Execute(new RodState.OpSetFishingStep(FishingSteps.Quitting));
+                    ws.Execute(new RodState.OpSetFishingStep(FishingSteps.QuitRequested));
                 break;
 
             case ResetCounterHint:

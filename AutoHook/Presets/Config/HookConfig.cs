@@ -24,8 +24,8 @@ public class HookConfig : BaseOption {
 
     public bool StopAfterResetCount;
 
-    [DefaultValue(FishingSteps.None)]
-    public FishingSteps StopFishingStep = FishingSteps.None;
+    [DefaultValue(FishingSteps.StopCasting)]
+    public FishingSteps StopFishingStep = FishingSteps.StopCasting;
 
     [JsonProperty("StopConditionSet")]
     [JsonConverter(typeof(SingleConditionConverter))]

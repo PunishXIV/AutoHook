@@ -1,5 +1,6 @@
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Lumina.Excel.Sheets;
 
 namespace AutoHook.Modules.Rod;
@@ -41,8 +42,16 @@ public sealed class AutoCastComponent(RodFishingModule module) : RodComponent(mo
         }
     }
 
+    private static bool IsBlockRequested(WorldState ws)
+        => (ws.Fishing.FishingStep & (FishingSteps.StopCasting | FishingSteps.QuitRequested)) != 0;
+
+    private static bool IsStartPending(WorldState ws) {
+        var state = ws.Fishing.FishingState;
+        return state == FishingState.PoleReady || state == FishingState.None && ws.Fishing.FishingStep.HasFlag(FishingSteps.StartPending);
+    }
+
     public void UseAutoCasts() {
-        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.None) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.Quitting))
+        if (IsBlockRequested(Ws) || !IsStartPending(Ws))
             return;
 
         if (!Ws.IsCastAvailable() || Rod.IsBusy)
@@ -54,7 +63,7 @@ public sealed class AutoCastComponent(RodFishingModule module) : RodComponent(mo
     }
 
     public void ContributePoleReadyHints(ActionHints hints) {
-        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.None) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.Quitting))
+        if (IsBlockRequested(Ws) || !IsStartPending(Ws))
             return;
 
         if (!Ws.IsCastAvailable() || Rod.IsBusy)
@@ -66,7 +75,7 @@ public sealed class AutoCastComponent(RodFishingModule module) : RodComponent(mo
         var autoCast = acCfg.GetNextAutoCast(Ws, ignoreMooch);
 
         System.Action? continueStart = null;
-        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartedCasting) && !Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing)) {
+        if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartPending)) {
             continueStart = () => ContinueStartFishing(autoCast);
         }
 
@@ -87,12 +96,12 @@ public sealed class AutoCastComponent(RodFishingModule module) : RodComponent(mo
     }
 
     private void ContinueStartFishing(BaseActionCast? usedAction) {
-        if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartedCasting) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing))
+        if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartPending))
             return;
 
         var delay = usedAction != null ? Rod.GetPostCastDelayMs() : 0;
         ActionExecutor.Get().EnqueueCallback(() => {
-            if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartedCasting) || Ws.Fishing.FishingStep.HasFlag(FishingSteps.BeganFishing))
+            if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.StartPending))
                 return;
 
             UseAutoCasts();
