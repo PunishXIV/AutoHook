@@ -134,6 +134,9 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
         var hints = new ActionHints();
 
         if (hook is null or HookType.None) {
+            if (bite == BiteType.Unknown)
+                IPluginLog.Get().Error($"Resting on Unknown bite (TugType={Ws.Fishing.BiteInfo.TugType}, biteTime={timePassed:F2}s). Somehow PlayAnimation hook isn't working. Restart the game and/or re-install the plugin.");
+
             delay = Rod.Rng.Next(Configuration.C.DelayBeforeCancelMin, Configuration.C.DelayBeforeCancelMax);
             hints.PreferRest = true;
             hints.PreferRestContext = DecisionContext.Hook;
