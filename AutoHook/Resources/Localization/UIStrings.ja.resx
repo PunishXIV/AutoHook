@@ -121,7 +121,7 @@
     <value>テスト中</value>
   </data>
   <data name="DefaultSubTab" xml:space="preserve">
-    <value>Default</value>
+    <value>デフォルト</value>
   </data>
   <data name="DrawImportExport_Cancel" xml:space="preserve">
     <value>キャンセル</value>
@@ -494,6 +494,9 @@
   <data name="Opens_Config_Window" xml:space="preserve">
     <value>設定ウィンドウを開く</value>
   </data>
+  <data name="TabAutoCasts_When_Stack_Equals" xml:space="preserve">
+    <value>スタック数が次の値以上の場合 &gt;= </value>
+  </data>
   <data name="Use_Prize_Catch" xml:space="preserve">
     <value>大物狙いを使用</value>
   </data>
@@ -598,6 +601,9 @@
   </data>
   <data name="TabAutoCasts_DrawMakeShiftBait_HelpText" xml:space="preserve">
     <value>自動サリャクの恩寵と競合する可能性があります</value>
+  </data>
+  <data name="TabAutoCasts_DrawExtraOptionsThaliaksFavor_" xml:space="preserve">
+    <value>スタック数が次の値以上の場合 &gt;=</value>
   </data>
   <data name="TabAutoCasts_DrawThaliaksFavor_HelpText" xml:space="preserve">
     <value>自動熟漁の技と競合する可能性があります</value>
@@ -975,6 +981,12 @@
   <data name="Reset_counter_after_swapping_presets" xml:space="preserve">
     <value>プリセットを切り替えた後のフック/魚カウンターのリセット</value>
   </data>
+  <data name="Retain_counters_between_sessions" xml:space="preserve">
+    <value>セッション間で釣り上げ数カウンターを保持する</value>
+  </data>
+  <data name="Retain_counters_between_sessions_HelpText" xml:space="preserve">
+    <value>釣りを終了しても、プリセットの魚数とセッション中の魚数を保持する。複数ウィンドウでの釣りを想定しています。</value>
+  </data>
   <data name="Reset_fish_caught_counter" xml:space="preserve">
     <value>捕獲した魚の数をリセット</value>
   </data>
@@ -1275,6 +1287,12 @@
   <data name="ForceAttemptLimit" xml:space="preserve">
     <value>強制試行制限</value>
   </data>
+  <data name="ForceAttemptLimitHelp" xml:space="preserve">
+    <value>一致するルアーのテキスト通知が表示された後も、最大試行回数に達するまでルアーのキャストを続けます。停止したいタイミングより前に特殊な通知が表示される場合（例：スタック数が2の時点）でも、魚の抽選率を高めるためにスタック数を3まで増やせるようにする機能です。</value>
+  </data>
+  <data name="LureMultipleOptionsWarning" xml:space="preserve">
+    <value>現在、複数のルアー候補が条件に一致しています。最初の候補のみ使用されます。</value>
+  </data>
   <data name="LureType" xml:space="preserve">
     <value>ルアーの種類:</value>
   </data>
@@ -1418,6 +1436,9 @@
   </data>
   <data name="AnimationCanceling" xml:space="preserve">
     <value>アニメーションのキャンセル</value>
+  </data>
+  <data name="AnonymousPresets_Header" xml:space="preserve">
+    <value>一時的なプリセット ({0})</value>
   </data>
   <data name="EnableRecastCancel" xml:space="preserve">
     <value>改行アニメーションのキャンセルを有効にする</value>
@@ -1619,11 +1640,65 @@
   <data name="Status_HookNotAvailableNormalWillBeUsed" xml:space="preserve">
     <value>利用不可。代わりに通常のフックが使用されます</value>
   </data>
+  <data name="UseMultipleHooksByTimer" xml:space="preserve">
+    <value>タイマーに応じて複数のフッキング方法を使い分ける</value>
+  </data>
+  <data name="SwapStopRules" xml:space="preserve">
+    <value>ルールを変更/停止:</value>
+  </data>
+  <data name="AetherialReduction_ReduceFish" xml:space="preserve">
+    <value>魚を精選する</value>
+  </data>
+  <data name="AetherialReduction_ReduceFishHelp" xml:space="preserve">
+    <value>釣りを一時停止し、所持品内の精選可能な魚をすべて精選してから、釣りを再開します。</value>
+  </data>
+  <data name="AetherialReduction_NotUnlocked" xml:space="preserve">
+    <value>このキャラクターでは精選が解放されていません</value>
+  </data>
+  <data name="AetherialReduction_Started" xml:space="preserve">
+    <value>魚を精選中…</value>
+  </data>
+  <data name="AetherialReduction_Complete" xml:space="preserve">
+    <value>精選完了。釣りを再開します</value>
+  </data>
+  <data name="AetherialReduction_Status_Quitting" xml:space="preserve">
+    <value>釣りを終了中…</value>
+  </data>
+  <data name="AetherialReduction_Status_Reducing" xml:space="preserve">
+    <value>魚を精選中…</value>
+  </data>
+  <data name="AetherialReduction_Status_Resuming" xml:space="preserve">
+    <value>釣りを再開中…</value>
+  </data>
+  <data name="OnlyUseWhenMakeshiftBaitActive" xml:space="preserve">
+    <value>熟漁の技の効果中のみ使用</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>前</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>現在</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>次</value>
+  </data>
+  <data name="IgnoreFishSettingWhen" xml:space="preserve">
+    <value>魚の設定を無視</value>
+  </data>
+  <data name="BlockMovementWhileFishingOption" xml:space="preserve">
+    <value>釣り中の移動を禁止する</value>
+  </data>
+  <data name="UseWithOceanFishing" xml:space="preserve">
+    <value>オーシャンフィッシングで使用する</value>
+  </data>
   <data name="UseForAllZoneTimes" xml:space="preserve">
     <value>すべてのゾーン/時間帯で適用</value>
   </data>
   <data name="SelectZoneAndTime" xml:space="preserve">
     <value>エリアと時間を選択してください</value>
+  </data>
+  <data name="When" xml:space="preserve">
+    <value>イベントの種類</value>
   </data>
   <data name="AutoOceanFish" xml:space="preserve">
     <value>自動オーシャンフィッシュ</value>
@@ -1633,6 +1708,12 @@
   </data>
   <data name="AutoOceanFish_Fallthrough" xml:space="preserve">
     <value>すでに取得済みの場合は、次の優先順位に進む</value>
+  </data>
+  <data name="AutoOceanFish_AllowMovement" xml:space="preserve">
+    <value>自動移動</value>
+  </data>
+  <data name="AutoOceanFish_AllowMovementHelpText" xml:space="preserve">
+    <value>最初のエリアでは、プリセットを選択してキャストする前に、手すり沿いの位置へ移動します。また、他のプレイヤーと重ならないよう、位置を調整しながら移動します。</value>
   </data>
   <data name="UseForGoal" xml:space="preserve">
     <value>使用目的</value>
@@ -1664,7 +1745,46 @@
   <data name="AutoHandleCollectables_Preset_HelpText" xml:space="preserve">
     <value>グローバルな「自動収集」設定を上書きし、このルールの条件が満たされた場合にのみ発動します。</value>
   </data>
+  <data name="PresetConditions_HelpText" xml:space="preserve">
+    <value>このプリセット内で再利用できる名前付き条件です。任意の条件セットから参照できます。</value>
+  </data>
+  <data name="PresetConditions_DefinedInTab" xml:space="preserve">
+    <value>条件タブで定義</value>
+  </data>
+  <data name="PresetConditions_Missing" xml:space="preserve">
+    <value>(条件が不足しています)</value>
+  </data>
+  <data name="PresetConditions_NewName" xml:space="preserve">
+    <value>新しい条件</value>
+  </data>
+  <data name="Extra_PresetSwapLoop_Bailout" xml:space="preserve">
+    <value>プラグインを無効化しました：追加ルールによってプリセットの切り替えループが発生しました ({0})。</value>
+  </data>
+  <data name="UnknownPresets" xml:space="preserve">
+    <value>不明なプリセット</value>
+  </data>
+  <data name="Opens_Replay_Window" xml:space="preserve">
+    <value>リプレイウィンドウを開く</value>
+  </data>
   <data name="Prioritise" xml:space="preserve">
     <value>優先度</value>
+  </data>
+  <data name="Availability" xml:space="preserve">
+    <value>有効</value>
+  </data>
+  <data name="Cooldown" xml:space="preserve">
+    <value>クールダウン</value>
+  </data>
+  <data name="ElectricCurrent" xml:space="preserve">
+    <value>エレクトリックカレント</value>
+  </data>
+  <data name="BaitedBreath" xml:space="preserve">
+    <value>ホールドブレス</value>
+  </data>
+  <data name="VeteranTrade" xml:space="preserve">
+    <value>ベテラントレード</value>
+  </data>
+  <data name="VitalSight" xml:space="preserve">
+    <value>選魚眼</value>
   </data>
 </root>
