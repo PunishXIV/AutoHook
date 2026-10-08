@@ -438,7 +438,7 @@
     <value>コーディアルがない場合、代わりにハイコーディアルが使用されます</value>
   </data>
   <data name="AutoCastUseCordial" xml:space="preserve">
-    <value>コーディアルを使用（ハイコーディアルが優先）</value>
+    <value>コーディアルを使用 (ハイコーディアルが優先)</value>
   </data>
   <data name="AutoCastUseCordialHelpMarker" xml:space="preserve">
     <value>ハイコーディアルがない場合、代わりにコーディアルが使用されます</value>
@@ -459,7 +459,7 @@
     <value>”泳がせ釣りII”が有効になっていないと機能しません。”泳がせ釣り”のみを行う場合は100GP節約出来るかもしれません。</value>
   </data>
   <data name="Test" xml:space="preserve">
-    <value>。。。</value>
+    <value>。</value>
   </data>
   <data name="Enable_AutoHook" xml:space="preserve">
     <value>AutoHookを有効にする</value>
@@ -576,7 +576,7 @@
     <value>魚が釣れた後キャスティングをします。
 
 注意!!!
-自動泳がせ釣りが有効に(グローバル・カスタムプリセットどちらも) なっていない場合、通常のキャスティングを行います（泳がせ釣りの機会を失う可能性があります）。</value>
+自動泳がせ釣りが有効に(グローバル・カスタムプリセットどちらも)なっていない場合、通常のキャスティングを行います (泳がせ釣りの機会を失う可能性があります)</value>
   </data>
   <data name="Global_Auto_Cast_Line" xml:space="preserve">
     <value>グローバル自動キャスティング</value>
@@ -594,7 +594,7 @@
     <value>ヒットボックス</value>
   </data>
   <data name="GigHitbox" xml:space="preserve">
-    <value>ヒットボックス(刺突漁)</value>
+    <value>刺突漁ヒットボックス</value>
   </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>熟漁の技を使用</value>
@@ -612,7 +612,7 @@
     <value>ペーシェンスI/IIを使用</value>
   </data>
   <data name="TabAutoCasts_DrawPatience_HelpText" xml:space="preserve">
-    <value>ペーシェンスI/IIは、現在のGPがアクションコスト+20に等しい(またはそれ以上) 場合に使用されます （ペーシェンスIは220、ペーシェンスIIは580）。この設定は、フッキングのGP不足を回避します</value>
+    <value>ペーシェンスI/IIは、現在のGPがアクションコスト+20に等しい(またはそれ以上)場合に使用されます (ペーシェンスIは220、ペーシェンスIIは580)。この設定は、フッキングのGP不足を回避します</value>
   </data>
   <data name="TabAutoCasts_DrawExtraOptionsPatience" xml:space="preserve">
     <value>熟漁の技が有効な場合に使用</value>
@@ -624,7 +624,7 @@
     <value>泳がせ釣りをキャンセルしない</value>
   </data>
   <data name="TabAutoCasts_DrawHeader_HelpText" xml:space="preserve">
-    <value>泳がせ釣りチャンスをキャンセルするアクションは使用されません（例：撒き餌、フィッシュアイ、大物狙いなど）</value>
+    <value>泳がせ釣りチャンスをキャンセルするアクションは使用されません (例：撒き餌、フィッシュアイ、大物狙いなど)</value>
   </data>
   <data name="TabAutoCasts_DrawExtraOptionsAutoMooch_Extra_Only_Active" xml:space="preserve">
     <value>漁師の直感が有効な場合にのみ使用</value>
@@ -749,7 +749,7 @@
     <value>フッキング回数の上限に達した為停止します。({0})</value>
   </data>
   <data name="Caught_Limited_Reached_Chat_Message" xml:space="preserve">
-    <value>捕獲数上限に達した為停止します。（{0}）</value>
+    <value>釣獲上限に達しました ({0})。釣りを停止します。</value>
   </data>
   <data name="Stop_Casting" xml:space="preserve">
     <value>キャスティングを停止</value>
@@ -985,7 +985,7 @@
     <value>セッション間で釣り上げ数カウンターを保持する</value>
   </data>
   <data name="Retain_counters_between_sessions_HelpText" xml:space="preserve">
-    <value>釣りを終了しても、プリセットの魚数とセッション中の魚数を保持する。複数ウィンドウでの釣りを想定しています。</value>
+    <value>釣りを終了しても、プリセットの魚数とセッション中の魚数を保持する。複数ウィンドウでの釣りを想定しています</value>
   </data>
   <data name="Reset_fish_caught_counter" xml:space="preserve">
     <value>捕獲した魚の数をリセット</value>
@@ -1081,7 +1081,7 @@
     <value>釣っていない時に自動的にキャスティングする</value>
   </data>
   <data name="AutoStartFishingHelpText" xml:space="preserve">
-    <value>釣りをしないときに自動的にラインをキャストします。常にAutoHook をオンにしている場合は無効にします</value>
+    <value>釣りをしないときに自動的にラインをキャストします。常にAutoHook をオンにしている場合は無効にします。</value>
   </data>
   <data name="SwapTreeNodeButtons" xml:space="preserve">
     <value>ボタン形式に入れ替える</value>
@@ -1115,7 +1115,7 @@
     <value>影響を受けるアクション: 自動キャスティング、自動泳がせ釣りI/II、コーディアル(オプション)、フィッシュアイ、熟漁の技、ペーシェンスI/II</value>
   </data>
   <data name="CordialOutsideTimeWindowHelpText" xml:space="preserve">
-    <value>デフォルトでは、コーディアルは時間枠外では使用されません（有効化されている場合）。このオプションはその動作を上書きします。</value>
+    <value>デフォルトでは、コーディアルは時間枠外では使用されません（有効化されている場合）。このオプションはその動作を上書きします</value>
   </data>
   <data name="TimeLimit" xml:space="preserve">
     <value>時間制限</value>
@@ -1312,10 +1312,10 @@
     <value>泳がせ餌の数が以下の場合のみ使用してください：</value>
   </data>
   <data name="OnlyUseIfSwimbaitCountLessThanHelpText" xml:space="preserve">
-    <value>現在の魚が保管している泳がせ餌がこの数（0～3）未満の場合にのみ、熟漁の妙案を使用する</value>
+    <value>現在の魚が保管している泳がせ餌がこの数（0-3）未満の場合にのみ、熟漁の妙案を使用する</value>
   </data>
   <data name="Swap_Preset_After_Swimbait" xml:space="preserve">
-    <value>泳がせ餌後にプリセットを入れ替える:</value>
+    <value>泳がせ餌後にプリセットを入れ替える：</value>
   </data>
   <data name="WhenSwimbaitFills" xml:space="preserve">
     <value>泳がせ餌が一杯の時</value>
@@ -1333,7 +1333,7 @@
     <value>泳がせ餌の魚を有効にする</value>
   </data>
   <data name="UseSwimbaitHelpText" xml:space="preserve">
-    <value>有効にすると、この魚は現在の魚を泳がせ釣りする代わりに泳がせ餌から使用されます。この魚の泳がせ釣り設定を使用します</value>
+    <value>有効にすると、この魚は現在の魚を泳がせ釣りする代わりに泳がせ餌から使用されます。この魚の泳がせ釣り設定を使用します。</value>
   </data>
   <data name="OnlyUseWhenSwimbaitCount" xml:space="preserve">
     <value>この魚に対して泳がせ餌の使用数が少なくとも以下の場合のみ使用する：</value>
@@ -1351,7 +1351,7 @@
     <value>保存された泳がせ餌の使用を有効にする</value>
   </data>
   <data name="UseSwimbaitHelpTextGlobal" xml:space="preserve">
-    <value>有効にすると、現在の魚を泳がせ釣りする代わりに保存された泳がせ餌が使用されます。泳がせ餌内の魚に対して泳がせ釣り設定が適用されます</value>
+    <value>有効にすると、現在の魚を泳がせ釣りする代わりに保存された泳がせ餌が使用されます。泳がせ餌内の魚に対して泳がせ釣り設定が適用されます。</value>
   </data>
   <data name="OnlyUseWhenSwimbaitCountGlobal" xml:space="preserve">
     <value>泳がせ餌の数が少なくとも以下の場合のみ使用します：</value>
@@ -1360,7 +1360,7 @@
     <value>泳がせ餌を使用するのは、魚が泳がせ餌内に少なくともこの数（1～3匹）保管されている場合に限る</value>
   </data>
   <data name="DelayBeforeCancel" xml:space="preserve">
-    <value>釣りを中止するまでの遅延（単位：ms）</value>
+    <value>釣りを中止するまでの遅延 (単位：ms)</value>
   </data>
   <data name="DelayBeforeCancelInfo" xml:space="preserve">
     <value>不要な釣りが発生し、フックされていない場合、アクションの使用が遅延します</value>
@@ -1405,7 +1405,7 @@
     <value>刺突漁</value>
   </data>
   <data name="ClickOpenWiki" xml:space="preserve">
-    <value>wikiを開く</value>
+    <value>クリックしてWikiページを開く</value>
   </data>
   <data name="CommunityDescription" xml:space="preserve">
     <value>このタブはコミュニティプリセット用です。Wikiからプリセットを取得したり、独自のプリセットを共有することができます。</value>
@@ -1444,7 +1444,7 @@
     <value>改行アニメーションのキャンセルを有効にする</value>
   </data>
   <data name="EnableRecastCancelHelp" xml:space="preserve">
-    <value>魚が引っかかっている場合は動作しません。失敗/キャンセルされた試行から再キャストするときにのみ動作します。</value>
+    <value>魚が引っかかっている場合は動作しません。失敗/キャンセルされた試行から再キャストするときにのみ動作します</value>
   </data>
   <data name="TurnCollectOff" xml:space="preserve">
     <value>自動収集が無効になっている場合、収集品採集も無効にしてください</value>
@@ -1474,7 +1474,7 @@
     <value>自動キャスト動作のオプション</value>
   </data>
   <data name="GetWikiPresets" xml:space="preserve">
-    <value>wikiにあるプリセットを取得する</value>
+    <value>Wikiのプリセットを取得</value>
   </data>
   <data name="ClickToToggle" xml:space="preserve">
     <value>クリックしてオン/オフを切り替える</value>
@@ -1564,7 +1564,7 @@
     <value>フォルダをクリップボードにコピー</value>
   </data>
   <data name="EnterNewFolderName" xml:space="preserve">
-    <value>フォルダの新しい名前を入力してください:</value>
+    <value>フォルダの新しい名前を入力してください：</value>
   </data>
   <data name="RenameFolder" xml:space="preserve">
     <value>フォルダの名前を変更</value>
@@ -1588,7 +1588,7 @@
     <value>このフォルダとプリセットをインポートしますか？</value>
   </data>
   <data name="Presets_" xml:space="preserve">
-    <value>プリセット:</value>
+    <value>プリセット：</value>
   </data>
   <data name="FolderName" xml:space="preserve">
     <value>フォルダー名</value>
@@ -1600,11 +1600,11 @@
     <value>フォルダーを作成</value>
   </data>
   <data name="Moving_" xml:space="preserve">
-    <value>移動:</value>
+    <value>移動：</value>
     <comment>Moving: PresetName</comment>
   </data>
   <data name="MovingFolder_" xml:space="preserve">
-    <value>フォルダを移動:</value>
+    <value>フォルダを移動：</value>
     <comment>Moving folder: FolderName</comment>
   </data>
   <data name="Reset_Counter_Bait_Swap" xml:space="preserve">
@@ -1620,13 +1620,13 @@
     <value>プリセットDtr バーを表示</value>
   </data>
   <data name="Dtr_Settings_Help_Text" xml:space="preserve">
-    <value>左クリックで有効/無効を切り替え、右クリックでUIを切り替えます</value>
+    <value>左クリックで有効/無効を切り替え、右クリックでUIを切り替えます。</value>
   </data>
   <data name="Dtr_Preset_Setting_Help" xml:space="preserve">
-    <value>左クリックで順方向、右クリックで逆方向に切り替わります</value>
+    <value>左クリックで順方向、右クリックで逆方向に切り替わります。</value>
   </data>
   <data name="Dtr_Help" xml:space="preserve">
-    <value>Dtr 位置順序は、dalamud設定内で変更できます</value>
+    <value>Dtr 位置順序は、dalamud設定内で変更できます。</value>
   </data>
   <data name="Multihook" xml:space="preserve">
     <value>アディショナルフック</value>
@@ -1647,7 +1647,7 @@
     <value>ルールを変更/停止:</value>
   </data>
   <data name="AetherialReduction_ReduceFish" xml:space="preserve">
-    <value>魚を精選する</value>
+    <value>魚を精選する (精選)</value>
   </data>
   <data name="AetherialReduction_ReduceFishHelp" xml:space="preserve">
     <value>釣りを一時停止し、所持品内の精選可能な魚をすべて精選してから、釣りを再開します。</value>
@@ -1746,7 +1746,7 @@
     <value>グローバルな「自動収集」設定を上書きし、このルールの条件が満たされた場合にのみ発動します。</value>
   </data>
   <data name="PresetConditions_HelpText" xml:space="preserve">
-    <value>このプリセット内で再利用できる名前付き条件です。任意の条件セットから参照できます。</value>
+    <value>このプリセット内で再利用できる名前付き条件です。任意の条件セットから参照できます</value>
   </data>
   <data name="PresetConditions_DefinedInTab" xml:space="preserve">
     <value>条件タブで定義</value>
