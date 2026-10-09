@@ -267,7 +267,8 @@ public sealed class RodFishingModule : FishingModule {
             BiteHook.CheckTimeout();
         }
 
-        if (Ws.Fishing.PreviousFishingState == currentState)
+        var previousState = Ws.Fishing.PreviousFishingState;
+        if (previousState == currentState)
             return;
 
         Ws.Execute(new RodState.OpSetPreviousFishingState(currentState));
@@ -275,7 +276,10 @@ public sealed class RodFishingModule : FishingModule {
         switch (currentState) {
             case FishingState.PullingPoleIn:
                 var canceling = (Ws.Fishing.FishingStep & (FishingSteps.CancelPending | FishingSteps.TimeOut)) != 0;
-                if (!canceling)
+                var nothingBit = !canceling && previousState is FishingState.LineInWater or FishingState.AmbitiousLure or FishingState.ModestLure;
+                if (nothingBit)
+                    Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StopCasting));
+                else
                     LureChat.AnimationCancel();
                 FishingTimer.Reset();
                 break;
