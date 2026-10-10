@@ -26,9 +26,26 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
     private readonly Hook<AchievementStruct.Delegates.ReceiveAchievementProgress>? _receiveAchievementProgressHook;
     private readonly Hook<ActionEffectHandler.Delegates.Receive>? _receiveActionEffectHook;
     private readonly Hook<EffectResultDetourDelegate>? _effectResultHook;
-    private readonly Dictionary<(uint Seq, byte TargetIndex), int> _pendingGp = [];
+    private const long PendingGpTimeoutMs = 3000;
 
-    public bool HasPendingGp => _pendingGp.Count > 0;
+    private readonly Dictionary<(uint Seq, byte TargetIndex), (int Value, long AddedAtMs)> _pendingGp = [];
+
+    public bool HasPendingGp {
+        get {
+            if (_pendingGp.Count == 0)
+                return false;
+
+            var now = Environment.TickCount64;
+            foreach (var (key, (value, addedAt)) in _pendingGp.ToArray()) {
+                if (now - addedAt < PendingGpTimeoutMs)
+                    continue;
+                _pendingGp.Remove(key);
+                IPluginLog.Get().Warning($"[WorldStateUpdater] Expired stale pending GP gain (seq {key.Seq}, target {key.TargetIndex}, +{value} GP) after {now - addedAt}ms with no matching effect result");
+            }
+
+            return _pendingGp.Count > 0;
+        }
+    }
 
     public unsafe HooksUpdateModule(Action markInventoryDirty) {
         _markInventoryDirty = markInventoryDirty;
@@ -117,7 +134,7 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
                 var affectsSelf = atSource ? casterEntityId == me : targetId == me;
                 if (!affectsSelf)
                     continue;
-                _pendingGp[(header->GlobalSequence, (byte)i)] = e.Value;
+                _pendingGp[(header->GlobalSequence, (byte)i)] = (e.Value, Environment.TickCount64);
             }
         }
         _receiveActionEffectHook!.Original(casterEntityId, casterPtr, targetPos, header, effects, targetEntityIds);
