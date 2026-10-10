@@ -16,7 +16,7 @@ namespace AutoHook.World.UpdateModules;
 public sealed class HooksUpdateModule : IAsyncDisposable {
     private const byte GpGain = 13;
 
-    private delegate void EffectResultDetourDelegate(uint targetId, byte* packet, byte replaying);
+    private unsafe delegate void EffectResultDetourDelegate(uint targetId, byte* packet, byte replaying);
 
     private readonly Action _markInventoryDirty;
     private readonly Hook<ActionManager.Delegates.UseAction>? _useActionHook;
