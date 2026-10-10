@@ -35,6 +35,13 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
             if (_pendingGp.Count == 0)
                 return false;
 
+            // no EffectResult is sent for a gp gain that lands at max gp, and nothing is left to wait for anyway
+            var player = WorldState.Get().Player;
+            if (player.MaxGp > 0 && player.CurrentGp >= player.MaxGp) {
+                _pendingGp.Clear();
+                return false;
+            }
+
             var now = Environment.TickCount64;
             foreach (var (key, (value, addedAt)) in _pendingGp.ToArray()) {
                 if (now - addedAt < PendingGpTimeoutMs)
