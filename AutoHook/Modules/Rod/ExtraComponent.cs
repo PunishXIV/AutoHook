@@ -1,5 +1,3 @@
-using AutoHook.Extensions;
-
 namespace AutoHook.Modules.Rod;
 
 public sealed class ExtraComponent(RodFishingModule module) : RodComponent(module) {

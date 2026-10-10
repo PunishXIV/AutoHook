@@ -1,5 +1,3 @@
-using AutoHook.Extensions;
-
 namespace AutoHook.Modules;
 
 /// <summary>Shared preset/bait swap used by Extra side-effects and fish-caught swaps.</summary>

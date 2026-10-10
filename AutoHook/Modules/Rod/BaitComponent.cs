@@ -1,4 +1,3 @@
-using AutoHook.Extensions;
 using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace AutoHook.Modules.Rod;

@@ -1,5 +1,3 @@
-using AutoHook.Services;
-
 namespace AutoHook.Extensions;
 
 public static class NotificationMasterApiExtensions {

@@ -1,5 +1,3 @@
-using AutoHook.Extensions;
-using AutoHook.Services;
 using AutoHook.Tasks;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -48,10 +46,6 @@ public sealed class ActionHintsResolver {
         return EnqueueWinner(winner.Request, winner.Chain, winner.AfterExecute);
     }
 
-    /// <summary>
-    /// Applies side-effect hints in order, clears them from <paramref name="hints"/>, and returns
-    /// whether the selected preset UniqueId changed (so Extra can re-check the new preset).
-    /// </summary>
     public bool ApplySideEffects(WorldState ws, ActionHints hints, RodFishingModule rod) {
         var presetBefore = RodFishingModule.Presets.SelectedPreset?.UniqueId;
         var effects = hints.SideEffects.ToList();

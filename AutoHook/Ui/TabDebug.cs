@@ -1,5 +1,3 @@
-using AutoHook.Extensions;
-using AutoHook.Services;
 using AutoHook.Tasks;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Colors;

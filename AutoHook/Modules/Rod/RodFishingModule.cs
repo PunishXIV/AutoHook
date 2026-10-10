@@ -1,4 +1,3 @@
-using AutoHook.Extensions;
 using AutoHook.Tasks;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;

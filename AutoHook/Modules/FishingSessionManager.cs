@@ -1,5 +1,4 @@
 using AutoHook.Tasks;
-using ECommons;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 
 namespace AutoHook.Modules;
