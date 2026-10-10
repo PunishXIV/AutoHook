@@ -1,3 +1,4 @@
+using clib.Enums;
 using Dalamud.Hooking;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -14,12 +15,13 @@ using AchievementStruct = FFXIVClientStructs.FFXIV.Client.Game.UI.Achievement;
 namespace AutoHook.World.UpdateModules;
 
 public sealed class HooksUpdateModule : IAsyncDisposable {
-    private const byte GpGain = 13;
+    private const uint SetBaseStat = 13; // a1 = stat, a2 = new amount
 
     private delegate void EffectResultDetourDelegate(uint targetId, byte* packet, byte replaying);
 
     private readonly Action _markInventoryDirty;
     private readonly Hook<ActionManager.Delegates.UseAction>? _useActionHook;
+    private readonly Hook<GameMain.Delegates.ExecuteCommand>? _executeCommandHook;
     private readonly Hook<AgentCatch.Delegates.UpdateCatch>? _updateCatchHook;
     private readonly Hook<FishingEventHandler.Delegates.PlayAnimation>? _playAnimationHook;
     private readonly Hook<PacketDispatcher.Delegates.HandleActorControlPacket>? _handleActorControlPacketHook;
@@ -27,6 +29,7 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
     private readonly Hook<ActionEffectHandler.Delegates.Receive>? _receiveActionEffectHook;
     private readonly Hook<EffectResultDetourDelegate>? _effectResultHook;
     private readonly Dictionary<(uint Seq, byte TargetIndex), int> _pendingGp = [];
+    private bool _wksMissionEnding;
 
     public bool HasPendingGp => _pendingGp.Count > 0;
 
@@ -39,6 +42,7 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
         _receiveAchievementProgressHook = IGameInteropProvider.Get().HookFromAddress<AchievementStruct.Delegates.ReceiveAchievementProgress>((nint)AchievementStruct.MemberFunctionPointers.ReceiveAchievementProgress, ReceiveAchievementProgressDetour);
         _receiveActionEffectHook = IGameInteropProvider.Get().HookFromAddress<ActionEffectHandler.Delegates.Receive>((nint)ActionEffectHandler.MemberFunctionPointers.Receive, ActionEffectDetour);
         _effectResultHook = IGameInteropProvider.Get().HookFromSignature<EffectResultDetourDelegate>("48 8B C4 44 88 40 18 89 48 08", EffectResultDetour);
+        _executeCommandHook = IGameInteropProvider.Get().HookFromAddress<GameMain.Delegates.ExecuteCommand>((nint)GameMain.MemberFunctionPointers.ExecuteCommand, ExecuteCommandDetour);
         _updateCatchHook?.Enable();
         _useActionHook?.Enable();
         _playAnimationHook?.Enable();
@@ -46,6 +50,7 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
         _receiveAchievementProgressHook?.Enable();
         _receiveActionEffectHook?.Enable();
         _effectResultHook?.Enable();
+        _executeCommandHook?.Enable();
     }
 
     public async ValueTask DisposeAsync() {
@@ -56,6 +61,13 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
         await _receiveAchievementProgressHook.DisposeAsync();
         await _receiveActionEffectHook.DisposeAsync();
         await _effectResultHook.DisposeAsync();
+        await _executeCommandHook.DisposeAsync();
+    }
+
+    private bool ExecuteCommandDetour(int command, int param1, int param2, int param3, int param4) {
+        if (command == CommandFlag.FinishWKSMission.Value)
+            _wksMissionEnding = true;
+        return _executeCommandHook!.Original(command, param1, param2, param3, param4);
     }
 
     private unsafe bool UseActionDetour(ActionManager* thisPtr, ActionType actionType, uint actionId, ulong targetId, uint extraParam, ActionManager.UseActionMode mode, uint comboRouteId, bool* outOptAreaTargeted) {
@@ -94,12 +106,24 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
         return _playAnimationHook!.Original(thisPtr, chara, actionTimelineId, a4);
     }
 
-    private void HandleActorControlPacketDetour(uint entityId, uint category, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5, uint arg6, uint arg7, uint arg8, GameObjectId targetId, bool isRecorded) {
+    private unsafe void HandleActorControlPacketDetour(uint entityId, uint category, uint arg1, uint arg2, uint arg3, uint arg4, uint arg5, uint arg6, uint arg7, uint arg8, GameObjectId targetId, bool isRecorded) {
         _handleActorControlPacketHook!.Original(entityId, category, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, targetId, isRecorded);
         switch (category) {
+            case 148: // PlayVFX. a4 = vfxId
+            case 378: // CurrencyGain. a1 = bucket, a2 = itemId, a3 = cap, a4 = newAmount
+            case 412: // PlayActionTimeline, a1 = actionTimelineId
+            case 3545: // WKSMissionEnd
+            case 3638: // WKSMissionMarkCompletion?, a1 = jobSlot, a2 = missionUnitId, a3 = flag
+            case 3639: // CosmicScoreGain. a1 = jobSlot, a2 = newScore
+                break;
             case 3702: // WKSMissionEnd? there's also 3500 but that triggers on start and end but with a different a1
             case 3501: // WKSMissionItemGain or something. a1 is the itemid
                 _markInventoryDirty();
+                break;
+            case SetBaseStat when _wksMissionEnding && arg1 is 7 && entityId == UIState.Instance()->PlayerState.EntityId:
+                _wksMissionEnding = false;
+                if (_pendingGp.Count > 0)
+                    _pendingGp.Clear();
                 break;
         }
     }
@@ -111,11 +135,11 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
             var te = effects[i];
             for (var j = 0; j < 8; j++) {
                 var e = te.Effects[j];
-                if (e.Type != GpGain)
+                if (e.Type != SetBaseStat)
                     continue;
                 var atSource = (e.Param4 & 0x80) != 0;
                 var affectsSelf = atSource ? casterEntityId == me : targetId == me;
-                if (!affectsSelf)
+                if (!affectsSelf || IObjectTable.Get().LocalPlayer is { CurrentGp: var cur, MaxGp: var max } && cur >= max) // don't add a pending gp at max
                     continue;
                 _pendingGp[(header->GlobalSequence, (byte)i)] = e.Value;
             }
