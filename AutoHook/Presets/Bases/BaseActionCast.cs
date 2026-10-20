@@ -1,4 +1,5 @@
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.Game;
@@ -9,6 +10,7 @@ namespace AutoHook.Presets.Bases;
 
 public abstract class BaseActionCast {
     private const int ActionControlColumn = 200;
+    private const int GpButtonWidth = 55;
 
     protected BaseActionCast(uint id, ActionType actionType = ActionType.Action) {
         Id = id;
@@ -61,10 +63,14 @@ public abstract class BaseActionCast {
         => DrawAutoCastConditions(showSubPrefix: false);
 
     public virtual void SetThreshold(int newCost) {
-        var actionCost = Id == IDs.Actions.ThaliaksFavor ? 0 : (int)ActionExecutor.GetActionCost(Id, ActionType);
-        GpThreshold = (newCost < 0) ? 0 : Math.Max(newCost, actionCost);
+        GpThreshold = (newCost < 0) ? 0 : Math.Max(newCost, GetActionCost());
         Configuration.Save();
     }
+
+     private int CurrentThresholdValue(WorldState ws)
+        => CostsAnglersArt ? ws.Player.GetStatusStacks(IDs.Status.AnglersArt) : (int)ws.Player.CurrentGp;
+
+    private string ThresholdUnit => CostsAnglersArt ? "AA" : "GP";
 
     public bool IsAvailableToCast(WorldState ws, bool ignoreCurrentMooch = false)
         => DescribeUnavailable(ws, ignoreCurrentMooch) == null;
@@ -81,8 +87,8 @@ public abstract class BaseActionCast {
             return "GP pending";
 
         var condition = CastCondition(ws);
-        var currentGp = ws.Player.CurrentGp;
-        var hasGp = GpThresholdAbove ? currentGp >= GpThreshold : currentGp <= GpThreshold;
+        var current = CurrentThresholdValue(ws);
+           var hasGp = !ShowGpThreshold || (GpThresholdAbove ? current >= GpThreshold : current <= GpThreshold);
         var actionAvailable = ws.ActionAvailable(Id, ActionType);
 
         if (!condition) {
@@ -92,7 +98,7 @@ public abstract class BaseActionCast {
         }
 
         if (!hasGp)
-            return GpThresholdAbove ? $"GP {currentGp} < {GpThreshold}" : $"GP {currentGp} > {GpThreshold}";
+            return GpThresholdAbove ? $"{ThresholdUnit} {current} < {GpThreshold}" : $"{ThresholdUnit} {current} > {GpThreshold}";
 
         if (!actionAvailable)
             return "Action not available";
@@ -101,7 +107,7 @@ public abstract class BaseActionCast {
     }
 
     public bool IsGpBlocked(WorldState ws, bool ignoreCurrentMooch = false) {
-        if (!Enabled)
+        if (!Enabled || !ShowGpThreshold || CostsAnglersArt)
             return false;
 
         if (DoesCancelMooch() && ws.IsMoochAvailable() && DontCancelMooch && !ignoreCurrentMooch)
@@ -170,7 +176,10 @@ public abstract class BaseActionCast {
         if (GetPriority() == 0) //failsafe I guess
             Priority = availableActs.MaxBy(x => x.Priority)!.Priority + 1;
 
-        ImGui.SameLine();
+        if (ShowGpThreshold)
+            ImGui.SameLine();
+        else
+            ImGui.SameLine(ActionControlColumn.Scaled() + GpButtonWidth.Scaled() + ImGui.GetStyle().ItemSpacing.X);
 
         var canMoveUp = availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority);
         using (ImRaii.Disabled(!canMoveUp)) {
@@ -197,22 +206,63 @@ public abstract class BaseActionCast {
         }
     }
 
+    private int GetActionCost()
+        => (int)ActionExecutor.GetActionCost(Id, ActionType);
+
+    private bool CostsAnglersArt
+        => ActionType == ActionType.Action && Id is IDs.Actions.MakeshiftBait or IDs.Actions.BigGameFishing or IDs.Actions.MultiHook or IDs.Actions.ThaliaksFavor;
+
+     private bool IsDefaultGpThreshold(int actionCost)
+        => GpThresholdAbove && GpThreshold <= actionCost;
+
+     protected virtual int? AnglersArtStacksToUse => null;
+
+    private string DescribeGpThreshold(int actionCost) {
+        if (CostsAnglersArt) {
+            // own stack option has to pass too.
+            var minStacks = AnglersArtStacksToUse ?? actionCost;
+            var when = IsDefaultGpThreshold(actionCost) ? $"equal or above {minStacks}"
+                : GpThresholdAbove ? $"equal or above {Math.Max(minStacks, GpThreshold)}"
+                : $"equal or above {minStacks} and equal or below {GpThreshold}";
+            return $"{GetName()} will be used when your Angler's Art stacks are {when}\nCosts {actionCost}";
+        }
+
+        if (IsDefaultGpThreshold(actionCost))
+            return actionCost > 0
+                ? $"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {UIStrings.Above} {actionCost}"
+                : $"{GetName()}: no GP requirement";
+
+        var text = @$"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {(GpThresholdAbove ? UIStrings.Above : UIStrings.Below)} {GpThreshold}";
+        return actionCost > 0 ? $"{text}\nGP cost: {actionCost}" : text;
+    }
+
     public virtual void DrawGpThreshold() {
         using var gpId = ImRaii.PushId(@$"{GetType().Name}_gp");
-        if (ImGui.Button(UIStrings.GPlabel)) {
+        var actionCost = GetActionCost();
+        var buttonWidth = GpButtonWidth.Scaled();
+        bool clicked;
+        if (IsDefaultGpThreshold(actionCost))
+            clicked = ImGui.Button($"{actionCost}###gp_btn", new Vector2(buttonWidth, 0));
+        else
+            clicked = DrawUtil.IconTextButton(@"gp_btn",
+                GpThresholdAbove ? FontAwesomeIcon.CaretUp : FontAwesomeIcon.CaretDown,
+                $"{GpThreshold}", buttonWidth, ImGuiColors.DalamudOrange);
+
+        ImGui.TooltipOnHover(DescribeGpThreshold(actionCost));
+
+        if (clicked)
             ImGui.OpenPopup(strId: @"gp_cfg");
-        }
 
         using var popup = ImRaii.Popup(@"gp_cfg");
         if (!popup.Success) return;
 
-        using var item = ImRaii.Child("###gp_cfg2", new Vector2(175.Scaled(), 125.Scaled()), true);
+        ImGui.Dummy(new Vector2(175.Scaled(), 0));
         if (ImGui.Button(@" X "))
             ImGui.CloseCurrentPopup();
         ImGui.SameLine();
-        ImGui.TextColored(ImGuiColors.DalamudYellow, @$"GP - {GetName()}");
+        ImGui.TextColored(ImGuiColors.DalamudYellow, @$"{ThresholdUnit} - {GetName()}");
 
-        ImGui.TooltipOnHover(@$"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {(GpThresholdAbove ? UIStrings.Above : UIStrings.Below)} {GpThreshold}");
+        ImGui.TooltipOnHover(DescribeGpThreshold(actionCost));
 
         ImGui.Separator();
         if (ImGui.RadioButton(UIStrings.Above, GpThresholdAbove)) {
@@ -229,10 +279,10 @@ public abstract class BaseActionCast {
 
         //ImGui.SameLine();
 
+        var threshold = Math.Max(GpThreshold, actionCost);
         ImGui.SetNextItemWidth(100.Scaled());
-        if (ImGui.InputInt(UIStrings.GP, ref GpThreshold, 1, 1)) {
-            GpThreshold = Math.Max(GpThreshold, 0);
-            SetThreshold(GpThreshold);
+        if (ImGui.InputInt(CostsAnglersArt ? @"AA" : UIStrings.GP, ref threshold, 1, 1)) {
+            SetThreshold(Math.Max(threshold, 0));
             Configuration.Save();
         }
     }

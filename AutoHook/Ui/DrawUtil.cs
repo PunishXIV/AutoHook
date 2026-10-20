@@ -75,6 +75,55 @@ public static class DrawUtil {
 
     public static void HoveredTooltip(string text) => ImGui.TooltipOnHover(text);
 
+    public static bool IconTextButton(string id, FontAwesomeIcon icon, string text, float width, Vector4? color = null) {
+        var iconStr = icon.ToIconString();
+        Vector2 iconSize;
+        using (ImRaii.PushFont(UiBuilder.IconFont))
+            iconSize = ImGui.CalcTextSize(iconStr);
+        var textSize = ImGui.CalcTextSize(text);
+        var spacing = 3.Scaled();
+
+        var clicked = ImGui.Button($"##{id}", new Vector2(width, 0));
+
+        var min = ImGui.GetItemRectMin();
+        var size = ImGui.GetItemRectSize();
+        var col = color is { } c ? ImGui.GetColorU32(c) : ImGui.GetColorU32(ImGuiCol.Text);
+        var x = min.X + (size.X - (iconSize.X + spacing + textSize.X)) / 2;
+        var dl = ImGui.GetWindowDrawList();
+        using (ImRaii.PushFont(UiBuilder.IconFont))
+            dl.AddText(new Vector2(x, min.Y + (size.Y - iconSize.Y) / 2), col, iconStr);
+        dl.AddText(new Vector2(x + iconSize.X + spacing, min.Y + (size.Y - textSize.Y) / 2), col, text);
+
+        return clicked;
+    }
+
+    private static readonly string[] CompareOps = [">=", ">", "=", "<", "<="];
+
+    public static string PrettyOp(string op) => op switch {
+        ">=" => "≥",
+        "<=" => "≤",
+        _ => op,
+    };
+
+    public static bool CompareOpButton(string id, ref string op) {
+        var idx = Array.IndexOf(CompareOps, op);
+        if (idx < 0) idx = 0;
+
+        var changed = false;
+        if (ImGui.Button($"{PrettyOp(CompareOps[idx])}###{id}",new Vector2(ImGui.GetFrameHeight() * 1.2f, 0))) {
+            idx = (idx + 1) % CompareOps.Length;
+            changed = true;
+        }
+        else if (ImGui.IsItemClicked(ImGuiMouseButton.Right)) {
+            idx = (idx + CompareOps.Length - 1) % CompareOps.Length;
+            changed = true;
+        }
+        ImGui.TooltipOnHover("Comparison (click: next, right-click: previous)\n≥ at least   > more than   = exactly   < less than   ≤ at most");
+
+        op = CompareOps[idx];
+        return changed;
+    }
+
     public static bool SubCheckbox(string label, ref bool refValue, string helpText = "", bool hoverHelpText = false) {
         TextV($" └");
         ImGui.SameLine();
@@ -100,16 +149,35 @@ public static class DrawUtil {
     }
 
     private static string _filterText = "";
+    private static int _compactCombos;
+
+    private sealed class CompactCombosScope : IDisposable {
+        public void Dispose() => _compactCombos--;
+    }
+
+    // DrawComboSelector sizes to the selection instead of the longest item.
+    public static IDisposable CompactCombos() {
+        _compactCombos++;
+        return new CompactCombosScope();
+    }
 
     public static void DrawComboSelector<T>(IReadOnlyList<T> itemList, Func<T, string> getItemName, string selectedItem, Action<T> onSelect) {
         var padding = ImGui.GetStyle().FramePadding.X * 2 + ImGui.GetFrameHeight();
-        var width = Math.Max(220.Scaled(), itemList.Select(i => getItemName(i) ?? "").Append(selectedItem).Max(n => ImGui.CalcTextSize(n).X + padding));
+        float width, popupWidth;
+        if (_compactCombos > 0) {
+            width = Math.Clamp(ImGui.CalcTextSize(selectedItem).X + padding, 80.Scaled(), 220.Scaled());
+            popupWidth = 260.Scaled();
+            ImGui.SetNextWindowSizeConstraints(new Vector2(popupWidth, 0), new Vector2(float.MaxValue, float.MaxValue));
+        }
+        else {
+            width = popupWidth = Math.Max(220.Scaled(), itemList.Select(i => getItemName(i) ?? "").Append(selectedItem).Max(n => ImGui.CalcTextSize(n).X + padding));
+        }
 
         ImGui.SetNextItemWidth(width);
 
         using (var combo = ImRaii.Combo("###search", selectedItem)) {
             if (combo.Success) {
-                ImGui.SetNextItemWidth(width - 30.Scaled());
+                ImGui.SetNextItemWidth(popupWidth - 30.Scaled());
                 ImGui.InputTextWithHint("##filter", UIStrings.Search_Hint, ref _filterText, 100);
                 ImGui.Separator();
 
@@ -331,6 +399,20 @@ public static class DrawUtil {
         }
     }
 
+    public static string TruncateToWidth(string text, float maxWidth) {
+        if (maxWidth <= 0 || ImGui.CalcTextSize(text).X <= maxWidth)
+            return text;
+
+        const string ellipsis = "...";
+        int lo = 0, hi = text.Length;
+        while (lo < hi) {
+            var mid = (lo + hi + 1) / 2;
+            if (ImGui.CalcTextSize(text[..mid] + ellipsis).X <= maxWidth) lo = mid;
+            else hi = mid - 1;
+        }
+        return text[..lo].TrimEnd() + ellipsis;
+    }
+
     public static void DrawCheckboxTree(string treeName, ref bool enable, Action? action = null, string helpText = "", bool forceOpen = false, bool highlightLabel = false, Action? drawLabelExtras = null) {
         using var id = ImRaii.PushId(treeName);
         if (ImGui.Checkbox("###checkbox", ref enable)) {
@@ -357,18 +439,17 @@ public static class DrawUtil {
 
         if (forceOpen)
             ImGui.SetNextItemOpen(true, ImGuiCond.Always);
+        bool open;
         using (highlightLabel ? ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGreen) : null)
-            if (ImGui.TreeNodeEx(treeName, ImGuiTreeNodeFlags.FramePadding)) {
-                drawLabelExtras?.Invoke();
-                if (helpText != string.Empty)
-                    ImGui.TooltipOnHover(helpText);
+            open =ImGui.TreeNodeEx(treeName, ImGuiTreeNodeFlags.FramePadding);
+        if (helpText != string.Empty)
+            ImGui.TooltipOnHover(helpText);
 
-                DrawTreeBody(labelX, action, trailingSeparator: true);
-                ImGui.TreePop();
-            }
-            else {
-                drawLabelExtras?.Invoke();
-            }
+        drawLabelExtras?.Invoke();
+        if (open) {
+            DrawTreeBody(labelX, action, trailingSeparator: true);
+            ImGui.TreePop();
+        }
     }
 
     // checkbox + inline collapsing header sharing one label. returns true if enable changed.

@@ -69,8 +69,8 @@ public sealed class ActionCooldownCD : IConditionDefinition {
         var typeInt = args.Type;
         var label = typeInt == 1 ? "Item" : "Action";
 
-        ImGui.SetNextItemWidth(90.Scaled());
-        using (var comboType = ImRaii.Combo("Type", label)) {
+        ImGui.SetNextItemWidth(70.Scaled());
+        using (var comboType = ImRaii.Combo("##act_type", label)) {
             if (comboType.Success) {
                 if (ImGui.Selectable("Action", typeInt == 0)) typeInt = 0;
                 if (ImGui.Selectable("Item", typeInt == 1)) typeInt = 1;
@@ -150,25 +150,17 @@ public sealed class ActionCooldownCD : IConditionDefinition {
         if (args.IsAvailability)
             return;
 
-        var opLabel = args.Op is ">" or ">=" or "<" or "<=" or "=" ? args.Op : "=";
-        ImGui.SetNextItemWidth(50.Scaled());
-        using (var comboOp = ImRaii.Combo("##act_cd_op", opLabel)) {
-            if (comboOp.Success) {
-                foreach (var choice in new[] { ">", ">=", "<", "<=", "=" }) {
-                    var sel = choice == args.Op;
-                    if (!ImGui.Selectable(choice, sel))
-                        continue;
-
-                    args = args with { Op = choice };
-                    condition.Params = args.ToParams();
-                }
-            }
+        ImGui.SameLine();
+        var op = args.Op is ">" or ">=" or "<" or "<=" or "=" ? args.Op : "=";
+        if (DrawUtil.CompareOpButton("##act_cd_op", ref op)) {
+            args = args with { Op = op };
+            condition.Params = args.ToParams();
         }
 
         ImGui.SameLine();
         var sec = args.Seconds;
         ImGui.SetNextItemWidth(80.Scaled());
-        if (ImGui.InputInt("Cooldown (sec)", ref sec)) {
+        if (ImGui.InputInt("s##act_cd_sec", ref sec)) {
             sec = Math.Max(0, sec);
             args = args with { Seconds = sec };
             condition.Params = args.ToParams();
@@ -208,9 +200,14 @@ public sealed class ActionCooldownCD : IConditionDefinition {
         }
     }
 
+    public bool IsIncomplete(IReadOnlyDictionary<string, object> parameters)
+        => GetParams(parameters).Id == 0;
+
     public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
         var args = GetParams(parameters);
-        var action = args.Id == 0 ? "action" : LuminaAction.GetRow(args.Id).Name.ToString();
+        var action = args.Id == 0
+            ? args.Type == 1 ? "no item selected" : "no action selected"
+            : args.Type == 1 ? Item.GetRow(ItemUtil.GetBaseId(args.Id).ItemId).Name.ToString() : LuminaAction.GetRow(args.Id).Name.ToString();
         if (args.IsAvailability)
             return $"{action} available";
 

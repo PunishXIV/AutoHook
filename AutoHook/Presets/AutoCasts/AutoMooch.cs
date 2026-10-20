@@ -10,6 +10,8 @@ public sealed class AutoMooch : BaseActionCast {
 
     public AutoMooch() : base(IDs.Actions.Mooch, ActionType.Action) { }
 
+    public override bool ShowGpThreshold => false;
+
     [NonSerialized] public bool UseAlwaysMoochLabel;
     [NonSerialized] public bool SuppressHelpText;
 

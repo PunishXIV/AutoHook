@@ -20,7 +20,8 @@ public enum ConditionScope {
 public static class ConditionUi {
     private static ConditionSet? _clipboard;
     private static string _exportBase64 = string.Empty;
-    private static int _forceOpenConditionUiId;
+    // ui: only this condition draws its editor, the rest draw their summary.
+    private static int _editingConditionUiId;
     private static readonly Dictionary<ConditionScope, List<ConditionTypeDef>> ScopedTypesCache = [];
 
     public static CustomPresetConfig? EvaluationPreset { get; set; }
@@ -95,26 +96,10 @@ public static class ConditionUi {
                 var cond = group.Conditions[ci];
                 cond.EnsureUiId();
                 using var _ = ImRaii.PushId($"slim_cond{cond.UiId}");
-                var rowLabel = ResolveTypeLabel(cond.TypeId, types);
-                var enabled = cond.Enabled;
-
-                var forceOpen = ci == newlyAddedIndex || cond.UiId == _forceOpenConditionUiId;
-
-                DrawUtil.DrawCheckboxTree(rowLabel, ref enabled, () => {
-                    if (DrawConditionContent(cond, scope, types)) {
-                        _forceOpenConditionUiId = cond.UiId;
-                        Configuration.Save();
-                    }
-                    ImGui.SameLine();
-                    if (ImGuiComponents.IconButton(FontAwesomeIcon.Trash))
-                        toRemove.Add(ci);
-                    ImGui.TooltipOnHover("Delete condition");
-                }, forceOpen: forceOpen, highlightLabel: IsConditionCurrentlyTrue(cond));
-
-                if (cond.UiId == _forceOpenConditionUiId && forceOpen)
-                    _forceOpenConditionUiId = 0;
-                if (enabled != cond.Enabled)
-                    cond.Enabled = enabled;
+                if (ci == newlyAddedIndex)
+                    _editingConditionUiId = cond.UiId;
+                if (DrawConditionRow(cond, scope, types))
+                    toRemove.Add(ci);
             }
         }
         foreach (var idx in toRemove.OrderByDescending(x => x)) {
@@ -157,16 +142,32 @@ public static class ConditionUi {
             var g = set.Groups[gi];
             var groupLetter = (char)('A' + gi);
             using var _ = ImRaii.PushId($"slim_adv_grp{gi}");
+            var groupTypes = GetTypesForScope(scope);
+
             var gEnabled = g.Enabled;
-            DrawUtil.DrawCheckboxTree($"Group {groupLetter}", ref gEnabled, () => {
-                var deleteGroup = DrawGroupHeader(set, g, gi, scope);
-                if (deleteGroup)
-                    toRemoveGroup.Add(gi);
-                ImGui.Spacing();
-                DrawConditionsWithTypes(g, scope, GetTypesForScope(scope));
-            }, highlightLabel: IsGroupCurrentlyTrue(g));
-            if (gEnabled != g.Enabled)
+            if (ImGui.Checkbox("##grp_enabled", ref gEnabled)) {
                 g.Enabled = gEnabled;
+                Configuration.Save();
+            }
+            ImGui.SameLine(0, 3.Scaled());
+            using (IsGroupCurrentlyTrue(g) ? ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGreen) : null)
+                DrawUtil.TextV($"Group {groupLetter}");
+            ImGui.TooltipOnHover($"Group {groupLetter}: {SummarizeGroup(g, groupTypes)}");
+            ImGui.SameLine();
+            if (DrawGroupHeader(set, g, gi, scope))
+                toRemoveGroup.Add(gi);
+
+            using (ImRaii.PushIndent()) {
+                var start = ImGui.GetCursorScreenPos();
+                using (ImRaii.Group())
+                    DrawConditionsWithTypes(g, scope, groupTypes);
+                var end = ImGui.GetItemRectMax();
+                var lineX = start.X - 4.Scaled();
+                if (g.Conditions.Count > 0)
+                    ImGui.GetWindowDrawList().AddLine(new Vector2(lineX, start.Y), new Vector2(lineX, end.Y),
+                        ImGui.GetColorU32(CombineModeColor(g.CombineMode)), 2.Scaled());
+            }
+            ImGui.Spacing();
         }
         foreach (var idx in toRemoveGroup.OrderByDescending(x => x)) {
             set.Groups.RemoveAt(idx);
@@ -177,16 +178,17 @@ public static class ConditionUi {
 
     private static void DrawSetHeader(ConditionSet set) {
         var mode = set.CombineMode;
-        var btn = mode == ConditionCombineMode.All ? "&&" : "||";
 
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Plus))
             set.Groups.Add(new ConditionGroup());
         ImGui.TooltipOnHover("Add group");
 
         ImGui.SameLine();
-        if (ImGui.Button(btn))
+        if (ImGui.Button($"{CombineModeLabel(mode)}###set_mode"))
             set.CombineMode = mode == ConditionCombineMode.All ? ConditionCombineMode.Any : ConditionCombineMode.All;
-        ImGui.TooltipOnHover($"Evaluate: {(mode is ConditionCombineMode.All ? "AND" : "OR")} - {(mode is ConditionCombineMode.All ? "all" : "any")} must be true");
+        ImGui.TooltipOnHover(mode is ConditionCombineMode.All
+            ? "ALL groups must be true (AND)\nClick to switch to ANY"
+            : "ANY group can be true (OR)\nClick to switch to ALL");
 
         ImGui.SameLine();
         var exprVisible = IsExpressionEditorVisible(set);
@@ -267,20 +269,28 @@ public static class ConditionUi {
 
     private static bool DrawGroupHeader(ConditionSet set, ConditionGroup group, int index, ConditionScope scope) {
         var mode = group.CombineMode;
-        var btn = mode == ConditionCombineMode.All ? "&&" : "||";
-        if (ImGui.Button(btn))
-            group.CombineMode = mode == ConditionCombineMode.All ? ConditionCombineMode.Any : ConditionCombineMode.All;
-        ImGui.TooltipOnHover($"Evaluate: {(mode is ConditionCombineMode.All ? "AND" : "OR")} - {(mode is ConditionCombineMode.All ? "all" : "any")} must be true");
+        using (ImRaii.PushColor(ImGuiCol.Text, CombineModeColor(mode))) {
+            if (ImGui.Button($"{CombineModeLabel(mode)} of###grp_mode"))
+                group.CombineMode = mode == ConditionCombineMode.All ? ConditionCombineMode.Any : ConditionCombineMode.All;
+        }
+        ImGui.TooltipOnHover(mode is ConditionCombineMode.All
+            ? "ALL conditions in this group must be true (AND)\nClick to switch to ANY"
+            : "ANY condition in this group can be true (OR)\nClick to switch to ALL");
 
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(FontAwesomeIcon.PlusCircle)) {
-            group.Conditions.Add(new Condition {
+            var added = new Condition {
                 TypeId = GetTypesForScope(scope).FirstOrDefault(d => !PresetConditionHelper.IsPresetType(d.Id))?.Id
                          ?? GetTypesForScope(scope).FirstOrDefault()?.Id
                          ?? Registry.GetId<StatusActiveCD>(),
                 Params = []
-            });
+            };
+            added.EnsureUiId();
+            _editingConditionUiId = added.UiId;
+            group.Conditions.Add(added);
+            Configuration.Save();
         }
+        ImGui.TooltipOnHover("Add condition");
 
         if (set.Groups.Count > 1 || group.Conditions.Count > 0) {
             ImGui.SameLine();
@@ -299,8 +309,9 @@ public static class ConditionUi {
         var typeChanged = false;
         DrawInverseToggle(cond);
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(180.Scaled());
         var currentLabel = ResolveTypeLabel(cond.TypeId, defs);
+        ImGui.SetNextItemWidth(Math.Max(60.Scaled(), ImGui.CalcTextSize(currentLabel).X + ImGui.GetFrameHeight() + ImGui.GetStyle().FramePadding.X * 2));
+        ImGui.SetNextWindowSizeConstraints(new Vector2(200.Scaled(), 0), new Vector2(float.MaxValue, float.MaxValue));
         var custom = defs.Where(d => PresetConditionHelper.IsPresetType(d.Id)).ToList();
         var builtIn = defs.Where(d => !PresetConditionHelper.IsPresetType(d.Id)).ToList();
         using (var combo = ImRaii.Combo("##type", currentLabel)) {
@@ -340,16 +351,72 @@ public static class ConditionUi {
             var cond = group.Conditions[ci];
             cond.EnsureUiId();
             using var _ = ImRaii.PushId($"cond{cond.UiId}");
-            using (IsConditionCurrentlyTrue(cond) ? ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGreen) : null)
-                if (DrawConditionContent(cond, scope, defs))
-                    Configuration.Save();
-            ImGui.SameLine();
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Trash)) {
+            if (DrawConditionRow(cond, scope, defs)) {
                 group.Conditions.RemoveAt(ci);
                 ci--;
-                continue;
+                Configuration.Save();
             }
         }
+    }
+
+    // summary row, or the editor if it's being edited. true = delete.
+    private static bool DrawConditionRow(Condition cond, ConditionScope scope, IReadOnlyList<ConditionTypeDef> defs) {
+        var enabled = cond.Enabled;
+        if (ImGui.Checkbox("##enabled", ref enabled)) {
+            cond.Enabled = enabled;
+            Configuration.Save();
+        }
+        ImGui.TooltipOnHover(enabled ? "Enabled" : "Disabled (skipped)");
+        ImGui.SameLine(0, 3.Scaled());
+
+        if (_editingConditionUiId == cond.UiId) {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Check))
+                _editingConditionUiId = 0;
+            ImGui.TooltipOnHover("Done editing");
+            ImGui.SameLine();
+
+            using (DrawUtil.CompactCombos()) {
+                if (DrawConditionContent(cond, scope, defs))
+                    Configuration.Save();
+            }
+
+            ImGui.SameLine();
+            var delete = ImGuiComponents.IconButton(FontAwesomeIcon.Trash);
+            ImGui.TooltipOnHover("Delete condition");
+            return delete;
+        }
+
+        var summary = Summarize(cond, defs);
+        var incomplete = IsIncomplete(cond);
+        var frame = ImGui.GetFrameHeight();
+        var avail = ImGui.GetContentRegionAvail().X;
+        var textWidth = Math.Max(60.Scaled(), avail - frame - ImGui.GetStyle().ItemSpacing.X);
+        var rowStart = ImGui.GetCursorScreenPos();
+        var rowHovered = ImGui.IsMouseHoveringRect(rowStart, rowStart + new Vector2(avail, frame));
+
+        var color = incomplete ? ImGuiColors.DalamudOrange
+            : !cond.Enabled ? ImGuiColors.DalamudGrey
+            : IsConditionCurrentlyTrue(cond) ? ImGuiColors.ParsedGreen
+            : (Vector4?)null;
+        var label = DrawUtil.TruncateToWidth(summary, textWidth - ImGui.GetStyle().FramePadding.X * 2);
+
+        bool clicked;
+        using (ImRaii.PushStyle(ImGuiStyleVar.SelectableTextAlign, new Vector2(0, 0.5f)))
+        using (color is { } c ? ImRaii.PushColor(ImGuiCol.Text, c) : null)
+            clicked = ImGui.Selectable($"{label}###row", false, ImGuiSelectableFlags.None, new Vector2(textWidth, frame));
+        if (clicked)
+            _editingConditionUiId = cond.UiId;
+        ImGui.TooltipOnHover($"{ConditionTooltip(summary, incomplete)}\n\nClick to edit");
+
+        ImGui.SameLine();
+        if (!rowHovered) {
+            ImGui.Dummy(new Vector2(frame, frame));
+            return false;
+        }
+
+        var remove = ImGuiComponents.IconButton(FontAwesomeIcon.Trash);
+        ImGui.TooltipOnHover("Delete condition");
+        return remove;
     }
 
     private static IReadOnlyList<ConditionTypeDef> GetTypesForScope(ConditionScope scope, IReadOnlyList<string>? allowedTypeIds = null) {
@@ -363,6 +430,47 @@ public static class ConditionUi {
 
         var custom = PresetConditionHelper.GetPresetTypeDefs(preset, ExcludeNamedConditionId);
         return [.. custom, .. builtIn];
+    }
+
+    private static string CombineModeLabel(ConditionCombineMode mode)
+        => mode == ConditionCombineMode.All ? "ALL" : "ANY";
+
+    private static Vector4 CombineModeColor(ConditionCombineMode mode)
+        => mode == ConditionCombineMode.All ? ImGuiColors.TankBlue : ImGuiColors.DalamudViolet;
+
+
+    private static bool IsIncomplete(Condition cond)
+        => !PresetConditionHelper.IsPresetType(cond.TypeId)
+           && Registry.Get(cond.TypeId)?.Definition?.IsIncomplete(cond.Params) == true;
+
+    private static string ConditionTooltip(string summary, bool incomplete)
+        => incomplete ? $"{summary}\n\nIncomplete: finish setting this up or it won't behave as expected." : summary;
+
+     private static string Summarize(Condition cond, IReadOnlyList<ConditionTypeDef> defs) {
+        var name = ResolveTypeLabel(cond.TypeId, defs);
+        var inv = GetBool(cond.Params, "inv", false);
+
+        var detail = string.Empty;
+        if (!PresetConditionHelper.IsPresetType(cond.TypeId) && Registry.Get(cond.TypeId)?.Definition is { } def) {
+             var p = inv ? cond.Params.Where(kv => kv.Key != "inv").ToDictionary(kv => kv.Key, kv => kv.Value) : cond.Params;
+            try {
+                detail = def.DescribeParameters(p);
+            }
+            catch {
+                detail = string.Empty;
+            }
+        }
+
+        var text = string.IsNullOrEmpty(detail) ? name : $"{name}: {detail}";
+        return inv ? $"NOT {text}" : text;
+    }
+
+    private static string SummarizeGroup(ConditionGroup group, IReadOnlyList<ConditionTypeDef> defs) {
+        var parts = group.Conditions.Where(c => c.Enabled).Select(c => Summarize(c, defs)).ToList();
+        if (parts.Count == 0)
+            return "(empty)";
+
+        return string.Join(group.CombineMode == ConditionCombineMode.All ? " and " : " or ", parts);
     }
 
     private static string ResolveTypeLabel(string typeId, IReadOnlyList<ConditionTypeDef> defs) {

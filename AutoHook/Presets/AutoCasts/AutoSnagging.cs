@@ -11,6 +11,8 @@ public sealed class AutoSnagging : BaseActionCast {
 
     public AutoSnagging() : base(IDs.Actions.Snagging, ActionType.Action) { }
 
+    public override bool ShowGpThreshold => false;
+
     public override string GetName() => UIStrings.Snagging;
 
     public override string GetHelpText() => UIStrings.SnaggingHelpText;
