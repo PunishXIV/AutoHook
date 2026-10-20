@@ -17,7 +17,7 @@ namespace AutoHook.World.UpdateModules;
 public sealed class HooksUpdateModule : IAsyncDisposable {
     private const uint SetBaseStat = 13; // a1 = stat, a2 = new amount
 
-    private unsafe delegate void EffectResultDetourDelegate(uint targetId, byte* packet, byte replaying);
+    private delegate void EffectResultDetourDelegate(uint targetId, byte* packet, byte replaying);
 
     private readonly Action _markInventoryDirty;
     private readonly Hook<ActionManager.Delegates.UseAction>? _useActionHook;
