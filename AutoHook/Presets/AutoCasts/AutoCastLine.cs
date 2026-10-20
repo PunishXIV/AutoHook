@@ -7,6 +7,8 @@ public sealed class AutoCastLine : BaseActionCast {
 
     public override bool RequiresTimeWindow() => true;
 
+    public override bool ShowGpThreshold => false;
+
     public AutoCastLine() : base(IDs.Actions.Cast) {
         Enabled = true;
         Priority = 1;

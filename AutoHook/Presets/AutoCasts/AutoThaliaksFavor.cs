@@ -16,6 +16,8 @@ public sealed class AutoThaliaksFavor : BaseActionCast {
 
     public override string GetName() => UIStrings.Thaliaks_Favor;
 
+    protected override int? AnglersArtStacksToUse => ThaliaksFavorStacks;
+
     public override string GetHelpText() => UIStrings.TabAutoCasts_DrawThaliaksFavor_HelpText;
 
     public override bool RestoresGp => true;

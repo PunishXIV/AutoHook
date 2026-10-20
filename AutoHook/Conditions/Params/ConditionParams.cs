@@ -143,19 +143,10 @@ public static class ConditionParams {
         clamp ??= static v => v;
         var args = GetIntCompareParams(condition.Params, valueKey, defaultValue, defaultOp);
         var val = args.Value;
-        var label = args.Op is ">" or ">=" or "<" or "<=" or "=" ? args.Op : defaultOp;
+        var op = args.Op is ">" or ">=" or "<" or "<=" or "=" ? args.Op : defaultOp;
 
-        ImGui.SetNextItemWidth(50.Scaled());
-        using (var combo = ImRaii.Combo(comboId, label)) {
-            if (combo) {
-                foreach (var choice in new[] { ">", ">=", "<", "<=", "=" }) {
-                    if (!ImGui.Selectable(choice, choice == args.Op))
-                        continue;
-
-                    ApplyIntCompareParams(condition, args with { Op = choice }, valueKey, defaultOp);
-                }
-            }
-        }
+        if (DrawUtil.CompareOpButton(comboId, ref op))
+            ApplyIntCompareParams(condition, args with { Op = op }, valueKey, defaultOp);
 
         ImGui.SameLine();
         ImGui.SetNextItemWidth(valueWidth.Scale());

@@ -10,6 +10,8 @@ public sealed class AutoBigGameFishing : BaseActionCast {
 
     public override string GetName() => UIStrings.BigGameFishing;
 
+    protected override int? AnglersArtStacksToUse => AnglersStacks;
+
     public override bool CastCondition(WorldState ws)
         => EvaluateConditionSet(ws) && !ws.Player.HasStatus(IDs.Status.BigGameFishing) && ws.HasAnglersArtStacks(AnglersStacks);
 

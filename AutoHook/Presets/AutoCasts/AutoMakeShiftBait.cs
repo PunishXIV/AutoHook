@@ -10,6 +10,8 @@ public sealed class AutoMakeShiftBait : BaseActionCast {
 
     public override bool RequiresTimeWindow() => true;
 
+    protected override int? AnglersArtStacksToUse => MakeshiftBaitStacks;
+
     public AutoMakeShiftBait() : base(IDs.Actions.MakeshiftBait, ActionType.Action) { }
 
     public override string GetName() => UIStrings.MakeShift_Bait;

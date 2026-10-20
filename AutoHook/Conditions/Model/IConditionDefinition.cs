@@ -14,6 +14,8 @@ public interface IConditionDefinition {
 
     string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
         => ConditionParameterFormat.FormatGenericParams(parameters);
+
+    bool IsIncomplete(IReadOnlyDictionary<string, object> parameters) => false;
 }
 
 public static class ConditionDefinitionExtensions {
