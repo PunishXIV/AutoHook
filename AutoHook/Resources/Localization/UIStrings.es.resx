@@ -792,6 +792,15 @@ Comprueba la pestaña de guías para las guías.</value>
   <data name="AutoStartFishingHelpText" xml:space="preserve">
     <value>Lanzar automáticamente cuando no pescas. Desactivar si mantiene encendido el AutoHook en todo momento.</value>
   </data>
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
+    <value>Cambiar nodos de árbol por botones</value>
+  </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>No ocultar las opciones de Extras/Lanzamiento automático cuando estén deshabilitadas</value>
+  </data>
   <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
     <value>Usar solo cuando Mooch II está en tiempo de reutilización</value>
   </data>
