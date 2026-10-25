@@ -259,6 +259,9 @@
   <data name="PrecisionHookset" xml:space="preserve">
     <value>Precision Hookset</value>
   </data>
+  <data name="PowerfulHookset" xml:space="preserve">
+    <value>Enganche Potente</value>
+  </data>
   <data name="MoochBaitName" xml:space="preserve">
     <value>Nombre de Mooch/Carnada</value>
   </data>
@@ -269,8 +272,15 @@
     <value>Espera Max.</value>
     <comment>Maximum time to wait</comment>
   </data>
+  <data name="DoesntHaveAffectUnderChum" xml:space="preserve">
+    <value>No tiene efecto cuando Chum está activo</value>
+  </data>
   <data name="MinWait" xml:space="preserve">
     <value>Espera Min.</value>
+  </data>
+  <data name="HelpMarkerMinWaitTimer" xml:space="preserve">
+    <value>El enganche NO se utilizará hasta que haya transcurrido el tiempo mínimo establecido.
+Ejemplo: Si estableces la Espera Mín. en 14 segundos y algo pica tras 8 segundos, el pez será ignorado</value>
   </data>
   <data name="StopFishingAfter" xml:space="preserve">
     <value>Dejar de pescar despues de...</value>
@@ -288,6 +298,9 @@
   <data name="TimeS" xml:space="preserve">
     <value>Veces</value>
     <comment>Quantity, example: 5 Time(s) </comment>
+  </data>
+  <data name="SurfaceSlapIdenticalCast" xml:space="preserve">
+    <value>Surface Slap y Lanzamiento Idéntico</value>
   </data>
   <data name="OverridesIdenticalCast" xml:space="preserve">
     <value>Reemplaza Identical Cast</value>
@@ -321,6 +334,9 @@
   <data name="FisherSIntuitionSettingsHelpMarker" xml:space="preserve">
     <value>Habilitar Hooks personalizados cuando Fisher's Intuition es detectada</value>
   </data>
+  <data name="SpectralCurrentSettings" xml:space="preserve">
+    <value>Configuración de Corriente Espectral</value>
+  </data>
   <data name="HoldShiftBothDHTH" xml:space="preserve">
     <value>Mantén presionado SHIFT para seleccionar ambos Double y Triple Hook (no recomendado)</value>
   </data>
@@ -349,6 +365,10 @@ Si está desactivado, se utilizará Precision/Powerful Hookset cuando Patience e
   </data>
   <data name="EnabledConfigArrow" xml:space="preserve">
     <value>Ajustes habilitados -&gt;</value>
+  </data>
+  <data name="EnabledConfigArrowhelpMarker" xml:space="preserve">
+    <value>¡Importante!
+Si está desactivado, NO se realizará el enganche del pez.</value>
   </data>
   <data name="ChumTimer" xml:space="preserve">
     <value>Timer de Chum</value>
@@ -491,6 +511,9 @@ Si Auto Mooch (Global o Preset Personalizado) no está activado, se usara Cast n
   </data>
   <data name="Enable_AutoGig" xml:space="preserve">
     <value>Activar AutoGig</value>
+  </data>
+  <data name="GigHitbox" xml:space="preserve">
+    <value>Gig Hitbox</value>
   </data>
   <data name="Use_Makeshift_Bait" xml:space="preserve">
     <value>Usar Makeshift Bait</value>
@@ -636,6 +659,9 @@ Si Auto Mooch (Global o Preset Personalizado) no está activado, se usara Cast n
     <value>El preset por defecto se utiliza cuando no se detecta ningúna carnada/mooch/pez/autocast personalizado. Aquí puedes establecer el comportamiento de Hook que se utilizará para todas las carnadas y mooches a menos que se cree un preset personalizado. 
 Comprueba la pestaña de guías para las guías.</value>
   </data>
+  <data name="TabGlobalPreset_Description" xml:space="preserve">
+    <value>La configuración global se utiliza cuando no se encuentra una configuración personalizada de anzuelo, pez capturado o lanzamiento automático. Aquí puedes definir el comportamiento general que se aplicará a todos los cebos y Mooch, salvo que exista una configuración personalizada</value>
+  </data>
   <data name="Old_Preset_Warning" xml:space="preserve">
     <value>Esta es una importación antigua, puede que falten algunos ajustes.</value>
   </data>
@@ -644,6 +670,9 @@ Comprueba la pestaña de guías para las guías.</value>
   </data>
   <data name="Show_Current_Status_Header" xml:space="preserve">
     <value>Mostrar la cabecera de estado actual</value>
+  </data>
+  <data name="DrawConfigs_Min_" xml:space="preserve">
+    <value>Mín.</value>
   </data>
   <data name="Delay_Between_Casts" xml:space="preserve">
     <value>Retraso entre Casts (en ms):</value>
@@ -697,6 +726,9 @@ Comprueba la pestaña de guías para las guías.</value>
     <value>Buscar...</value>
     <comment>Hint Text for search bar</comment>
   </data>
+  <data name="Extra" xml:space="preserve">
+    <value>Configuración adicional</value>
+  </data>
   <data name="NeverReleaseHelptext" xml:space="preserve">
     <value>Este pez no será liberado si 'Liberar todos los peces' está habilitado en la pestaña Auto Cast</value>
   </data>
@@ -730,6 +762,15 @@ Comprueba la pestaña de guías para las guías.</value>
   <data name="Starts_AutoHook" xml:space="preserve">
     <value>Empieza a lanzar con tu preset seleccionado</value>
   </data>
+  <data name="SnaggingHelpText" xml:space="preserve">
+    <value>Snagging se activará al comenzar a pescar</value>
+  </data>
+  <data name="Use_Cordials_First" xml:space="preserve">
+    <value>Usar Cordials antes de Thaliak's Favor</value>
+  </data>
+  <data name="ThaliaksCordialOffCd" xml:space="preserve">
+    <value>Usar solo cuando el cordial esté en tiempo de reutilización</value>
+  </data>
   <data name="AutoCastEndTime" xml:space="preserve">
     <value>Tiempo de finalización para permitir el lanzamiento automático</value>
   </data>
@@ -742,11 +783,23 @@ Comprueba la pestaña de guías para las guías.</value>
   <data name="AutoCastOnlyUnderFishEyes" xml:space="preserve">
     <value>Solo usar cuando Fish Eyes está activa.</value>
   </data>
+  <data name="TimeoutOption" xml:space="preserve">
+    <value>El intento de pesca se cancelará una vez transcurrido el tiempo especificado</value>
+  </data>
   <data name="AutoStartFishing" xml:space="preserve">
     <value>Lanzar automáticamente cuando no pescas</value>
   </data>
   <data name="AutoStartFishingHelpText" xml:space="preserve">
     <value>Lanzar automáticamente cuando no pescas. Desactivar si mantiene encendido el AutoHook en todo momento.</value>
+  </data>
+  <data name="SwapTreeNodeButtons" xml:space="preserve">
+    <value>Cambiar nodos de árbol por botones</value>
+  </data>
+  <data name="AboutTab" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="DontHideExtraAutoCast" xml:space="preserve">
+    <value>No ocultar las opciones de Extras/Lanzamiento automático cuando estén deshabilitadas</value>
   </data>
   <data name="AutoCastExtraOptionMakeshiftBait" xml:space="preserve">
     <value>Usar solo cuando Mooch II está en tiempo de reutilización</value>
