@@ -12,18 +12,10 @@ public sealed class SessionTimeCD : IntCompareConditionDefinition {
     protected override string DefaultOp => ">";
     protected override Func<int, int>? Clamp => static v => Math.Max(0, v);
 
-    protected override bool? InactiveResult(WorldState world, IReadOnlyDictionary<string, object> parameters) {
-        var args = GetIntCompareParams(parameters, valueKey: ValueKey, defaultValue: DefaultValue, defaultOp: DefaultOp);
-        return world.FishingSessionStartedAt is null ? args.Invert : null;
-    }
-
     protected override int ReadValue(WorldState world, IReadOnlyDictionary<string, object> parameters)
-        => (int)(world.CurrentTime - world.FishingSessionStartedAt!.Value).TotalSeconds;
+        => world.FishingSessionStartedAt is { } started ? (int)(world.CurrentTime - started).TotalSeconds : 0;
 
     public override bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
-        if (InactiveResult(world, parameters) is bool inactive)
-            return inactive;
-
         var args = GetIntCompareParams(parameters, valueKey: ValueKey, defaultValue: DefaultValue, defaultOp: DefaultOp);
         return args.Apply(CompareInt(ReadValue(world, parameters), args.Value * 60, args.Op));
     }
