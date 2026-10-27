@@ -104,9 +104,10 @@ public static class DrawUtil {
     private static readonly Stack<BranchList> BranchListPool = new();
 
     // rows marked with Branch() inside get a Prefix cell
+    // indent puts the child prefix's stem under the start of the parent row's content (past the parent's own prefix cell).
     public static BranchScope BeginBranches(bool indent = false) {
         var list = BranchListPool.Count > 0 ? BranchListPool.Pop() : new BranchList();
-        list.Indent = indent ? ImGui.GetFrameHeight() + ImGui.GetStyle().ItemSpacing.X : 0;
+        list.Indent = indent ? ImGui.GetFrameHeight() / 2 + ImGui.GetStyle().ItemSpacing.X : 0;
         if (list.Indent > 0)
             ImGui.Indent(list.Indent);
 
