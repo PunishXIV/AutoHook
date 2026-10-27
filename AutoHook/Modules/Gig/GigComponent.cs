@@ -27,12 +27,14 @@ public sealed class GigComponent(GigFishingModule module) : GigFishingComponent(
     public bool ShouldGig(BaseGig? fish)
         => fish is { Enabled: true } && fish.GigConditionSet.PassesOrUnconfigured(Ws);
 
-    public void ContributeGigHints(ActionHints hints, BaseGig fish, bool useCatchAll) {
+    public void ContributeConditionsGigHints(ActionHints hints, BaseGig fish, bool useCatchAll) {
         var naturesBounty = useCatchAll ? GigCfg.CatchAllNaturesBountyAction : fish.NaturesBounty;
         if (naturesBounty.IsAvailableToCast(Ws)) {
             hints.AddCast(HintPriority.GigNaturesBounty, new ActionRequest(naturesBounty.Id, naturesBounty.ActionType, naturesBounty.GetName()), HintSource.Gig, detail: "Natures Bounty before gig", context: DecisionContext.AutoCast);
         }
+    }
 
+    public void ContributeGigHints(ActionHints hints, BaseGig fish, bool useCatchAll) {
         Gig.LastGigEntryId = useCatchAll ? Guid.Empty : fish.UniqueId;
         hints.AddCast(HintPriority.Gig, new ActionRequest(IDs.Actions.Gig, ActionType.Action, AutoGig.Gig), HintSource.Gig, detail: useCatchAll ? "Catch all" : fish.Fish?.Name ?? "Gig", context: DecisionContext.AutoCast);
     }
@@ -54,6 +56,10 @@ public sealed class GigComponent(GigFishingModule module) : GigFishingComponent(
             var fish = FindGigForFish(layout.Fish);
             if (fish == null || !ShouldGig(fish))
                 continue;
+
+            Gig.Hints.Clear();
+            ContributeConditionsGigHints(Gig.Hints, fish, useCatchAll);
+            Gig.Resolver.Resolve(Ws, Gig.Hints);
 
             if (!IsFishInHitbox(layout, fish, sf.LaneLayout))
                 continue;
