@@ -91,8 +91,7 @@ public class BaseHookset(uint requiredStatus) {
     }
 
     private void DrawDoubleHook() {
-        DrawUtil.DrawTreeNodeEx(UIStrings.Double_Hook, () => {
-            DrawUtil.Checkbox(UIStrings.UseDoubleHook, ref UseDoubleHook);
+        DrawUtil.DrawCheckboxTree(UIStrings.Double_Hook, ref UseDoubleHook, () => {
             DrawUtil.Checkbox(UIStrings.LetTheFishEscape, ref LetFishEscapeDoubleHook, UIStrings.LetFishEscapeHelpText);
             ImGui.Separator();
             DoubleWeak.DrawOptions(UIStrings.HookWeakExclamation);
@@ -102,8 +101,7 @@ public class BaseHookset(uint requiredStatus) {
     }
 
     private void DrawTripleHook() {
-        DrawUtil.DrawTreeNodeEx(UIStrings.Triple_Hook, () => {
-            DrawUtil.Checkbox(UIStrings.UseTripleHook, ref UseTripleHook);
+        DrawUtil.DrawCheckboxTree(UIStrings.Triple_Hook, ref UseTripleHook, () => {
             DrawUtil.Checkbox(UIStrings.LetTheFishEscape, ref LetFishEscapeTripleHook, UIStrings.LetFishEscapeHelpText);
             ImGui.Separator();
             TripleWeak.DrawOptions(UIStrings.HookWeakExclamation);
@@ -113,7 +111,16 @@ public class BaseHookset(uint requiredStatus) {
     }
 
     private void DrawTimeout() {
-        DrawUtil.DrawTreeNodeEx(UIStrings.Timeout, () => {
+        // ### keeps the tree id stable while the summary changes. 0 = disabled, so only set values show.
+        var set = new List<string>();
+        if (TimeoutMax > 0)
+            set.Add($"{TimeoutMax:0.#}s");
+        if (ChumTimeoutMax > 0)
+            set.Add($"{ChumTimeoutMax:0.#}s chum");
+        var label = set.Count > 0
+            ? $"{UIStrings.Timeout} ({string.Join("/", set)})###Timeout"
+            : $"{UIStrings.Timeout}###Timeout";
+        DrawUtil.DrawTreeNodeEx(label, () => {
             DrawUtil.Branch();
             ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.TimeoutOption);
             DrawTimeoutField(UIStrings.TimeLimit, ref TimeoutMax, UIStrings.DoesntHaveAffectUnderChum);
