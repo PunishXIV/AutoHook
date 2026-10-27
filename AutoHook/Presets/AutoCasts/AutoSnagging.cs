@@ -14,6 +14,7 @@ public sealed class AutoSnagging : BaseActionCast {
     public override string GetName() => UIStrings.Snagging;
 
     public override string GetHelpText() => UIStrings.SnaggingHelpText;
+    public override bool ShowGpThreshold => false;
 
     public override bool CastCondition(WorldState ws) => !ws.Player.HasStatus(IDs.Status.Snagging);
 }
