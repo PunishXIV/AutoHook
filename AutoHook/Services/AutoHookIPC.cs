@@ -11,7 +11,7 @@ public class AutoHookIPC : IPluginService {
 
     [EzIPC]
     public void SetPluginState(bool state) {
-        WriteConfig(() => _cfg.PluginEnabled = state);
+        _cfg.PluginEnabled = state;
         Configuration.Save();
     }
 
@@ -31,28 +31,26 @@ public class AutoHookIPC : IPluginService {
 
     [EzIPC]
     public void SetAutoStartFishing(bool state) {
-        WriteConfig(() => _cfg.AutoStartFishing = state);
+        _cfg.AutoStartFishing = state;
         Configuration.Save();
     }
 
     [EzIPC]
     public void SetAutoGigState(bool state) {
-        WriteConfig(() => _cfg.AutoGigConfig.AutoGigEnabled = state);
+        _cfg.AutoGigConfig.AutoGigEnabled = state;
         Configuration.Save();
     }
 
     [EzIPC]
     public void SetPreset(string preset) {
-        WriteConfig(() => _cfg.HookPresets.Select(_cfg.HookPresets.CustomPresets.FirstOrDefault(x => x.PresetName == preset), FishingPresets.ReasonIpc));
+        _cfg.HookPresets.Select(_cfg.HookPresets.CustomPresets.FirstOrDefault(x => x.PresetName == preset), FishingPresets.ReasonIpc);
         Configuration.Save();
     }
 
     public void SetPresetAutogig(string preset) {
-        WriteConfig(() => {
-            var match = _cfg.AutoGigConfig.Presets.FirstOrDefault(x => x.PresetName == preset);
-            if (match != null)
-                _cfg.AutoGigConfig.SetActivePreset(match);
-        });
+        var match = _cfg.AutoGigConfig.Presets.FirstOrDefault(x => x.PresetName == preset);
+        if (match != null)
+            _cfg.AutoGigConfig.SetActivePreset(match);
         Configuration.Save();
     }
 
@@ -60,14 +58,14 @@ public class AutoHookIPC : IPluginService {
     public void CreateAndSelectAnonymousPreset(string preset) {
         if (Configuration.ImportPreset(preset) is not CustomPresetConfig customPreset) return;
 
-        WriteConfig(() => PresetImport.ImportPresets(
+        PresetImport.ImportPresets(
             _cfg.HookPresets,
             [customPreset],
             new PresetImportOptions {
                 MakeAnonymous = true,
                 SelectFirst = true,
                 SelectReason = FishingPresets.ReasonIpc
-            }));
+            });
         Configuration.Save();
     }
 
@@ -76,14 +74,14 @@ public class AutoHookIPC : IPluginService {
         if (CustomPresetConfig.CreateAutoPreset(baitId, itemId, stopAfterCaughtOnce) is not CustomPresetConfig preset)
             return false;
 
-        WriteConfig(() => PresetImport.ImportPresets(
+        PresetImport.ImportPresets(
             _cfg.HookPresets,
             [preset],
             new PresetImportOptions {
                 MakeAnonymous = true,
                 SelectFirst = true,
                 SelectReason = FishingPresets.ReasonIpc
-            }));
+            });
         Configuration.Save();
         return true;
     }
@@ -93,20 +91,18 @@ public class AutoHookIPC : IPluginService {
         var import = Configuration.ImportPreset(preset);
         if (import == null) return;
 
-        WriteConfig(() => {
-            if (import is CustomPresetConfig customPreset) {
-                PresetImport.ImportPresets(
-                    _cfg.HookPresets,
-                    [customPreset],
-                    new PresetImportOptions {
-                        SelectFirst = true,
-                        SelectReason = FishingPresets.ReasonIpc
-                    });
-            }
-            else if (import is AutoGigConfig gigPreset) {
-                _cfg.AutoGigConfig.AddNewPreset(gigPreset);
-            }
-        });
+        if (import is CustomPresetConfig customPreset) {
+            PresetImport.ImportPresets(
+                _cfg.HookPresets,
+                [customPreset],
+                new PresetImportOptions {
+                    SelectFirst = true,
+                    SelectReason = FishingPresets.ReasonIpc
+                });
+        }
+        else if (import is AutoGigConfig gigPreset) {
+            _cfg.AutoGigConfig.AddNewPreset(gigPreset);
+        }
         Configuration.Save();
     }
 
@@ -115,7 +111,7 @@ public class AutoHookIPC : IPluginService {
         if (Configuration.ImportFolder(folder) is not { } import)
             return;
 
-        WriteConfig(() => PresetImport.ImportFolderTree(
+        PresetImport.ImportFolderTree(
             _cfg.HookPresets,
             import.Folder,
             import.Folders,
@@ -123,7 +119,7 @@ public class AutoHookIPC : IPluginService {
             new PresetImportOptions {
                 SelectFirst = true,
                 SelectReason = FishingPresets.ReasonIpc
-            }));
+            });
         Configuration.Save();
     }
 
@@ -132,7 +128,7 @@ public class AutoHookIPC : IPluginService {
         if (Configuration.ImportFolder(folder) is not { } import)
             return;
 
-        WriteConfig(() => PresetImport.ImportFolderTree(
+        PresetImport.ImportFolderTree(
             _cfg.HookPresets,
             import.Folder,
             import.Folders,
@@ -141,24 +137,22 @@ public class AutoHookIPC : IPluginService {
                 MakeAnonymous = true,
                 SelectFirst = true,
                 SelectReason = FishingPresets.ReasonIpc
-            }));
+            });
         Configuration.Save();
     }
 
     [EzIPC]
     public void DeleteSelectedPreset() {
-        WriteConfig(() => {
-            var selected = _cfg.HookPresets.SelectedPreset;
-            if (selected == null) return;
-            _cfg.HookPresets.RemovePreset(selected.UniqueId);
-            _cfg.HookPresets.Select(null, FishingPresets.ReasonIpc);
-        });
+        var selected = _cfg.HookPresets.SelectedPreset;
+        if (selected == null) return;
+        _cfg.HookPresets.RemovePreset(selected.UniqueId);
+        _cfg.HookPresets.Select(null, FishingPresets.ReasonIpc);
         Configuration.Save();
     }
 
     [EzIPC]
     public void DeleteAllAnonymousPresets() {
-        WriteConfig(() => _cfg.HookPresets.CustomPresets.RemoveAll(p => p.IsAnonymous));
+        _cfg.HookPresets.CustomPresets.RemoveAll(p => p.IsAnonymous);
         Configuration.Save();
     }
 
@@ -185,8 +179,4 @@ public class AutoHookIPC : IPluginService {
     [EzIPC]
     public bool SwapSwimbaitByIndex(byte index)
         => BaitComponent.ChangeSwimbait(index) is ChangeBaitReturn.Success or ChangeBaitReturn.AlreadyEquipped;
-
-    private static void WriteConfig(Action action) {
-        Configuration.MutateSerialized(action);
-    }
 }

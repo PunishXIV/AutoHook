@@ -35,43 +35,37 @@ public class FishingPresets : BasePreset {
     }
 
     public override void AddNewPreset(string presetName) {
-        Configuration.MutateSerialized(() => {
-            var newPreset = new CustomPresetConfig(presetName);
-            CustomPresets.Add(newPreset);
-            InvalidatePresetListCache();
-        });
+        var newPreset = new CustomPresetConfig(presetName);
+        CustomPresets.Add(newPreset);
+        InvalidatePresetListCache();
         Configuration.Save();
     }
 
     public override void AddNewPreset(BasePresetConfig preset) {
-        Configuration.MutateSerialized(() => {
-            // i needed a way to copy the object without reference, im too dumb to think of another way
-            var json = JsonConvert.SerializeObject(preset);
-            var copy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
-            copy!.UniqueId = Guid.NewGuid();
-            CustomPresets.Add(copy);
-            InvalidatePresetListCache();
-        });
+        // i needed a way to copy the object without reference, im too dumb to think of another way
+        var json = JsonConvert.SerializeObject(preset);
+        var copy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
+        copy!.UniqueId = Guid.NewGuid();
+        CustomPresets.Add(copy);
+        InvalidatePresetListCache();
         Configuration.Save();
     }
 
     public override void RemovePreset(Guid value) {
-        Configuration.MutateSerialized(() => {
-            var preset = CustomPresets.Find(p => p.UniqueId == value);
-            if (preset == null)
-                return;
+        var preset = CustomPresets.Find(p => p.UniqueId == value);
+        if (preset == null)
+            return;
 
-            if (SelectedGuid == value.ToString()) {
-                SelectedGuid = "";
-                PluginUi.Status = string.Empty;
-            }
+        if (SelectedGuid == value.ToString()) {
+            SelectedGuid = "";
+            PluginUi.Status = string.Empty;
+        }
 
-            foreach (var folder in Folders)
-                folder.RemovePreset(value);
+        foreach (var folder in Folders)
+            folder.RemovePreset(value);
 
-            CustomPresets.Remove(preset);
-            InvalidatePresetListCache();
-        });
+        CustomPresets.Remove(preset);
+        InvalidatePresetListCache();
         Configuration.Save();
     }
 
@@ -81,38 +75,32 @@ public class FishingPresets : BasePreset {
     }
 
     public override void SwapIndex(int itemIndex, int targetIndex) {
-        Configuration.MutateSerialized(() => {
-            var moved = CustomPresets[itemIndex];
-            if (moved == null)
-                return;
+        var moved = CustomPresets[itemIndex];
+        if (moved == null)
+            return;
 
-            CustomPresets.RemoveAt(itemIndex);
-            CustomPresets.Insert(targetIndex, moved);
-            InvalidatePresetListCache();
-        });
+        CustomPresets.RemoveAt(itemIndex);
+        CustomPresets.Insert(targetIndex, moved);
+        InvalidatePresetListCache();
         Configuration.Save();
     }
 
     public void AddNewFolder(string folderName) {
-        Configuration.MutateSerialized(() => Folders.Add(new PresetFolder(folderName)));
+        Folders.Add(new PresetFolder(folderName));
         Configuration.Save();
     }
 
     public void AddNewFolder(string folderName, Guid? parentFolderId) {
-        Configuration.MutateSerialized(() => {
-            Folders.Add(new PresetFolder(folderName) {
-                ParentFolderId = parentFolderId,
-            });
+        Folders.Add(new PresetFolder(folderName) {
+            ParentFolderId = parentFolderId,
         });
         Configuration.Save();
     }
 
     public void RemoveFolder(Guid folderId) {
-        Configuration.MutateSerialized(() => {
-            var folder = Folders.Find(f => f.UniqueId == folderId);
-            if (folder != null)
-                Folders.Remove(folder);
-        });
+        var folder = Folders.Find(f => f.UniqueId == folderId);
+        if (folder != null)
+            Folders.Remove(folder);
         Configuration.Save();
     }
 
@@ -138,25 +126,21 @@ public class FishingPresets : BasePreset {
     }
 
     public void RemoveFolderWithContents(Guid folderId) {
-        Configuration.MutateSerialized(() => {
-            var folder = Folders.Find(f => f.UniqueId == folderId);
-            if (folder != null)
-                RemoveFolderWithContentsRecursive(folder);
-        });
+        var folder = Folders.Find(f => f.UniqueId == folderId);
+        if (folder != null)
+            RemoveFolderWithContentsRecursive(folder);
         Configuration.Save();
     }
 
     public void RegisterPreset(CustomPresetConfig preset, bool select = true) {
         CustomPresetConfig? oldPreset = null;
-        Configuration.MutateSerialized(() => {
-            oldPreset = SelectedPreset;
-            CustomPresets.Add(preset);
-            InvalidatePresetListCache();
-            if (select) {
-                SelectedGuid = preset.UniqueId.ToString();
-                PluginUi.Status = string.Empty;
-            }
-        });
+        oldPreset = SelectedPreset;
+        CustomPresets.Add(preset);
+        InvalidatePresetListCache();
+        if (select) {
+            SelectedGuid = preset.UniqueId.ToString();
+            PluginUi.Status = string.Empty;
+        }
 
         if (select)
             NotifyPresetSelected(preset, oldPreset);

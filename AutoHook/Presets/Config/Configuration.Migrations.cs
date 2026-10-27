@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace AutoHook.Presets.Config;
 
 public partial class Configuration {
@@ -63,7 +61,6 @@ public partial class Configuration {
                 return;
 
             IPluginLog.Get().Debug(@$"[Configuration] Updating to v4");
-            WriteJsonToDisk(CaptureSnapshot(config), Svc.Interface.ConfigFile.FullName, CancellationToken.None);
             config.Version = 4;
         }
     }
@@ -84,8 +81,6 @@ public partial class Configuration {
             }
 
             config.HookPresets.DefaultPreset.PresetName = AutoHook.GlobalPresetName;
-
-            WriteJsonToDisk(CaptureSnapshot(config), Svc.Interface.ConfigFile.FullName, CancellationToken.None);
             config.Version = 5;
         }
     }

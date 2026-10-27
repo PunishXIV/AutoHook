@@ -16,7 +16,7 @@ public abstract class BasePresetConfig() {
 
     public virtual void RenamePreset(string newName) {
         PresetName = newName;
-        Configuration.Save();
+        Configuration.Save(this as CustomPresetConfig);
     }
 
     public abstract void AddItem(BaseOption item);

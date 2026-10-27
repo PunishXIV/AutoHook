@@ -57,6 +57,7 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
         PunishLibMain.Init(pluginInterface, "AutoHook", new AboutPlugin() { Developer = "InitialDet & croizat", Sponsor = "https://ko-fi.com/initialdet" });
 
         Configuration.C.Initiate();
+        Configuration.StartSaving();
         UIStrings.Culture = new CultureInfo(Configuration.C.CurrentLanguage);
 
         _pluginUi = new PluginUi();
@@ -84,7 +85,8 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
     }
 
     public async ValueTask DisposeAsync() {
-        await Configuration.FlushAsync();
+        Configuration.StopSaving();
+        await Configuration.FlushAsync(rebuildAll: true);
         _pluginUi.Dispose();
         _autoGig.Dispose();
         Svc.Interface.UiBuilder.Draw -= DrawUi;

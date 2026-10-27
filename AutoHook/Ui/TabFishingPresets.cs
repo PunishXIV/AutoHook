@@ -80,6 +80,7 @@ public class TabFishingPresets : BaseTab {
         ImGui.TableSetupColumn($"###OptionColumn", ImGuiTableColumnFlags.WidthStretch, 2f);
         ImGui.TableSetupColumn($"###PresetColumn", ImGuiTableColumnFlags.WidthStretch, 1f);
         ImGui.TableNextColumn();
+        Configuration.EditingPreset = displayed as CustomPresetConfig;
         using (var left = ImRaii.Child($"###OptionSide"))
             DrawPresetOptions(displayed);
 

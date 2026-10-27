@@ -212,59 +212,57 @@ public class PresetCreator {
         CustomPresetConfig? anglersPreset = null;
         var presetName = ResolvePresetName(AutoV1Tag);
 
-        using (Configuration.SuppressSave()) {
-            var isInt = _includeIntPrep && prepList.Count > 0;
+        var isInt = _includeIntPrep && prepList.Count > 0;
 
-            newPreset = new CustomPresetConfig(presetName);
-            var tackleBait = ResolveTackleBait(_selectedTargetFish, moochList);
+        newPreset = new CustomPresetConfig(presetName);
+        var tackleBait = ResolveTackleBait(_selectedTargetFish, moochList);
 
-            SetupBaitAndMooch(newPreset, tackleBait, _selectedTargetFish, moochList, isInt);
+        SetupBaitAndMooch(newPreset, tackleBait, _selectedTargetFish, moochList, isInt);
 
-            newPreset.ExtraCfg.Enabled = true;
-            newPreset.ExtraCfg.ForceBaitSwap = true;
-            newPreset.ExtraCfg.ForcedBaitId = tackleBait;
+        newPreset.ExtraCfg.Enabled = true;
+        newPreset.ExtraCfg.ForceBaitSwap = true;
+        newPreset.ExtraCfg.ForcedBaitId = tackleBait;
 
-            if (_includeIntPrep) {
-                SetupIntPrep(newPreset, prepList);
-                SetupIntuitionBaitSwapRules(newPreset, moochList, prepList);
+        if (_includeIntPrep) {
+            SetupIntPrep(newPreset, prepList);
+            SetupIntuitionBaitSwapRules(newPreset, moochList, prepList);
+        }
+
+        if (_fishEyes)
+            SetupFishEyes(newPreset);
+        else {
+            ref var ac = ref newPreset.AutoCastsCfg;
+            ac.EnableAll = true;
+            ac.CastLine.Enabled = true;
+            ac.CastCordial.Enabled = true;
+            ac.CastCollect.Enabled = Item.GetRow((uint)_selectedTargetFish.Id).IsCollectable;
+
+            if (moochList.Count > 0) {
+                ac.CastPatience.Enabled = true;
+                newPreset.AutoCastsCfg.CastMakeShiftBait.Enabled = true;
             }
-
-            if (_fishEyes)
-                SetupFishEyes(newPreset);
-            else {
-                ref var ac = ref newPreset.AutoCastsCfg;
-                ac.EnableAll = true;
-                ac.CastLine.Enabled = true;
-                ac.CastCordial.Enabled = true;
-                ac.CastCollect.Enabled = Item.GetRow((uint)_selectedTargetFish.Id).IsCollectable;
-
-                if (moochList.Count > 0) {
-                    ac.CastPatience.Enabled = true;
-                    newPreset.AutoCastsCfg.CastMakeShiftBait.Enabled = true;
-                }
-                else if (Item.GetRow((uint)_selectedTargetFish.Id).IsCollectable) {
-                    ac.CastPatience.Enabled = true;
-                }
+            else if (Item.GetRow((uint)_selectedTargetFish.Id).IsCollectable) {
+                ac.CastPatience.Enabled = true;
             }
+        }
 
-            if (_sparefulHandPrep)
-                SetupSparefulHandPrep(newPreset);
-            else
-                newPreset.AddItem(new FishConfig(_selectedTargetFish.Id));
+        if (_sparefulHandPrep)
+            SetupSparefulHandPrep(newPreset);
+        else
+            newPreset.AddItem(new FishConfig(_selectedTargetFish.Id));
 
-            if (_createAnglersPreset) {
-                anglersPreset = CreateAnglerPreset();
-                anglersPreset.ExtraCfg.Enabled = true;
-                anglersPreset.ExtraCfg.Triggers.Add(new ExtraTrigger {
-                    Enabled = true,
-                    ConditionSet = Configuration.ConditionSetBuilder.SingleStatusStacks(IDs.Status.AnglersArt, 10),
-                    SwapPreset = true,
-                    PresetToSwap = newPreset.PresetName,
-                    SwapBait = true,
-                    BaitToSwap = new BaitFishClass(newPreset.ExtraCfg.ForcedBaitId),
-                    StopAction = ExtraStopAction.None,
-                });
-            }
+        if (_createAnglersPreset) {
+            anglersPreset = CreateAnglerPreset();
+            anglersPreset.ExtraCfg.Enabled = true;
+            anglersPreset.ExtraCfg.Triggers.Add(new ExtraTrigger {
+                Enabled = true,
+                ConditionSet = Configuration.ConditionSetBuilder.SingleStatusStacks(IDs.Status.AnglersArt, 10),
+                SwapPreset = true,
+                PresetToSwap = newPreset.PresetName,
+                SwapBait = true,
+                BaitToSwap = new BaitFishClass(newPreset.ExtraCfg.ForcedBaitId),
+                StopAction = ExtraStopAction.None,
+            });
         }
 
         if (anglersPreset != null)

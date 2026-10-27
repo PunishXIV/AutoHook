@@ -1,6 +1,5 @@
 using Newtonsoft.Json;
 using System.IO;
-using System.Threading;
 
 namespace AutoHook.Presets.Config;
 
@@ -9,180 +8,175 @@ public partial class Configuration {
         Formatting = Formatting.Indented,
     };
 
-    private static readonly JsonSerializerSettings LoadSettings = new() {
-        ObjectCreationHandling = ObjectCreationHandling.Replace,
-    };
+    private static readonly JsonSerializer PlainSerializer = JsonSerializer.Create(SaveSettings);
 
-    private static int _savePending;
-    private static int _saveSuppressionDepth;
-    private static Task? _saveTask;
-    private static readonly object _lock = new();
-    private static readonly object _diskWriteLock = new();
+    private const int SaveDebounceMs = 250;
 
-    internal static readonly object SerializationSync = new(); // lock for capturing snapshot
+    // marks where a cached preset goes in the root json. control chars are always escaped inside json strings, so these can't collide with data.
+    private const char PresetMarkerStart = '\u0001';
+    private const char PresetMarkerEnd = '\u0002';
 
-    // mutate config under the same lock used for disk serialization.
-    internal static void MutateSerialized(Action action) {
-        lock (SerializationSync)
-            action();
+    private static bool _savePending;
+    private static long _savePendingSince;
+    private static bool _savingStarted;
+
+    // preset -> its standalone json
+    private static Dictionary<CustomPresetConfig, string> _presetJsonCache = [with(ReferenceEqualityComparer.Instance)];
+    private static readonly HashSet<CustomPresetConfig> _dirtyPresets = [with(ReferenceEqualityComparer.Instance)];
+
+    private static Task _writeTask = Task.CompletedTask;
+
+    // preset open in the preset editor; can differ from the selected (active) preset. Save() marks it dirty.
+    public static CustomPresetConfig? EditingPreset { get; set; }
+
+    // call once after the config is loaded, before the ui can edit it.
+    public static void StartSaving() {
+        foreach (var preset in C.HookPresets.CustomPresets)
+            _presetJsonCache[preset] = SerializePreset(preset);
+
+        IFramework.Get().Update += OnFrameworkUpdate;
+        _savingStarted = true;
     }
 
-    // pause coalesced saves while bulk-building presets (AddItem/ReplaceBaitConfig call Save).
-    internal static SaveSuppressionScope SuppressSave() => new();
-
-    internal readonly struct SaveSuppressionScope : IDisposable {
-        public SaveSuppressionScope() => Interlocked.Increment(ref _saveSuppressionDepth);
-        public void Dispose() => Interlocked.Decrement(ref _saveSuppressionDepth);
-    }
-
-    public static async Task<Configuration> LoadAsync(CancellationToken cancellationToken = default) {
-        try {
-            var file = Svc.Interface.ConfigFile;
-
-            if (file.Exists) {
-                var json = await File.ReadAllTextAsync(file.FullName, Encoding.UTF8, cancellationToken).ConfigureAwait(false);
-                var migratedJson = ConfigurationJsonMigrator.MigrateToLatest(json);
-
-                Configuration? config;
-                try {
-                    config = JsonConvert.DeserializeObject<Configuration>(migratedJson, LoadSettings);
-                }
-                catch (Exception ex) {
-                    IPluginLog.Get().Error(@$"[Configuration] Failed to deserialize migrated config JSON: {ex.Message}");
-                    config = null;
-                }
-
-                if (config != null) {
-                    config.Initiate();
-                    if (migratedJson != json)
-                        await WriteAsync(config, cancellationToken).ConfigureAwait(false);
-                    return config;
-                }
-
-                BackupUnreadableConfigFile(file.FullName);
-                TryDeleteConfigFile(file.FullName);
-                IPluginLog.Get().Warning(@"[Configuration] Config file exists but could not be deserialized; recreating defaults.");
-            }
-
-            var fresh = new Configuration();
-            fresh.Initiate();
-            await WriteAsync(fresh, cancellationToken).ConfigureAwait(false);
-            return fresh;
-        }
-        catch (Exception e) {
-            IPluginLog.Get().Error(@$"[Configuration] {e.Message}");
-            throw;
-        }
-    }
-
-    // queue a coalesced background write of Configuration.C.
-    public static void Save() {
-        if (Volatile.Read(ref _saveSuppressionDepth) > 0)
+    public static void StopSaving() {
+        if (!_savingStarted)
             return;
 
-        Interlocked.Exchange(ref _savePending, 1);
+        IFramework.Get().Update -= OnFrameworkUpdate;
+        _savingStarted = false;
+    }
 
-        lock (_lock) {
-            if (_saveTask is { IsCompleted: false })
-                return;
+    // ui edits land on the preset being edited or the active one, so both are marked dirty.
+    public static void Save() => Save(EditingPreset, C.HookPresets.SelectedPreset);
 
-            _saveTask = RunSaveLoopAsync();
+    // for edits to a preset that may be neither the edited nor the active one.
+    public static void Save(CustomPresetConfig? changed) => Save(changed, null);
+
+    private static void Save(CustomPresetConfig? a, CustomPresetConfig? b) {
+        if (a != null)
+            _dirtyPresets.Add(a);
+        if (b != null)
+            _dirtyPresets.Add(b);
+
+        if (!_savePending) {
+            _savePending = true;
+            _savePendingSince = Environment.TickCount64;
         }
     }
 
-    // wait for any in-prog save, then write if still dirty.
-    public static async Task FlushAsync() {
-        var task = _saveTask;
-        if (task != null)
-            await task.ConfigureAwait(false);
+    // write pending changes now. rebuildAll re-serializes every preset, correcting any edit that was never marked dirty (used on unload).
+    public static Task FlushAsync(bool rebuildAll = false) {
+        if (rebuildAll) {
+            _presetJsonCache.Clear();
+            _savePending = true;
+        }
 
-        if (Interlocked.CompareExchange(ref _savePending, 0, 0) == 0)
-            return;
-
-        await WriteAsync(Configuration.C).ConfigureAwait(false);
-        Interlocked.Exchange(ref _savePending, 0);
+        if (_savePending)
+            QueueWrite();
+        return _writeTask;
     }
 
-    private static async Task RunSaveLoopAsync() {
-        try {
-            while (true) {
-                Interlocked.Exchange(ref _savePending, 0);
-                await WriteAsync(Configuration.C).ConfigureAwait(false);
-                if (Interlocked.CompareExchange(ref _savePending, 0, 0) == 0)
-                    break;
-            }
-        }
-        catch (Exception ex) {
-            IPluginLog.Get().Error(ex, "[Configuration] Save failed.");
-        }
-        finally {
-            lock (_lock) {
-                if (Interlocked.CompareExchange(ref _savePending, 0, 0) == 1)
-                    _saveTask = RunSaveLoopAsync();
-                else
-                    _saveTask = null;
-            }
-        }
+    private static void OnFrameworkUpdate(IFramework _) {
+        if (_savePending && Environment.TickCount64 - _savePendingSince >= SaveDebounceMs)
+            QueueWrite();
     }
 
-    private static void TryDeleteConfigFile(string configPath) {
-        try {
-            if (File.Exists(configPath))
-                File.Delete(configPath);
-        }
-        catch (Exception e) {
-            IPluginLog.Get().Warning(@$"[Configuration] Could not delete unreadable config before rewrite: {e.Message}");
-        }
-    }
-
-    private static void BackupUnreadableConfigFile(string configPath) {
-        try {
-            if (!File.Exists(configPath))
-                return;
-
-            var dir = Svc.Interface.GetPluginConfigDirectory();
-            var path = Path.Combine(dir, "autohook_load_failed_backup.json");
-            if (File.Exists(path)) {
-                var stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                path = Path.Combine(dir, $"autohook_load_failed_backup_{stamp}.json");
-            }
-
-            File.Copy(configPath, path, overwrite: false);
-            IPluginLog.Get().Warning(@$"[Configuration] Backed up unreadable config to {path}");
-        }
-        catch (Exception e) {
-            IPluginLog.Get().Warning(@$"[Configuration] Failed to back up unreadable config: {e.Message}");
-        }
-    }
-
-    private static Task WriteAsync(Configuration config, CancellationToken cancellationToken = default) {
+    private static void QueueWrite() {
+        _savePending = false;
         var path = Svc.Interface.ConfigFile.FullName;
-        var json = CaptureSnapshot(config);
-        return Task.Run(() => WriteJsonToDisk(json, path, cancellationToken), cancellationToken);
+        var (root, presets) = CaptureSnapshot(C);
+        _writeTask = _writeTask.ContinueWith(_ => {
+            try {
+                WriteToDisk(path, root, presets);
+            }
+            catch (Exception ex) {
+                IPluginLog.Get().Error(ex, "[Configuration] Save failed.");
+            }
+        }, TaskScheduler.Default);
     }
 
-    private static string CaptureSnapshot(Configuration config) {
-        lock (SerializationSync) {
-            return JsonConvert.SerializeObject(config, SaveSettings);
+    // re-serialize dirty/new presets, then the root with markers in place of the custom presets.
+    private static (string Root, string[] Presets) CaptureSnapshot(Configuration config) {
+        var list = config.HookPresets.CustomPresets;
+        var cache = new Dictionary<CustomPresetConfig, string>(list.Count, ReferenceEqualityComparer.Instance);
+        var indexes = new Dictionary<CustomPresetConfig, int>(list.Count, ReferenceEqualityComparer.Instance);
+        var presets = new string[list.Count];
+
+        for (var i = 0; i < list.Count; i++) {
+            var preset = list[i];
+            if (_dirtyPresets.Contains(preset) || !_presetJsonCache.TryGetValue(preset, out var json))
+                json = SerializePreset(preset);
+            cache[preset] = json;
+            indexes.TryAdd(preset, i);
+            presets[i] = json;
         }
+
+        // rebuilt from the current list, which drops deleted presets.
+        _presetJsonCache = cache;
+        _dirtyPresets.Clear();
+
+        var root = JsonConvert.SerializeObject(config, new JsonSerializerSettings {
+            Formatting = Formatting.Indented,
+            Converters = [new PresetMarkerConverter(indexes)],
+        });
+        return (root, presets);
     }
 
-    private static void WriteJsonToDisk(string json, string path, CancellationToken cancellationToken) {
-        cancellationToken.ThrowIfCancellationRequested();
+    private static string SerializePreset(CustomPresetConfig preset)
+        => JsonConvert.SerializeObject(preset, SaveSettings);
 
-        lock (_diskWriteLock) {
-            var directory = Path.GetDirectoryName(path);
-            if (!string.IsNullOrEmpty(directory))
-                Directory.CreateDirectory(directory);
+    private static void WriteToDisk(string path, string root, string[] presets) {
+        var tempPath = path + ".new";
+        using (var writer = new StreamWriter(tempPath, append: false, Encoding.UTF8))
+            WriteSpliced(writer, root, presets);
+        File.Move(tempPath, path, overwrite: true);
+    }
 
-            var tempPath = path + ".new";
-            if (File.Exists(tempPath)) {
-                IPluginLog.Get().Warning($"[Configuration] Removing stale temp file {tempPath}");
-                File.Delete(tempPath);
+    // root json with each marker replaced by its cached preset, re-indented to the marker's depth.
+    private static void WriteSpliced(TextWriter writer, string root, string[] presets) {
+        var pos = 0;
+        while (true) {
+            var start = root.IndexOf(PresetMarkerStart, pos);
+            if (start < 0) {
+                writer.Write(root.AsSpan(pos));
+                return;
             }
 
-            File.WriteAllText(tempPath, json, Encoding.UTF8);
-            File.Move(tempPath, path, overwrite: true);
+            var end = root.IndexOf(PresetMarkerEnd, start);
+            var index = int.Parse(root.AsSpan(start + 1, end - start - 1));
+            var lineStart = root.LastIndexOf('\n', start) + 1;
+            var indent = root[lineStart..start];
+
+            writer.Write(root.AsSpan(pos, start - pos));
+            WriteIndented(writer, presets[index], indent);
+            pos = end + 1;
         }
+    }
+
+    private static void WriteIndented(TextWriter writer, string json, string indent) {
+        var start = 0;
+        for (var nl = json.IndexOf('\n'); nl >= 0; nl = json.IndexOf('\n', start)) {
+            writer.Write(json.AsSpan(start, nl + 1 - start));
+            writer.Write(indent);
+            start = nl + 1;
+        }
+        writer.Write(json.AsSpan(start));
+    }
+
+    // writes custom presets as markers; anything else (DefaultPreset) serializes normally.
+    private sealed class PresetMarkerConverter(Dictionary<CustomPresetConfig, int> indexes) : JsonConverter {
+        public override bool CanRead => false;
+
+        public override bool CanConvert(Type objectType) => objectType == typeof(CustomPresetConfig);
+
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
+            if (value is CustomPresetConfig preset && indexes.TryGetValue(preset, out var index))
+                writer.WriteRawValue($"{PresetMarkerStart}{index}{PresetMarkerEnd}");
+            else
+                PlainSerializer.Serialize(writer, value);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+            => throw new NotSupportedException();
     }
 }

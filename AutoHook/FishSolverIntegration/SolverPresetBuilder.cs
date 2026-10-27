@@ -6,7 +6,6 @@ namespace AutoHook.FishSolverIntegration;
 
 public static class SolverPresetBuilder {
     public static CustomPresetConfig? Build(SolverOutput plan, string? presetName = null) {
-        using var _ = Configuration.SuppressSave();
         var target = FindFish(plan.TargetFishId);
         if (target == null)
             return null;

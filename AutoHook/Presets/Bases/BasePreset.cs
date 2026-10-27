@@ -36,7 +36,7 @@ public abstract class BasePreset {
             return;
 
         preset.PresetName = newName;
-        Configuration.Save();
+        Configuration.Save(preset as CustomPresetConfig);
     }
 
     public virtual void OnSelectedPreset(BasePresetConfig? newPreset, BasePresetConfig? oldPreset) {

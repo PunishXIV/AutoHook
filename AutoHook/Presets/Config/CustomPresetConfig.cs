@@ -89,7 +89,7 @@ public class CustomPresetConfig : BasePresetConfig {
         else if (item is FishConfig fishConfig)
             ListOfFish.Add(fishConfig);
 
-        Configuration.Save();
+        Configuration.Save(this);
     }
 
     public void ReplaceBaitConfig(HookConfig hookConfig) {
@@ -100,7 +100,7 @@ public class CustomPresetConfig : BasePresetConfig {
 
         ListOfBaits.Add(hookConfig);
 
-        Configuration.Save();
+        Configuration.Save(this);
     }
 
     public void ReplaceMoochConfig(HookConfig moochConfig) {
@@ -111,7 +111,7 @@ public class CustomPresetConfig : BasePresetConfig {
 
         ListOfMooch.Add(moochConfig);
 
-        Configuration.Save();
+        Configuration.Save(this);
     }
 
     public HookConfig? GetCfgById(uint id, bool isMooching) {
@@ -132,7 +132,7 @@ public class CustomPresetConfig : BasePresetConfig {
         ListOfBaits.RemoveAll(x => x.UniqueId == value);
         ListOfMooch.RemoveAll(x => x.UniqueId == value);
         ListOfFish.RemoveAll(x => x.UniqueId == value);
-        Configuration.Save();
+        Configuration.Save(this);
     }
 
     public bool HasBaitOrMooch(uint id) {
