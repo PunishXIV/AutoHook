@@ -1,5 +1,6 @@
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
+using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using System.Numerics;
@@ -79,7 +80,9 @@ public class SubTabBaitMooch {
                         }
                     }
 
+                    var intuitionColor = hook.IntuitionHook.UseCustomStatusHook ? ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGreen) : null;
                     using var tabIntuition = ImRaii.TabItem($"{UIStrings.Intuition}###Intuition");
+                    intuitionColor?.Dispose();
                     if (tabIntuition) {
                         hook.IntuitionHook.DrawOptions();
 
