@@ -53,7 +53,9 @@ public sealed class StatusActiveCD : IConditionDefinition {
     }
 
     public string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
-        => ConditionParameterFormat.FormatStatusNames(GetStatusIds(parameters));
+        => $"{ConditionParameterFormat.FormatStatusNames(GetStatusIds(parameters))} active";
+
+    public bool DescribeOmitsName => true;
 
     private static StatusActiveParams GetParams(IReadOnlyDictionary<string, object> p) {
         var ids = GetStatusIds(p);

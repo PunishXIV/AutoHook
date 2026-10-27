@@ -28,4 +28,6 @@ public sealed class StatusStacksCD : IConditionDefinition {
         var stacks = GetInt(parameters, "minStacks", 1);
         return $"{names} stacks {ConditionParameterFormat.FormatIntCompare(parameters, "minStacks", stacks)}";
     }
+
+    public bool DescribeOmitsName => true;
 }

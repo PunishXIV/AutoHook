@@ -34,6 +34,8 @@ public sealed class BaitCountCD : IConditionDefinition {
     public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
         var baitId = GetInt(parameters, "id", 0);
         var bait = baitId > 0 ? Item.GetRow((uint)baitId).Name.ToString() : "any bait";
-        return $"{bait} {ConditionParameterFormat.FormatIntCompare(parameters)}";
+        return $"{bait} count {ConditionParameterFormat.FormatIntCompare(parameters)}";
     }
+
+    public bool DescribeOmitsName => true;
 }

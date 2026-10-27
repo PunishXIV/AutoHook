@@ -51,21 +51,27 @@ public class Condition {
         return registry.Get(TypeId) is { } def && def.Evaluate(world, Params);
     }
 
-    public string Describe(ConditionRegistry registry) {
+    public string Describe(ConditionRegistry registry)
+        => Enabled ? Summary(registry) : $"{Summary(registry)} [disabled]";
+
+    // like Describe but without the disabled suffix (ui shows that visually).
+    public string Summary(ConditionRegistry registry) {
         if (string.IsNullOrEmpty(TypeId))
             return "(empty)";
 
-        var name = PresetConditionHelper.IsPresetType(TypeId)
+        var isPreset = PresetConditionHelper.IsPresetType(TypeId);
+        var name = isPreset
             ? PresetConditionHelper.ResolveDisplayName(TypeId, PresetConditionHelper.GetEvaluationPreset()) ?? TypeId
             : registry.Get(TypeId)?.Name ?? TypeId;
+        var prefix = GetBool(Params, "inv", false) ? "NOT " : "";
 
-        if (!Enabled)
-            return $"{name} [disabled]";
+        if (isPreset)
+            return prefix + name;
 
-        if (PresetConditionHelper.IsPresetType(TypeId))
-            return name;
-
-        var detail = registry.Get(TypeId)?.Definition?.DescribeParameters(Params) ?? ConditionParameterFormat.FormatGenericParams(Params);
-        return string.IsNullOrEmpty(detail) ? name : $"{name}: {detail}";
+        var def = registry.Get(TypeId)?.Definition;
+        var detail = def?.DescribeParameters(Params) ?? ConditionParameterFormat.FormatGenericParams(Params);
+        if (string.IsNullOrEmpty(detail))
+            return prefix + name;
+        return def?.DescribeOmitsName == true ? prefix + detail : $"{prefix}{name}: {detail}";
     }
 }

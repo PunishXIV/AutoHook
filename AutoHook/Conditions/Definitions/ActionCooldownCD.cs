@@ -216,4 +216,6 @@ public sealed class ActionCooldownCD : IConditionDefinition {
 
         return $"{action} {ConditionParameterFormat.FormatIntCompare(parameters, valueKey: "sec", defaultValue: 0, defaultOp: "=")}s remaining";
     }
+
+    public bool DescribeOmitsName => true;
 }

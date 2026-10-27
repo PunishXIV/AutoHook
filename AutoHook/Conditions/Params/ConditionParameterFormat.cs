@@ -14,8 +14,7 @@ public static class ConditionParameterFormat {
             ">=" => "≥",
             _ => args.Op,
         };
-        var text = $"{op} {args.Value}";
-        return args.Invert ? $"NOT ({text})" : text;
+        return $"{op} {args.Value}";
     }
 
     public static string FormatDoubleCompare(
@@ -25,9 +24,7 @@ public static class ConditionParameterFormat {
         string defaultOp = ">=") {
         var value = GetDouble(p, valueKey, defaultValue);
         var op = GetOp(p, "op", defaultOp);
-        var inv = GetBool(p, "inv", false);
-        var text = $"{op} {value:g}";
-        return inv ? $"NOT ({text})" : text;
+        return $"{op} {value:g}";
     }
 
     public static string FormatRanges(IReadOnlyDictionary<string, object> p) {

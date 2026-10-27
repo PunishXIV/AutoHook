@@ -15,6 +15,9 @@ public interface IConditionDefinition {
     string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
         => ConditionParameterFormat.FormatGenericParams(parameters);
 
+    // when true, DescribeParameters already names its subject ("Angler's Art stacks ≥ 10"), so summaries drop the "Name: " prefix.
+    bool DescribeOmitsName => false;
+
     int? SpecifiedIntDefault(string key) => null;
 }
 
