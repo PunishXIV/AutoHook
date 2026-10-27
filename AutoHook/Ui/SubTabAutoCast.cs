@@ -113,6 +113,7 @@ public class SubTabAutoCast {
         var startTime = start.ToString(@"HH:mm");
         var endTime = end.ToString(@"HH:mm");
         DrawUtil.DrawCheckboxTree(UIStrings.AutoCastOnlyAtSpecificTimes, ref enabledLocal, () => {
+            DrawUtil.Branch();
             using (ImRaii.ItemWidth(40.Scaled())) {
                 var startTimeGui = ImGui.InputText(@$"{UIStrings.AutoCastStartTime}", ref startTime, 5,
                     ImGuiInputTextFlags.EnterReturnsTrue);
@@ -122,6 +123,7 @@ public class SubTabAutoCast {
                 }
             }
 
+            DrawUtil.Branch();
             using (ImRaii.ItemWidth(40.Scaled())) {
                 var endTimeGui = ImGui.InputText(@$"{UIStrings.AutoCastEndTime}", ref endTime, 5,
                     ImGuiInputTextFlags.EnterReturnsTrue);

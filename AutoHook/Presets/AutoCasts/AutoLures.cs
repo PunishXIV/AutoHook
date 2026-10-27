@@ -104,6 +104,7 @@ public sealed class AutoLures : BaseActionCast {
 
     protected override DrawOptionsDelegate DrawOptions => () => {
         if (CountValidOptions(WorldState.Get()) > 1) {
+            DrawUtil.Branch();
             ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.LureMultipleOptionsWarning);
             ImGui.Spacing();
         }
@@ -124,37 +125,11 @@ public sealed class AutoLures : BaseActionCast {
     private static void DrawTarget(string label, LureTargetConfig config, string infoText = "") {
         using var id = ImRaii.PushId(label);
 
-        if (string.IsNullOrEmpty(infoText)) {
-            DrawUtil.DrawCheckboxTree(label, ref config.Enabled, () => DrawTargetOptions(config));
-            return;
-        }
-
-        if (ImGui.Checkbox("###checkbox", ref config.Enabled)) {
-            if (config.Enabled)
-                ImGui.SetNextItemOpen(true);
-            Configuration.Save();
-        }
-
-        ImGui.SameLine(0, 3.Scaled());
-        var x = ImGui.GetCursorPosX();
-        if (ImGui.TreeNodeEx(label, ImGuiTreeNodeFlags.FramePadding)) {
-            ImGui.SameLine();
-            DrawUtil.Info(infoText);
-            ImGui.SetCursorPosX(x);
-            using (ImRaii.Group()) {
-                DrawUtil.TextV(" └");
+        DrawUtil.DrawCheckboxTree(label, ref config.Enabled, () => DrawTargetOptions(config),
+            drawLabelExtras: string.IsNullOrEmpty(infoText) ? null : () => {
                 ImGui.SameLine();
-                using (ImRaii.Group()) {
-                    DrawTargetOptions(config);
-                    ImGui.Separator();
-                }
-            }
-            ImGui.TreePop();
-        }
-        else {
-            ImGui.SameLine();
-            DrawUtil.Info(infoText);
-        }
+                DrawUtil.Info(infoText);
+            });
     }
 
     private static void DrawTargetOptions(LureTargetConfig config) {
@@ -169,7 +144,7 @@ public sealed class AutoLures : BaseActionCast {
 
         DrawUtil.Checkbox(UIStrings.CancelAttempt, ref config.CancelAttempt);
 
-        config.ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, config.ConditionSet, ConditionScope.AutoCast, showAdvanced: true, showSubPrefix: false);
+        config.ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, config.ConditionSet, ConditionScope.AutoCast, showAdvanced: true);
     }
 
     public void TryCasting(WorldState ws, bool lureSuccess) {

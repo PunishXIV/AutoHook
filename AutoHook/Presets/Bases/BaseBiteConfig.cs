@@ -46,7 +46,7 @@ public class BaseBiteConfig(HookType type) {
 
         DrawUtil.DrawCheckboxTree(biteName, ref HooksetEnabled,
             () => {
-                ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ConditionSet, ConditionScope.Hook, showAdvanced: true, showSubPrefix: false);
+                ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ConditionSet, ConditionScope.Hook, showAdvanced: true);
 
                 if (EnableHooksetSwap)
                     DrawUtil.DrawTreeNodeEx(UIStrings.HookType, DrawBite, UIStrings.HookWillBeUsedIfPatienceIsNotUp);
@@ -54,32 +54,34 @@ public class BaseBiteConfig(HookType type) {
     }
 
     private void DrawBite() {
-        using var indent = ImRaii.PushIndent();
-
         DrawUtil.Checkbox(UIStrings.UseMultipleHooksByTimer, ref UseMultipleHookTypesByTimer);
 
         if (!UseMultipleHookTypesByTimer) {
+            DrawUtil.Branch();
             if (ImGui.RadioButton(UIStrings.Normal_Hook, HooksetType == HookType.Normal)) {
                 HooksetType = HookType.Normal;
                 Configuration.Save();
             }
 
+            DrawUtil.Branch();
             if (ImGui.RadioButton(UIStrings.PrecisionHookset, HooksetType == HookType.Precision)) {
                 HooksetType = HookType.Precision;
                 Configuration.Save();
             }
 
+            DrawUtil.Branch();
             if (ImGui.RadioButton(UIStrings.PowerfulHookset, HooksetType == HookType.Powerful)) {
                 HooksetType = HookType.Powerful;
                 Configuration.Save();
             }
 
+            DrawUtil.Branch();
             if (ImGui.RadioButton(UIStrings.StellarHookset, HooksetType == HookType.Stellar)) {
                 HooksetType = HookType.Stellar;
                 Configuration.Save();
             }
 
-            HookTypeConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, HookTypeConditionSet, ConditionScope.Hook, showAdvanced: true, showSubPrefix: true);
+            HookTypeConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, HookTypeConditionSet, ConditionScope.Hook, showAdvanced: true);
         }
         else {
             NormalHookTypeConditionSet = DrawTimedHookTypeOption(UIStrings.Normal_Hook, HookType.Normal,
@@ -98,7 +100,6 @@ public class BaseBiteConfig(HookType type) {
 
     private ConditionSet? DrawTimedHookTypeOption(string label, HookType hookType, ref bool enabled, ref double minTime, ref double maxTime, ConditionSet? conditionSet) {
         using var id = ImRaii.PushId(label);
-        using var indent = ImRaii.PushIndent();
 
         if (DrawUtil.Checkbox(label, ref enabled)) {
             if (enabled && HooksetType == HookType.None)
@@ -106,17 +107,18 @@ public class BaseBiteConfig(HookType type) {
         }
 
         if (enabled) {
-            using var innerIndent = ImRaii.PushIndent();
+            using var branches = DrawUtil.BeginBranches(indent: true);
+            DrawUtil.Branch();
             ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.SetZeroToIgnore);
             SetupTimer(ref minTime, ref maxTime);
-            conditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, conditionSet, ConditionScope.Hook, showAdvanced: true, showSubPrefix: true);
+            conditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, conditionSet, ConditionScope.Hook, showAdvanced: true);
         }
 
         return conditionSet;
     }
 
     private void SetupTimer(ref double minTimeDelay, ref double maxTimeDelay) {
-
+        DrawUtil.Branch();
         ImGui.SetNextItemWidth(100.Scaled());
         if (ImGui.InputDouble(UIStrings.MinWait, ref minTimeDelay, .1, 1, @"%.1f%")) {
             switch (minTimeDelay) {
@@ -134,6 +136,7 @@ public class BaseBiteConfig(HookType type) {
         ImGui.SameLine();
         ImGuiComponents.HelpMarker($"{UIStrings.HelpMarkerMinWaitTimer}\n\n{UIStrings.DoesntHaveAffectUnderChum}");
 
+        DrawUtil.Branch();
         ImGui.SetNextItemWidth(100.Scaled());
         if (ImGui.InputDouble(UIStrings.MaxWait, ref maxTimeDelay, .1, 1, @"%.1f%")) {
             switch (maxTimeDelay) {

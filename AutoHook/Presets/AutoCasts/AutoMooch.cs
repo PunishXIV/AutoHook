@@ -36,7 +36,7 @@ public sealed class AutoMooch : BaseActionCast {
 
     protected override DrawOptionsDelegate DrawOptions => () => {
         Mooch2.DrawConfig(null);
-        DrawAutoCastConditions(showSubPrefix: false);
+        DrawAutoCastConditions();
     };
 
     [DefaultValue(10)]

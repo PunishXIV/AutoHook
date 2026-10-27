@@ -31,11 +31,13 @@ public sealed class AutoPatience : BaseActionCast {
     }
 
     protected override DrawOptionsDelegate DrawOptions => () => {
+        DrawUtil.Branch();
         if (ImGui.RadioButton(UIStrings.Patience_I, Id == IDs.Actions.Patience)) {
             Id = IDs.Actions.Patience;
             Configuration.Save();
         }
 
+        DrawUtil.Branch();
         if (ImGui.RadioButton(UIStrings.Patience_II, Id == IDs.Actions.Patience2)) {
             Id = IDs.Actions.Patience2;
             Configuration.Save();

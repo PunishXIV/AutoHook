@@ -17,6 +17,7 @@ public static class DrawUtil {
     public static bool EditFloatField(string label, float fieldWidth, ref float refValue, string helpText = "",
         bool hoverHelpText = false) {
         using var id = ImRaii.PushId(label);
+        Branch();
         TextV(label);
 
         ImGui.SameLine();
@@ -46,6 +47,7 @@ public static class DrawUtil {
 
     public static bool EditNumberField(string label, float fieldWidth, ref int refValue, string helpText = "",
         int steps = 0) {
+        Branch();
         TextV(label);
 
         ImGui.SameLine();
@@ -75,13 +77,79 @@ public static class DrawUtil {
 
     public static void HoveredTooltip(string text) => ImGui.TooltipOnHover(text);
 
-    public static bool SubCheckbox(string label, ref bool refValue, string helpText = "", bool hoverHelpText = false) {
-        TextV($" └");
+    // yoinked from https://github.com/UnknownX7/Hypostasis/blob/c230760c7bbc85a6e37b8477012dcd92ab700dc7/ImGui/ImGuiEx.cs#L200
+    public static void Prefix(string prefix = "◇") {
+        var dummySize = new Vector2(ImGui.GetFrameHeight());
+        ImGui.Dummy(dummySize);
+        AddTextCentered(ImGui.GetWindowDrawList(), ImGui.GetItemRectMin() + dummySize / 2, prefix, ImGui.GetColorU32(ImGuiCol.Text));
         ImGui.SameLine();
-        return Checkbox(label, ref refValue, helpText, hoverHelpText);
+    }
+
+    public static void Prefix(bool isLast) => Prefix(isLast ? "└" : "├");
+
+    private static void AddTextCentered(ImDrawListPtr drawList, Vector2 pos, string text, uint color) {
+        var textSize = ImGui.CalcTextSize(text);
+        drawList.AddText(pos - textSize / 2, color, text);
+    }
+
+    private sealed class BranchList {
+        public ImDrawListPtr DrawList;
+        public Vector2 WindowPos;
+        public float StartX;
+        public float Indent;
+        public readonly List<(Vector2 Center, uint Color)> Rows = [];
+    }
+
+    private static readonly Stack<BranchList> BranchLists = new();
+    private static readonly Stack<BranchList> BranchListPool = new();
+
+    // rows marked with Branch() inside get a Prefix cell
+    public static BranchScope BeginBranches(bool indent = false) {
+        var list = BranchListPool.Count > 0 ? BranchListPool.Pop() : new BranchList();
+        list.Indent = indent ? ImGui.GetFrameHeight() + ImGui.GetStyle().ItemSpacing.X : 0;
+        if (list.Indent > 0)
+            ImGui.Indent(list.Indent);
+
+        list.DrawList = ImGui.GetWindowDrawList();
+        list.WindowPos = ImGui.GetWindowPos();
+        list.StartX = ImGui.GetCursorPosX();
+        BranchLists.Push(list);
+        return new BranchScope();
+    }
+
+    public readonly struct BranchScope : IDisposable {
+        public void Dispose() {
+            var list = BranchLists.Pop();
+            for (var i = 0; i < list.Rows.Count; i++)
+                AddTextCentered(list.DrawList, list.Rows[i].Center, i == list.Rows.Count - 1 ? "└" : "├", list.Rows[i].Color);
+
+            if (list.Indent > 0)
+                ImGui.Unindent(list.Indent);
+
+            list.Rows.Clear();
+            BranchListPool.Push(list);
+        }
+    }
+
+    // marks the start of a row in the current branch list. no-op outside one, or when not at the start of a line.
+    public static void Branch() {
+        if (!BranchLists.TryPeek(out var list) || ImGui.GetWindowPos() != list.WindowPos || Math.Abs(ImGui.GetCursorPosX() - list.StartX) > 0.5f)
+            return;
+
+        var size = new Vector2(ImGui.GetFrameHeight());
+        ImGui.Dummy(size);
+        list.Rows.Add((ImGui.GetItemRectMin() + size / 2, ImGui.GetColorU32(ImGuiCol.Text)));
+        ImGui.SameLine();
+        ImGui.AlignTextToFramePadding();
+    }
+
+    public static bool SubCheckbox(string label, ref bool refValue, string helpText = "", bool hoverHelpText = false) {
+        using (BeginBranches(indent: true))
+            return Checkbox(label, ref refValue, helpText, hoverHelpText);
     }
 
     public static bool Checkbox(string label, ref bool refValue, string helpText = "", bool hoverHelpText = false) {
+        Branch();
         var clicked = false;
 
         if (ImGui.Checkbox($"{label}", ref refValue)) {
@@ -105,6 +173,7 @@ public static class DrawUtil {
         var padding = ImGui.GetStyle().FramePadding.X * 2 + ImGui.GetFrameHeight();
         var width = Math.Max(220.Scaled(), itemList.Select(i => getItemName(i) ?? "").Append(selectedItem).Max(n => ImGui.CalcTextSize(n).X + padding));
 
+        Branch();
         ImGui.SetNextItemWidth(width);
 
         using (var combo = ImRaii.Combo("###search", selectedItem)) {
@@ -155,13 +224,10 @@ public static class DrawUtil {
                     using var id = ImRaii.PushId(item.UniqueId.ToString());
                     var itemName = item.PresetName ?? $"Error, Try renaming";
 
-                    if (_filterText.Length != 0 && !itemName.ToLower().Contains(_filterText.ToLower()))
+                    if (_filterText.Length != 0 && !itemName.Contains(_filterText, StringComparison.CurrentCultureIgnoreCase))
                         continue;
 
-                    var color = selectedPreset?.PresetName == itemName
-                        ? ImGuiColors.DalamudYellow
-                        : ImGuiColors.DalamudWhite;
-
+                    var color = selectedPreset?.PresetName == itemName ? ImGuiColors.DalamudYellow : ImGuiColors.DalamudWhite;
                     using var a = ImRaii.PushColor(ImGuiCol.Text, color);
                     if (ImGui.Selectable(itemName, false)) {
                         presetList.SelectedGuid = item.UniqueId.ToString();
@@ -297,42 +363,26 @@ public static class DrawUtil {
 
     }
 
-    private static IDisposable AlignTreeContentColumn(float contentX) {
-        var y = ImGui.GetCursorPosY();
-        ImGui.NewLine();
-        var lineStartX = ImGui.GetCursorPosX();
-        ImGui.SetCursorPos(new Vector2(contentX, y));
-
-        var pad = contentX - lineStartX;
-        if (pad > 0.5f)
+    // body rows sit under the tree arrow, each with its own branch prefix
+    private static void DrawTreeBody(float labelX, Action body, bool trailingSeparator) {
+        var pad = labelX - ImGui.GetCursorPosX();
+        var indent = Math.Abs(pad) > 0.5f;
+        if (indent)
             ImGui.Indent(pad);
 
-        return new TreeContentColumnScope(pad);
-    }
+        using (BeginBranches())
+            body();
 
-    private readonly struct TreeContentColumnScope(float pad) : IDisposable {
-        public void Dispose() {
-            if (pad > 0.5f)
-                ImGui.Unindent(pad);
-        }
-    }
+        if (trailingSeparator)
+            ImGui.Separator();
 
-    private static void DrawTreeBody(float labelX, Action body, bool trailingSeparator) {
-        ImGui.SetCursorPosX(labelX);
-        TextV(" └");
-        ImGui.SameLine();
-        var contentX = ImGui.GetCursorPosX();
-        using (AlignTreeContentColumn(contentX)) {
-            using (ImRaii.Group()) {
-                body();
-                if (trailingSeparator)
-                    ImGui.Separator();
-            }
-        }
+        if (indent)
+            ImGui.Unindent(pad);
     }
 
     public static void DrawCheckboxTree(string treeName, ref bool enable, Action? action = null, string helpText = "", bool forceOpen = false, bool highlightLabel = false, Action? drawLabelExtras = null) {
         using var id = ImRaii.PushId(treeName);
+        Branch();
         if (ImGui.Checkbox("###checkbox", ref enable)) {
             if (enable) ImGui.SetNextItemOpen(true);
             Configuration.Save();
@@ -395,6 +445,7 @@ public static class DrawUtil {
     public static void DrawTreeNodeEx(string treeName, Action action, string helpText = "") {
         using var id = ImRaii.PushId(treeName);
 
+        Branch();
         var labelX = ImGui.GetCursorPosX();
         if (ImGui.TreeNodeEx(treeName, ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowItemOverlap)) {
             if (helpText != string.Empty)
@@ -418,7 +469,8 @@ public static class DrawUtil {
         SingleCondition<TCD, (bool Enabled, int Limit)> condition,
         Action drawBody)
         where TCD : class, IConditionDefinition, ISimpleConditionValue<(bool Enabled, int Limit)> {
-        DrawEnabledLimitTree(label, condition, (ref int limitLocal) => {
+        DrawEnabledLimitTree(label, condition, (ref limitLocal) => {
+            Branch();
             ImGui.SetNextItemWidth(90.Scaled());
             if (ImGui.InputInt(UIStrings.TimeS, ref limitLocal)) {
                 limitLocal = Math.Max(1, limitLocal);
@@ -465,6 +517,7 @@ public static class DrawUtil {
         var step = stopStep;
         var reset = resetCount;
         DrawCaughtCountLimitTree(label, condition, () => {
+            Branch();
             if (ImGui.RadioButton(UIStrings.Stop_Casting, step == FishingSteps.StopCasting)) {
                 step = FishingSteps.StopCasting;
                 Configuration.Save();
@@ -473,6 +526,7 @@ public static class DrawUtil {
             ImGui.SameLine();
             ImGuiComponents.HelpMarker(UIStrings.Auto_Cast_Stopped);
 
+            Branch();
             if (ImGui.RadioButton(UIStrings.Quit_Fishing, step == FishingSteps.QuitRequested)) {
                 step = FishingSteps.QuitRequested;
                 Configuration.Save();

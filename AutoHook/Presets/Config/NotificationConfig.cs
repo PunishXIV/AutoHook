@@ -46,7 +46,8 @@ public record class NotificationConfig {
     }
 
     private static void DrawMessageInput(string label, ref string field, string fallbackText) {
-        using var indent = ImRaii.PushIndent();
+        using var branches = DrawUtil.BeginBranches(indent: true);
+        DrawUtil.Branch();
 
         var text = field;
         ImGui.SetNextItemWidth(320.Scaled());

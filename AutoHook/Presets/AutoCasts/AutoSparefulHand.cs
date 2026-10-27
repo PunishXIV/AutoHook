@@ -23,7 +23,7 @@ public sealed class AutoSparefulHand : BaseActionCast {
         }
     }
 
-    protected override DrawOptionsDelegate? DrawOptions => () => DrawAutoCastConditions(showSubPrefix: false);
+    protected override DrawOptionsDelegate? DrawOptions => () => DrawAutoCastConditions();
 
     [DefaultValue(20)]
     public override int Priority { get; set; } = 20;

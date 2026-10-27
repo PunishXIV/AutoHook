@@ -65,14 +65,11 @@ public class TabSettings : BaseTab {
     }
 
     private void DrawFishingSettings() {
-        if (ImGui.TreeNodeEx(UIStrings.DelaySettings, ImGuiTreeNodeFlags.FramePadding)) {
-            using (ImRaii.PushIndent()) {
-                DrawDelayHook();
-                DrawDelayCasts();
-                DrawDelayCancel();
-            }
-            ImGui.TreePop();
-        }
+        DrawUtil.DrawTreeNodeEx(UIStrings.DelaySettings, () => {
+            DrawDelayHook();
+            DrawDelayCasts();
+            DrawDelayCancel();
+        });
 
         DrawUtil.Checkbox(UIStrings.AutoStartFishing, ref Configuration.C.AutoStartFishing, UIStrings.AutoStartFishingHelpText);
         DrawUtil.Checkbox(UIStrings.SpectralRestOnGain, ref Configuration.C.SpectralRest, UIStrings.SpectralRestOnGainHelpText);
@@ -90,7 +87,7 @@ public class TabSettings : BaseTab {
         if (!Configuration.C.AutoOceanFish)
             return;
 
-        using (ImRaii.PushIndent()) {
+        using (DrawUtil.BeginBranches(indent: true)) {
             DrawAutoOceanFishGoal();
             DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Configuration.C.AOF_Fallthrough);
             DrawUtil.Checkbox(UIStrings.AutoOceanFish_AllowMovement, ref Configuration.C.AOF_WalkToRailing, UIStrings.AutoOceanFish_AllowMovementHelpText);
@@ -98,6 +95,7 @@ public class TabSettings : BaseTab {
     }
 
     private static void DrawAutoOceanFishGoal() {
+        DrawUtil.Branch();
         ImGui.TextV($"{UIStrings.Prioritise}:");
         ImGui.SameLine();
 
@@ -126,6 +124,8 @@ public class TabSettings : BaseTab {
 
     private static void DrawDelayHook() {
         using var id = ImRaii.PushId("DrawDelayHook");
+        DrawUtil.Branch();
+        using var group = ImRaii.Group();
 
         ImGui.TextWrapped(UIStrings.Delay_when_hooking);
 
@@ -149,6 +149,8 @@ public class TabSettings : BaseTab {
 
     private static void DrawDelayCasts() {
         using var id = ImRaii.PushId("DrawDelayCasts");
+        DrawUtil.Branch();
+        using var group = ImRaii.Group();
 
         ImGui.TextWrapped(UIStrings.Delay_Between_Casts);
 
@@ -171,6 +173,8 @@ public class TabSettings : BaseTab {
 
     private static void DrawDelayCancel() {
         using var id = ImRaii.PushId("DrawDelayCancel");
+        DrawUtil.Branch();
+        using var group = ImRaii.Group();
 
         DrawUtil.TextV(UIStrings.DelayBeforeCancel);
         ImGui.SameLine();

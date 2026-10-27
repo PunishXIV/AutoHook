@@ -49,23 +49,18 @@ public class BaseGig(int itemId) : BaseOption {
 
         ImGui.Spacing();
         DrawUtil.DrawTreeNodeEx(UIStrings.Auto_Casts, () => {
-            var x = ImGui.GetCursorPosX();
             NaturesBounty.DrawConfig();
-            ImGui.SetCursorPosX(x);
             VeteranTrade.DrawConfig();
         });
 
         ImGui.Spacing();
         DrawUtil.DrawTreeNodeEx(UIStrings.Fish_Hitbox_Offset, () => {
-            var x = ImGui.GetCursorPosX();
-            ImGui.SetCursorPosX(x);
             if (DrawUtil.EditFloatField(UIStrings.OffsetLR, ref LeftOffset,
                     UIStrings.OffsetLRHelpText, true)) {
                 LeftOffset = Math.Max(-10, Math.Min(LeftOffset, 10));
                 Configuration.Save();
             }
 
-            ImGui.SetCursorPosX(x);
             if (DrawUtil.EditFloatField(UIStrings.OffsetRL, ref RightOffset,
                     UIStrings.OffsetRLHelpText, true)) {
                 RightOffset = Math.Max(-10, Math.Min(RightOffset, 10));

@@ -8,7 +8,6 @@ namespace AutoHook.Ui;
 
 public static class ConditionExpressionUi {
     public static void DrawExpressionEditor(ConditionSet set) {
-        ImGui.NewLine();
         ImGui.TextColored(ImGuiColors.DalamudGrey, "Expression:");
 
         var tokens = ConditionExpression.ParseTokens(set.Expression, set.Groups.Count);

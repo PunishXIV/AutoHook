@@ -83,59 +83,57 @@ public class BaseHookset(uint requiredStatus) {
     }
 
     private void DrawPatience() {
-        if (ImGui.TreeNodeEx(UIStrings.NormalPatienceHookset, ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowItemOverlap)) {
+        DrawUtil.DrawTreeNodeEx(UIStrings.NormalPatienceHookset, () => {
             PatienceWeak.DrawOptions(UIStrings.HookWeakExclamation, true);
             PatienceStrong.DrawOptions(UIStrings.HookStrongExclamation, true);
             PatienceLegendary.DrawOptions(UIStrings.HookLegendaryExclamation, true);
-            ImGui.TreePop();
-        }
+        });
     }
 
     private void DrawDoubleHook() {
-        if (ImGui.TreeNodeEx(UIStrings.Double_Hook,
-                ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowItemOverlap)) {
+        DrawUtil.DrawTreeNodeEx(UIStrings.Double_Hook, () => {
             DrawUtil.Checkbox(UIStrings.UseDoubleHook, ref UseDoubleHook);
             DrawUtil.Checkbox(UIStrings.LetTheFishEscape, ref LetFishEscapeDoubleHook, UIStrings.LetFishEscapeHelpText);
             ImGui.Separator();
             DoubleWeak.DrawOptions(UIStrings.HookWeakExclamation);
             DoubleStrong.DrawOptions(UIStrings.HookStrongExclamation);
             DoubleLegendary.DrawOptions(UIStrings.HookLegendaryExclamation);
-            ImGui.TreePop();
-        }
+        });
     }
 
     private void DrawTripleHook() {
-        if (ImGui.TreeNodeEx(UIStrings.Triple_Hook,
-                ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowItemOverlap)) {
+        DrawUtil.DrawTreeNodeEx(UIStrings.Triple_Hook, () => {
             DrawUtil.Checkbox(UIStrings.UseTripleHook, ref UseTripleHook);
             DrawUtil.Checkbox(UIStrings.LetTheFishEscape, ref LetFishEscapeTripleHook, UIStrings.LetFishEscapeHelpText);
             ImGui.Separator();
             TripleWeak.DrawOptions(UIStrings.HookWeakExclamation);
             TripleStrong.DrawOptions(UIStrings.HookStrongExclamation);
             TripleLegendary.DrawOptions(UIStrings.HookLegendaryExclamation);
-            ImGui.TreePop();
-        }
+        });
     }
 
     private void DrawTimeout() {
-        if (ImGui.TreeNodeEx(UIStrings.Timeout, ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowItemOverlap)) {
+        DrawUtil.DrawTreeNodeEx(UIStrings.Timeout, () => {
+            DrawUtil.Branch();
             ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.TimeoutOption);
             DrawTimeoutField(UIStrings.TimeLimit, ref TimeoutMax, UIStrings.DoesntHaveAffectUnderChum);
             if (TimeoutMax > 0) {
                 using (ImRaii.PushId("TimeoutConditions"))
-                    TimeoutConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, TimeoutConditionSet, ConditionScope.Hook, showAdvanced: true, showSubPrefix: true);
+                using (DrawUtil.BeginBranches(indent: true))
+                    TimeoutConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, TimeoutConditionSet, ConditionScope.Hook, showAdvanced: true);
             }
 
             DrawTimeoutField(UIStrings.ChumTimeLimit, ref ChumTimeoutMax);
             if (ChumTimeoutMax > 0) {
                 using (ImRaii.PushId("ChumTimeoutConditions"))
-                    ChumTimeoutConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ChumTimeoutConditionSet, ConditionScope.Hook, showAdvanced: true, showSubPrefix: true);
+                using (DrawUtil.BeginBranches(indent: true))
+                    ChumTimeoutConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ChumTimeoutConditionSet, ConditionScope.Hook, showAdvanced: true);
             }
-            ImGui.TreePop();
-        }
+        });
     }
 
     private static void DrawTimeoutField(string label, ref double timeoutMax, string? extraHelp = null) {
+        DrawUtil.Branch();
         ImGui.SetNextItemWidth(100.Scaled());
         if (ImGui.InputDouble(label, ref timeoutMax, .1, 1, @"%.1f%")) {
             switch (timeoutMax) {

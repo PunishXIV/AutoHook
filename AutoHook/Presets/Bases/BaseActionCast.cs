@@ -54,11 +54,11 @@ public abstract class BaseActionCast {
     protected bool EvaluateConditionSet(WorldState ws)
         => ConditionSet.PassesOrUnconfigured(ws);
 
-    protected void DrawAutoCastConditions(bool showSubPrefix = true)
-        => ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ConditionSet, IsSpearFishing ? ConditionScope.Spearfishing : ConditionScope.AutoCast, showAdvanced: true, showSubPrefix: showSubPrefix);
+    protected void DrawAutoCastConditions()
+        => ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ConditionSet, IsSpearFishing ? ConditionScope.Spearfishing : ConditionScope.AutoCast, showAdvanced: true);
 
     public void DrawFishCaughtActionOptions()
-        => DrawAutoCastConditions(showSubPrefix: false);
+        => DrawAutoCastConditions();
 
     public virtual void SetThreshold(int newCost) {
         var actionCost = Id == IDs.Actions.ThaliaksFavor ? 0 : (int)ActionExecutor.GetActionCost(Id, ActionType);

@@ -57,6 +57,7 @@ public class SubTabExtra {
 
             DrawUtil.DrawCheckboxTree(UIStrings.ForceBaitSwap, ref config.ForceBaitSwap,
                 () => {
+                    DrawUtil.Branch();
                     DrawUtil.TextV(UIStrings.SelectBaitStartFishing);
                     DrawUtil.DrawComboSelector(FishBaitCatalog.Get().Baits, bait => $"[#{bait.Id}] {bait.Name}",
                         config.ForcedBaitId <= 0 ? UIStrings.None : Item.GetRow((uint)config.ForcedBaitId).Name.ToString(),
@@ -210,7 +211,7 @@ public class SubTabExtra {
                     return;
 
                 ImGui.Separator();
-                ImGui.Indent(20.Scaled());
+                using var actions = DrawUtil.BeginBranches(indent: true);
                 var startFishing = trig.StartFishing;
                 DrawUtil.DrawCheckboxTree("Start Fishing", ref startFishing, null);
                 trig.StartFishing = startFishing;
@@ -223,6 +224,7 @@ public class SubTabExtra {
                 var stopEnabled = trig.StopAction != ExtraStopAction.None;
                 DrawUtil.DrawCheckboxTree(UIStrings.StopQuitFishing, ref stopEnabled,
                     () => {
+                        DrawUtil.Branch();
                         if (ImGui.RadioButton(UIStrings.Stop_Casting, trig.StopAction == ExtraStopAction.StopOnly)) {
                             trig.StopAction = ExtraStopAction.StopOnly;
                             Configuration.Save();
@@ -231,6 +233,7 @@ public class SubTabExtra {
                         ImGui.SameLine();
                         ImGuiComponents.HelpMarker(UIStrings.Auto_Cast_Stopped);
 
+                        DrawUtil.Branch();
                         if (ImGui.RadioButton(UIStrings.Quit_Fishing, trig.StopAction == ExtraStopAction.QuitFishing)) {
                             trig.StopAction = ExtraStopAction.QuitFishing;
                             Configuration.Save();
@@ -264,7 +267,11 @@ public class SubTabExtra {
 
                 var resolve = trig.ResolveCollectablesWindow;
                 var forceNo = trig.ResolveCollectablesForceNo;
-                DrawUtil.DrawCheckboxTree("Resolve Collectables Window", ref resolve, () => { DrawUtil.Checkbox("Force No", ref forceNo); ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.AutoHandleCollectables_Preset_HelpText); });
+                DrawUtil.DrawCheckboxTree("Resolve Collectables Window", ref resolve, () => {
+                    DrawUtil.Checkbox("Force No", ref forceNo);
+                    DrawUtil.Branch();
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.AutoHandleCollectables_Preset_HelpText);
+                });
                 trig.ResolveCollectablesWindow = resolve;
                 trig.ResolveCollectablesForceNo = forceNo;
 
@@ -286,8 +293,6 @@ public class SubTabExtra {
                 trig.StatusToRemove = statusToRemove;
 
                 trig.NotifyOnSuccess.DrawConfig(string.Empty);
-
-                ImGui.Unindent(20.Scaled());
             }, helpText: string.Empty, forceOpen: forceOpen)) {
                 trig.Enabled = enabled;
                 Configuration.Save();

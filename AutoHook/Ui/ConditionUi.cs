@@ -40,7 +40,7 @@ public static class ConditionUi {
     private static bool IsExpressionEditorVisible(ConditionSet set)
         => set.ExprVisible || !string.IsNullOrWhiteSpace(set.Expression);
 
-    public static ConditionSet? DrawConditionSet(string label, ConditionSet? set, ConditionScope scope, bool showAdvanced = true, IReadOnlyList<string>? allowedTypeIds = null, bool showSubPrefix = false, Action? drawHeaderExtras = null) {
+    public static ConditionSet? DrawConditionSet(string label, ConditionSet? set, ConditionScope scope, bool showAdvanced = true, IReadOnlyList<string>? allowedTypeIds = null, Action? drawHeaderExtras = null) {
         set ??= new ConditionSet();
         if (set.Groups.Count == 0)
             set.Groups.Add(new ConditionGroup());
@@ -48,7 +48,7 @@ public static class ConditionUi {
         // Either slim view or advanced view, never both. Toggle via SlimAdvancedExpanded.
         // Multi-group sets and sets with an expression always use the advanced editor.
         if (set.SlimAdvancedExpanded || RequiresComplexConditionUi(set)) {
-            DrawSlimAdvancedEditor(label, set, scope, showSubPrefix, drawHeaderExtras);
+            DrawSlimAdvancedEditor(label, set, scope, drawHeaderExtras);
             return set;
         }
 
@@ -58,14 +58,10 @@ public static class ConditionUi {
                             ?? types.FirstOrDefault()?.Id
                             ?? Registry.GetId<StatusActiveCD>();
 
-        // Header: (optional) sub marker + label + add + small advanced icon + optional extras.
+        // Header: label + add + small advanced icon + optional extras.
+        DrawUtil.Branch();
         if (!label.IsNullOrEmpty()) {
-            if (showSubPrefix) {
-                ImGui.Text(" └");
-                ImGui.SameLine();
-            }
-
-            ImGui.Text(label);
+            DrawUtil.TextV(label);
             ImGui.SameLine();
         }
 
@@ -90,7 +86,7 @@ public static class ConditionUi {
         }
 
         var toRemove = new List<int>();
-        using (ImRaii.PushIndent()) {
+        using (DrawUtil.BeginBranches(indent: true)) {
             for (var ci = 0; ci < group.Conditions.Count; ci++) {
                 var cond = group.Conditions[ci];
                 cond.EnsureUiId();
@@ -126,14 +122,10 @@ public static class ConditionUi {
         return set;
     }
 
-    private static void DrawSlimAdvancedEditor(string label, ConditionSet set, ConditionScope scope, bool showSubPrefix, Action? drawHeaderExtras) {
+    private static void DrawSlimAdvancedEditor(string label, ConditionSet set, ConditionScope scope, Action? drawHeaderExtras) {
+        DrawUtil.Branch();
         if (!label.IsNullOrEmpty()) {
-            if (showSubPrefix) {
-                ImGui.Text(" └");
-                ImGui.SameLine();
-            }
-
-            ImGui.Text(label);
+            DrawUtil.TextV(label);
             ImGui.SameLine();
         }
 
@@ -151,8 +143,14 @@ public static class ConditionUi {
             ImGui.SameLine(0, 3.Scaled());
             drawHeaderExtras();
         }
-        ImGui.Spacing();
         var toRemoveGroup = new List<int>();
+        using var branches = DrawUtil.BeginBranches(indent: true);
+        if (IsExpressionEditorVisible(set)) {
+            DrawUtil.Branch();
+            using (ImRaii.Group())
+                ConditionExpressionUi.DrawExpressionEditor(set);
+        }
+
         for (var gi = 0; gi < set.Groups.Count; gi++) {
             var g = set.Groups[gi];
             var groupLetter = (char)('A' + gi);
@@ -258,14 +256,10 @@ public static class ConditionUi {
                 }
             }
         }
-
-        if (!IsExpressionEditorVisible(set))
-            return;
-
-        ConditionExpressionUi.DrawExpressionEditor(set);
     }
 
     private static bool DrawGroupHeader(ConditionSet set, ConditionGroup group, int index, ConditionScope scope) {
+        DrawUtil.Branch();
         var mode = group.CombineMode;
         var btn = mode == ConditionCombineMode.All ? "&&" : "||";
         if (ImGui.Button(btn))
@@ -340,6 +334,7 @@ public static class ConditionUi {
             var cond = group.Conditions[ci];
             cond.EnsureUiId();
             using var _ = ImRaii.PushId($"cond{cond.UiId}");
+            DrawUtil.Branch();
             using (IsConditionCurrentlyTrue(cond) ? ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGreen) : null)
                 if (DrawConditionContent(cond, scope, defs))
                     Configuration.Save();
