@@ -1,5 +1,7 @@
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System.ComponentModel;
@@ -9,6 +11,7 @@ namespace AutoHook.Presets.Bases;
 
 public abstract class BaseActionCast {
     private const int ActionControlColumn = 200;
+    private const int GpButtonWidth = 65;
 
     protected BaseActionCast(uint id, ActionType actionType = ActionType.Action) {
         Id = id;
@@ -16,11 +19,16 @@ public abstract class BaseActionCast {
 
         ActionType = actionType;
 
-        if (actionType == ActionType.Action && id is not IDs.Actions.ThaliaksFavor and not IDs.Actions.NaturesBounty and not IDs.Actions.Collect
-            and not IDs.Actions.BaitedBreath and not IDs.Actions.ElectricCurrent and not IDs.Actions.VeteranTrade
-            and not IDs.Actions.VitalSight)
-            GpThreshold = (int)ActionExecutor.GetActionCost(Id, ActionType);
+        GpThreshold = DefaultGpThreshold;
     }
+
+    public virtual int DefaultGpThreshold
+        => ActionType == ActionType.Action && Id is not IDs.Actions.ThaliaksFavor and not IDs.Actions.Collect
+            and not IDs.Actions.ElectricCurrent and not IDs.Actions.VitalSight
+            ? (int)ActionExecutor.GetActionCost(Id, ActionType)
+            : 0;
+
+    private bool IsDefaultThreshold => GpThresholdAbove && GpThreshold == DefaultGpThreshold;
 
     public bool Enabled;
 
@@ -175,8 +183,7 @@ public abstract class BaseActionCast {
         var canMoveUp = availableActs.Any(x => x.Priority < Priority && !x.IsExcludedPriority);
         using (ImRaii.Disabled(!canMoveUp)) {
             if (ImGui.ArrowButton(@"###UpArrow", ImGuiDir.Up)) {
-                var nextAct = availableActs.Where(x => x.Priority < Priority && !x.IsExcludedPriority)
-                    .OrderByDescending(x => x.Priority).First();
+                var nextAct = availableActs.Where(x => x.Priority < Priority && !x.IsExcludedPriority).OrderByDescending(x => x.Priority).First();
                 nextAct.Priority = Priority;
                 Priority--;
                 Configuration.Save();
@@ -199,9 +206,11 @@ public abstract class BaseActionCast {
 
     public virtual void DrawGpThreshold() {
         using var gpId = ImRaii.PushId(@$"{GetType().Name}_gp");
-        if (ImGui.Button(UIStrings.GPlabel)) {
-            ImGui.OpenPopup(strId: @"gp_cfg");
+        using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudOrange, !IsDefaultThreshold)) {
+            if (ImGuiComponents.IconButtonWithText(GpThresholdAbove ? FontAwesomeIcon.CaretUp : FontAwesomeIcon.CaretDown, $"{GpThreshold} GP", new Vector2(GpButtonWidth.Scaled(), 0)))
+                ImGui.OpenPopup(strId: @"gp_cfg");
         }
+        ImGui.TooltipOnHover(@$"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {(GpThresholdAbove ? UIStrings.Above : UIStrings.Below)} {GpThreshold}{Environment.NewLine}Default: {UIStrings.Above} {DefaultGpThreshold}");
 
         using var popup = ImRaii.Popup(@"gp_cfg");
         if (!popup.Success) return;
@@ -209,6 +218,16 @@ public abstract class BaseActionCast {
         using var item = ImRaii.Child("###gp_cfg2", new Vector2(175.Scaled(), 125.Scaled()), true);
         if (ImGui.Button(@" X "))
             ImGui.CloseCurrentPopup();
+        ImGui.SameLine();
+        using (ImRaii.Disabled(IsDefaultThreshold)) {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Undo)) {
+                GpThresholdAbove = true;
+                GpThreshold = DefaultGpThreshold;
+                Configuration.Save();
+            }
+        }
+        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+            ImGui.SetTooltip(@$"Reset ({UIStrings.Above} {DefaultGpThreshold})");
         ImGui.SameLine();
         ImGui.TextColored(ImGuiColors.DalamudYellow, @$"GP - {GetName()}");
 

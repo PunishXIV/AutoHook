@@ -5,8 +5,9 @@ namespace AutoHook.Presets.AutoCasts;
 public sealed class AutoNaturesBounty : BaseActionCast {
     public AutoNaturesBounty(bool isSpearfishing = true) : base(IDs.Actions.NaturesBounty) {
         IsSpearFishing = isSpearfishing;
-        GpThreshold = 100;
     }
+
+    public override int DefaultGpThreshold => 100;
 
     public override string GetName() => UIStrings.Use_Natures_Bounty;
 

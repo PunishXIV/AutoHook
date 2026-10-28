@@ -5,7 +5,6 @@ namespace AutoHook.Presets.AutoCasts;
 public sealed class AutoElectricCurrent : BaseActionCast {
     public AutoElectricCurrent(bool isSpearfishing = true) : base(IDs.Actions.ElectricCurrent) {
         IsSpearFishing = isSpearfishing;
-        GpThreshold = 0;
     }
 
     public override string GetName() => UIStrings.ElectricCurrent;

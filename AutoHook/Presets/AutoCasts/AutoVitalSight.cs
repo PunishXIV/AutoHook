@@ -8,7 +8,6 @@ public sealed class AutoVitalSight : BaseActionCast {
 
     public AutoVitalSight(bool isSpearfishing = true) : base(IDs.Actions.VitalSight) {
         IsSpearFishing = isSpearfishing;
-        GpThreshold = 0;
     }
 
     public override string GetName() => UIStrings.VitalSight;
