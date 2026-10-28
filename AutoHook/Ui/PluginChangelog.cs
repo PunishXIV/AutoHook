@@ -3,6 +3,15 @@
 public static class PluginChangelog {
     public static readonly List<Version> Versions =
     [
+        new Version("6.0.2.11") {
+            Main = {
+                "Redesigned all the ui for conditions: editor, expressions, tab",
+                "Added StatusTimeCD",
+            },
+            Minor = {
+                "Fixed some ui inconsistencies with indenting, typos, layout, etc",
+            }
+        },
         new Version("6.0.2.0") {
             Main = {
                 "Spearfishing preset rework",
