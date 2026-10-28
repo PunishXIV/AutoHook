@@ -30,8 +30,14 @@ public class SubTabFish {
                 DrawUtil.SpacingSeparator();
 
                 DrawUtil.DrawSurfaceSlapAndIdenticalCast(fish.SurfaceSlap, fish.IdenticalCast);
+                ImGui.Spacing();
+
                 fish.Multihook.DrawConfig();
+                ImGui.Spacing();
+
                 DrawMooch(fish);
+                ImGui.Spacing();
+
                 DrawSparefulHand(fish);
                 ImGui.Spacing();
 
@@ -119,6 +125,7 @@ public class SubTabFish {
         fishConfig.Mooch.SuppressHelpText = true;
         fishConfig.Mooch.DrawConfig();
         fishConfig.Mooch.SuppressHelpText = false;
+        ImGui.Spacing();
 
         DrawUtil.DrawCheckboxTree(UIStrings.Never_Mooch, ref fishConfig.NeverMooch, null, UIStrings.NeverMoochHelpText);
 

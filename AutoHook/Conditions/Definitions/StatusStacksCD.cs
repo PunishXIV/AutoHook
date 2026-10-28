@@ -8,6 +8,9 @@ public sealed class StatusStacksCD : IConditionDefinition {
     public ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast | ConditionScopeFlags.Spearfishing;
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetStatusIds(parameters).Count == 0 ? "select a status" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var ids = GetStatusIds(parameters);
         var args = GetIntCompareParams(parameters, "minStacks", 1);

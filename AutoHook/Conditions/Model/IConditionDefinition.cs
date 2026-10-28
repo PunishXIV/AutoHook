@@ -19,6 +19,8 @@ public interface IConditionDefinition {
     bool DescribeOmitsName => false;
 
     int? SpecifiedIntDefault(string key) => null;
+
+    string? IncompleteReason(IReadOnlyDictionary<string, object> parameters) => null;
 }
 
 public static class ConditionDefinitionExtensions {

@@ -11,7 +11,6 @@ namespace AutoHook.Presets.Bases;
 
 public abstract class BaseActionCast {
     private const int ActionControlColumn = 200;
-    private const int GpButtonWidth = 65;
 
     protected BaseActionCast(uint id, ActionType actionType = ActionType.Action) {
         Id = id;
@@ -131,6 +130,8 @@ public abstract class BaseActionCast {
 
     public virtual string GetHelpText() => "";
 
+    protected virtual string? LabelHelpMarker => null;
+
     public virtual int GetPriority() => Priority;
 
     protected delegate void DrawOptionsDelegate();
@@ -148,6 +149,7 @@ public abstract class BaseActionCast {
         if (DrawOptions != null) {
             DrawUtil.DrawCheckboxTree(label, ref Enabled, () => DrawOptions?.Invoke(), GetHelpText(),
                 drawLabelExtras: () => {
+                    DrawLabelHelpMarker();
                     if (ShowGpThreshold) {
                         ImGui.SameLine(ActionControlColumn.Scaled());
                         DrawGpThreshold();
@@ -160,12 +162,20 @@ public abstract class BaseActionCast {
 
             ImGui.SameLine(0, 28.Scaled());
             ImGui.Text(label);
+            DrawLabelHelpMarker();
             if (ShowGpThreshold) {
                 ImGui.SameLine(ActionControlColumn.Scaled());
                 DrawGpThreshold();
             }
             DrawUpDownArrows(availableActs);
         }
+    }
+
+    private void DrawLabelHelpMarker() {
+        if (LabelHelpMarker is not { } help)
+            return;
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(help);
     }
 
     public virtual void DrawConfigOptions() {
@@ -204,10 +214,19 @@ public abstract class BaseActionCast {
         }
     }
 
+    private float GpButtonWidth() {
+        var style = ImGui.GetStyle();
+        float iconWidth;
+        using (ImRaii.PushFont(UiBuilder.IconFont))
+            iconWidth = Math.Max(ImGui.CalcTextSize(FontAwesomeIcon.CaretUp.ToIconString()).X, ImGui.CalcTextSize(FontAwesomeIcon.CaretDown.ToIconString()).X);
+        var textWidth = Math.Max(ImGui.CalcTextSize("0000 GP").X, ImGui.CalcTextSize($"{GpThreshold} GP").X);
+        return iconWidth + textWidth + style.FramePadding.X * 2 + style.ItemInnerSpacing.X * 2;
+    }
+
     public virtual void DrawGpThreshold() {
         using var gpId = ImRaii.PushId(@$"{GetType().Name}_gp");
         using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudOrange, !IsDefaultThreshold)) {
-            if (ImGuiComponents.IconButtonWithText(GpThresholdAbove ? FontAwesomeIcon.CaretUp : FontAwesomeIcon.CaretDown, $"{GpThreshold} GP", new Vector2(GpButtonWidth.Scaled(), 0)))
+            if (ImGuiComponents.IconButtonWithText(GpThresholdAbove ? FontAwesomeIcon.CaretUp : FontAwesomeIcon.CaretDown, $"{GpThreshold} GP", new Vector2(GpButtonWidth(), 0)))
                 ImGui.OpenPopup(strId: @"gp_cfg");
         }
         ImGui.TooltipOnHover(@$"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {(GpThresholdAbove ? UIStrings.Above : UIStrings.Below)} {GpThreshold}{Environment.NewLine}Default: {UIStrings.Above} {DefaultGpThreshold}");

@@ -7,6 +7,9 @@ public sealed class OceanMissionTypeCD : IConditionDefinition {
     public string Name => "Ocean mission type";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetIds(parameters).Count == 0 ? "select a mission" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var ids = GetIds(parameters);
         if (ids.Count == 0) return false;

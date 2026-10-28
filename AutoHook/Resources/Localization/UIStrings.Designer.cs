@@ -2647,6 +2647,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is a Cosmic Exploration action..
+        /// </summary>
+        internal static string Multihook_CosmicHelpText {
+            get {
+                return ResourceManager.GetString("Multihook_CosmicHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multihook Options.
         /// </summary>
         internal static string Multihook_Options {

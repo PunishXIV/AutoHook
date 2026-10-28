@@ -20,6 +20,9 @@ public sealed class StatusActiveCD : IConditionDefinition {
         }
     }
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetStatusIds(parameters).Count == 0 ? "select a status" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var args = GetParams(parameters);
         if (args.Ids.Count == 0) return args.Invert;

@@ -51,6 +51,9 @@ public class Condition {
         return registry.Get(TypeId) is { } def && def.Evaluate(world, Params);
     }
 
+    public string? IncompleteReason(ConditionRegistry registry)
+        => PresetConditionHelper.IsPresetType(TypeId) ? null : registry.Get(TypeId)?.Definition?.IncompleteReason(Params);
+
     public string Describe(ConditionRegistry registry)
         => Enabled ? Summary(registry) : $"{Summary(registry)} [disabled]";
 

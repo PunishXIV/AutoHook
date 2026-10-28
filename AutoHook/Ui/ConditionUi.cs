@@ -2,6 +2,7 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using Newtonsoft.Json;
 using System.Numerics;
@@ -152,7 +153,6 @@ public static class ConditionUi {
     private static float DrawChipRow(ConditionGroup group, ConditionScope scope, IReadOnlyList<ConditionTypeDef> types) {
         var style = ImGui.GetStyle();
         var chipStartX = ImGui.GetCursorPosX();
-        var maxChipTextWidth = 200.Scaled();
         var mode = group.CombineMode;
         var joiner = mode == ConditionCombineMode.All ? "&&" : "||";
         var joinerWidth = ImGui.CalcTextSize(joiner).X + style.FramePadding.X * 2;
@@ -167,8 +167,7 @@ public static class ConditionUi {
             using var _ = ImRaii.PushId($"cond{cond.UiId}");
 
             var summary = cond.Summary(Registry);
-            var shown = TruncateToWidth(summary, maxChipTextWidth);
-            var chipWidth = ImGui.CalcTextSize(shown).X + style.FramePadding.X * 2;
+            var chipWidth = ImGui.CalcTextSize(summary).X + style.FramePadding.X * 2;
 
             if (ci > 0) {
                 PlaceNext(joinerWidth + style.ItemSpacing.X + chipWidth);
@@ -181,16 +180,23 @@ public static class ConditionUi {
             }
 
             var isTrue = IsConditionCurrentlyTrue(cond);
-            Vector4? textColor = isTrue ? ImGuiColors.ParsedGreen
-                : !cond.Enabled ? ImGuiColors.DalamudGrey with { W = 0.6f }
+            var incomplete = cond.Enabled ? cond.IncompleteReason(Registry) : null;
+            Vector4? textColor = !cond.Enabled ? ImGuiColors.DalamudGrey with { W = 0.6f }
+                : incomplete != null ? ImGuiColors.DalamudOrange
+                : isTrue ? ImGuiColors.ParsedGreen
                 : null;
-            using (textColor.HasValue ? ImRaii.PushColor(ImGuiCol.Text, textColor.Value) : null) {
-                if (ImGui.Button($"{shown}##chip"))
+            using (textColor.HasValue ? ImRaii.PushColor(ImGuiCol.Text, textColor.Value) : null)
+            using (ImRaii.PushColor(ImGuiCol.Border, ImGuiColors.DalamudOrange, incomplete != null))
+            using (ImRaii.PushStyle(ImGuiStyleVar.FrameBorderSize, Math.Max(1f, ImGuiHelpers.GlobalScale), incomplete != null)) {
+                if (ImGui.Button($"{summary}##chip"))
                     ImGui.OpenPopup("cond_edit");
             }
             if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                 ImGui.OpenPopup("cond_ctx");
-            ImGui.TooltipOnHover($"{summary}\n{(!cond.Enabled ? "Disabled" : isTrue ? "Currently true" : "Currently false")}");
+            var state = !cond.Enabled ? "Disabled"
+                : incomplete != null ? $"Incomplete: {incomplete}"
+                : isTrue ? "Currently true" : "Currently false";
+            ImGui.TooltipOnHover($"{summary}\n{state}");
 
             if (_openPopupForUiId == cond.UiId) {
                 ImGui.OpenPopup("cond_edit");
@@ -272,16 +278,6 @@ public static class ConditionUi {
     private static float IconButtonWidth(FontAwesomeIcon icon) {
         using (ImRaii.PushFont(UiBuilder.IconFont))
             return Math.Max(ImGui.CalcTextSize(icon.ToIconString()).X + ImGui.GetStyle().FramePadding.X * 2, ImGui.GetFrameHeight());
-    }
-
-    private static string TruncateToWidth(string text, float maxWidth) {
-        if (ImGui.CalcTextSize(text).X <= maxWidth)
-            return text;
-
-        var len = text.Length;
-        while (len > 1 && ImGui.CalcTextSize(text[..len] + "…").X > maxWidth)
-            len--;
-        return text[..len] + "…";
     }
 
     private static string DefaultTypeId(IReadOnlyList<ConditionTypeDef> types)

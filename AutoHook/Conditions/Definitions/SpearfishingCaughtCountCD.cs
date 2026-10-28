@@ -7,6 +7,9 @@ public sealed class SpearfishingCaughtCountCD : IConditionDefinition {
     public string Name => "Spearfishing caught count";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Spearfishing;
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetUInt(parameters, "id", 0) == 0 ? "select a fish" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var fishId = GetUInt(parameters, "id", 0);
         var args = GetIntCompareParams(parameters, defaultValue: 1);

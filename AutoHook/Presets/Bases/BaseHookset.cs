@@ -87,7 +87,7 @@ public class BaseHookset(uint requiredStatus) {
             PatienceWeak.DrawOptions(UIStrings.HookWeakExclamation, true);
             PatienceStrong.DrawOptions(UIStrings.HookStrongExclamation, true);
             PatienceLegendary.DrawOptions(UIStrings.HookLegendaryExclamation, true);
-        });
+        }, alignWithCheckboxes: true);
     }
 
     private void DrawDoubleHook() {
@@ -136,7 +136,7 @@ public class BaseHookset(uint requiredStatus) {
                 using (DrawUtil.BeginBranches(indent: true))
                     ChumTimeoutConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, ChumTimeoutConditionSet, ConditionScope.Hook, showAdvanced: true);
             }
-        });
+        }, alignWithCheckboxes: true);
     }
 
     private static void DrawTimeoutField(string label, ref double timeoutMax, string? extraHelp = null) {

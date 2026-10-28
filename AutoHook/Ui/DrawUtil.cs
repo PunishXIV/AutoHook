@@ -443,10 +443,14 @@ public static class DrawUtil {
         return changed;
     }
 
-    public static void DrawTreeNodeEx(string treeName, Action action, string helpText = "") {
+    public static void DrawTreeNodeEx(string treeName, Action action, string helpText = "", bool alignWithCheckboxes = false) {
         using var id = ImRaii.PushId(treeName);
 
         Branch();
+        if (alignWithCheckboxes) {
+            ImGui.Dummy(new Vector2(ImGui.GetFrameHeight()));
+            ImGui.SameLine(0, 3.Scaled());
+        }
         var labelX = ImGui.GetCursorPosX();
         if (ImGui.TreeNodeEx(treeName, ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowItemOverlap)) {
             if (helpText != string.Empty)
@@ -508,6 +512,7 @@ public static class DrawUtil {
     public static void DrawSurfaceSlapAndIdenticalCast(AutoSurfaceSlap surfaceSlap, AutoIdenticalCast identicalCast) {
         DrawCheckboxTree(UIStrings.UseSurfaceSlap, ref surfaceSlap.Enabled,
             () => surfaceSlap.DrawFishCaughtActionOptions(), surfaceSlap.GetHelpText());
+        ImGui.Spacing();
 
         DrawCheckboxTree(UIStrings.UseIdenticalCast, ref identicalCast.Enabled,
             () => identicalCast.DrawFishCaughtActionOptions(), identicalCast.GetHelpText());

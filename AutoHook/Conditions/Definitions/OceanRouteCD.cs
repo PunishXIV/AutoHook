@@ -7,6 +7,9 @@ public sealed class OceanRouteCD : IConditionDefinition {
     public string Name => "Ocean route";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetIds(parameters).Count == 0 ? "select a route" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var ids = GetIds(parameters);
         if (ids.Count == 0) return false;

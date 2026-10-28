@@ -109,4 +109,7 @@ public sealed class WeatherCD : SnapshottableConditionDefinition {
         => ConditionParameterFormat.FormatWeather(parameters);
 
     public override bool DescribeOmitsName => true;
+
+    public override string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetWeatherIds(parameters).Count == 0 ? "select a weather" : null;
 }

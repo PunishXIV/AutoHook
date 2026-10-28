@@ -47,6 +47,9 @@ public sealed class ActionCooldownCD : IConditionDefinition {
         }
     }
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetParams(parameters) is { Id: 0 } args ? args.Type == 1 ? "select an item" : "select an action" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var args = GetParams(parameters);
         if (args.Id == 0)
@@ -210,11 +213,15 @@ public sealed class ActionCooldownCD : IConditionDefinition {
 
     public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
         var args = GetParams(parameters);
-        var action = args.Id == 0 ? "action" : LuminaAction.GetRow(args.Id).Name.ToString();
+        var name = args.Id == 0
+            ? args.Type == 1 ? "item" : "action"
+            : args.Type == 1
+                ? Item.GetRow(ItemUtil.GetBaseId(args.Id).ItemId).Name.ToString()
+                : LuminaAction.GetRow(args.Id).Name.ToString();
         if (args.IsAvailability)
-            return $"{action} available";
+            return $"{name} available";
 
-        return $"{action} {ConditionParameterFormat.FormatIntCompare(parameters, valueKey: "sec", defaultValue: 0, defaultOp: "=")}s remaining";
+        return $"{name} Cooldown {ConditionParameterFormat.FormatIntCompare(parameters, valueKey: "sec", defaultValue: 0, defaultOp: "=")}s";
     }
 
     public bool DescribeOmitsName => true;

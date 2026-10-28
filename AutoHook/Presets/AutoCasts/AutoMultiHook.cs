@@ -8,6 +8,8 @@ public sealed class AutoMultiHook : BaseActionCast {
 
     public override string GetName() => UIStrings.Multihook;
 
+    protected override string? LabelHelpMarker => UIStrings.Multihook_CosmicHelpText;
+
     public override int Priority { get; set; } = 0;
     [DefaultValue(true)]
     public override bool IsExcludedPriority { get; set; } = true;

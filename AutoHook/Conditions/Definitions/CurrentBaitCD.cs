@@ -5,6 +5,9 @@ public sealed class CurrentBaitCD : IConditionDefinition {
     public string Name => "Current bait";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetIds(parameters).Count == 0 ? "select a bait" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var ids = GetIds(parameters);
         if (ids.Count == 0)

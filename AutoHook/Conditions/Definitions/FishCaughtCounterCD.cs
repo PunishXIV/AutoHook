@@ -7,6 +7,9 @@ public sealed class FishCaughtCounterCD : IConditionDefinition {
     public string Name => "Fish caught counter";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetInt(parameters, "id", 0) <= 0 ? "select a fish" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var fishId = GetInt(parameters, "id", 0);
         var args = GetIntCompareParams(parameters);

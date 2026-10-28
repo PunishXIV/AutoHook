@@ -21,6 +21,9 @@ public sealed class LastActionUsedCD : IConditionDefinition {
         }
     }
 
+    public string? IncompleteReason(IReadOnlyDictionary<string, object> parameters)
+        => GetUInt(parameters, "id", 0) == 0 ? "select an action" : null;
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var args = GetParams(parameters);
         if (args.Id == 0)

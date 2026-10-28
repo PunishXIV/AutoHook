@@ -18,4 +18,6 @@ public abstract class SnapshottableConditionDefinition : IConditionDefinition {
         => ConditionParameterFormat.FormatGenericParams(parameters);
 
     public virtual bool DescribeOmitsName => false;
+
+    public virtual string? IncompleteReason(IReadOnlyDictionary<string, object> parameters) => null;
 }
