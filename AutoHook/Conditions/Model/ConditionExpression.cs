@@ -156,6 +156,76 @@ public static class ConditionExpression {
         return invalid;
     }
 
+    // first problem in the expression as a short message, or null if valid.
+    // raw (when given) is checked for characters ParseTokens would silently drop.
+    public static string? DescribeError(List<Token> tokens, string? raw, int groupCount) {
+        if (raw != null) {
+            for (var i = 0; i < raw.Length; i++) {
+                var ch = raw[i];
+                if (char.IsWhiteSpace(ch) || ch is '(' or ')' or '!')
+                    continue;
+                if ((ch == '&' || ch == '|') && i + 1 < raw.Length && raw[i + 1] == ch) {
+                    i++;
+                    continue;
+                }
+                if (ch is >= 'A' and <= 'Z' or >= 'a' and <= 'z') {
+                    var idx = char.ToUpperInvariant(ch) - 'A';
+                    if (idx >= groupCount)
+                        return $"group {char.ToUpperInvariant(ch)} doesn't exist";
+                    continue;
+                }
+                return $"unknown character '{ch}'";
+            }
+        }
+
+        var invalid = ValidateTokens(tokens);
+        var bad = Array.IndexOf(invalid, true);
+        if (bad < 0)
+            return null;
+
+        var t = tokens[bad];
+        var label = GetDisplayLabel(t);
+        var isLast = bad == tokens.Count - 1;
+        Token? prev = bad > 0 ? tokens[bad - 1] : null;
+        var afterOperand = prev?.Kind is TokenKind.Group or TokenKind.RParen;
+        var afterOperator = prev?.Kind is TokenKind.And or TokenKind.Or or TokenKind.Not;
+
+        switch (t.Kind) {
+            case TokenKind.Group:
+                return $"missing AND/OR before {label}";
+            case TokenKind.And or TokenKind.Or:
+                if (prev == null)
+                    return $"missing operand before {label}";
+                if (afterOperator || prev.Value.Kind == TokenKind.LParen)
+                    return $"missing operand after {GetDisplayLabel(prev.Value)}";
+                return $"missing operand after {label}";
+            case TokenKind.Not:
+                return afterOperand ? "missing AND/OR before NOT" : "missing operand after NOT";
+            case TokenKind.LParen:
+                if (afterOperand)
+                    return "missing AND/OR before (";
+                return !isLast && tokens[bad + 1].Kind == TokenKind.RParen ? "empty ( )" : "unclosed (";
+            case TokenKind.RParen:
+                if (afterOperator)
+                    return $"missing operand after {GetDisplayLabel(prev!.Value)}";
+                if (prev?.Kind == TokenKind.LParen)
+                    return "empty ( )";
+                return "unexpected )";
+        }
+
+        return isLast ? "incomplete expression" : "invalid expression";
+    }
+
+    // ui label (words); GetTokenLabel is the serialized form.
+    public static string GetDisplayLabel(Token token) {
+        return token.Kind switch {
+            TokenKind.And => "AND",
+            TokenKind.Or => "OR",
+            TokenKind.Not => "NOT",
+            _ => GetTokenLabel(token),
+        };
+    }
+
     public static string GetTokenLabel(Token token) {
         return token.Kind switch {
             TokenKind.Group => ((char)('A' + token.GroupIndex)).ToString(),
@@ -246,7 +316,9 @@ public static class ConditionExpression {
             if (pos < len && char.IsLetter(s[pos])) {
                 var c = char.ToUpperInvariant(s[pos++]);
                 var idx = c - 'A';
-                return idx >= 0 && idx < groupValues.Length && groupValues[idx];
+                if (idx < 0 || idx >= groupValues.Length)
+                    throw new FormatException("Unknown group");
+                return groupValues[idx];
             }
 
             throw new FormatException("Unexpected token");
@@ -269,7 +341,8 @@ public static class ConditionExpression {
 
         try {
             result = ParseExpr();
-            return true;
+            SkipWs();
+            return pos == len;
         }
         catch {
             return false;

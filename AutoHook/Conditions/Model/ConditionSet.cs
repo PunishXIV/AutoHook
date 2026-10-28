@@ -28,19 +28,30 @@ public class ConditionSet {
     [JsonIgnore]
     public bool ExprVisible { get; set; }
 
+    // ui: expr editor shows raw text input instead of tokens.
+    [JsonIgnore]
+    public bool ExprTextMode { get; set; }
+
+    // ui: raw text being edited in text mode (committed to Expression only when valid).
+    [JsonIgnore]
+    public string? ExprTextBuffer { get; set; }
+
     // ui: slim "Advanced" section expanded.
     [JsonIgnore]
     public bool SlimAdvancedExpanded { get; set; }
 
+    // Evaluate each group once (disabled groups: true for AND, false for OR so they don't affect result)
+    public bool[] EvaluateGroups(WorldState world, ConditionRegistry registry) {
+        var values = new bool[Groups.Count];
+        for (var i = 0; i < Groups.Count; i++)
+            values[i] = !Groups[i].Enabled ? (CombineMode == ConditionCombineMode.All) : Groups[i].Evaluate(world, registry);
+        return values;
+    }
+
     public bool Evaluate(WorldState world, ConditionRegistry registry) {
         if (Groups.Count == 0) return true;
 
-        // Evaluate each group once (disabled groups: true for AND, false for OR so they don't affect result)
-        var values = new bool[Groups.Count];
-        for (var i = 0; i < Groups.Count; i++)
-            values[i] = !Groups[i].Enabled
-                ? (CombineMode == ConditionCombineMode.All)
-                : Groups[i].Evaluate(world, registry);
+        var values = EvaluateGroups(world, registry);
 
         // If an expression is provided, try to use it first
         if (!string.IsNullOrWhiteSpace(Expression)) {

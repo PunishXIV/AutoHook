@@ -471,7 +471,7 @@ public static class ConditionUi {
         return clicked;
     }
 
-    private static ConditionSet CloneConditionSet(ConditionSet src) {
+    public static ConditionSet CloneConditionSet(ConditionSet src) {
         var clone = new ConditionSet {
             CombineMode = src.CombineMode,
             Groups = []
