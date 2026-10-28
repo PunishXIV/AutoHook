@@ -265,9 +265,7 @@ public class TabDebug : BaseTab {
     }
 
     private static string FormatFishInfo(AddonSpearFishing.FishInfo fish)
-        => !fish.Available
-            ? "—"
-            : $"Size={fish.Size}, Speed={fish.Speed}, Dir={(fish.InverseDirection ? "L←R" : "L→R")}{(fish.GuaranteedLarge ? ", Large*" : "")}";
+        => !fish.Available ? "—" : $"Size={fish.Size}, Speed={fish.Speed}, Dir={(fish.InverseDirection ? "L←R" : "L→R")}{(fish.GuaranteedLarge ? ", Large*" : "")}";
 
     private static string FormatSessionElapsed(TimeSpan elapsed) {
         var totalSeconds = Math.Max(0, (int)elapsed.TotalSeconds);
