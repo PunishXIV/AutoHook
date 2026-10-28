@@ -105,6 +105,8 @@ public sealed class WeatherCD : SnapshottableConditionDefinition {
         DrawUtil.DrawComboSelector(weathers, w => w.Name, label, w => { condition.Params["ids"] = new List<object> { (long)w.Id }; });
     }
 
-    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
+    public override string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
         => ConditionParameterFormat.FormatWeather(parameters);
+
+    public override bool DescribeOmitsName => true;
 }

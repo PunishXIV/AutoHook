@@ -72,6 +72,12 @@ public class Condition {
         var detail = def?.DescribeParameters(Params) ?? ConditionParameterFormat.FormatGenericParams(Params);
         if (string.IsNullOrEmpty(detail))
             return prefix + name;
-        return def?.DescribeOmitsName == true ? prefix + detail : $"{prefix}{name}: {detail}";
+        if (def?.DescribeOmitsName == true)
+            return prefix + detail;
+        // omit colon for straight comparisons
+        return IsComparison(detail) ? $"{prefix}{name} {detail}" : $"{prefix}{name}: {detail}";
     }
+
+    private static bool IsComparison(string detail)
+        => detail.Length > 0 && detail[0] is '<' or '>' or '=' or '≤' or '≥' or '!';
 }

@@ -99,7 +99,7 @@ public sealed class TimeWindowCD : SnapshottableConditionDefinition, ISimpleCond
     IReadOnlyDictionary<string, object>? ISimpleConditionValue<(bool Enabled, TimeOnly Start, TimeOnly End)>.ToParams((bool Enabled, TimeOnly Start, TimeOnly End) value, object? context)
         => value.Enabled ? new TimeWindowParams(value.Start, value.End, false).ToParams() : null;
 
-    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
+    public override string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
         var (start, end) = GetTimeWindowFromParams(parameters);
         if (start == default && end == default)
             return "all day";

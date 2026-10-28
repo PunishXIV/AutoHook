@@ -13,4 +13,9 @@ public abstract class SnapshottableConditionDefinition : IConditionDefinition {
         => SnapshottableOnCast && world.Fishing.CastSnapshot is { Active: true } snap ? EvaluateSnapshot(snap, parameters) : EvaluateLive(world, parameters);
 
     public abstract void DrawParams(Condition condition);
+
+    public virtual string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
+        => ConditionParameterFormat.FormatGenericParams(parameters);
+
+    public virtual bool DescribeOmitsName => false;
 }

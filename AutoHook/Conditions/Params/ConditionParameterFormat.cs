@@ -41,12 +41,16 @@ public static class ConditionParameterFormat {
     }
 
     public static string FormatWeather(IReadOnlyDictionary<string, object> p) {
-        var slot = GetOp(p, "slot", "current");
+        var slot = GetOp(p, "slot", "current") switch {
+            "prev" => UIStrings.Previous,
+            "next" => UIStrings.Next,
+            _ => UIStrings.Current,
+        };
         var ids = GetWeatherIds(p);
         var weather = ids.Count == 0
-            ? "any"
+            ? "Any"
             : string.Join(", ", ids.Select(id => Weather.GetRow(id).Name));
-        return $"{slot} = {weather}";
+        return $"{slot} Weather: {weather}";
     }
 
     public static string FormatBaitId(uint baitId)
