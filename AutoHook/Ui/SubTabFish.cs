@@ -29,15 +29,9 @@ public class SubTabFish {
                 DrawDeleteButton(fish);
                 DrawUtil.SpacingSeparator();
 
-                DrawSurfaceSlapIdenticalCast(fish);
-                ImGui.Spacing();
-
-                DrawMultihook(fish);
-                ImGui.Spacing();
-
+                DrawUtil.DrawSurfaceSlapAndIdenticalCast(fish.SurfaceSlap, fish.IdenticalCast);
+                fish.Multihook.DrawConfig();
                 DrawMooch(fish);
-                ImGui.Spacing();
-
                 DrawSparefulHand(fish);
                 ImGui.Spacing();
 
@@ -118,31 +112,30 @@ public class SubTabFish {
             });
     }
 
-    private static void DrawSurfaceSlapIdenticalCast(FishConfig fishConfig) {
-        DrawUtil.DrawTreeNodeEx(UIStrings.SurfaceSlapIdenticalCast,
-            () => DrawUtil.DrawSurfaceSlapAndIdenticalCast(fishConfig.SurfaceSlap, fishConfig.IdenticalCast));
-    }
-
-    private static void DrawMultihook(FishConfig fishConfig) {
-        DrawUtil.DrawTreeNodeEx(UIStrings.Multihook_Settings, () => fishConfig.Multihook.DrawConfig());
-    }
-
     private static void DrawMooch(FishConfig fishConfig) {
-        DrawUtil.DrawTreeNodeEx(UIStrings.Mooch_Setting, () => {
-            fishConfig.Mooch.SuppressHelpText = true;
-            fishConfig.Mooch.DrawConfig();
-            fishConfig.Mooch.SuppressHelpText = false;
+        var moochWas = fishConfig.Mooch.Enabled;
+        var neverWas = fishConfig.NeverMooch;
 
-            if (DrawUtil.Checkbox(UIStrings.Never_Mooch, ref fishConfig.NeverMooch, UIStrings.NeverMoochHelpText))
-                fishConfig.Mooch.Enabled = false;
-        });
+        fishConfig.Mooch.SuppressHelpText = true;
+        fishConfig.Mooch.DrawConfig();
+        fishConfig.Mooch.SuppressHelpText = false;
+
+        DrawUtil.DrawCheckboxTree(UIStrings.Never_Mooch, ref fishConfig.NeverMooch, null, UIStrings.NeverMoochHelpText);
+
+        // auto mooch and never mooch are mutually exclusive
+        if (fishConfig.NeverMooch && !neverWas) {
+            fishConfig.Mooch.Enabled = false;
+            Configuration.Save();
+        }
+        else if (fishConfig.Mooch.Enabled && !moochWas) {
+            fishConfig.NeverMooch = false;
+            Configuration.Save();
+        }
     }
 
     private static void DrawSparefulHand(FishConfig fishConfig) {
-        DrawUtil.DrawTreeNodeEx(UIStrings.SparefulHand_Settings, () => {
-            fishConfig.SparefulHand.FishIdToCheck = (uint)fishConfig.Fish.Id;
-            fishConfig.SparefulHand.DrawConfig();
-        });
+        fishConfig.SparefulHand.FishIdToCheck = (uint)fishConfig.Fish.Id;
+        fishConfig.SparefulHand.DrawConfig();
     }
 
     private static void DrawSwapBait(FishConfig fishConfig) {
