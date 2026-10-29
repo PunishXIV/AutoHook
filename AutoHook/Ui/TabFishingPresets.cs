@@ -558,9 +558,10 @@ public class TabFishingPresets : BaseTab {
         DrawUtil.DrawAddNewPresetButton(_basePreset);
         ImGui.SameLine(0, 3.Scaled());
 
-        using (ImRaii.Disabled(_basePreset.SelectedPreset == null)) {
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.FileExport)) {
-                ImGui.SetClipboardText(Configuration.ExportPreset(_basePreset.SelectedPreset!));
+        var exportTarget = displayed == _basePreset.DefaultPreset ? null : displayed;
+        using (ImRaii.Disabled(exportTarget == null)) {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.FileExport) && exportTarget != null) {
+                ImGui.SetClipboardText(Configuration.ExportPreset(exportTarget));
                 Notify.Success(UIStrings.PresetExportedToTheClipboard);
             }
         }
@@ -569,7 +570,7 @@ public class TabFishingPresets : BaseTab {
         ImGui.SameLine(0, 3.Scaled());
         DrawCombinedImport();
         ImGui.SameLine(0, 3.Scaled());
-        DrawUtil.DrawDeletePresetButton(_basePreset);
+        DrawUtil.DrawDeletePresetButton(_basePreset, displayed == _basePreset.DefaultPreset ? null : displayed);
 
         if (displayed != null && displayed != _basePreset.DefaultPreset && _basePreset.GetPreset(displayed.UniqueId) == null) {
             displayed = _basePreset.SelectedPreset ?? _basePreset.DefaultPreset;
@@ -909,48 +910,9 @@ public class TabFishingPresets : BaseTab {
         if (preset == null)
             return;
 
-        using var ctx = ImRaii.ContextPopupItem(@$"PresetOptions###{preset.PresetName}");
-        if (!ctx.Success) return;
-
-        var alreadySelected = _basePreset.SelectedPreset?.PresetName == preset.PresetName;
-        if (ImGui.Selectable(!alreadySelected ? UIStrings.SetActive : UIStrings.Deselect)) {
-            _basePreset.SelectedPreset = alreadySelected ? null : (CustomPresetConfig)preset;
-            Configuration.Save();
-        }
-
-        if (ImGui.Selectable(UIStrings.Rename, false, ImGuiSelectableFlags.DontClosePopups)) {
-            ImGui.OpenPopup(@$"PresetRenameName");
-        }
-
-        if (ImGui.Selectable(UIStrings.MakeACopy, false)) {
-            CopyPreset(preset);
-        }
-
-        DrawUtil.DrawRenamePreset(preset);
-
-        if (ImGui.Selectable(UIStrings.ExportPresetToClipboard, false)) {
-            ImGui.SetClipboardText(Configuration.ExportPreset(preset));
-            Notify.Success(UIStrings.PresetExportedToTheClipboard);
-        }
-
-        using (var disabled = ImRaii.Disabled(!ImGui.GetIO().KeyShift)) {
-            if (ImGui.Selectable(UIStrings.Delete, false, ImGuiSelectableFlags.DontClosePopups)) {
-                _basePreset.RemovePreset(preset.UniqueId);
-                displayed = _basePreset.SelectedPreset ?? _basePreset.DefaultPreset;
-                Configuration.Save();
-            }
-        }
-
-        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-            ImGui.SetTooltip(UIStrings.HoldShiftToDelete);
-    }
-
-    private static void CopyPreset(BasePresetConfig preset) {
-        var json = JsonConvert.SerializeObject(preset);
-        var copy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
-        copy!.UniqueId = Guid.NewGuid();
-        copy.PresetName = $"Copy_{preset.PresetName}";
-        _basePreset.AddNewPreset(copy);
-        Configuration.Save();
+        var isActive = _basePreset.SelectedGuid == preset.UniqueId.ToString();
+        DrawUtil.DrawPresetContextMenu(_basePreset, preset, isActive,
+            toggleActive: () => _basePreset.SelectedPreset = isActive ? null : (CustomPresetConfig)preset,
+            onDeleted: () => displayed = _basePreset.SelectedPreset ?? _basePreset.DefaultPreset);
     }
 }

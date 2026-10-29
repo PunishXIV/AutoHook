@@ -4,6 +4,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
+using Newtonsoft.Json;
 using System.Numerics;
 
 namespace AutoHook.Ui;
@@ -250,6 +251,45 @@ public static class DrawUtil {
         }
     }
 
+    public static void DrawPresetContextMenu(BasePreset list, BasePresetConfig preset, bool isActive, Action toggleActive, Action? onDeleted = null) {
+        using var ctx = ImRaii.ContextPopupItem(@$"PresetOptions###{preset.UniqueId}");
+        if (!ctx.Success) return;
+
+        if (ImGui.Selectable(!isActive ? UIStrings.SetActive : UIStrings.Deselect)) {
+            toggleActive();
+            Configuration.Save();
+        }
+
+        if (ImGui.Selectable(UIStrings.Rename, false, ImGuiSelectableFlags.DontClosePopups)) {
+            ImGui.OpenPopup(@$"PresetRenameName");
+        }
+
+        if (ImGui.Selectable(UIStrings.MakeACopy, false)) {
+            var copy = (BasePresetConfig)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(preset), preset.GetType())!;
+            copy.PresetName = $"Copy_{preset.PresetName}";
+            list.AddNewPreset(copy);
+            Configuration.Save();
+        }
+
+        DrawRenamePreset(preset);
+
+        if (ImGui.Selectable(UIStrings.ExportPresetToClipboard, false)) {
+            ImGui.SetClipboardText(Configuration.ExportPreset(preset));
+            Notify.Success(UIStrings.PresetExportedToTheClipboard);
+        }
+
+        using (ImRaii.Disabled(!ImGui.GetIO().KeyShift)) {
+            if (ImGui.Selectable(UIStrings.Delete, false, ImGuiSelectableFlags.DontClosePopups)) {
+                list.RemovePreset(preset.UniqueId);
+                onDeleted?.Invoke();
+                Configuration.Save();
+            }
+        }
+
+        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+            ImGui.SetTooltip(UIStrings.HoldShiftToDelete);
+    }
+
     public static void DrawRenamePreset(BasePresetConfig selectedPreset) {
         using var popup = ImRaii.Popup(@$"PresetRenameName");
         if (!popup.Success) return;
@@ -317,11 +357,12 @@ public static class DrawUtil {
         return false;
     }
 
-    public static void DrawImportExport(BasePreset basePreset) {
+    // exportTarget = the preset open in the editor, null disables export.
+    public static void DrawImportExport(BasePreset basePreset, BasePresetConfig? exportTarget) {
         try {
-            using (ImRaii.Disabled(basePreset.SelectedPreset == null)) {
-                if (ImGuiComponents.IconButton(FontAwesomeIcon.FileExport)) {
-                    ImGui.SetClipboardText(Configuration.ExportPreset(basePreset.SelectedPreset!));
+            using (ImRaii.Disabled(exportTarget == null)) {
+                if (ImGuiComponents.IconButton(FontAwesomeIcon.FileExport) && exportTarget != null) {
+                    ImGui.SetClipboardText(Configuration.ExportPreset(exportTarget));
 
                     Notify.Success(UIStrings.PresetExportedToTheClipboard);
                 }
@@ -351,11 +392,11 @@ public static class DrawUtil {
         }
     }
 
-    public static void DrawDeletePresetButton(BasePreset itemList) {
-        var selectedPreset = itemList.SelectedPreset;
-        using (ImRaii.Disabled(!ImGui.GetIO().KeyShift || selectedPreset == null)) {
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Trash)) {
-                itemList.RemovePreset(selectedPreset?.UniqueId ?? Guid.Empty);
+    // target = the preset open in the editor, null disables the button.
+    public static void DrawDeletePresetButton(BasePreset itemList, BasePresetConfig? target) {
+        using (ImRaii.Disabled(!ImGui.GetIO().KeyShift || target == null)) {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Trash) && target != null) {
+                itemList.RemovePreset(target.UniqueId);
                 Configuration.Save();
             }
         }

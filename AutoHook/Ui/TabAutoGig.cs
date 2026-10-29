@@ -109,9 +109,9 @@ internal class TabAutoGig : BaseTab {
     private void DrawRightPane() {
         DrawUtil.DrawAddNewPresetButton(_gigCfg);
         ImGui.SameLine(0, 3.Scaled());
-        DrawUtil.DrawImportExport(_gigCfg);
+        DrawUtil.DrawImportExport(_gigCfg, _viewingGlobal ? null : _displayed);
         ImGui.SameLine(0, 3.Scaled());
-        DrawUtil.DrawDeletePresetButton(_gigCfg);
+        DrawUtil.DrawDeletePresetButton(_gigCfg, _viewingGlobal ? null : _displayed);
 
         if (_displayed != null && _gigCfg.GetPreset(_displayed.UniqueId) == null) {
             _displayed = null;
@@ -127,7 +127,7 @@ internal class TabAutoGig : BaseTab {
         DrawCatchEverythingListItem();
         ImGui.Separator();
 
-        foreach (var preset in _gigCfg.Presets) {
+        foreach (var preset in _gigCfg.Presets.ToList()) {
             using var id = ImRaii.PushId(preset.UniqueId.ToString());
             var isActive = _gigCfg.AutoGigEnabled && _gigCfg.SelectedGuid == preset.UniqueId.ToString();
             var color = isActive ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite;
@@ -144,6 +144,15 @@ internal class TabAutoGig : BaseTab {
                     }
                 }
             }
+
+            ImGui.TooltipOnHover(UIStrings.RightClickOptions);
+            DrawUtil.DrawPresetContextMenu(_gigCfg, preset, isActive,
+                toggleActive: () => {
+                    if (isActive)
+                        _gigCfg.SetCatchAll();
+                    else
+                        _gigCfg.SetActivePreset(preset);
+                });
         }
     }
 
