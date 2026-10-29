@@ -149,7 +149,8 @@ def build_fish_tracker():
             "EndHour": f.get("endHour"),
             "WeathersFrom": f.get("previousWeatherSet") or [],
             "Weathers": f.get("weatherSet") or [],
-            "BestCatchPath": f.get("bestCatchPath") or [],
+            # each step is a list of alternatives: [[36597, 36596], 36518] -> [[36597, 36596], [36518]]
+            "BestCatchPath": [step if isinstance(step, list) else [step] for step in (f.get("bestCatchPath") or [])],
             "Predators": [[int(p[0]), int(p[1])] for p in (f.get("predators") or [])],
             "IntuitionSeconds": f.get("intuitionLength"),
             "Hookset": f.get("hookset"),
