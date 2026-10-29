@@ -25,19 +25,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
         
-    - name: Run update script
-      run: python generate_fish_json.py
+    - name: Run update scripts
+      run: |
+        python generate_fish_json.py
+        python generate_research_data.py
       
     - name: Check for changes
       id: check_changes
       run: |
-        git diff --quiet AutoHook/AutoHook/Data/FishData/fish_list.json || echo "changes=true" >> $GITHUB_OUTPUT
+        # porcelain also catches new, untracked files (the first run of a new data file)
+        if [ -n "$(git status --porcelain AutoHook/Data/FishData)" ]; then echo "changes=true" >> $GITHUB_OUTPUT; fi
         
     - name: Commit and push if changed
       if: steps.check_changes.outputs.changes == 'true'
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
-        git add AutoHook/Data/FishData/fish_list.json
-        git commit -m "Update fish_list.json [skip ci]"
+        git add AutoHook/Data/FishData/fish_list.json AutoHook/Data/FishData/spot_pools.json AutoHook/Data/FishData/fish_tracker.json
+        git commit -m "Update fish data [skip ci]"
         git push
