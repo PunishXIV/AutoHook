@@ -1804,4 +1804,7 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="VitalSight" xml:space="preserve">
     <value>Vital Sight</value>
   </data>
+  <data name="OceanFishing" xml:space="preserve">
+    <value>Ocean Fishing</value>
+  </data>
 </root>

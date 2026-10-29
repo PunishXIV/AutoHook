@@ -2,6 +2,7 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
+using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
 using Newtonsoft.Json;
@@ -62,6 +63,15 @@ public static class DrawUtil {
 
             return clicked;
         }
+    }
+
+    public static void GameIcon(uint iconId, Vector2 size, string tooltip = "", bool dim = false) {
+        var wrap = ITextureProvider.Get().GetFromGameIcon(new GameIconLookup(iconId)).GetWrapOrEmpty();
+        ImGui.Dummy(size);
+        var tint = dim ? new Vector4(1, 1, 1, 0.35f) : Vector4.One;
+        ImGui.GetWindowDrawList().AddImage(wrap.Handle, ImGui.GetItemRectMin(), ImGui.GetItemRectMax(), Vector2.Zero, Vector2.One, ImGui.GetColorU32(tint));
+        if (tooltip.Length > 0)
+            ImGui.TooltipOnHover(tooltip);
     }
 
     public static void TextV(string s) {

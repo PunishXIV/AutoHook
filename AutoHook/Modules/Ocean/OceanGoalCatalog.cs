@@ -72,6 +72,27 @@ public static class OceanGoalCatalog {
         }
     }
 
+    private static readonly Dictionary<uint, IKDContentBonus?> AchievementBonuses = [];
+
+    // this is hacky and idk if it works in all languages but good enough!
+    public static IKDContentBonus? GetAchievementBonus(uint achievementId) {
+        if (AchievementBonuses.TryGetValue(achievementId, out var cached))
+            return cached;
+
+        IKDContentBonus? found = null;
+        if (Achievement.TryGetRow(achievementId, out var achievement)) {
+            var description = achievement.Description.ToString();
+            foreach (var bonus in IKDContentBonus.Rows) {
+                var objective = bonus.Objective.ToString();
+                if (objective.Length > 0 && description.Contains(objective, StringComparison.OrdinalIgnoreCase)) {
+                    found = bonus;
+                    break;
+                }
+            }
+        }
+        return AchievementBonuses[achievementId] = found;
+    }
+
     public static IEnumerable<OceanLegendaryDef> GetLegendariesForRoute(uint routeId)
         => Legendaries.Where(d => d.RouteIds.Contains(routeId));
 

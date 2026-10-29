@@ -2881,6 +2881,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ocean Fishing.
+        /// </summary>
+        internal static string OceanFishing {
+            get {
+                return ResourceManager.GetString("OceanFishing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset (L-&gt;R).
         /// </summary>
         internal static string OffsetLR {

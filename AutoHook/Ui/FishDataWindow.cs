@@ -2,7 +2,6 @@ using AutoHook.Data.FishInfo;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
-using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using Lumina.Excel.Sheets;
@@ -583,20 +582,14 @@ public sealed class FishDataWindow : Window, IDisposable {
         }
 
         if (id > 0 && Item.TryGetRow((uint)id, out var item))
-            DrawGameIcon(item.Icon, size, item.Name.ToString());
+            DrawUtil.GameIcon(item.Icon, size, item.Name.ToString());
         else
             ImGui.Dummy(size);
     }
 
     private static void DrawWeatherIcon(uint weatherId) {
         if (Weather.TryGetRow(weatherId, out var weather))
-            DrawGameIcon((uint)weather.Icon, new Vector2(ImGui.GetFrameHeight()), weather.Name.ToString());
-    }
-
-    private static void DrawGameIcon(uint iconId, Vector2 size, string tooltip) {
-        var wrap = ITextureProvider.Get().GetFromGameIcon(new GameIconLookup(iconId)).GetWrapOrEmpty();
-        ImGui.Image(wrap.Handle, size);
-        ImGui.TooltipOnHover(tooltip);
+            DrawUtil.GameIcon((uint)weather.Icon, new Vector2(ImGui.GetFrameHeight()), weather.Name.ToString());
     }
 
     private static string Hour(double hour) => $"{(int)hour % 24:00}:{(int)Math.Round(hour % 1 * 60):00}";

@@ -39,7 +39,7 @@ public static class OceanStopUtil {
         return $"zone={ocean.CurrentZone + 1}, stop={stop}, route={ocean.CurrentRoute}, status={ocean.Status}, timer={ocean.TimeLeftInZone:F1}/{ocean.ZoneTimeMax:F1}s, spectral={ocean.SpectralCurrentActive}";
     }
 
-    private static string GetSpotName(uint spotId) {
+    public static string GetSpotName(uint spotId) {
         if (spotId == 0)
             return "Unknown";
         if (!IKDSpot.TryGetRow(spotId, out var spot))
