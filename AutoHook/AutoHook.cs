@@ -32,6 +32,7 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
     private const string CmdBait = "/bait";
     private const string CmdAgPreset = "/agpreset";
     private const string CmdAhReplay = "/ahreplay";
+    private const string CmdAhFish = "/ahfish";
 
     private static readonly Dictionary<string, string> CommandHelp = new()
     {
@@ -45,7 +46,8 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
         { CmdAhBait, UIStrings.SwitchFishBait },
         { CmdBait, UIStrings.SwitchFishBait },
         { CmdAgPreset, UIStrings.Set_agpreset_command },
-        { CmdAhReplay, UIStrings.Opens_Replay_Window }
+        { CmdAhReplay, UIStrings.Opens_Replay_Window },
+        { CmdAhFish, UIStrings.Opens_Fish_Data_Window }
     };
 
     private static PluginUi _pluginUi = null!;
@@ -139,7 +141,27 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
             case CmdAhReplay:
                 WindowsService.Get().ReplayManagement.Toggle();
                 break;
+            case CmdAhFish:
+                OpenFishData(args);
+                break;
         }
+    }
+
+    private static void OpenFishData(string args) {
+        var window = WindowsService.Get().FishData;
+        var query = args.Trim();
+        if (query.Length == 0) {
+            window.Toggle();
+            return;
+        }
+
+        var fish = FishBaitCatalog.Get().Fishes.FirstOrDefault(f => f.Id.ToString() == query || f.Name.Equals(query, StringComparison.CurrentCultureIgnoreCase))
+                   ?? FishBaitCatalog.Get().Fishes.FirstOrDefault(f => f.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase));
+        if (fish == null) {
+            IChatGui.Get().PrintError($"No fish found matching \"{query}\"");
+            return;
+        }
+        window.Open(fish.Id);
     }
 
     private static void SwapBait(string args) {

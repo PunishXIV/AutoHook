@@ -26,6 +26,7 @@ public class SubTabFish {
             DrawUtil.DrawCheckboxHeader($"{fish.Fish.Name} {fishCount}", ref fish.Enabled, ImGuiTreeNodeFlags.FramePadding, () => {
                 ImGui.Spacing();
                 DrawFishSearchBar(fish);
+                DrawFishDataButton(fish);
                 DrawDeleteButton(fish);
                 DrawUtil.SpacingSeparator();
 
@@ -87,6 +88,15 @@ public class SubTabFish {
             list.Add(new FishConfig(lastCatchFish));
             Configuration.Save();
         }
+    }
+
+    private static void DrawFishDataButton(FishConfig fishConfig) {
+        ImGui.SameLine();
+        using (ImRaii.Disabled(fishConfig.Fish.Id <= 0)) {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.ChartBar))
+                WindowsService.Get().FishData.Open(fishConfig.Fish.Id);
+        }
+        ImGui.TooltipOnHover("Fish Data");
     }
 
     private static void DrawDeleteButton(FishConfig fishConfig) {

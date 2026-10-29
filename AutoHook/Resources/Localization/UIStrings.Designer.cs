@@ -3169,6 +3169,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opens the Fish Data window. Add an optional fish name or id to open to that fish..
+        /// </summary>
+        internal static string Opens_Fish_Data_Window {
+            get {
+                return ResourceManager.GetString("Opens_Fish_Data_Window", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opens Replay Window.
         /// </summary>
         internal static string Opens_Replay_Window {
