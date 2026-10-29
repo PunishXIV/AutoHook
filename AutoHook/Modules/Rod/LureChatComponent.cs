@@ -22,6 +22,9 @@ public sealed class LureChatComponent(RodFishingModule module) : RodComponent(mo
         if (message.LogMessageId is LogMessageIds.CantFish)
             PluginUi.Status = UIStrings.CantFishHere;
 
+        if (message.LogMessageId is LogMessageIds.CastLine && message.TryGetIntParameter(0, out var placeNameId) && placeNameId > 0)
+            Rod.FishingSpotId = FishSpotCatalog.FindFishingSpot((uint)placeNameId, Ws.TerritoryId);
+
         if (message.LogMessageId is LogMessageIds.SurfaceSlap or LogMessageIds.SurfaceSlapAlt) {
             if (!message.TryGetIntParameter(0, out var itemId) || itemId <= 0)
                 return;

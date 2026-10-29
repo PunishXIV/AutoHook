@@ -124,6 +124,33 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add all fish at.
+        /// </summary>
+        internal static string AddAllFishAtSpot {
+            get {
+                return ResourceManager.GetString("AddAllFishAtSpot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Every fish at this spot is already in the list..
+        /// </summary>
+        internal static string AddAllFishAtSpot_AllAdded {
+            get {
+                return ResourceManager.GetString("AddAllFishAtSpot_AllAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Line must be cast to know the current spot. Does not work in Diadem/Cosmic.
+        /// </summary>
+        internal static string AddAllFishAtSpot_NoSpot {
+            get {
+                return ResourceManager.GetString("AddAllFishAtSpot_NoSpot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Current Bait/Mooch.
         /// </summary>
         internal static string AddCurrentBaitMooch {

@@ -88,6 +88,27 @@ public class SubTabFish {
             list.Add(new FishConfig(lastCatchFish));
             Configuration.Save();
         }
+
+        ImGui.SameLine();
+        DrawAddSpotFish(list);
+    }
+
+    private static void DrawAddSpotFish(List<FishConfig> list) {
+        var spotId = FishingSessionManager.Get().Rod.FishingSpotId;
+        var spotFish = FishSpotCatalog.GetFishAtSpot(spotId);
+        var missing = spotFish.Where(f => list.All(x => x.Fish.Id != f.Id)).ToList();
+
+        using (ImRaii.Disabled(missing.Count == 0)) {
+            if (ImGui.Button($"{UIStrings.AddAllFishAtSpot} {(spotId == 0 ? "-" : FishSpotCatalog.GetFishingSpotName(spotId))}")) {
+                foreach (var fish in missing)
+                    list.Add(new FishConfig(fish));
+                Configuration.Save();
+            }
+        }
+
+        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled)) {
+            ImGui.SetTooltip(spotId == 0 ? UIStrings.AddAllFishAtSpot_NoSpot : missing.Count == 0 ? UIStrings.AddAllFishAtSpot_AllAdded : string.Join("\n", missing.Select(f => f.Name)));
+        }
     }
 
     private static void DrawFishDataButton(FishConfig fishConfig) {

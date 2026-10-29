@@ -1633,6 +1633,15 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="Multihook" xml:space="preserve">
     <value>Multihook</value>
   </data>
+  <data name="AddAllFishAtSpot" xml:space="preserve">
+    <value>Add all fish at</value>
+  </data>
+  <data name="AddAllFishAtSpot_NoSpot" xml:space="preserve">
+    <value>Line must be cast to know the current spot. Does not work in Diadem/Cosmic</value>
+  </data>
+  <data name="AddAllFishAtSpot_AllAdded" xml:space="preserve">
+    <value>Every fish at this spot is already in the list.</value>
+  </data>
   <data name="Opens_Fish_Data_Window" xml:space="preserve">
     <value>Opens the Fish Data window. Add an optional fish name or id to open to that fish.</value>
   </data>

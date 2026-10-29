@@ -33,6 +33,24 @@ public sealed class FishSpotCatalog : IPluginService {
     public IReadOnlyList<uint> GetNotebookIdsForItem(uint itemId)
         => _notebookIdsByItemId.TryGetValue(itemId, out var ids) ? ids : [];
 
+    public static uint FindFishingSpot(uint placeNameId, uint territoryId) {
+        if (territoryId == 0)
+            return 0;
+        var matches = FishingSpot.Rows.Where(spot => spot.PlaceName.RowId == placeNameId && spot.TerritoryType.RowId == territoryId).Take(2).ToList();
+        return matches.Count == 1 ? matches[0].RowId : 0;
+    }
+
+    public static IReadOnlyList<Fish> GetFishAtSpot(uint fishingSpotId) {
+        if (fishingSpotId == 0 || !FishingSpot.TryGetRow(fishingSpotId, out var spot))
+            return [];
+
+        var catalog = FishBaitCatalog.Get();
+        return [.. spot.Item.Where(item => item.RowId != 0).Select(item => catalog[item.RowId] ?? new Fish { Id = (int)item.RowId, Name = item.ValueNullable?.Name.ToString() ?? $"#{item.RowId}" })];
+    }
+
+    public static string GetFishingSpotName(uint fishingSpotId)
+        => FishingSpot.TryGetRow(fishingSpotId, out var spot) && spot.PlaceName.ValueNullable is { } place ? place.Name.ToString() : "-";
+
     public IReadOnlyList<Fish> GetSpearFishesInPool(uint notebookId) {
         var catalog = FishBaitCatalog.Get();
         if (notebookId == 0 || !TryGetPool(notebookId, out var pool))

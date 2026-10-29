@@ -30,6 +30,7 @@ public sealed class RodFishingModule : FishingModule {
     public Random Rng { get; } = new();
     public StopAfterState StopAfterNextFish { get; set; }
     public bool SpectralRestPending { get; set; }
+    public uint FishingSpotId { get; set; }
 
     public bool IsBusy => ActionExecutor.Get().IsBusy;
 
