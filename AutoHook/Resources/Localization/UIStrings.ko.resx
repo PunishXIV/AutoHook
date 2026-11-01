@@ -1582,6 +1582,21 @@
   <data name="Dtr_Help" xml:space="preserve">
     <value>달라무드 설정에서 Dtr 바의 표시 순서를 변경할 수 있습니다.</value>
   </data>
+  <data name="Multihook" xml:space="preserve">
+    <value>낚시바늘 추가</value>
+  </data>
+  <data name="AddAllFishAtSpot_NoSpot" xml:space="preserve">
+    <value>낚싯줄을 던져야 현재 위치를 인식합니다. (디아뎀/우주개척 지역 제외)</value>
+  </data>
+  <data name="AddAllFishAtSpot_AllAdded" xml:space="preserve">
+    <value>이 위치의 모든 물고기가 이미 기록돼있습니다.</value>
+  </data>
+  <data name="Opens_Fish_Data_Window" xml:space="preserve">
+    <value>물고기 데이터 창을 엽니다. 특정 물고기 창을 열려면 물고기 이름 또는 ID를 입력하세요.</value>
+  </data>
+  <data name="Multihook_CosmicHelpText" xml:space="preserve">
+    <value>우주개척 임무 기술입니다.</value>
+  </data>
   <data name="UseMultipleHooksByTimer" xml:space="preserve">
     <value>경과 시간에 따라 다른 유형의 낚아채기를 사용</value>
   </data>
