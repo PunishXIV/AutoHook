@@ -377,6 +377,9 @@ public static class ConditionUi {
         var currentLabel = ResolveTypeLabel(cond.TypeId, defs);
         var custom = defs.Where(d => PresetConditionHelper.IsPresetType(d.Id)).ToList();
         var builtIn = defs.Where(d => !PresetConditionHelper.IsPresetType(d.Id)).ToList();
+        var style = ImGui.GetStyle();
+        var maxHeight = ImGui.GetTextLineHeightWithSpacing() * 12 - style.ItemSpacing.Y + style.WindowPadding.Y * 2;
+        ImGui.SetNextWindowSizeConstraints(Vector2.Zero, new Vector2(float.MaxValue, maxHeight));
         using (var combo = ImRaii.Combo("##type", currentLabel)) {
             if (combo) {
                 foreach (var def in custom) {
