@@ -142,7 +142,7 @@
     <value>자동 생미끼 낚시</value>
   </data>
   <data name="AddLastCatch" xml:space="preserve">
-    <value>마지막으로 잡은 물고기 추가하기:</value>
+    <value>마지막으로 잡은 물고기 추가:</value>
   </data>
   <data name="ExportPresetToClipboard" xml:space="preserve">
     <value>클립보드에 프리셋을 복사.</value>
@@ -1584,6 +1584,9 @@
   </data>
   <data name="Multihook" xml:space="preserve">
     <value>낚시바늘 추가</value>
+  </data>
+  <data name="AddAllFishAtSpot" xml:space="preserve">
+    <value>해당 낚시터의 모든 물고기 추가:</value>
   </data>
   <data name="AddAllFishAtSpot_NoSpot" xml:space="preserve">
     <value>낚싯줄을 던져야 현재 위치를 인식합니다. (디아뎀/우주개척 지역 제외)</value>
