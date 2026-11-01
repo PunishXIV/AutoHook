@@ -24,7 +24,9 @@ public sealed class TabOceanFishing : BaseTab {
     private int _countIndex = 1;
     private uint _blueFishFilter; // FishParameter row / Achievement row, 0 = any
     private uint _achievementFilter;
-    private bool _onlyIncomplete;
+    private bool _missingLegendary;
+    private bool _missingAchievements;
+    private bool _missingAnyFish;
 
     public override void Draw() {
         var now = Framework.GetServerTime();
@@ -103,9 +105,14 @@ public sealed class TabOceanFishing : BaseTab {
             }
         }
 
+        ImGui.Checkbox("Missing legendary", ref _missingLegendary);
+        ImGui.TooltipOnHover("Voyages with a legendary you haven't caught");
         ImGui.SameLine();
-        ImGui.Checkbox("Only incomplete", ref _onlyIncomplete);
-        ImGui.TooltipOnHover("Voyages with uncaught legendaries or unacquired achievements");
+        ImGui.Checkbox("Missing achievements", ref _missingAchievements);
+        ImGui.TooltipOnHover("Voyages with an achievement you haven't completed");
+        ImGui.SameLine();
+        ImGui.Checkbox("Missing any fish", ref _missingAnyFish);
+        ImGui.TooltipOnHover("Voyages with any fish you haven't caught");
     }
 
     private void DrawLineButton(string label, OceanLine[] lines) {
@@ -123,10 +130,11 @@ public sealed class TabOceanFishing : BaseTab {
             return false;
         if (_achievementFilter != 0 && achievements.All(a => a.AchievementId != _achievementFilter))
             return false;
-        if (_onlyIncomplete) {
-            var fishLeft = blueFish.Where(f => _blueFishFilter == 0 || f.FishParameterId == _blueFishFilter).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
-            var achievementsLeft = achievements.Where(a => _achievementFilter == 0 || a.AchievementId == _achievementFilter).Any(a => OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) != false);
-            if (!fishLeft && !achievementsLeft)
+        if (_missingLegendary || _missingAchievements || _missingAnyFish) {
+            var fishLeft = _missingLegendary && blueFish.Where(f => _blueFishFilter == 0 || f.FishParameterId == _blueFishFilter).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
+            var achievementsLeft = _missingAchievements && achievements.Where(a => _achievementFilter == 0 || a.AchievementId == _achievementFilter).Any(a => OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) != false);
+            var uncaughtLeft = _missingAnyFish && OceanRouteFishCatalog.GetFish(voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
+            if (!fishLeft && !achievementsLeft && !uncaughtLeft)
                 return false;
         }
         return true;
