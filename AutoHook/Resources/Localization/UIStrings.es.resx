@@ -762,6 +762,9 @@ Comprueba la pestaña de guías para las guías.</value>
   <data name="Starts_AutoHook" xml:space="preserve">
     <value>Empieza a lanzar con tu preset seleccionado</value>
   </data>
+  <data name="OnlyUseWhenNOTActiveSurfaceSlap" xml:space="preserve">
+    <value>Usar solamente cuando Palmada activa de superficie no este activa</value>
+  </data>
   <data name="SnaggingHelpText" xml:space="preserve">
     <value>Snagging se activará al comenzar a pescar</value>
   </data>
