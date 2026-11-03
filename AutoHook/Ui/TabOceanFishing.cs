@@ -2,6 +2,7 @@ using AutoHook.Modules.Ocean;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Lumina.Excel.Sheets;
@@ -142,10 +143,11 @@ public sealed class TabOceanFishing : BaseTab {
 
     private static void DrawTable(List<OceanVoyage> voyages, long now) {
         const ImGuiTableFlags flags = ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.SizingFixedFit;
-        using var table = ImRaii.Table("###OceanSchedule", 5, flags);
+        using var table = ImRaii.Table("###OceanSchedule", 6, flags);
         if (!table)
             return;
 
+        ImGui.TableSetupColumn("###Alarm");
         ImGui.TableSetupColumn("Boarding");
         ImGui.TableSetupColumn("Route");
         ImGui.TableSetupColumn("Objectives");
@@ -162,6 +164,11 @@ public sealed class TabOceanFishing : BaseTab {
             ImGui.TableNextRow();
             if (boarding)
                 ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg1, ImGui.GetColorU32(ImGuiColors.ParsedGreen with { W = 0.2f }));
+
+            ImGui.TableNextColumn();
+            // already boarding, nothing left to wait for
+            if (!boarding)
+                DrawAlarmButton(voyage);
 
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
@@ -184,6 +191,15 @@ public sealed class TabOceanFishing : BaseTab {
             ImGui.TableNextColumn();
             DrawCaught(voyage.RouteId, route);
         }
+    }
+
+    private static void DrawAlarmButton(OceanVoyage voyage) {
+        var set = OceanAlarms.IsSet(voyage);
+        using (ImRaii.PushColor(ImGuiCol.Text, set ? ImGuiColors.DalamudYellow : ImGuiColors.DalamudGrey)) {
+            if (ImGuiComponents.IconButton(FontAwesomeIcon.Bell))
+                OceanAlarms.Toggle(voyage);
+        }
+        ImGui.TooltipOnHover(set ? "Alarm set, click to cancel" : "Alarm when boarding starts");
     }
 
     private static void DrawRoute(IKDRoute route) {
