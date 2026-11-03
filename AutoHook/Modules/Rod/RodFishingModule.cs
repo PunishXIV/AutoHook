@@ -160,7 +160,7 @@ public sealed class RodFishingModule : FishingModule {
 
     public void StartFishing() {
         if (!(Ws.ActionAvailable(IDs.Actions.Cast, ActionType.Action) && !Ws.Player.BlockCasting)) {
-            IChatGui.Get().PrintStatus(@"[AutoHook] You can't cast right now.");
+            IChatGui.Get().PrintStatus(@"You can't cast right now.");
             return;
         }
 
@@ -173,11 +173,11 @@ public sealed class RodFishingModule : FishingModule {
             var result = BaitComponent.ChangeBait((uint)extraCfg.ForcedBaitId);
 
             if (result == ChangeBaitReturn.Success) {
-                IChatGui.Get().PrintStatus(@$"[AutoHook] Starting with bait: {Item.GetRow((uint)extraCfg.ForcedBaitId).Name}");
+                IChatGui.Get().PrintStatus($@"Starting with bait: {Item.GetRow((uint)extraCfg.ForcedBaitId).Name}");
                 Configuration.Save();
             }
             else if (result != ChangeBaitReturn.AlreadyEquipped)
-                IChatGui.Get().PrintStatus(@$"[AutoHook] Failed to change bait for forced bait swap. Result: {result}");
+                IChatGui.Get().PrintStatus(@$"Failed to change bait for forced bait swap. Result: {result}");
         }
 
         Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StartPending));
