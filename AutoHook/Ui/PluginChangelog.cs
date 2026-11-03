@@ -3,6 +3,12 @@
 public static class PluginChangelog {
     public static readonly List<Version> Versions =
     [
+        new Version("6.0.4.0") {
+            Main = {
+                "Added an alarm system for ocean fishing.",
+                "Fishing now stops/doesn't retry when out of bait.",
+            }
+        },
         new Version("6.0.2.11") {
             Main = {
                 "Redesigned all the ui for conditions: editor, expressions, tab",
