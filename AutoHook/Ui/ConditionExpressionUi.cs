@@ -201,7 +201,7 @@ public static class ConditionExpressionUi {
 
         // groups look like buttons, operators and parens like text
         var buttonColor = isSelected ? colors[(int)ImGuiCol.ButtonActive]
-            : groupTrue ? ImGuiColors.ParsedGreen
+            : groupTrue ? ImGuiColors.ParsedGreen with { W = 0.4f }
             : isGroup ? colors[(int)ImGuiCol.Button]
             : Vector4.Zero;
 
@@ -275,7 +275,7 @@ public static class ConditionExpressionUi {
         for (var i = 0; i < set.Groups.Count && i < 26; i++) {
             var label = ((char)('A' + i)).ToString();
             Place(ButtonWidth(label));
-            using (ConditionUi.IsGroupCurrentlyTrue(set.Groups[i]) ? ImRaii.PushColor(ImGuiCol.Button, ImGuiColors.ParsedGreen) : null)
+            using (ConditionUi.IsGroupCurrentlyTrue(set.Groups[i]) ? ImRaii.PushColor(ImGuiCol.Button, ImGuiColors.ParsedGreen with { W = 0.4f }) : null)
                 if (ImGui.Button($"{label}##expr_grp{i}"))
                     Insert(new ExprToken(ExprTokenKind.Group, i));
         }
