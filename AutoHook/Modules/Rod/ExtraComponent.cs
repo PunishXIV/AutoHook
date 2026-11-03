@@ -15,8 +15,25 @@ public sealed class ExtraComponent(RodFishingModule module) : RodComponent(modul
     private bool ExtraSwapStillNeeded(ExtraTrigger trig) {
         if (trig.SwapPreset && !string.IsNullOrEmpty(trig.PresetToSwap) && trig.PresetToSwap != @"-" && RodFishingModule.Presets.SelectedPreset?.PresetName != trig.PresetToSwap)
             return true;
-        return trig.SwapBait && trig.BaitToSwap.Id > 0 && Ws.Fishing.BaitInfo.BaitId != trig.BaitToSwap.Id;
+        return trig.SwapBait && trig.BaitToSwap.Id > 0 && Ws.Fishing.BaitInfo.BaitId != trig.BaitToSwap.Id && Ws.Player.GetItemCount((uint)trig.BaitToSwap.Id) > 0;
     }
+
+    // bait the current preset needs right now but the player has none of, 0 if nothing is missing
+    public uint GetMissingBaitId() {
+        var extraCfg = GetExtraCfg();
+        if (extraCfg is { ForceBaitSwap: true, Enabled: true, ForcedBaitId: > 0 } && IsBaitMissing((uint)extraCfg.ForcedBaitId))
+            return (uint)extraCfg.ForcedBaitId;
+
+        foreach (var trig in extraCfg.Triggers) {
+            if (trig is { Enabled: true, SwapBait: true, ConditionSet: not null, BaitToSwap.Id: > 0 } && IsBaitMissing((uint)trig.BaitToSwap.Id) && trig.ConditionSet.Evaluate(Ws, Registry))
+                return (uint)trig.BaitToSwap.Id;
+        }
+
+        return 0;
+    }
+
+    private bool IsBaitMissing(uint baitId)
+        => Ws.Fishing.BaitInfo.BaitId != baitId && Ws.Player.GetItemCount(baitId) <= 0;
 
     public void QueueResolveCollectables() {
         var extraCfg = GetExtraCfg();

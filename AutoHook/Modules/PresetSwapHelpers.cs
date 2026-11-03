@@ -50,6 +50,9 @@ public static class PresetSwapHelpers {
 
         var result = BaitComponent.ChangeBait(bait);
         ws.Execute(new RodState.OpSetFishingStep(FishingSteps.BaitSwapped, Or: true));
+        // out of this bait is a complete failure, don't keep fishing on the wrong one
+        if (result == ChangeBaitReturn.NotInInventory)
+            ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StopCasting));
         return result;
     }
 }

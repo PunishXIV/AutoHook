@@ -15,6 +15,7 @@ public sealed class RodFishingModule : FishingModule {
     }
 
     private readonly EventSubscriptions _eventSubs;
+    private uint _reportedMissingBait;
 
     public BiteHookComponent BiteHook { get; }
     public AutoCastComponent AutoCast { get; }
@@ -168,6 +169,12 @@ public sealed class RodFishingModule : FishingModule {
         Hints.Clear();
         Extra.ProcessExtraActions(Hints, Resolver);
 
+        _reportedMissingBait = 0; // always answer a direct start
+        if (BlockedByMissingBait()) {
+            Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StopCasting));
+            return;
+        }
+
         var extraCfg = GetExtraCfg();
         if (extraCfg is { ForceBaitSwap: true, Enabled: true }) {
             var result = BaitComponent.ChangeBait((uint)extraCfg.ForcedBaitId);
@@ -182,6 +189,15 @@ public sealed class RodFishingModule : FishingModule {
 
         Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StartPending));
         AutoCast.UseAutoCasts();
+    }
+
+    private bool BlockedByMissingBait() {
+        var missing = Extra.GetMissingBaitId();
+        if (missing != 0 && missing != _reportedMissingBait)
+            IChatGui.Get().PrintStatus(@$"Not fishing: no {Item.GetRow(missing).Name} in your inventory.");
+
+        _reportedMissingBait = missing;
+        return missing != 0;
     }
 
     public string GetPresetName() {
@@ -239,7 +255,7 @@ public sealed class RodFishingModule : FishingModule {
 
             if (Configuration.C.AutoStartFishing && !ShouldSuppressAutoStartFishing() && EzThrottler.Throttle("AutoStartFishing", 1000)) {
                 var autoCastCfg = GetAutoCastCfg();
-                if (autoCastCfg.EnableAll && autoCastCfg.CastLine.IsAvailableToCast(Ws) && Ws.IsCastAvailable()) {
+                if (autoCastCfg.EnableAll && autoCastCfg.CastLine.IsAvailableToCast(Ws) && Ws.IsCastAvailable() && !BlockedByMissingBait()) {
                     StartFishing();
                 }
             }
@@ -322,6 +338,10 @@ public sealed class RodFishingModule : FishingModule {
             }
 
             FishCaught.CheckFishCaughtSwap(lastCatchCfg);
+
+            // the swap can fail with no bait left, drop what was proposed before it ran
+            if (Ws.Fishing.FishingStep.HasFlag(FishingSteps.StopCasting))
+                Hints.ForbidCast = true;
         }
 
         FishingCounters.RemoveGuidQueue();
