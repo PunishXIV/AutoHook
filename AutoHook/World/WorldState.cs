@@ -190,7 +190,7 @@ public sealed class WorldState(ulong qpf, string gameVersion) : IPluginService {
         }
 
         public override void Write(Replay.ReplayOutput output)
-            => output.EmitFourCC("WTHR").Emit(Current).Emit(Previous).Emit(Next);
+            => output.EmitFourCC("WTHR").Emit(CurrentModified).Emit(Current).Emit(Previous).Emit(Next);
     }
 
     // legacy combined op; only from older replay logs.

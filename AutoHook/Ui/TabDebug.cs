@@ -60,7 +60,8 @@ public class TabDebug : BaseTab {
                         ("GP", $"{ws.Player.CurrentGp} / {ws.Player.MaxGp}"),
                         ("Territory", ws.TerritoryId == 0 ? "-" : TerritoryType.GetRow(ws.TerritoryId).PlaceName.Value.Name.ToString()),
                         ("Weather (prev)", ws.PreviousWeatherId == 0 ? "-" : Weather.GetRow(ws.PreviousWeatherId).Name.ToString()),
-                        ("Weather (current)", ws.CurrentWeatherId == 0 ? "-" : Weather.GetRow(ws.CurrentWeatherId).Name.ToString()),
+                        ("Weather (current, calculated)", ws.CurrentWeatherId == 0 ? "-" : Weather.GetRow(ws.CurrentWeatherId).Name.ToString()),
+                        ("Weather (current, game)", FormatGameWeather(ws)),
                         ("Weather (next)", ws.NextWeatherId == 0 ? "-" : Weather.GetRow(ws.NextWeatherId).Name.ToString()),
                         ("Block casting", ws.Player.BlockCasting.ToString()),
                         ("Fishing state", ws.Fishing.FishingState.ToString()),
@@ -266,6 +267,15 @@ public class TabDebug : BaseTab {
 
     private static string FormatFishInfo(AddonSpearFishing.FishInfo fish)
         => !fish.Available ? "—" : $"Size={fish.Size}, Speed={fish.Speed}, Dir={(fish.InverseDirection ? "L←R" : "L→R")}{(fish.GuaranteedLarge ? ", Large*" : "")}";
+
+    private static string FormatGameWeather(WorldState ws) {
+        if (ws.CurrentModifiedWeatherId == 0)
+            return "-";
+
+        var game = Weather.GetRow(ws.CurrentModifiedWeatherId).Name.ToString();
+        var differs = ws.CurrentWeatherId != 0 && Weather.GetRow(ws.CurrentWeatherId).Name.ToString() != game;
+        return differs ? $"{game} (differs from calculated)" : game;
+    }
 
     private static string FormatSessionElapsed(TimeSpan elapsed) {
         var totalSeconds = Math.Max(0, (int)elapsed.TotalSeconds);

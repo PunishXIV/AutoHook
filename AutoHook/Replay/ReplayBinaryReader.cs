@@ -55,7 +55,7 @@ internal sealed class ReplayBinaryReader(Stream stream, FishingReplay replay, Ca
             "FRAM" => ParseFrame(),
             "EORZ" => new WorldState.OpEorzeaTime(ParseTimeOnly()),
             "TRTY" => new WorldState.OpTerritory(_reader.ReadUInt32()),
-            "WTHR" => new WorldState.OpWeather(_reader.ReadByte(), _reader.ReadByte(), _reader.ReadByte(), _reader.ReadByte()),
+            "WTHR" => ParseWeather(),
             "ZONE" => new WorldState.OpZone(_reader.ReadByte(), _reader.ReadUInt32()),
             "GP  " => new PlayerState.OpGp(_reader.ReadUInt32(), _reader.ReadUInt32()),
             "LVL " => new PlayerState.OpLevel(_reader.ReadByte()),
@@ -161,6 +161,12 @@ internal sealed class ReplayBinaryReader(Stream stream, FishingReplay replay, Ca
     }
 
     private TimeOnly ParseTimeOnly() => new(_reader.ReadInt64());
+
+    // before v5 only current/previous/next were written, so the modified weather is unknown
+    private WorldState.OpWeather ParseWeather()
+        => replay.FormatVersion < 5
+            ? new(0, _reader.ReadUInt32(), _reader.ReadUInt32(), _reader.ReadUInt32())
+            : new(_reader.ReadUInt32(), _reader.ReadUInt32(), _reader.ReadUInt32(), _reader.ReadUInt32());
 
     private PlayerState.OpStatuses ParseStatuses() {
         var count = _reader.ReadUInt16();
