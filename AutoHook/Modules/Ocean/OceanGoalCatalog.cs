@@ -93,6 +93,10 @@ public static class OceanGoalCatalog {
         return AchievementBonuses[achievementId] = found;
     }
 
+    // bonus is always 130% for party achievements, 120% for individual, I think
+    public static bool IsPartyAchievement(OceanAchievementDef def)
+        => GetAchievementBonus(def.AchievementId) is { } bonus ? bonus.BonusMultiplier == 130 : def.MinPartySize > 1;
+
     public static IEnumerable<OceanLegendaryDef> GetLegendariesForRoute(uint routeId)
         => Legendaries.Where(d => d.RouteIds.Contains(routeId));
 

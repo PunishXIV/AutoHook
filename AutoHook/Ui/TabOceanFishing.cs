@@ -1,4 +1,3 @@
-using AutoHook.Modules.Ocean;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
@@ -19,29 +18,31 @@ public sealed class TabOceanFishing : BaseTab {
 
     private static readonly OceanLine[] IndigoOnly = [OceanLine.Indigo];
     private static readonly OceanLine[] RubyOnly = [OceanLine.Ruby];
-    private static readonly OceanLine[] BothLines = [OceanLine.Indigo, OceanLine.Ruby];
 
-    private OceanLine[] _lines = IndigoOnly;
-    private int _countIndex = 1;
-    private uint _blueFishFilter; // FishParameter row / Achievement row, 0 = any
-    private uint _achievementFilter;
-    private bool _missingLegendary;
-    private bool _missingAchievements;
-    private bool _missingAnyFish;
+    private static OceanLine[] Lines {
+        get => Configuration.C.OceanTabLine switch {
+            OceanLineFilter.Ruby => RubyOnly,
+            OceanLineFilter.Both => field,
+            _ => IndigoOnly,
+        };
+    } = [OceanLine.Indigo, OceanLine.Ruby];
+
+    private static int CountIndex => Math.Clamp(Configuration.C.OceanTabCountIndex, 0, CountOptions.Length - 1);
 
     public override void Draw() {
         var now = Framework.GetServerTime();
-        var lineRoutes = RoutesOnLines(_lines);
+        var lineRoutes = RoutesOnLines(Lines);
 
         DrawControls(lineRoutes);
         ImGui.Spacing();
         ImGui.Spacing();
 
+        var lines = Lines;
         // filters repeat every rotation, so this bounds the search when few voyages match
-        var voyages = OceanSchedule.Upcoming(_lines, now)
-            .Take(OceanSchedule.RotationLength * CountOptions[^1] * _lines.Length)
+        var voyages = OceanSchedule.Upcoming(lines, now)
+            .Take(OceanSchedule.RotationLength * CountOptions[^1] * lines.Length)
             .Where(Matches)
-            .Take(CountOptions[_countIndex])
+            .Take(CountOptions[CountIndex])
             .ToList();
 
         if (voyages.Count == 0) {
@@ -54,20 +55,22 @@ public sealed class TabOceanFishing : BaseTab {
 
     public override void DrawHeader() { }
 
-    private void DrawControls(HashSet<uint> lineRoutes) {
-        DrawLineButton("Indigo", IndigoOnly);
+    private static void DrawControls(HashSet<uint> lineRoutes) {
+        DrawLineButton("Indigo", OceanLineFilter.Indigo);
         ImGui.SameLine(0, 2.Scaled());
-        DrawLineButton("Ruby", RubyOnly);
+        DrawLineButton("Ruby", OceanLineFilter.Ruby);
         ImGui.SameLine(0, 2.Scaled());
-        DrawLineButton("Both", BothLines);
+        DrawLineButton("Both", OceanLineFilter.Both);
 
         ImGui.SameLine();
         ImGui.SetNextItemWidth(110.Scaled());
-        using (var combo = ImRaii.Combo("###OceanCount", $"Next {CountOptions[_countIndex]}")) {
+        using (var combo = ImRaii.Combo("###OceanCount", $"Next {CountOptions[CountIndex]}")) {
             if (combo) {
                 for (var i = 0; i < CountOptions.Length; i++) {
-                    if (ImGui.Selectable($"Next {CountOptions[i]}", i == _countIndex))
-                        _countIndex = i;
+                    if (ImGui.Selectable($"Next {CountOptions[i]}", i == CountIndex)) {
+                        Configuration.C.OceanTabCountIndex = i;
+                        Configuration.Save();
+                    }
                 }
             }
         }
@@ -75,66 +78,94 @@ public sealed class TabOceanFishing : BaseTab {
         // only offer what this line's routes have, a filter from the other line would match nothing
         var blueFish = OceanGoalCatalog.Legendaries.Where(f => f.RouteIds.Any(lineRoutes.Contains)).ToList();
         var achievements = OceanGoalCatalog.Achievements.Where(a => a.RouteIds.Any(lineRoutes.Contains)).ToList();
-        if (blueFish.All(f => f.FishParameterId != _blueFishFilter))
-            _blueFishFilter = 0;
-        if (achievements.All(a => a.AchievementId != _achievementFilter))
-            _achievementFilter = 0;
+        if (Configuration.C.OceanTabLegendaryFilter != 0 && blueFish.All(f => f.FishParameterId != Configuration.C.OceanTabLegendaryFilter)) {
+            Configuration.C.OceanTabLegendaryFilter = 0;
+            Configuration.Save();
+        }
+        if (Configuration.C.OceanTabAchievementFilter != 0 && achievements.All(a => a.AchievementId != Configuration.C.OceanTabAchievementFilter)) {
+            Configuration.C.OceanTabAchievementFilter = 0;
+            Configuration.Save();
+        }
 
         ImGui.SameLine();
         ImGui.SetNextItemWidth(180.Scaled());
-        using (var combo = ImRaii.Combo("###OceanBlueFish", _blueFishFilter == 0 ? "Any legendary" : BlueFishName(_blueFishFilter))) {
+        using (var combo = ImRaii.Combo("###OceanBlueFish", Configuration.C.OceanTabLegendaryFilter == 0 ? UIStrings.AnyLegendary : BlueFishName(Configuration.C.OceanTabLegendaryFilter))) {
             if (combo) {
-                if (ImGui.Selectable("Any legendary", _blueFishFilter == 0))
-                    _blueFishFilter = 0;
+                if (ImGui.Selectable(UIStrings.AnyLegendary, Configuration.C.OceanTabLegendaryFilter == 0)) {
+                    Configuration.C.OceanTabLegendaryFilter = 0;
+                    Configuration.Save();
+                }
                 foreach (var fish in blueFish) {
-                    if (ImGui.Selectable($"{BlueFishName(fish.FishParameterId)}###bf{fish.FishParameterId}", fish.FishParameterId == _blueFishFilter))
-                        _blueFishFilter = fish.FishParameterId;
+                    if (ImGui.Selectable($"{BlueFishName(fish.FishParameterId)}###bf{fish.FishParameterId}", fish.FishParameterId == Configuration.C.OceanTabLegendaryFilter)) {
+                        Configuration.C.OceanTabLegendaryFilter = fish.FishParameterId;
+                        Configuration.Save();
+                    }
                 }
             }
         }
 
         ImGui.SameLine();
         ImGui.SetNextItemWidth(180.Scaled());
-        using (var combo = ImRaii.Combo("###OceanAchievement", _achievementFilter == 0 ? "Any achievement" : AchievementName(_achievementFilter))) {
+        using (var combo = ImRaii.Combo("###OceanAchievement", Configuration.C.OceanTabAchievementFilter == 0 ? UIStrings.AnyAchievement : AchievementName(Configuration.C.OceanTabAchievementFilter))) {
             if (combo) {
-                if (ImGui.Selectable("Any achievement", _achievementFilter == 0))
-                    _achievementFilter = 0;
+                if (ImGui.Selectable(UIStrings.AnyAchievement, Configuration.C.OceanTabAchievementFilter == 0)) {
+                    Configuration.C.OceanTabAchievementFilter = 0;
+                    Configuration.Save();
+                }
                 foreach (var achievement in achievements) {
-                    if (ImGui.Selectable($"{AchievementName(achievement.AchievementId)}###ach{achievement.AchievementId}", achievement.AchievementId == _achievementFilter))
-                        _achievementFilter = achievement.AchievementId;
+                    if (ImGui.Selectable($"{AchievementName(achievement.AchievementId)}###ach{achievement.AchievementId}", achievement.AchievementId == Configuration.C.OceanTabAchievementFilter)) {
+                        Configuration.C.OceanTabAchievementFilter = achievement.AchievementId;
+                        Configuration.Save();
+                    }
                 }
             }
         }
 
-        ImGui.Checkbox("Missing legendary", ref _missingLegendary);
-        ImGui.TooltipOnHover("Voyages with a legendary you haven't caught");
+        if (ImGui.Checkbox(UIStrings.MissingLegendary, ref Configuration.C.OceanTabMissingLegendary))
+            Configuration.Save();
+        ImGui.TooltipOnHover(UIStrings.MissingLegendaryHelpText);
         ImGui.SameLine();
-        ImGui.Checkbox("Missing achievements", ref _missingAchievements);
-        ImGui.TooltipOnHover("Voyages with an achievement you haven't completed");
+        if (ImGui.Checkbox(UIStrings.MissingIndividual, ref Configuration.C.OceanTabMissingIndividual))
+            Configuration.Save();
+        ImGui.TooltipOnHover(UIStrings.MissingIndividualHelpText);
         ImGui.SameLine();
-        ImGui.Checkbox("Missing any fish", ref _missingAnyFish);
-        ImGui.TooltipOnHover("Voyages with any fish you haven't caught");
+        if (ImGui.Checkbox(UIStrings.MissingParty, ref Configuration.C.OceanTabMissingParty))
+            Configuration.Save();
+        ImGui.TooltipOnHover(UIStrings.MissingPartyHelpText);
+        ImGui.SameLine();
+        if (ImGui.Checkbox(UIStrings.MissingAnyFish, ref Configuration.C.OceanTabMissingAnyFish))
+            Configuration.Save();
+        ImGui.TooltipOnHover(UIStrings.MissingAnyFishHelpText);
     }
 
-    private void DrawLineButton(string label, OceanLine[] lines) {
-        using (ImRaii.PushColor(ImGuiCol.Button, ImGui.GetStyle().Colors[(int)ImGuiCol.ButtonActive], _lines == lines)) {
-            if (ImGui.Button(label))
-                _lines = lines;
+    private static void DrawLineButton(string label, OceanLineFilter line) {
+        using (ImRaii.PushColor(ImGuiCol.Button, ImGui.GetStyle().Colors[(int)ImGuiCol.ButtonActive], Configuration.C.OceanTabLine == line)) {
+            if (ImGui.Button(label)) {
+                Configuration.C.OceanTabLine = line;
+                Configuration.Save();
+            }
         }
     }
 
-    private bool Matches(OceanVoyage voyage) {
+    private static bool Matches(OceanVoyage voyage) {
+        var legendaryFilter = Configuration.C.OceanTabLegendaryFilter;
+        var achievementFilter = Configuration.C.OceanTabAchievementFilter;
+        var missingIndividual = Configuration.C.OceanTabMissingIndividual;
+        var missingParty = Configuration.C.OceanTabMissingParty;
+
         var blueFish = OceanGoalCatalog.GetLegendariesForRoute(voyage.RouteId).ToList();
         var achievements = OceanGoalCatalog.GetAchievementsForRoute(voyage.RouteId).ToList();
 
-        if (_blueFishFilter != 0 && blueFish.All(f => f.FishParameterId != _blueFishFilter))
+        if (legendaryFilter != 0 && blueFish.All(f => f.FishParameterId != legendaryFilter))
             return false;
-        if (_achievementFilter != 0 && achievements.All(a => a.AchievementId != _achievementFilter))
+        if (achievementFilter != 0 && achievements.All(a => a.AchievementId != achievementFilter))
             return false;
-        if (_missingLegendary || _missingAchievements || _missingAnyFish) {
-            var fishLeft = _missingLegendary && blueFish.Where(f => _blueFishFilter == 0 || f.FishParameterId == _blueFishFilter).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
-            var achievementsLeft = _missingAchievements && achievements.Where(a => _achievementFilter == 0 || a.AchievementId == _achievementFilter).Any(a => OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) != false);
-            var uncaughtLeft = _missingAnyFish && OceanRouteFishCatalog.GetFish(voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
+        if (Configuration.C.OceanTabMissingLegendary || missingIndividual || missingParty || Configuration.C.OceanTabMissingAnyFish) {
+            var fishLeft = Configuration.C.OceanTabMissingLegendary && blueFish.Where(f => legendaryFilter == 0 || f.FishParameterId == legendaryFilter).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
+            var achievementsLeft = (missingIndividual || missingParty) && achievements
+                .Where(a => achievementFilter == 0 || a.AchievementId == achievementFilter)
+                .Any(a => (OceanGoalCatalog.IsPartyAchievement(a) ? missingParty : missingIndividual) && OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) != false);
+            var uncaughtLeft = Configuration.C.OceanTabMissingAnyFish && OceanRouteFishCatalog.GetFish(voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
             if (!fishLeft && !achievementsLeft && !uncaughtLeft)
                 return false;
         }

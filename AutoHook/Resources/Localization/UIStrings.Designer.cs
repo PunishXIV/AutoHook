@@ -368,6 +368,24 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any Achievement.
+        /// </summary>
+        internal static string AnyAchievement {
+            get {
+                return ResourceManager.GetString("AnyAchievement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any Legendary.
+        /// </summary>
+        internal static string AnyLegendary {
+            get {
+                return ResourceManager.GetString("AnyLegendary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any Small/Large/Special.
         /// </summary>
         internal static string AnyTarget {
@@ -2589,6 +2607,78 @@ namespace AutoHook.Resources.Localization {
         internal static string MinWait {
             get {
                 return ResourceManager.GetString("MinWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Any Fish.
+        /// </summary>
+        internal static string MissingAnyFish {
+            get {
+                return ResourceManager.GetString("MissingAnyFish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Voyages with any fish you haven&apos;t caught.
+        /// </summary>
+        internal static string MissingAnyFishHelpText {
+            get {
+                return ResourceManager.GetString("MissingAnyFishHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Individual.
+        /// </summary>
+        internal static string MissingIndividual {
+            get {
+                return ResourceManager.GetString("MissingIndividual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Voyages with an individual achievement you haven&apos;t completed.
+        /// </summary>
+        internal static string MissingIndividualHelpText {
+            get {
+                return ResourceManager.GetString("MissingIndividualHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Legendary.
+        /// </summary>
+        internal static string MissingLegendary {
+            get {
+                return ResourceManager.GetString("MissingLegendary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Voyages with a legendary you haven&apos;t caught.
+        /// </summary>
+        internal static string MissingLegendaryHelpText {
+            get {
+                return ResourceManager.GetString("MissingLegendaryHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Party.
+        /// </summary>
+        internal static string MissingParty {
+            get {
+                return ResourceManager.GetString("MissingParty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Voyages with a party achievement you haven&apos;t completed.
+        /// </summary>
+        internal static string MissingPartyHelpText {
+            get {
+                return ResourceManager.GetString("MissingPartyHelpText", resourceCulture);
             }
         }
         

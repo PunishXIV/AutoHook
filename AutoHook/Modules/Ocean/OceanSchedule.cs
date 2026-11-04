@@ -7,6 +7,8 @@ public enum OceanLine {
     Ruby,
 }
 
+public enum OceanLineFilter { Indigo, Ruby, Both }
+
 public readonly record struct OceanVoyage(long BoardingStart, uint RouteId) {
     public bool IsBoarding(long now) => now >= BoardingStart && now < BoardingStart + OceanSchedule.BoardingSeconds;
 }

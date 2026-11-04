@@ -1807,4 +1807,42 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanFishing" xml:space="preserve">
     <value>Ocean Fishing</value>
   </data>
+  <data name="MissingLegendary" xml:space="preserve">
+    <value>Missing Legendary</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingLegendaryHelpText" xml:space="preserve">
+    <value>Voyages with a legendary you haven't caught</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingIndividual" xml:space="preserve">
+    <value>Missing Individual</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingIndividualHelpText" xml:space="preserve">
+    <value>Voyages with an individual achievement you haven't completed</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingParty" xml:space="preserve">
+    <value>Missing Party</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingPartyHelpText" xml:space="preserve">
+    <value>Voyages with a party achievement you haven't completed</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingAnyFish" xml:space="preserve">
+    <value>Missing Any Fish</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="MissingAnyFishHelpText" xml:space="preserve">
+    <value>Voyages with any fish you haven't caught</value>
+    <comment>For ocean fishing</comment>
+  </data>
+  <data name="AnyLegendary" xml:space="preserve">
+    <value>Any Legendary</value>
+  </data>
+  <data name="AnyAchievement" xml:space="preserve">
+    <value>Any Achievement</value>
+  </data>
 </root>

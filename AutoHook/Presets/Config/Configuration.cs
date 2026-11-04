@@ -46,6 +46,14 @@ public partial class Configuration : IPluginConfiguration, IPluginService {
     public bool AOF_Fallthrough = false;
     [DefaultValue(true)] public bool AOF_WalkToRailing = true;
     public bool SpectralRest = false;
+    public OceanLineFilter OceanTabLine = OceanLineFilter.Indigo;
+    [DefaultValue(1)] public int OceanTabCountIndex = 1;
+    public uint OceanTabLegendaryFilter = 0;
+    public uint OceanTabAchievementFilter = 0;
+    public bool OceanTabMissingLegendary = false;
+    public bool OceanTabMissingIndividual = false;
+    public bool OceanTabMissingParty = false;
+    public bool OceanTabMissingAnyFish = false;
     public bool DtrBarEnabled = false;
     public bool DtrPresetBarEnabled = false;
 
