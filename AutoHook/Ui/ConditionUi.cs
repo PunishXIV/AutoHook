@@ -156,6 +156,7 @@ public static class ConditionUi {
         var mode = group.CombineMode;
         var joiner = mode == ConditionCombineMode.All ? "&&" : "||";
         var joinerWidth = ImGui.CalcTextSize(joiner).X + style.FramePadding.X * 2;
+        var disabledColor = ImGuiColors.DalamudGrey with { W = 0.6f };
 
         void PlaceNext(float width) => PlaceInRow(width, chipStartX);
 
@@ -171,17 +172,20 @@ public static class ConditionUi {
 
             if (ci > 0) {
                 PlaceNext(joinerWidth + style.ItemSpacing.X + chipWidth);
-                if (ImGui.Button($"{joiner}##join")) {
-                    group.CombineMode = mode == ConditionCombineMode.All ? ConditionCombineMode.Any : ConditionCombineMode.All;
-                    Configuration.Save();
+                using (ImRaii.PushColor(ImGuiCol.Text, disabledColor, !group.Enabled)) {
+                    if (ImGui.Button($"{joiner}##join")) {
+                        group.CombineMode = mode == ConditionCombineMode.All ? ConditionCombineMode.Any : ConditionCombineMode.All;
+                        Configuration.Save();
+                    }
                 }
                 ImGui.TooltipOnHover($"Evaluate: {(mode is ConditionCombineMode.All ? "AND" : "OR")} - {(mode is ConditionCombineMode.All ? "all" : "any")} must be true");
                 ImGui.SameLine();
             }
 
             var isTrue = IsConditionCurrentlyTrue(cond);
-            var incomplete = cond.Enabled ? cond.IncompleteReason(Registry) : null;
-            Vector4? textColor = !cond.Enabled ? ImGuiColors.DalamudGrey with { W = 0.6f }
+            var active = group.Enabled && cond.Enabled;
+            var incomplete = active ? cond.IncompleteReason(Registry) : null;
+            Vector4? textColor = !active ? disabledColor
                 : incomplete != null ? ImGuiColors.DalamudOrange
                 : isTrue ? ImGuiColors.ParsedGreen
                 : null;
@@ -193,7 +197,8 @@ public static class ConditionUi {
             }
             if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                 ImGui.OpenPopup("cond_ctx");
-            var state = !cond.Enabled ? "Disabled"
+            var state = !group.Enabled ? "Group disabled"
+                : !cond.Enabled ? "Disabled"
                 : incomplete != null ? $"Incomplete: {incomplete}"
                 : isTrue ? "Currently true" : "Currently false";
             ImGui.TooltipOnHover($"{summary}\n{state}");
