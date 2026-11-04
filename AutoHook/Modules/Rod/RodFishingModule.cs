@@ -33,6 +33,8 @@ public sealed class RodFishingModule : FishingModule {
     public bool SpectralRestPending { get; set; }
     public uint FishingSpotId { get; set; }
 
+    public static bool AutoStartLocked { get; private set; } // set by hard quit
+
     public bool IsBusy => ActionExecutor.Get().IsBusy;
 
     public bool Enqueue(ActionRequest request, bool forceQueue = false)
@@ -65,7 +67,7 @@ public sealed class RodFishingModule : FishingModule {
         Bait = AddComponent(new BaitComponent(this));
         LureChat = AddComponent(new LureChatComponent(this));
 
-        _eventSubs = new(Ws.OceanZoneStarted.Subscribe(OnOceanZoneStarted), Ws.SpectralCurrentChanged.Subscribe(BiteHook.OnSpectralCurrentChanged));
+        _eventSubs = new(Ws.OceanZoneStarted.Subscribe(OnOceanZoneStarted), Ws.SpectralCurrentChanged.Subscribe(BiteHook.OnSpectralCurrentChanged), Ws.TerritoryChanged.Subscribe(_ => ClearAutoStartLock()));
         IChatGui.Get().LogMessage += LureChat.OnLogMessage;
         IChatGui.Get().ChatMessage += LureChat.CheckForSpecialLure;
         Ws.Modified += OnWorldStateModified;
@@ -87,6 +89,19 @@ public sealed class RodFishingModule : FishingModule {
     }
 
     public void ClearStopAfterNextFish() => StopAfterNextFish = StopAfterState.None;
+
+    public static void ClearAutoStartLock() => AutoStartLocked = false;
+
+    public void RequestHardQuit() {
+        if (!AutoStartLocked)
+            IChatGui.Get().PrintStatus(UIStrings.Hard_Quit_Engaged);
+
+        AutoStartLocked = true;
+
+        // nothing to quit when idle, and a leftover quit flag would kick the player's next cast
+        var step = Ws.Fishing.FishingState == FishingState.None ? FishingSteps.None : FishingSteps.QuitRequested;
+        Ws.Execute(new RodState.OpSetFishingStep(step));
+    }
 
     public bool TryStopAfterNextFish() {
         if (StopAfterNextFish != StopAfterState.Armed)
@@ -136,6 +151,9 @@ public sealed class RodFishingModule : FishingModule {
                             Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.CancelPending));
                             break;
                         case IDs.Actions.Cast:
+                            // can't cast while locked, unless the cast was queued just before a hard quit
+                            if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested))
+                                ClearAutoStartLock();
                             BiteHook.OnBeganFishing(false);
                             break;
                         case IDs.Actions.Mooch:
@@ -168,6 +186,10 @@ public sealed class RodFishingModule : FishingModule {
         OceanPresetSelector.TryApply();
         Hints.Clear();
         Extra.ProcessExtraActions(Hints, Resolver);
+
+        // a rule can hard quit during the pass above
+        if (AutoStartLocked)
+            return;
 
         _reportedMissingBait = 0; // always answer a direct start
         if (BlockedByMissingBait()) {
@@ -356,7 +378,7 @@ public sealed class RodFishingModule : FishingModule {
     }
 
     public bool ShouldSuppressAutoStartFishing()
-        => Configuration.C.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
+        => AutoStartLocked || Configuration.C.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
 
     public void ClearWorldState() {
         var f = Ws.Fishing;

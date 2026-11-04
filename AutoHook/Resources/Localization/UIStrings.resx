@@ -762,6 +762,21 @@ If you want to Auto Mooch only a specific fish and ignore others, disable this o
   <data name="Quit_Fishing" xml:space="preserve">
     <value>Quit Fishing</value>
   </data>
+  <data name="Hard_Quit_Fishing" xml:space="preserve">
+    <value>Hard Quit</value>
+  </data>
+  <data name="Hard_Quit_Action_HelpText" xml:space="preserve">
+    <value>Quits fishing and blocks every automatic start, including Start Fishing rules. Lifted by casting yourself, the start button or command, manually changing preset, or changing zone.</value>
+  </data>
+  <data name="Hard_Quit_Engaged" xml:space="preserve">
+    <value>Hard Quit: automatic starts are disabled until you start fishing again.</value>
+  </data>
+  <data name="Hard_Quit_Status" xml:space="preserve">
+    <value>Automatic starts disabled by Hard Quit</value>
+  </data>
+  <data name="Hard_Quit_Reenable" xml:space="preserve">
+    <value>Re-enable</value>
+  </data>
   <data name="Quit_Action_HelpText" xml:space="preserve">
     <value>Quit action will be used and completely stop fishing</value>
   </data>

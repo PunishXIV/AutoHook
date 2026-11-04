@@ -24,7 +24,16 @@ public sealed class FishingSessionManager : IPluginService, IDisposable {
         Gig.Dispose();
     }
 
+    // explicit starts that lifts the auto start lock
+    public void ManualStartFishing() {
+        RodFishingModule.ClearAutoStartLock();
+        StartFishing();
+    }
+
     public void StartFishing() {
+        if (RodFishingModule.AutoStartLocked)
+            return;
+
         if (!Configuration.C.PluginEnabled) {
             Configuration.C.PluginEnabled = true;
             WorldStateUpdater.Get().Update(); // need to ensure stuff like bait is tracked before we call startfishing

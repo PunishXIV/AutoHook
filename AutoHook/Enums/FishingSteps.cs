@@ -11,4 +11,6 @@ public enum FishingSteps {
     TimeOut = 0x200,
     QuitRequested = 0x400,
     StartPending = 0x800,
+    // config only (stop after caught), resolved through RodFishingModule.RequestHardQuit and never put on the world state
+    HardQuit = 0x1000,
 }

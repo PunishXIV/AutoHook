@@ -592,6 +592,15 @@ public static class DrawUtil {
             ImGui.SameLine();
             ImGuiComponents.HelpMarker(UIStrings.Quit_Action_HelpText);
 
+            Branch();
+            if (ImGui.RadioButton(UIStrings.Hard_Quit_Fishing, step == FishingSteps.HardQuit)) {
+                step = FishingSteps.HardQuit;
+                Configuration.Save();
+            }
+
+            ImGui.SameLine();
+            ImGuiComponents.HelpMarker(UIStrings.Hard_Quit_Action_HelpText);
+
             Checkbox(UIStrings.Reset_the_counter, ref reset);
         });
         stopStep = step;

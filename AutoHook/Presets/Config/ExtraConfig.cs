@@ -9,6 +9,7 @@ public enum ExtraStopAction {
     None,
     StopOnly,
     QuitFishing,
+    HardQuit,
 }
 
 public class ExtraTrigger {
@@ -71,6 +72,9 @@ public class ExtraTrigger {
                 break;
             case ExtraStopAction.QuitFishing:
                 parts.Add("Quit fishing");
+                break;
+            case ExtraStopAction.HardQuit:
+                parts.Add("Hard quit fishing");
                 break;
         }
 

@@ -128,7 +128,7 @@ public class AutoHook(IDalamudPluginInterface pluginInterface) : IAsyncDalamudPl
                 SetPreset(args);
                 break;
             case CmdAhStart:
-                FishingSessionManager.Get().StartFishing();
+                FishingSessionManager.Get().ManualStartFishing();
                 break;
             case CmdBait:
             case CmdAhBait:

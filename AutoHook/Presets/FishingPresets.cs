@@ -156,6 +156,10 @@ public class FishingPresets : BasePreset {
         var to = newPreset?.PresetName ?? AutoHook.GlobalPresetName;
         if (from != to) {
             WorldState.Get().Decide(DecisionContext.PresetSwitch, true, $"{from} -> {to}", $"Reason: {_selectReason ?? ReasonManual}", to);
+
+            // rule, catch and ocean swaps go through Select with their own reason and leave a hard quit in place
+            if ((_selectReason ?? ReasonManual) == ReasonManual)
+                RodFishingModule.ClearAutoStartLock();
         }
 
         if (newPreset is CustomPresetConfig { ListOfFish: var fishCaught }) {

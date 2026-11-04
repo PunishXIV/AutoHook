@@ -238,6 +238,15 @@ public class SubTabExtra {
                             trig.StopAction = ExtraStopAction.QuitFishing;
                             Configuration.Save();
                         }
+
+                        DrawUtil.Branch();
+                        if (ImGui.RadioButton(UIStrings.Hard_Quit_Fishing, trig.StopAction == ExtraStopAction.HardQuit)) {
+                            trig.StopAction = ExtraStopAction.HardQuit;
+                            Configuration.Save();
+                        }
+
+                        ImGui.SameLine();
+                        ImGuiComponents.HelpMarker(UIStrings.Hard_Quit_Action_HelpText);
                     });
 
                 if (!stopEnabled && trig.StopAction != ExtraStopAction.None) {

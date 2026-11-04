@@ -73,6 +73,9 @@ public class PluginUi : Window, IDisposable {
             DrawStatus();
         }
 
+        if (RodFishingModule.AutoStartLocked)
+            DrawAutoStartLock();
+
         using (var style = ImRaii.PushStyle(ImGuiStyleVar.CellPadding, new Vector2(5.Scaled(), 0))) {
             using var table = ImRaii.Table("###MainTable", 2, ImGuiTableFlags.Resizable);
             ImGui.TableSetupColumn("##LeftColumn", ImGuiTableColumnFlags.WidthFixed, ImGui.GetWindowWidth() / 3);
@@ -83,7 +86,7 @@ public class PluginUi : Window, IDisposable {
             using (ImRaii.PushStyle(ImGuiStyleVar.SelectableTextAlign, new Vector2(0.5f, 0.5f)))
             using (var leftChild = ImRaii.Child($"###AhLeft", regionSize with { Y = topLeftSideHeight }, false, ImGuiWindowFlags.NoDecoration)) {
                 if (ImGui.Selectable(UIStrings.StartActions))
-                    FishingSessionManager.Get().StartFishing();
+                    FishingSessionManager.Get().ManualStartFishing();
 
                 using (var c = ImRaii.Child("logo", new(0, 125.Scaled()))) {
                     if (ITextureProvider.Get().GetFromManifestResource(Assembly.GetExecutingAssembly(), $"AutoHook.Assets.Fishy{(Configuration.C.PluginEnabled ? "" : "_g")}.png").TryGetWrap(out var image, out var _)) {
@@ -181,6 +184,18 @@ public class PluginUi : Window, IDisposable {
             }
             else
                 ImGui.TextColored(ImGuiColors.DalamudViolet, Status);
+        });
+
+        ImGui.Separator();
+    }
+
+    private static void DrawAutoStartLock() {
+        ImGuiEx.LineCentered("###AhAutoStartLock", () => {
+            ImGui.AlignTextToFramePadding();
+            ImGui.TextColored(ImGuiColors.DalamudOrange, UIStrings.Hard_Quit_Status);
+            ImGui.SameLine();
+            if (ImGui.SmallButton(UIStrings.Hard_Quit_Reenable))
+                RodFishingModule.ClearAutoStartLock();
         });
 
         ImGui.Separator();

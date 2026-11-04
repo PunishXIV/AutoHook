@@ -2114,6 +2114,51 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quits fishing and blocks every automatic start, including Start Fishing rules. Lifted by casting yourself, the start button or command, manually changing preset, or changing zone..
+        /// </summary>
+        internal static string Hard_Quit_Action_HelpText {
+            get {
+                return ResourceManager.GetString("Hard_Quit_Action_HelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard Quit: automatic starts are disabled until you start fishing again..
+        /// </summary>
+        internal static string Hard_Quit_Engaged {
+            get {
+                return ResourceManager.GetString("Hard_Quit_Engaged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hard Quit.
+        /// </summary>
+        internal static string Hard_Quit_Fishing {
+            get {
+                return ResourceManager.GetString("Hard_Quit_Fishing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Re-enable.
+        /// </summary>
+        internal static string Hard_Quit_Reenable {
+            get {
+                return ResourceManager.GetString("Hard_Quit_Reenable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic starts disabled by Hard Quit.
+        /// </summary>
+        internal static string Hard_Quit_Status {
+            get {
+                return ResourceManager.GetString("Hard_Quit_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hook will NOT be used after the defined amount of time has passed
         ///Ex: If you set the Max. Wait to 10 and something bites after 12 seconds, the fish will be ignored.
         /// </summary>

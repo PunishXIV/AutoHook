@@ -195,7 +195,10 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
             return;
 
         IChatGui.Get().PrintStatus(string.Format(chatMessageFormat, @$"{name}: {limitCount}"));
-        Ws.Execute(new RodState.OpSetFishingStep(stopStep, Or: true));
+        if (stopStep == FishingSteps.HardQuit)
+            Rod.RequestHardQuit();
+        else
+            Ws.Execute(new RodState.OpSetFishingStep(stopStep, Or: true));
         if (resetCount)
             FishingCounters.QueueRemove(uniqueId);
     }
