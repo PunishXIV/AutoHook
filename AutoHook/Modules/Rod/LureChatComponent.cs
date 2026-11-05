@@ -1,6 +1,7 @@
 using Dalamud.Game.Chat;
 using Dalamud.Game.Text;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.Game.Event;
 
 namespace AutoHook.Modules.Rod;
 
@@ -21,6 +22,16 @@ public sealed class LureChatComponent(RodFishingModule module) : RodComponent(mo
 
         if (message.LogMessageId is LogMessageIds.CantFish)
             PluginUi.Status = UIStrings.CantFishHere;
+
+        // in ocean fishing, it the first cast sometimes gets rejected even though we're in range. Not a clue why. So this is just a hack to retry
+        if (message.LogMessageId is LogMessageIds.NoFishSensed && Configuration.C.PluginEnabled && Configuration.C.AutoOceanFish && Ws.OceanFishing != OceanFishingState.Empty && Ws.Fishing.CanFish) {
+            // the failed cast still queued this, and it would hold up the retry
+            ActionExecutor.Get().RemoveCallback(Rod.AutoCast.CastCollectAfterLine);
+            Rod.EnqueueCallback(() => {
+                if (Ws.Fishing.FishingState == FishingState.None)
+                    Rod.StartFishing();
+            }, 500);
+        }
 
         if (message.LogMessageId is LogMessageIds.CastLine && message.TryGetIntParameter(0, out var placeNameId) && placeNameId > 0)
             Rod.FishingSpotId = FishSpotCatalog.FindFishingSpot((uint)placeNameId, Ws.TerritoryId);

@@ -103,6 +103,13 @@ public sealed class ActionExecutor : IPluginService, IDisposable {
         _queue.Enqueue(new QueueItem(null, callback, Environment.TickCount64 + Math.Max(0, delayMs)));
     }
 
+    public void RemoveCallback(Action callback) {
+        var kept = _queue.Where(item => item.Callback != callback).ToList();
+        _queue.Clear();
+        foreach (var item in kept)
+            _queue.Enqueue(item);
+    }
+
     private void Push(ActionRequest request, long readyAtMs)
         => _queue.Enqueue(new QueueItem(request, null, readyAtMs));
 
