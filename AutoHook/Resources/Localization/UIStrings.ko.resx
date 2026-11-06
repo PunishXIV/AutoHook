@@ -773,7 +773,7 @@
     <value>자동낚시 잠김: 사용자가 직접 낚시를 시작할 때까지 모든 자동 시작 기능이 비활성화됩니다.</value>
   </data>
   <data name="Hard_Quit_Status" xml:space="preserve">
-    <value>자동낚시 잠금 상태입니다. 자동 시작이 비활성화되었습니다</value>
+    <value>자동낚시 잠금 상태입니다. 자동낚시를 정지합니다</value>
   </data>
   <data name="Quit_Action_HelpText" xml:space="preserve">
     <value>중단 기술이 시전 되며 낚시를 완전히 중단합니다</value>
@@ -1755,5 +1755,11 @@
   </data>
   <data name="OceanFishing" xml:space="preserve">
     <value>먼바다 낚시</value>
+  </data>
+  <data name="AnyLegendary" xml:space="preserve">
+    <value>아무 대형어종</value>
+  </data>
+  <data name="AnyAchievement" xml:space="preserve">
+    <value>아무 업적</value>
   </data>
 </root>
