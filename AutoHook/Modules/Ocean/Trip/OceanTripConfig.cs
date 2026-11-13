@@ -61,6 +61,12 @@ public sealed class OceanTripConfig {
     public OceanTripArrival Arrival = OceanTripArrival.Early;
     [DefaultValue(13)] public int LateArrivalMinute = 13;
 
+    [DefaultValue(25)] public int MinFreeSlots = 25; // 0 = don't check
+    public bool EquipRecommended = false;
+    [DefaultValue(true)] public bool Repair = true;
+    public OceanTripRepair RepairMode = OceanTripRepair.SelfThenNpc;
+    [DefaultValue(30)] public int RepairThreshold = 30;
+
     [DefaultValue(true)] public bool BuyBait = true;
     [DefaultValue(100)] public int BaitCount = 100;
     [DefaultValue(true)] public bool BuyVersatileLure = true;
@@ -69,6 +75,11 @@ public sealed class OceanTripConfig {
     public OceanTripCleanup Cleanup = OceanTripCleanup.None;
 
     public List<OceanTripStep> PostSteps = [new()];
+}
+
+public enum OceanTripRepair {
+    SelfThenNpc,
+    Npc,
 }
 
 public enum OceanAlarmAnchor {

@@ -1,3 +1,4 @@
+using clib.Enums;
 using clib.TaskSystem;
 using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
@@ -64,11 +65,20 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         Log($"Trip for route {Voyage.RouteId} boarding at {Voyage.BoardingStart}, origin {Origin}");
 
         try {
-            await TravelToDock();
-            await EnsureFisher();
-            if (Cfg.BuyBait)
-                await BuyBait();
-            await WaitForBoardTime();
+            if (OceanTripService.QueuedOceanContent() == 0) {
+                await TravelToDock();
+                await EnsureFisher();
+                if (Cfg.EquipRecommended)
+                    await EquipRecommended();
+                if (Cfg.Repair)
+                    await RepairGear();
+                if (Cfg.BuyBait)
+                    await BuyBait();
+                await WaitForBoardTime();
+            }
+            else {
+                await EnsureFisher();
+            }
             await Register();
             await RideVoyage();
             await Cleanup();
@@ -117,6 +127,73 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         await TryUntil(() => EquipGearset(gearset), () => CurrentJob == FisherJobId, "EquipFisher", timeoutSeconds: 3f, maxRetries: 3);
     }
 
+    private async Task EquipRecommended() {
+        using var scope = BeginScope(nameof(EquipRecommended));
+        if (InOceanFishing || !SetupRecommended())
+            return;
+        Status = UIStrings.OceanTrip_StatusEquippingRecommended;
+        await WaitWhile(IsRecommendUpdating, "WaitRecommendSetup", timeout: TimeSpan.FromSeconds(10));
+        if (AllRecommendedEquipped())
+            return;
+        await WaitUntil(() => !IsOccupied(), "WaitUnoccupied", timeout: TimeSpan.FromSeconds(30));
+        EquipRecommendedGear();
+        await WaitWhile(IsRecommendUpdating, "WaitRecommendEquip", timeout: TimeSpan.FromSeconds(10));
+        await DelayMs(250);
+        UpdateCurrentGearset();
+    }
+
+    #endregion
+
+    #region Repair
+
+    private async Task RepairGear() {
+        using var scope = BeginScope(nameof(RepairGear));
+        if (InOceanFishing || LowestCondition() >= Cfg.RepairThreshold)
+            return;
+        Status = UIStrings.OceanTrip_StatusRepairing;
+        if (Cfg.RepairMode == OceanTripRepair.SelfThenNpc) {
+            await SelfRepair();
+            if (LowestCondition() >= Cfg.RepairThreshold)
+                return;
+            Log($"Self repair left gear at {LowestCondition()}%, trying the mender");
+        }
+        await NpcRepair();
+        if (LowestCondition() < Cfg.RepairThreshold)
+            Warning($"Gear still at {LowestCondition()}% after repairing");
+    }
+
+    private async Task SelfRepair() {
+        using var scope = BeginScope(nameof(SelfRepair));
+        await WaitUntil(() => !IsOccupied(), "WaitUnoccupied", timeout: TimeSpan.FromSeconds(30));
+        if (!OpenSelfRepair())
+            return;
+        await WaitUntil(() => IsSelfRepairOpen && AtkUnitBase.IsAddonReady("Repair"), "WaitRepairOpen", timeout: TimeSpan.FromSeconds(5), abortOnTimeout: false);
+        if (!IsSelfRepairOpen)
+            return;
+        var before = LowestCondition();
+        RepairEquippedSelf();
+        // no dark matter or too low a crafter level just does nothing
+        await WaitUntil(() => { ConfirmRepair(); return LowestCondition() > before; }, "WaitRepaired", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+        await WaitWhile(() => ICondition.Get()[ConditionFlag.Occupied39], "WaitRepairDone", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+        CloseAddon("Repair");
+        await WaitWhile(() => AtkUnitBase.IsAddonReady("Repair"), "WaitRepairClosed", timeout: TimeSpan.FromSeconds(5), abortOnTimeout: false);
+    }
+
+    private async Task NpcRepair() {
+        using var scope = BeginScope(nameof(NpcRepair));
+        var vendor = await ApproachBaitVendor();
+        await InteractWith(vendor);
+        await WaitUntil(() => TryGetSelectStringText(out _), "WaitMenu", timeout: TimeSpan.FromSeconds(10));
+        TryGetSelectStringText(out var text);
+        SelectString(1, text);
+        await WaitUntil(() => { ConfirmPrompts(); return AtkUnitBase.IsAddonReady("Repair"); }, "WaitRepairOpen", timeout: TimeSpan.FromSeconds(10));
+        var before = LowestCondition();
+        RepairEquippedNpc();
+        await WaitUntil(() => { ConfirmRepair(); return LowestCondition() > before; }, "WaitRepaired", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+        CloseAddon("Repair");
+        await WaitUntil(() => { ConfirmPrompts(); return !AtkUnitBase.IsAddonReady("Repair") && !IsOccupied(); }, "WaitRepairClosed", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+    }
+
     #endregion
 
     #region Bait
@@ -154,17 +231,19 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (AgentShop.IsShopOpen(OceanTripConsts.BaitShopId))
             return;
 
+        var vendor = await ApproachBaitVendor();
+        ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), UIStrings.OceanTrip_ErrorOpenShopFailed);
+        await WaitUntilSkipping(() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop"), "WaitShopOpen", UiSkipOptions.Talk);
+    }
+
+    private async Task<IGameObject> ApproachBaitVendor() {
         if (FindObject(OceanTripConsts.BaitVendorId) == null)
             await MoveTo(OceanTripConsts.DockTerritory, OceanTripConsts.DryskthotaPosition, MovementConfig.Default.WithTolerance(4f));
-        if (FindObject(OceanTripConsts.BaitVendorId) is not { } vendor) {
-            Error(UIStrings.OceanTrip_ErrorVendorNotFound);
-            return;
-        }
+        var vendor = FindObject(OceanTripConsts.BaitVendorId) ?? throw new InvalidOperationException(UIStrings.OceanTrip_ErrorVendorNotFound);
         if (!vendor.IsInInteractRange())
             await MoveToDirectly(vendor.Position, vendor.IsInInteractRange);
         await WaitWhile(() => IsMoving, "WaitStopped");
-        ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), UIStrings.OceanTrip_ErrorOpenShopFailed);
-        await WaitUntilSkipping(() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop"), "WaitShopOpen", UiSkipOptions.Talk);
+        return vendor;
     }
 
     private async Task CloseShop() {
@@ -209,7 +288,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var routeIndex = OceanSchedule.IsIndigoRoute(Voyage.RouteId) ? 0 : 1;
         var deadline = Environment.TickCount64 + 60_000;
         await InteractWith(npc);
-        while (!InOceanFishing && !ContentsFinderConfirmReady && !InDutyQueue) {
+        while (!InOceanFishing && !ContentsFinderConfirmReady && OceanTripService.QueuedOceanContent() == 0) {
             ErrorIf(Environment.TickCount64 > deadline, UIStrings.OceanTrip_ErrorRegisterTimeout);
             if (TryGetSelectStringText(out var text)) {
                 SelectString(menusSeen == 0 ? 0 : routeIndex, text);
@@ -515,6 +594,82 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var module = RaptureGearsetModule.Instance();
         var entry = module == null ? null : module->GetGearset(index);
         return entry == null ? "" : entry->NameString;
+    }
+
+    public static unsafe int LowestCondition() {
+        var equipped = InventoryManager.Instance()->GetInventoryContainer(InventoryType.EquippedItems);
+        if (equipped == null)
+            return 100;
+        var lowest = 100;
+        for (var i = 0; i < equipped->Size; i++) {
+            var item = equipped->GetInventorySlot(i);
+            if (item != null && item->ItemId != 0)
+                lowest = Math.Min(lowest, item->Condition / 300);
+        }
+        return lowest;
+    }
+
+    private static void ConfirmPrompts() {
+        if (AtkUnitBase.IsAddonReady("Talk"))
+            AddonTalk.Progress();
+    }
+
+    private static void ConfirmRepair() {
+        ConfirmPrompts();
+        if (IsRepairYesno())
+            AddonSelectYesno.Yes();
+    }
+
+    private static unsafe bool IsRepairYesno() {
+        if (!TryGetAddonByName<AtkUnitBase>("SelectYesno", out var addon) || !IsAddonReady(addon))
+            return false;
+        var id = (uint)addon->Id;
+        return RaptureAtkModule.Instance()->AddonCallbackMapping.TryGetValuePointer(in id, out var entry) && entry != null && entry->AgentInterface == (AgentInterface*)AgentRepair.Instance();
+    }
+
+    private static unsafe bool IsSelfRepairOpen => AgentRepair.Instance()->IsSelfRepairOpen;
+    private static unsafe bool OpenSelfRepair() => ActionManager.Instance()->UseAction(ActionType.GeneralAction, 6);
+    private static unsafe void RepairEquippedSelf() => RepairManager.Instance()->RepairEquipped(false);
+    private static void RepairEquippedNpc() => GameMain.ExecuteCommand(CommandFlag.RepairEquippedItemsNPC, (int)InventoryType.EquippedItems);
+
+    private static unsafe bool SetupRecommended() {
+        var mod = RecommendEquipModule.Instance();
+        return mod != null && mod->SetupForClassJob((byte)FisherJobId);
+    }
+
+    private static unsafe bool IsRecommendUpdating() {
+        var mod = RecommendEquipModule.Instance();
+        return mod != null && mod->IsUpdating;
+    }
+
+    private static unsafe void EquipRecommendedGear() {
+        var mod = RecommendEquipModule.Instance();
+        if (mod != null)
+            mod->EquipRecommendedGear();
+    }
+
+    private static unsafe bool AllRecommendedEquipped() {
+        var mod = RecommendEquipModule.Instance();
+        var equipped = InventoryManager.Instance()->GetInventoryContainer(InventoryType.EquippedItems);
+        if (mod == null || equipped == null)
+            return true;
+        foreach (var rec in mod->RecommendedItems) {
+            var recommended = rec.Value;
+            if (recommended == null || recommended->ItemId == 0)
+                continue;
+            var found = false;
+            for (var i = 0; i < equipped->Size && !found; i++)
+                found = equipped->Items[i].ItemId == recommended->ItemId;
+            if (!found)
+                return false;
+        }
+        return true;
+    }
+
+    private static unsafe void UpdateCurrentGearset() {
+        var module = RaptureGearsetModule.Instance();
+        if (module != null && module->IsValidGearset(module->CurrentGearsetIndex))
+            module->UpdateGearset(module->CurrentGearsetIndex);
     }
 
     private static unsafe void EquipGearset(int index) => RaptureGearsetModule.Instance()->EquipGearset(index);

@@ -137,30 +137,17 @@ public static class OceanTripUi {
             Configuration.Save();
         ImGui.SameLine();
         using (ImRaii.Disabled(!Cfg.UseActiveWindow)) {
-            // one translatable sentence, with the two time inputs drawn where {1} and {2} sit
-            var sentence = string.Format(UIStrings.OceanTrip_OnlyBetween, UIStrings.AutoOceanFish, "{1}", "{2}");
-            var first = true;
-            foreach (var part in System.Text.RegularExpressions.Regex.Split(sentence, @"(\{1\}|\{2\})")) {
-                if (part.Trim().Length == 0)
-                    continue;
-                if (!first)
-                    ImGui.SameLine();
-                first = false;
-                switch (part) {
-                    case "{1}":
-                        if (DrawClockInput("###ActiveFrom", ref Cfg.ActiveFromMinute))
-                            Configuration.Save();
-                        break;
-                    case "{2}":
-                        if (DrawClockInput("###ActiveTo", ref Cfg.ActiveToMinute))
-                            Configuration.Save();
-                        break;
-                    default:
-                        ImGui.AlignTextToFramePadding();
-                        ImGui.Text(part.Trim());
-                        break;
+            DrawSentence(string.Format(UIStrings.OceanTrip_OnlyBetween, UIStrings.AutoOceanFish, "{1}", "{2}"),
+                ("{1}", () => {
+                    if (DrawClockInput("###ActiveFrom", ref Cfg.ActiveFromMinute))
+                        Configuration.Save();
                 }
-            }
+            ),
+                ("{2}", () => {
+                    if (DrawClockInput("###ActiveTo", ref Cfg.ActiveToMinute))
+                        Configuration.Save();
+                }
+            ));
         }
 
         DrawUtil.Branch();
@@ -234,6 +221,42 @@ public static class OceanTripUi {
     #region Preparation
 
     private static void DrawPreparation() {
+        DrawUtil.Branch();
+        DrawSentence(UIStrings.OceanTrip_MinFreeSlots, ("{0}", () => {
+            ImGui.SetNextItemWidth(80.Scaled());
+            if (ImGui.InputInt("###MinFreeSlots", ref Cfg.MinFreeSlots, 1)) {
+                Cfg.MinFreeSlots = Math.Clamp(Cfg.MinFreeSlots, 0, 140);
+                Configuration.Save();
+            }
+        }
+        ));
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(UIStrings.ZeroToDisable);
+
+        DrawUtil.Checkbox(UIStrings.OceanTrip_EquipRecommended, ref Cfg.EquipRecommended);
+
+        DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_Repair, ref Cfg.Repair, () => {
+            DrawUtil.Branch();
+            if (ImGui.RadioButton(UIStrings.OceanTrip_RepairSelfThenNpc, Cfg.RepairMode == OceanTripRepair.SelfThenNpc)) {
+                Cfg.RepairMode = OceanTripRepair.SelfThenNpc;
+                Configuration.Save();
+            }
+            ImGui.SameLine();
+            if (ImGui.RadioButton(UIStrings.OceanTrip_RepairNpc, Cfg.RepairMode == OceanTripRepair.Npc)) {
+                Cfg.RepairMode = OceanTripRepair.Npc;
+                Configuration.Save();
+            }
+            DrawUtil.Branch();
+            DrawSentence(UIStrings.OceanTrip_RepairBelow, ("{0}", () => {
+                ImGui.SetNextItemWidth(80.Scaled());
+                if (ImGui.InputInt("###RepairThreshold", ref Cfg.RepairThreshold, 5)) {
+                    Cfg.RepairThreshold = Math.Clamp(Cfg.RepairThreshold, 1, 100);
+                    Configuration.Save();
+                }
+            }
+            ));
+        });
+
         DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_BuyBait, ref Cfg.BuyBait, () => {
             DrawUtil.Branch();
             foreach (var bait in OceanTripConsts.Baits) {
@@ -450,12 +473,31 @@ public static class OceanTripUi {
         ImGui.TextColored(ImGuiColors.DalamudOrange, string.Format(UIStrings.OceanTrip_PluginNotLoaded, plugin));
     }
 
-    // the game's own "desynthesis isn't unlocked" message
     private static string DesynthLockedText => LogMessage.TryGetRow(10197, out var row) ? row.Text.ToString() : "";
 
     private static void DrawItemIcon(uint itemId) {
         if (Item.TryGetRow(itemId, out var item))
             DrawUtil.GameIcon(item.Icon, IconSize, item.Name.ToString());
+    }
+
+    private static void DrawSentence(string sentence, params (string Token, System.Action Draw)[] widgets) {
+        var pattern = string.Join("|", widgets.Select(w => System.Text.RegularExpressions.Regex.Escape(w.Token)));
+        var first = true;
+        foreach (var part in System.Text.RegularExpressions.Regex.Split(sentence, $"({pattern})")) {
+            if (part.Trim().Length == 0)
+                continue;
+            if (!first)
+                ImGui.SameLine();
+            first = false;
+            var widget = widgets.FirstOrDefault(w => w.Token == part);
+            if (widget.Draw != null) {
+                widget.Draw();
+            }
+            else {
+                ImGui.AlignTextToFramePadding();
+                ImGui.Text(part.Trim());
+            }
+        }
     }
 
     // HH:mm text box over minutes since midnight

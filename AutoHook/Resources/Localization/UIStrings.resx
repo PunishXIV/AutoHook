@@ -2169,4 +2169,37 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="AutoOceanFish_WalkToRailing" xml:space="preserve">
     <value>Walk to railing</value>
   </data>
+  <data name="OceanTrip_MinFreeSlots" xml:space="preserve">
+    <value>Skip the voyage with fewer than {0} free inventory slots</value>
+  </data>
+  <data name="OceanTrip_EquipRecommended" xml:space="preserve">
+    <value>Equip recommended gear</value>
+  </data>
+  <data name="OceanTrip_Repair" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="OceanTrip_RepairBelow" xml:space="preserve">
+    <value>When any equipped piece is below {0}%</value>
+  </data>
+  <data name="OceanTrip_RepairSelfThenNpc" xml:space="preserve">
+    <value>Self repair, mender as fallback</value>
+  </data>
+  <data name="OceanTrip_RepairNpc" xml:space="preserve">
+    <value>Mender only</value>
+  </data>
+  <data name="OceanTrip_StatusEquippingRecommended" xml:space="preserve">
+    <value>Equipping recommended gear</value>
+  </data>
+  <data name="OceanTrip_StatusRepairing" xml:space="preserve">
+    <value>Repairing gear</value>
+  </data>
+  <data name="OceanTrip_ReasonInventoryFull" xml:space="preserve">
+    <value>not enough free inventory slots</value>
+  </data>
+  <data name="OceanTrip_ReasonInParty" xml:space="preserve">
+    <value>in a party</value>
+  </data>
+  <data name="ZeroToDisable" xml:space="preserve">
+    <value>0 to disable</value>
+  </data>
 </root>

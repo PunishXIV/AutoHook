@@ -41,6 +41,9 @@ public sealed class OceanTripService : IPluginService, IDisposable {
 
     public bool TryStart(OceanVoyage voyage, OceanTripSource source, System.Action? onFinished = null) {
         if (!CanStart(voyage, source, out var reason)) {
+            // retrying every second won't make room, so automatic sources give up on this voyage
+            if (source is not (OceanTripSource.Manual or OceanTripSource.Alert) && (reason == UIStrings.OceanTrip_ReasonInventoryFull || reason == UIStrings.OceanTrip_ReasonInParty))
+                _handled.Add(voyage);
             LastMessage = string.Format(UIStrings.OceanTrip_NotStarted, reason);
             IChatGui.Get().PrintError(ChatPrefix + LastMessage);
             return false;
@@ -73,10 +76,15 @@ public sealed class OceanTripService : IPluginService, IDisposable {
         else if (Svc.Automation.Running)
             reason = string.Format(UIStrings.OceanTrip_ReasonAlreadyRunning, Svc.Automation.Name);
         else if (ICondition.Get()[ConditionFlag.BoundByDuty] && !OceanTripTask.InOceanFishing
+                 || InOtherDutyQueue
                  || source != OceanTripSource.ArPostprocess && IsOccupied())
             reason = UIStrings.OceanTrip_ReasonBusy;
-        else if (!OceanTripTask.InOceanFishing && now >= LatestStart(voyage))
+        else if (InParty)
+            reason = UIStrings.OceanTrip_ReasonInParty;
+        else if (!OceanTripTask.InOceanFishing && QueuedOceanContent() == 0 && now >= LatestStart(voyage))
             reason = UIStrings.OceanTrip_ReasonMissedBoat;
+        else if (!OceanTripTask.InOceanFishing && QueuedOceanContent() == 0 && FreeSlots < Cfg.MinFreeSlots)
+            reason = UIStrings.OceanTrip_ReasonInventoryFull;
         return reason == "";
     }
 
@@ -91,6 +99,11 @@ public sealed class OceanTripService : IPluginService, IDisposable {
             return;
 
         var now = Framework.GetServerTime();
+        if (QueuedOceanVoyage(now) is { } queued) {
+            if (!_handled.Contains(queued))
+                TryStart(queued, OceanTripSource.FullAuto);
+            return;
+        }
         if (NextTripVoyage(now) is not { } voyage)
             return;
         var loggedIn = IClientState.Get().IsLoggedIn;
@@ -152,8 +165,45 @@ public sealed class OceanTripService : IPluginService, IDisposable {
             || Cfg.SafePoints.HasFlag(OceanTripSafePoint.Sanctuary) && TerritoryInfo.Instance()->InSanctuary;
     }
 
+    public static bool InParty
+        => IPartyList.Get().Length > 1 || FFXIVClientStructs.FFXIV.Client.UI.Info.InfoProxyCrossRealm.IsCrossRealmParty();
+
+    // queued for anything that isn't ocean fishing
+    public static bool InOtherDutyQueue
+        => ICondition.Get()[ConditionFlag.InDutyQueue] && !OceanTripTask.InOceanFishing && QueuedOceanContent() == 0;
+
+    // the ContentFinderCondition of an ocean fishing queue, 0 if not queued for one
+    public static unsafe uint QueuedOceanContent() {
+        if (!ICondition.Get()[ConditionFlag.InDutyQueue])
+            return 0;
+        var finder = FFXIVClientStructs.FFXIV.Client.Game.UI.ContentsFinder.Instance();
+        if (finder == null)
+            return 0;
+        foreach (var entry in finder->GetQueueInfo()->QueuedEntries) {
+            if (entry.ContentType == FFXIVClientStructs.FFXIV.Client.UI.Agent.ContentsType.Regular && OceanRouteContent.Contains(entry.Id))
+                return entry.Id;
+        }
+        return 0;
+    }
+
+    // the voyage boarding now that the ocean fishing queue is for
+    public static OceanVoyage? QueuedOceanVoyage(long now) {
+        var content = QueuedOceanContent();
+        if (content == 0)
+            return null;
+        return OceanSchedule.Upcoming([OceanLine.Indigo, OceanLine.Ruby], now - OceanSchedule.BoardingSeconds - 600)
+            .Take(8)
+            .Where(v => now >= v.BoardingStart && now < LatestStart(v) + 300 && IKDRoute.TryGetRow(v.RouteId, out var r) && r.Instance.RowId == content)
+            .Cast<OceanVoyage?>()
+            .FirstOrDefault();
+    }
+
+    private static readonly HashSet<uint> OceanRouteContent = [.. IKDRoute.Select(r => r.Instance.RowId).Where(id => id != 0)];
+
+    public static unsafe int FreeSlots => (int)FFXIVClientStructs.FFXIV.Client.Game.InventoryManager.Instance()->GetEmptySlotsInBag();
+
     public static bool IsIdle()
-        => !Svc.Automation.Running && !IsOccupied() && WorldState.Get().Fishing.FishingState == FishingState.None && !AutoRetainerIPC.Get().IsBusy && !LifestreamIPC.Get().IsBusy;
+        => !Svc.Automation.Running && !IsOccupied() && !ICondition.Get()[ConditionFlag.InDutyQueue] && !InParty && WorldState.Get().Fishing.FishingState == FishingState.None && !AutoRetainerIPC.Get().IsBusy && !LifestreamIPC.Get().IsBusy;
 
     #region AutoRetainer multi mode
 

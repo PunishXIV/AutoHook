@@ -6119,5 +6119,104 @@ namespace AutoHook.Resources.Localization {
                 return ResourceManager.GetString("AutoOceanFish_WalkToRailing", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Skip the voyage with fewer than {0} free inventory slots.
+        /// </summary>
+        internal static string OceanTrip_MinFreeSlots {
+            get {
+                return ResourceManager.GetString("OceanTrip_MinFreeSlots", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Equip recommended gear.
+        /// </summary>
+        internal static string OceanTrip_EquipRecommended {
+            get {
+                return ResourceManager.GetString("OceanTrip_EquipRecommended", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Repair.
+        /// </summary>
+        internal static string OceanTrip_Repair {
+            get {
+                return ResourceManager.GetString("OceanTrip_Repair", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to When any equipped piece is below {0}%.
+        /// </summary>
+        internal static string OceanTrip_RepairBelow {
+            get {
+                return ResourceManager.GetString("OceanTrip_RepairBelow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Self repair, mender as fallback.
+        /// </summary>
+        internal static string OceanTrip_RepairSelfThenNpc {
+            get {
+                return ResourceManager.GetString("OceanTrip_RepairSelfThenNpc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Mender only.
+        /// </summary>
+        internal static string OceanTrip_RepairNpc {
+            get {
+                return ResourceManager.GetString("OceanTrip_RepairNpc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Equipping recommended gear.
+        /// </summary>
+        internal static string OceanTrip_StatusEquippingRecommended {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusEquippingRecommended", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Repairing gear.
+        /// </summary>
+        internal static string OceanTrip_StatusRepairing {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusRepairing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to not enough free inventory slots.
+        /// </summary>
+        internal static string OceanTrip_ReasonInventoryFull {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonInventoryFull", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to in a party.
+        /// </summary>
+        internal static string OceanTrip_ReasonInParty {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonInParty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to 0 to disable.
+        /// </summary>
+        internal static string ZeroToDisable {
+            get {
+                return ResourceManager.GetString("ZeroToDisable", resourceCulture);
+            }
+        }
     }
 }
