@@ -27,7 +27,6 @@ public sealed class TabOceanFishing : BaseTab {
         DrawControls(lineRoutes);
         ImGui.Spacing();
         OceanTripUi.DrawStatusBar();
-        OceanTripUi.DrawSettings();
         ImGui.Spacing();
         ImGui.Spacing();
 
@@ -203,7 +202,6 @@ public sealed class TabOceanFishing : BaseTab {
             if (ImGuiComponents.IconButton("###Alarm", FontAwesomeIcon.Bell))
                 OceanAlarms.Toggle(voyage);
         }
-        ImGui.TooltipOnHover(set ? "Alarm set, click to cancel" : "Set an alarm for this voyage (reminders are set up in Settings > Ocean Fishing)");
     }
 
     private static void DrawRoute(IKDRoute route) {

@@ -1,3 +1,4 @@
+using Dalamud.Interface.Components;
 using AutoHook.Spearfishing;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility.Raii;
@@ -83,17 +84,30 @@ public class TabSettings : BaseTab {
     }
 
     private void DrawOceanFishingSettings() {
-        DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Configuration.C.AutoOceanFish, UIStrings.AutoOceanFishHelpText);
+        DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Configuration.C.AutoOceanFish, UIStrings.AutoOceanFish_Description);
         if (Configuration.C.AutoOceanFish) {
             using (DrawUtil.BeginBranches(indent: true)) {
                 DrawAutoOceanFishGoal();
                 DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Configuration.C.AOF_Fallthrough);
-                DrawUtil.Checkbox(UIStrings.AutoOceanFish_AllowMovement, ref Configuration.C.AOF_WalkToRailing, UIStrings.AutoOceanFish_AllowMovementHelpText);
+                DrawWalkToRailing();
+                OceanTripUi.DrawReadiness();
+                DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_Voyages, OceanTripUi.DrawVoyageSettings, UIStrings.OceanTrip_VoyagesHelp);
             }
         }
 
         ImGui.Spacing();
         OceanTripUi.DrawAlarmSettings();
+    }
+
+    // trips always walk, so the setting only means something while they don't run automatically
+    private static void DrawWalkToRailing() {
+        var overridden = Configuration.C.OceanTrip.FullAuto;
+        using (ImRaii.Disabled(overridden))
+            DrawUtil.Checkbox(UIStrings.AutoOceanFish_WalkToRailing, ref Configuration.C.AOF_WalkToRailing);
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(overridden
+            ? string.Format(UIStrings.OverriddenBy, UIStrings.OceanTrip_GoAutomatically)
+            : UIStrings.AutoOceanFish_AllowMovementHelpText);
     }
 
     private static void DrawAutoOceanFishGoal() {

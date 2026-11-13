@@ -185,7 +185,7 @@ public static class OceanPresetSelector {
         return !(extra.AutoOceanFishConditionSet is { } set) || !set.HasAnyCondition() || !set.Fails(WorldState.Get());
     }
 
-    private static IEnumerable<CustomPresetConfig> EnumerateHookPresets() {
+    internal static IEnumerable<CustomPresetConfig> EnumerateHookPresets() {
         yield return RodFishingModule.Presets.DefaultPreset;
         foreach (var preset in RodFishingModule.Presets.CustomPresets)
             yield return preset;

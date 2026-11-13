@@ -73,13 +73,12 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             await RideVoyage();
             await Cleanup();
             await RunPostSteps();
-            IChatGui.Get().PrintStatus("[Ocean trip] Finished");
         }
         catch (OperationCanceledException) {
             throw;
         }
         catch (Exception e) {
-            IChatGui.Get().PrintError($"[AutoHook] Ocean trip stopped: {e.Message}");
+            IChatGui.Get().PrintError(OceanTripService.ChatPrefix + string.Format(UIStrings.OceanTrip_Stopped, e.Message));
             throw;
         }
         finally {
@@ -101,7 +100,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         using var scope = BeginScope(nameof(TravelToDock));
         if (InOceanFishing)
             return; // already aboard, e.g. registered by hand
-        Status = "Travelling to Limsa Lominsa";
+        Status = UIStrings.OceanTrip_StatusTravelling;
         await WaitUntil(() => !IsOccupied(), "WaitUnoccupied", timeout: TimeSpan.FromSeconds(30));
         await MoveTo(OceanTripConsts.DockTerritory, OceanTripConsts.DryskthotaPosition, MovementConfig.Default.WithTolerance(4f));
     }
@@ -111,9 +110,9 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (InOceanFishing || CurrentJob == FisherJobId)
             return;
 
-        Status = "Switching to fisher";
+        Status = UIStrings.OceanTrip_StatusSwappingGearsets;
         var gearset = FindFisherGearset();
-        ErrorIf(gearset < 0, "No fisher gearset found");
+        ErrorIf(gearset < 0, UIStrings.OceanTrip_NoFisherGearset);
         await WaitUntil(() => !IsOccupied(), "WaitUnoccupied", timeout: TimeSpan.FromSeconds(30));
         await TryUntil(() => EquipGearset(gearset), () => CurrentJob == FisherJobId, "EquipFisher", timeoutSeconds: 3f, maxRetries: 3);
     }
@@ -134,7 +133,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (toBuy.Count == 0)
             return;
 
-        Status = "Buying bait";
+        Status = UIStrings.OceanTrip_StatusBuyingBait;
         await OpenBaitShop();
         foreach (var (id, count) in toBuy) {
             var remaining = count;
@@ -142,7 +141,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                 var batch = Math.Min(remaining, 99);
                 var before = ItemCount(id);
                 Log($"Buying {batch}x {id}");
-                ErrorIf(!AgentShop.BuyItemFromShop(OceanTripConsts.BaitShopId, id, batch), $"Failed to buy item {id}");
+                ErrorIf(!AgentShop.BuyItemFromShop(OceanTripConsts.BaitShopId, id, batch), string.Format(UIStrings.OceanTrip_ErrorBuyFailed, id));
                 await WaitUntilSkipping(() => ItemCount(id) > before, "WaitBought", UiSkipOptions.YesNo);
                 remaining -= ItemCount(id) - before;
             }
@@ -158,13 +157,13 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (FindObject(OceanTripConsts.BaitVendorId) == null)
             await MoveTo(OceanTripConsts.DockTerritory, OceanTripConsts.DryskthotaPosition, MovementConfig.Default.WithTolerance(4f));
         if (FindObject(OceanTripConsts.BaitVendorId) is not { } vendor) {
-            Error("Bait vendor not found");
+            Error(UIStrings.OceanTrip_ErrorVendorNotFound);
             return;
         }
         if (!vendor.IsInInteractRange())
             await MoveToDirectly(vendor.Position, vendor.IsInInteractRange);
         await WaitWhile(() => IsMoving, "WaitStopped");
-        ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), "Failed to open bait shop");
+        ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), UIStrings.OceanTrip_ErrorOpenShopFailed);
         await WaitUntilSkipping(() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop"), "WaitShopOpen", UiSkipOptions.Talk);
     }
 
@@ -184,10 +183,9 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         using var scope = BeginScope(nameof(WaitForBoardTime));
         if (InOceanFishing)
             return;
-        while (Now < BoardTime) {
-            Status = $"Waiting to board ({BoardTime - Now}s)";
+        Status = UIStrings.OceanTrip_StatusWaitingToBoard;
+        while (Now < BoardTime)
             await DelayMs(1000);
-        }
     }
 
     private async Task Register() {
@@ -196,13 +194,13 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             return;
 
         var closes = Voyage.BoardingStart + OceanSchedule.BoardingSeconds;
-        ErrorIf(Now >= closes - 15, "Boarding has closed");
+        ErrorIf(Now >= closes - 15, UIStrings.OceanTrip_ErrorBoardingClosed);
 
-        Status = "Registering to board";
+        Status = UIStrings.OceanTrip_StatusRegistering;
         // world state, presets and the zone start event all need the plugin on, and the first zone can start soon after boarding
         Configuration.C.PluginEnabled = true;
         if (FindObject(OceanTripConsts.DryskthotaId) is not { } npc) {
-            Error("Dryskthota not found");
+            Error(UIStrings.OceanTrip_ErrorDryskthotaNotFound);
             return;
         }
 
@@ -212,7 +210,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var deadline = Environment.TickCount64 + 60_000;
         await InteractWith(npc);
         while (!InOceanFishing && !ContentsFinderConfirmReady && !InDutyQueue) {
-            ErrorIf(Environment.TickCount64 > deadline, "Timed out registering with Dryskthota");
+            ErrorIf(Environment.TickCount64 > deadline, UIStrings.OceanTrip_ErrorRegisterTimeout);
             if (TryGetSelectStringText(out var text)) {
                 SelectString(menusSeen == 0 ? 0 : routeIndex, text);
                 menusSeen++;
@@ -228,12 +226,12 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         }
 
         // queued until the pop: when the boat fills up, or at :15 at the latest, even if nobody else joined
-        Status = "Registered, waiting for departure";
+        Status = UIStrings.OceanTrip_StatusRegistered;
         await WaitUntil(() => {
             if (InOceanFishing)
                 return true;
             if (ContentsFinderConfirmReady) {
-                Status = "Boarding";
+                Status = UIStrings.OceanTrip_StatusBoarding;
                 CommenceDuty();
             }
             return false;
@@ -271,16 +269,16 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
             if (_pendingZone is { } zone) {
                 _pendingZone = null;
-                Status = $"Fishing stop {zone + 1}";
+                Status = string.Format(UIStrings.OceanTrip_StatusFishingStop, zone + 1);
                 await AutoOceanFish.RunZone(this, zone);
             }
             else {
-                Status = Ws.OceanFishing == OceanFishingState.Empty ? "Waiting to depart" : $"Fishing stop {Ws.OceanFishing.CurrentZone + 1}";
+                Status = Ws.OceanFishing == OceanFishingState.Empty ? UIStrings.OceanTrip_StatusWaitingToDepart : string.Format(UIStrings.OceanTrip_StatusFishingStop, Ws.OceanFishing.CurrentZone + 1);
             }
             await NextFrame(10);
         }
 
-        Status = "Returning to the dock";
+        Status = UIStrings.OceanTrip_StatusReturningToDock;
         Configuration.C.PluginEnabled = _pluginWasEnabled;
         await WaitUntil(() => !InOceanFishing && Player.Interactable && !IsOccupied(), "WaitBackAshore", timeout: TimeSpan.FromMinutes(3));
     }
@@ -311,10 +309,10 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task LeaveEarly(int stop, bool midZone) {
         using var scope = BeginScope(nameof(LeaveEarly));
-        IChatGui.Get().PrintStatus(midZone
-            ? $"[Ocean trip] Spectral current over and nothing else left to catch from stop {stop + 1} on, leaving the voyage"
-            : $"[Ocean trip] Nothing left to catch after stop {stop + 1}, leaving the voyage");
-        Status = "Leaving early";
+        Log(midZone
+            ? $"Spectral current over and nothing else left to catch from stop {stop + 1} on, leaving the voyage"
+            : $"Nothing left to catch after stop {stop + 1}, leaving the voyage");
+        Status = UIStrings.OceanTrip_StatusLeavingEarly;
         if (Ws.Fishing.FishingState != FishingState.None)
             FishingSessionManager.Get().Rod.RequestHardQuit();
         await WaitUntil(() => Ws.Fishing.FishingState == FishingState.None, "WaitStoppedFishing", timeout: TimeSpan.FromSeconds(30), abortOnTimeout: false);
@@ -345,7 +343,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                 await DesynthFish();
                 break;
             case OceanTripCleanup.Desynth:
-                IChatGui.Get().PrintError("[AutoHook] Ocean trip: desynthesis isn't unlocked, skipping");
+                Warning("Desynthesis isn't unlocked, skipping");
                 break;
             case OceanTripCleanup.Sell:
                 await SellFish();
@@ -355,11 +353,11 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task DesynthFish() {
         using var scope = BeginScope(nameof(DesynthFish));
+        Status = UIStrings.OceanTrip_StatusDesynthing;
         foreach (var slot in OceanFishCleanup.FindFish(OceanFishCleanup.CanDesynth)) {
             while (OceanFishCleanup.SlotHolds(slot)) {
-                Status = $"Desynthesising {ItemName(slot.ItemId)}";
                 await WaitUntil(() => !IsOccupied() && !AtkUnitBase.IsAddonReady("SalvageResult"), "WaitIdle", timeout: TimeSpan.FromSeconds(10));
-                ErrorIf(!OceanFishCleanup.Desynth(slot), $"Failed to desynth {slot}");
+                ErrorIf(!OceanFishCleanup.Desynth(slot), string.Format(UIStrings.OceanTrip_ErrorDesynthFailed, slot));
                 await WaitUntil(() => AtkUnitBase.IsAddonReady("SalvageDialog"), "WaitDialog", timeout: TimeSpan.FromSeconds(5));
                 ClickDesynthesize();
                 await WaitUntil(() => AtkUnitBase.IsAddonReady("SalvageResult"), "WaitResult", timeout: TimeSpan.FromSeconds(10));
@@ -374,12 +372,11 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var slots = OceanFishCleanup.FindFish(OceanFishCleanup.CanSell);
         if (slots.Count == 0)
             return;
-        ErrorIf(!OceanFishCleanup.SellItemAvailable, "Couldn't find the game's sell function");
+        ErrorIf(!OceanFishCleanup.SellItemAvailable, UIStrings.OceanTrip_ErrorSellFunctionMissing);
 
-        Status = "Selling fish";
+        Status = UIStrings.OceanTrip_StatusSelling;
         await OpenBaitShop();
         foreach (var slot in slots) {
-            Status = $"Selling {ItemName(slot.ItemId)}";
             if (!OceanFishCleanup.Sell(slot)) {
                 Warning($"Failed to sell {slot}");
                 continue;
@@ -396,6 +393,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task RunPostSteps() {
         using var scope = BeginScope(nameof(RunPostSteps));
+        Status = UIStrings.OceanTrip_StatusPostSteps;
         foreach (var step in Cfg.PostSteps.ToList()) {
             Log($"Post step {step.Kind} '{step.Arg}'");
             switch (step.Kind) {
@@ -404,10 +402,9 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                     break;
                 case OceanTripStepKind.StartAutoRetainerMulti when Source is not (OceanTripSource.ArPostprocess or OceanTripSource.ArMultiMode): // it resumes by itself
                     if (!AutoRetainerIPC.Get().Available) {
-                        IChatGui.Get().PrintError("[AutoHook] Ocean trip: AutoRetainer isn't loaded, skipping");
+                        Warning("AutoRetainer isn't loaded, skipping multi mode");
                         break;
                     }
-                    Status = "Starting AutoRetainer multi mode";
                     AutoRetainerIPC.Get().EnableMultiMode();
                     await DelayMs(1000);
                     break;
@@ -419,15 +416,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                     break;
                 case OceanTripStepKind.ChatCommand:
                     if (!string.IsNullOrWhiteSpace(step.Arg)) {
-                        Status = $"Running {step.Arg}";
                         Chat.SendMessage(step.Arg.Trim());
                         await DelayMs(1000);
-                    }
-                    break;
-                case OceanTripStepKind.Wait:
-                    if (int.TryParse(step.Arg, out var seconds) && seconds > 0) {
-                        Status = $"Waiting {seconds}s";
-                        await DelayMs(seconds * 1000);
                     }
                     break;
             }
@@ -436,7 +426,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task ReturnToOrigin(OceanTripHome housing) {
         using var scope = BeginScope(nameof(ReturnToOrigin));
-        Status = "Returning";
         if (Origin.GearsetIndex >= 0 && CurrentGearset != Origin.GearsetIndex) {
             await WaitUntil(() => !IsOccupied(), "WaitUnoccupied", timeout: TimeSpan.FromSeconds(30));
             EquipGearset(Origin.GearsetIndex);
@@ -458,11 +447,10 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         }
     }
 
-    private async Task LifestreamTravel(string status, Func<bool> enqueue) {
+    private async Task LifestreamTravel(string what, Func<bool> enqueue) {
         using var scope = BeginScope(nameof(LifestreamTravel));
-        Status = status;
         if (!enqueue()) {
-            IChatGui.Get().PrintError($"[AutoHook] Ocean trip: Lifestream is needed for \"{status}\", skipping");
+            Warning($"Lifestream is needed for \"{what}\", skipping");
             return;
         }
         await WaitUntil(() => LifestreamIPC.Get().IsBusy, "WaitLifestreamStart", timeout: TimeSpan.FromSeconds(5), abortOnTimeout: false);
@@ -487,8 +475,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             return InventoryManager.Instance()->GetInventoryItemCount(itemId);
         }
     }
-
-    private static string ItemName(uint itemId) => Item.TryGetRow(itemId, out var item) ? item.Name.ToString() : $"#{itemId}";
 
     private static IGameObject? FindObject(uint baseId)
         => IObjectTable.Get().Where(o => o.BaseId == baseId && o.IsTargetable).OrderBy(o => Vector3.DistanceSquared(o.Position, IObjectTable.Get().LocalPlayer?.Position ?? default)).FirstOrDefault();
@@ -523,6 +509,12 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                 return i;
         }
         return -1;
+    }
+
+    public static unsafe string GearsetName(int index) {
+        var module = RaptureGearsetModule.Instance();
+        var entry = module == null ? null : module->GetGearset(index);
+        return entry == null ? "" : entry->NameString;
     }
 
     private static unsafe void EquipGearset(int index) => RaptureGearsetModule.Instance()->EquipGearset(index);

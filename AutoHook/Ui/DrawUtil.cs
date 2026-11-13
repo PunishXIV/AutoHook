@@ -416,6 +416,9 @@ public static class DrawUtil {
     }
 
     // body rows sit under the tree arrow, each with its own branch prefix
+    // where the last trailing separator ended, so nested trees closing together don't stack separators
+    private static (int Frame, float Y) _lastSeparator;
+
     private static void DrawTreeBody(float labelX, Action body, bool trailingSeparator) {
         var pad = labelX - ImGui.GetCursorPosX();
         var indent = Math.Abs(pad) > 0.5f;
@@ -425,8 +428,10 @@ public static class DrawUtil {
         using (BeginBranches())
             body();
 
-        if (trailingSeparator)
+        if (trailingSeparator && _lastSeparator != (ImGui.GetFrameCount(), ImGui.GetCursorScreenPos().Y)) {
             ImGui.Separator();
+            _lastSeparator = (ImGui.GetFrameCount(), ImGui.GetCursorScreenPos().Y);
+        }
 
         if (indent)
             ImGui.Unindent(pad);

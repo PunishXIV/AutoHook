@@ -1997,7 +1997,7 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go for every voyage matching the filters above..
+        ///   Looks up a localized string similar to Queues by itself for every voyage matching the Ocean Fishing tab filters..
         /// </summary>
         internal static string FullAutoHelpText {
             get {
@@ -5199,6 +5199,924 @@ namespace AutoHook.Resources.Localization {
         internal static string WillBeUsedWhenYourGPIsEqualOr {
             get {
                 return ResourceManager.GetString("WillBeUsedWhenYourGPIsEqualOr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop the trip.
+        /// </summary>
+        internal static string OceanTrip_StopTrip {
+            get {
+                return ResourceManager.GetString("OceanTrip_StopTrip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Trips require {0} enabled..
+        /// </summary>
+        internal static string OceanTrip_RequiresAutoOceanFish {
+            get {
+                return ResourceManager.GetString("OceanTrip_RequiresAutoOceanFish", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Next: {0}, leaving {1}.
+        /// </summary>
+        internal static string OceanTrip_NextTrip {
+            get {
+                return ResourceManager.GetString("OceanTrip_NextTrip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Preparation.
+        /// </summary>
+        internal static string OceanTrip_Preparation {
+            get {
+                return ResourceManager.GetString("OceanTrip_Preparation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to After The Voyage.
+        /// </summary>
+        internal static string OceanTrip_AfterTheVoyage {
+            get {
+                return ResourceManager.GetString("OceanTrip_AfterTheVoyage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Leave.
+        /// </summary>
+        internal static string OceanTrip_Leave {
+            get {
+                return ResourceManager.GetString("OceanTrip_Leave", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to when boarding opens (:00).
+        /// </summary>
+        internal static string OceanTrip_LeaveWhenBoardingOpens {
+            get {
+                return ResourceManager.GetString("OceanTrip_LeaveWhenBoardingOpens", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to late, at :.
+        /// </summary>
+        internal static string OceanTrip_LeaveLate {
+            get {
+                return ResourceManager.GetString("OceanTrip_LeaveLate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} only between {1} and {2} local time.
+        /// </summary>
+        internal static string OceanTrip_OnlyBetween {
+            get {
+                return ResourceManager.GetString("OceanTrip_OnlyBetween", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} starts from.
+        /// </summary>
+        internal static string OceanTrip_StartsFrom {
+            get {
+                return ResourceManager.GetString("OceanTrip_StartsFrom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Inn room.
+        /// </summary>
+        internal static string OceanTrip_InnRoom {
+            get {
+                return ResourceManager.GetString("OceanTrip_InnRoom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Residential sector.
+        /// </summary>
+        internal static string OceanTrip_ResidentialSector {
+            get {
+                return ResourceManager.GetString("OceanTrip_ResidentialSector", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Any sanctuary.
+        /// </summary>
+        internal static string OceanTrip_AnySanctuary {
+            get {
+                return ResourceManager.GetString("OceanTrip_AnySanctuary", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to AutoRetainer.
+        /// </summary>
+        internal static string OceanTrip_AutoRetainer {
+            get {
+                return ResourceManager.GetString("OceanTrip_AutoRetainer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ignores starting zone options.
+        /// </summary>
+        internal static string OceanTrip_AutoRetainerHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_AutoRetainerHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Character.
+        /// </summary>
+        internal static string OceanTrip_Character {
+            get {
+                return ResourceManager.GetString("OceanTrip_Character", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to none assigned.
+        /// </summary>
+        internal static string OceanTrip_NoneAssigned {
+            get {
+                return ResourceManager.GetString("OceanTrip_NoneAssigned", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use this character.
+        /// </summary>
+        internal static string OceanTrip_UseThisCharacter {
+            get {
+                return ResourceManager.GetString("OceanTrip_UseThisCharacter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unassign.
+        /// </summary>
+        internal static string OceanTrip_Unassign {
+            get {
+                return ResourceManager.GetString("OceanTrip_Unassign", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Multi mode.
+        /// </summary>
+        internal static string OceanTrip_MultiMode {
+            get {
+                return ResourceManager.GetString("OceanTrip_MultiMode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Triggers when AutoRetainer is idle. Pauses multimode and resumes afterwards..
+        /// </summary>
+        internal static string OceanTrip_MultiModeHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_MultiModeHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Character Post Process.
+        /// </summary>
+        internal static string OceanTrip_CharacterPostProcess {
+            get {
+                return ResourceManager.GetString("OceanTrip_CharacterPostProcess", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Triggers after your character has finished their retainers if it coincides with a boat..
+        /// </summary>
+        internal static string OceanTrip_CharacterPostProcessHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_CharacterPostProcessHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to When the voyage leaves within.
+        /// </summary>
+        internal static string OceanTrip_WhenVoyageLeavesWithin {
+            get {
+                return ResourceManager.GetString("OceanTrip_WhenVoyageLeavesWithin", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to min.
+        /// </summary>
+        internal static string OceanTrip_Min {
+            get {
+                return ResourceManager.GetString("OceanTrip_Min", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} not loaded.
+        /// </summary>
+        internal static string OceanTrip_PluginNotLoaded {
+            get {
+                return ResourceManager.GetString("OceanTrip_PluginNotLoaded", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Buy bait.
+        /// </summary>
+        internal static string OceanTrip_BuyBait {
+            get {
+                return ResourceManager.GetString("OceanTrip_BuyBait", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to top up to.
+        /// </summary>
+        internal static string OceanTrip_TopUpTo {
+            get {
+                return ResourceManager.GetString("OceanTrip_TopUpTo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to each.
+        /// </summary>
+        internal static string OceanTrip_Each {
+            get {
+                return ResourceManager.GetString("OceanTrip_Each", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Swap to {0} (#{1}).
+        /// </summary>
+        internal static string OceanTrip_SwapToGearset {
+            get {
+                return ResourceManager.GetString("OceanTrip_SwapToGearset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No fisher gearset found.
+        /// </summary>
+        internal static string OceanTrip_NoFisherGearset {
+            get {
+                return ResourceManager.GetString("OceanTrip_NoFisherGearset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Leave early when there's nothing left to catch.
+        /// </summary>
+        internal static string OceanTrip_LeaveEarly {
+            get {
+                return ResourceManager.GetString("OceanTrip_LeaveEarly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Quit fishing and leave the voyage if you're in zone 1 or 2 and there's no more uncaught fish in the remaining zones. Does not leave early if there's achievements remaining..
+        /// </summary>
+        internal static string OceanTrip_LeaveEarlyHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_LeaveEarlyHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fish:.
+        /// </summary>
+        internal static string OceanTrip_Fish {
+            get {
+                return ResourceManager.GetString("OceanTrip_Fish", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keep.
+        /// </summary>
+        internal static string OceanTrip_Keep {
+            get {
+                return ResourceManager.GetString("OceanTrip_Keep", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Desynth.
+        /// </summary>
+        internal static string OceanTrip_Desynth {
+            get {
+                return ResourceManager.GetString("OceanTrip_Desynth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sell to vendor.
+        /// </summary>
+        internal static string OceanTrip_SellToVendor {
+            get {
+                return ResourceManager.GetString("OceanTrip_SellToVendor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Legendary fish are always kept and are immune from post-voyage actions..
+        /// </summary>
+        internal static string OceanTrip_LegendaryHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_LegendaryHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Then.
+        /// </summary>
+        internal static string OceanTrip_Then {
+            get {
+                return ResourceManager.GetString("OceanTrip_Then", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Return to where I was.
+        /// </summary>
+        internal static string OceanTrip_StepReturnToOrigin {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepReturnToOrigin", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Swap back to previous gearset and go back to the zone and position you were in before..
+        /// </summary>
+        internal static string OceanTrip_StepReturnToOriginHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepReturnToOriginHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Go to the inn.
+        /// </summary>
+        internal static string OceanTrip_StepGoToInn {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepGoToInn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Go home.
+        /// </summary>
+        internal static string OceanTrip_StepGoHome {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepGoHome", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Command.
+        /// </summary>
+        internal static string OceanTrip_StepCommand {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepCommand", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Start AutoRetainer multi mode.
+        /// </summary>
+        internal static string OceanTrip_StepStartAutoRetainerMulti {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepStartAutoRetainerMulti", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Requires Lifestream.
+        /// </summary>
+        internal static string OceanTrip_RequiresLifestream {
+            get {
+                return ResourceManager.GetString("OceanTrip_RequiresLifestream", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Go to.
+        /// </summary>
+        internal static string OceanTrip_GoTo {
+            get {
+                return ResourceManager.GetString("OceanTrip_GoTo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to If it started in housing, go back to.
+        /// </summary>
+        internal static string OceanTrip_ReturnHousingTo {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReturnHousingTo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Private house.
+        /// </summary>
+        internal static string OceanTrip_HomePrivate {
+            get {
+                return ResourceManager.GetString("OceanTrip_HomePrivate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to FC house.
+        /// </summary>
+        internal static string OceanTrip_HomeFreeCompany {
+            get {
+                return ResourceManager.GetString("OceanTrip_HomeFreeCompany", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Apartment.
+        /// </summary>
+        internal static string OceanTrip_HomeApartment {
+            get {
+                return ResourceManager.GetString("OceanTrip_HomeApartment", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boat alarms.
+        /// </summary>
+        internal static string OceanTrip_BoatAlarms {
+            get {
+                return ResourceManager.GetString("OceanTrip_BoatAlarms", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to min before boarding.
+        /// </summary>
+        internal static string OceanTrip_MinBeforeBoarding {
+            get {
+                return ResourceManager.GetString("OceanTrip_MinBeforeBoarding", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to opens.
+        /// </summary>
+        internal static string OceanTrip_Opens {
+            get {
+                return ResourceManager.GetString("OceanTrip_Opens", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to closes.
+        /// </summary>
+        internal static string OceanTrip_Closes {
+            get {
+                return ResourceManager.GetString("OceanTrip_Closes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boat boarding now, closes in {0}: {1}.
+        /// </summary>
+        internal static string OceanTrip_AlarmBoardingNow {
+            get {
+                return ResourceManager.GetString("OceanTrip_AlarmBoardingNow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boat boarding in {0}: {1}.
+        /// </summary>
+        internal static string OceanTrip_AlarmBoardingIn {
+            get {
+                return ResourceManager.GetString("OceanTrip_AlarmBoardingIn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}s.
+        /// </summary>
+        internal static string OceanTrip_SecondsShort {
+            get {
+                return ResourceManager.GetString("OceanTrip_SecondsShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0}m.
+        /// </summary>
+        internal static string OceanTrip_MinutesShort {
+            get {
+                return ResourceManager.GetString("OceanTrip_MinutesShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to [Go].
+        /// </summary>
+        internal static string OceanTrip_GoLink {
+            get {
+                return ResourceManager.GetString("OceanTrip_GoLink", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ocean trip not started: {0}.
+        /// </summary>
+        internal static string OceanTrip_NotStarted {
+            get {
+                return ResourceManager.GetString("OceanTrip_NotStarted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to not logged in.
+        /// </summary>
+        internal static string OceanTrip_ReasonNotLoggedIn {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonNotLoggedIn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to auto ocean fishing is disabled in the settings.
+        /// </summary>
+        internal static string OceanTrip_ReasonAutoOceanFishDisabled {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonAutoOceanFishDisabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is already running.
+        /// </summary>
+        internal static string OceanTrip_ReasonAlreadyRunning {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonAlreadyRunning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to busy.
+        /// </summary>
+        internal static string OceanTrip_ReasonBusy {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonBusy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to missed boat.
+        /// </summary>
+        internal static string OceanTrip_ReasonMissedBoat {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonMissedBoat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ocean trip started ({0}) for {1}.
+        /// </summary>
+        internal static string OceanTrip_Started {
+            get {
+                return ResourceManager.GetString("OceanTrip_Started", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Departing for {0}.
+        /// </summary>
+        internal static string OceanTrip_Departing {
+            get {
+                return ResourceManager.GetString("OceanTrip_Departing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ocean trip stopped: {0}.
+        /// </summary>
+        internal static string OceanTrip_Stopped {
+            get {
+                return ResourceManager.GetString("OceanTrip_Stopped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Travelling to docks.
+        /// </summary>
+        internal static string OceanTrip_StatusTravelling {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusTravelling", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Swapping gearsets.
+        /// </summary>
+        internal static string OceanTrip_StatusSwappingGearsets {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusSwappingGearsets", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Buying bait.
+        /// </summary>
+        internal static string OceanTrip_StatusBuyingBait {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusBuyingBait", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting to board.
+        /// </summary>
+        internal static string OceanTrip_StatusWaitingToBoard {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusWaitingToBoard", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Registering to board.
+        /// </summary>
+        internal static string OceanTrip_StatusRegistering {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusRegistering", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Registered, waiting for departure.
+        /// </summary>
+        internal static string OceanTrip_StatusRegistered {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusRegistered", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boarding.
+        /// </summary>
+        internal static string OceanTrip_StatusBoarding {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusBoarding", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Fishing stop {0}.
+        /// </summary>
+        internal static string OceanTrip_StatusFishingStop {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusFishingStop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting to depart.
+        /// </summary>
+        internal static string OceanTrip_StatusWaitingToDepart {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusWaitingToDepart", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Returning to the dock.
+        /// </summary>
+        internal static string OceanTrip_StatusReturningToDock {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusReturningToDock", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Leaving early.
+        /// </summary>
+        internal static string OceanTrip_StatusLeavingEarly {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusLeavingEarly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Desynthing fish.
+        /// </summary>
+        internal static string OceanTrip_StatusDesynthing {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusDesynthing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Selling fish.
+        /// </summary>
+        internal static string OceanTrip_StatusSelling {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusSelling", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Executing post-voyage steps.
+        /// </summary>
+        internal static string OceanTrip_StatusPostSteps {
+            get {
+                return ResourceManager.GetString("OceanTrip_StatusPostSteps", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to buy item {0}.
+        /// </summary>
+        internal static string OceanTrip_ErrorBuyFailed {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorBuyFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Bait vendor not found.
+        /// </summary>
+        internal static string OceanTrip_ErrorVendorNotFound {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorVendorNotFound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to open bait shop.
+        /// </summary>
+        internal static string OceanTrip_ErrorOpenShopFailed {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorOpenShopFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Boarding has closed.
+        /// </summary>
+        internal static string OceanTrip_ErrorBoardingClosed {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorBoardingClosed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dryskthota not found.
+        /// </summary>
+        internal static string OceanTrip_ErrorDryskthotaNotFound {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorDryskthotaNotFound", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Timed out registering with Dryskthota.
+        /// </summary>
+        internal static string OceanTrip_ErrorRegisterTimeout {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorRegisterTimeout", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to desynth {0}.
+        /// </summary>
+        internal static string OceanTrip_ErrorDesynthFailed {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorDesynthFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn't find the game's sell function.
+        /// </summary>
+        internal static string OceanTrip_ErrorSellFunctionMissing {
+            get {
+                return ResourceManager.GetString("OceanTrip_ErrorSellFunctionMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Voyages.
+        /// </summary>
+        internal static string OceanTrip_Voyages {
+            get {
+                return ResourceManager.GetString("OceanTrip_Voyages", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Go automatically.
+        /// </summary>
+        internal static string OceanTrip_GoAutomatically {
+            get {
+                return ResourceManager.GetString("OceanTrip_GoAutomatically", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to During The Voyage.
+        /// </summary>
+        internal static string OceanTrip_DuringTheVoyage {
+            get {
+                return ResourceManager.GetString("OceanTrip_DuringTheVoyage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Presets: {0}/{1} stops covered for {2}.
+        /// </summary>
+        internal static string OceanTrip_Readiness {
+            get {
+                return ResourceManager.GetString("OceanTrip_Readiness", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No preset for:.
+        /// </summary>
+        internal static string OceanTrip_ReadinessMissing {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReadinessMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Go automatically skips voyages with an uncovered stop..
+        /// </summary>
+        internal static string OceanTrip_ReadinessGated {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReadinessGated", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} stops have no preset.
+        /// </summary>
+        internal static string OceanTrip_StopsUncovered {
+            get {
+                return ResourceManager.GetString("OceanTrip_StopsUncovered", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Casts and switches presets for each stop while you are on a voyage..
+        /// </summary>
+        internal static string AutoOceanFish_Description {
+            get {
+                return ResourceManager.GetString("AutoOceanFish_Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Getting to the boat, buying bait and what happens after the voyage..
+        /// </summary>
+        internal static string OceanTrip_VoyagesHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_VoyagesHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This functionality is overridden by {0}.
+        /// </summary>
+        internal static string OverriddenBy {
+            get {
+                return ResourceManager.GetString("OverriddenBy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Walk to railing.
+        /// </summary>
+        internal static string AutoOceanFish_WalkToRailing {
+            get {
+                return ResourceManager.GetString("AutoOceanFish_WalkToRailing", resourceCulture);
             }
         }
     }

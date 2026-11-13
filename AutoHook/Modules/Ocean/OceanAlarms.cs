@@ -51,11 +51,11 @@ public static class OceanAlarms {
         var route = IKDRoute.TryGetRow(voyage.RouteId, out var row) ? row.Name.ToString() : $"#{voyage.RouteId}";
         var closes = voyage.BoardingStart + OceanSchedule.BoardingSeconds;
         return voyage.IsBoarding(now)
-            ? $"Boat boarding now, closes in {Minutes(closes - now)}: {route}"
-            : $"Boat boarding in {Minutes(voyage.BoardingStart - now)}: {route}";
+            ? string.Format(UIStrings.OceanTrip_AlarmBoardingNow, Minutes(closes - now), route)
+            : string.Format(UIStrings.OceanTrip_AlarmBoardingIn, Minutes(voyage.BoardingStart - now), route);
     }
 
-    private static string Minutes(long seconds) => seconds < 60 ? $"{Math.Max(seconds, 0)}s" : $"{(seconds + 59) / 60}m";
+    private static string Minutes(long seconds) => seconds < 60 ? string.Format(UIStrings.OceanTrip_SecondsShort, Math.Max(seconds, 0)) : string.Format(UIStrings.OceanTrip_MinutesShort, (seconds + 59) / 60);
 
     private static void Notify(OceanVoyage voyage, long now) {
         var text = Describe(voyage, now);

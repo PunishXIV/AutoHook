@@ -23,6 +23,8 @@ public sealed class OceanTripService : IPluginService, IDisposable {
 
     public string LastMessage { get; private set; } = "";
 
+    public static string ChatPrefix => $"[{UIStrings.AutoOceanFish}] ";
+
     public OceanTripService() {
         AutoRetainerIPC.Get().CharacterAdditionalTask += OnArCharacterAdditionalTask;
         AutoRetainerIPC.Get().CharacterReadyForPostprocess += OnArReadyForPostprocess;
@@ -39,14 +41,14 @@ public sealed class OceanTripService : IPluginService, IDisposable {
 
     public bool TryStart(OceanVoyage voyage, OceanTripSource source, System.Action? onFinished = null) {
         if (!CanStart(voyage, source, out var reason)) {
-            LastMessage = $"Ocean trip not started: {reason}";
-            IChatGui.Get().PrintError($"[AutoHook] {LastMessage}");
+            LastMessage = string.Format(UIStrings.OceanTrip_NotStarted, reason);
+            IChatGui.Get().PrintError(ChatPrefix + LastMessage);
             return false;
         }
 
         _handled.Add(voyage);
-        LastMessage = $"Ocean trip started ({source}) for {RouteName(voyage.RouteId)}";
-        IChatGui.Get().PrintStatus($"[Ocean trip] Heading out for {RouteName(voyage.RouteId)}");
+        LastMessage = string.Format(UIStrings.OceanTrip_Started, source, RouteName(voyage.RouteId));
+        IChatGui.Get().PrintStatus(ChatPrefix + string.Format(UIStrings.OceanTrip_Departing, RouteName(voyage.RouteId)));
         var ran = 0; // tasks' finally and automation completion callback both call this, so first wins
         System.Action? once = onFinished == null ? null : () => {
             if (System.Threading.Interlocked.Exchange(ref ran, 1) == 0)
@@ -65,17 +67,16 @@ public sealed class OceanTripService : IPluginService, IDisposable {
         var now = Framework.GetServerTime();
         reason = "";
         if (!IClientState.Get().IsLoggedIn || IObjectTable.Get().LocalPlayer == null)
-            reason = "not logged in";
+            reason = UIStrings.OceanTrip_ReasonNotLoggedIn;
         else if (!Configuration.C.AutoOceanFish)
-            reason = "auto ocean fishing is disabled in the settings";
+            reason = UIStrings.OceanTrip_ReasonAutoOceanFishDisabled;
         else if (Svc.Automation.Running)
-            reason = $"{Svc.Automation.Name} is already running";
-        else if (ICondition.Get()[ConditionFlag.BoundByDuty] && !OceanTripTask.InOceanFishing)
-            reason = "in a duty";
-        else if (source != OceanTripSource.ArPostprocess && IsOccupied())
-            reason = "busy";
+            reason = string.Format(UIStrings.OceanTrip_ReasonAlreadyRunning, Svc.Automation.Name);
+        else if (ICondition.Get()[ConditionFlag.BoundByDuty] && !OceanTripTask.InOceanFishing
+                 || source != OceanTripSource.ArPostprocess && IsOccupied())
+            reason = UIStrings.OceanTrip_ReasonBusy;
         else if (!OceanTripTask.InOceanFishing && now >= LatestStart(voyage))
-            reason = "too late to board this voyage";
+            reason = UIStrings.OceanTrip_ReasonMissedBoat;
         return reason == "";
     }
 
@@ -98,7 +99,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
 
         if (now >= LatestStart(voyage)) {
             _handled.Add(voyage);
-            LastMessage = $"Skipped {RouteName(voyage.RouteId)}: never reached a safe point in time";
+            IPluginLog.Get().Information($"[OceanTrip] Skipped {RouteName(voyage.RouteId)}: never reached a safe point in time");
             return;
         }
 
@@ -121,7 +122,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
     public OceanVoyage? NextTripVoyage(long now)
         => OceanSchedule.Upcoming(OceanVoyageFilter.Lines, now)
             .Take(OceanSchedule.RotationLength * OceanVoyageFilter.Lines.Length * 2)
-            .Where(v => !_handled.Contains(v) && InActiveWindow(StartTime(v)) && OceanVoyageFilter.Matches(v))
+            .Where(v => !_handled.Contains(v) && InActiveWindow(StartTime(v)) && OceanVoyageFilter.Matches(v) && OceanPresetReadiness.IsReady(v.RouteId))
             .Cast<OceanVoyage?>()
             .FirstOrDefault();
 
@@ -183,11 +184,11 @@ public sealed class OceanTripService : IPluginService, IDisposable {
         ar.SetSuppressed(true);
         if (!ar.Relog(Cfg.ArCharacter)) {
             ResumeAutoRetainer(multi);
-            LastMessage = $"Skipped {RouteName(voyage.RouteId)}: AutoRetainer couldn't log in {Cfg.ArCharacter}";
+            IPluginLog.Get().Warning($"[OceanTrip] Skipped {RouteName(voyage.RouteId)}: AutoRetainer couldn't log in {Cfg.ArCharacter}");
             return;
         }
         _login = (voyage, Environment.TickCount64 + 180_000, multi);
-        LastMessage = $"Logging in {Cfg.ArCharacter} for {RouteName(voyage.RouteId)}";
+        IPluginLog.Get().Information($"[OceanTrip] Logging in {Cfg.ArCharacter} for {RouteName(voyage.RouteId)}");
     }
 
     private void UpdateLogin((OceanVoyage Voyage, long Deadline, bool MultiWasEnabled) login) {
@@ -199,7 +200,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
         else if (Environment.TickCount64 > login.Deadline) {
             _login = null;
             ResumeAutoRetainer(login.MultiWasEnabled);
-            LastMessage = $"Skipped {RouteName(login.Voyage.RouteId)}: login timed out";
+            IPluginLog.Get().Warning($"[OceanTrip] Skipped {RouteName(login.Voyage.RouteId)}: login timed out");
         }
     }
 
@@ -232,10 +233,10 @@ public sealed class OceanTripService : IPluginService, IDisposable {
 
         var link = GetLink(voyage);
         return new SeStringBuilder()
-            .AddText($"[AutoHook] {text} ")
+            .AddText($"{ChatPrefix}{text} ")
             .AddUiForeground(500)
             .Add(link)
-            .AddText("[Go]")
+            .AddText(UIStrings.OceanTrip_GoLink)
             .Add(RawPayload.LinkTerminator)
             .AddUiForegroundOff()
             .Build();
@@ -258,7 +259,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
 
         _arVoyage = voyage;
         AutoRetainerIPC.Get().RequestCharacterPostprocess();
-        LastMessage = $"Requested AutoRetainer postprocess for {RouteName(voyage.RouteId)}";
+        IPluginLog.Get().Information($"[OceanTrip] Requested AutoRetainer postprocess for {RouteName(voyage.RouteId)}");
     }
 
     private void OnArReadyForPostprocess() {

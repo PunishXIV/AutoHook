@@ -385,7 +385,7 @@ public sealed class RodFishingModule : FishingModule {
     }
 
     public bool ShouldSuppressAutoStartFishing()
-        => AutoStartLocked || Svc.Automation.CurrentTask is OceanTripTask && Ws.OceanFishing == OceanFishingState.Empty || Configuration.C.AutoOceanFish &&(Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
+        => AutoStartLocked || Svc.Automation.CurrentTask is OceanTripTask && Ws.OceanFishing == OceanFishingState.Empty || Configuration.C.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
 
     public void ClearWorldState() {
         var f = Ws.Fishing;

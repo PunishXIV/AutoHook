@@ -17,14 +17,6 @@ public static class OceanTripUi {
     #region Ocean tab
 
     public static void DrawStatusBar() {
-        if (ImGui.Checkbox(UIStrings.AutoOceanFish, ref Cfg.FullAuto))
-            Configuration.Save();
-        ImGui.TooltipOnHover(UIStrings.FullAutoHelpText);
-
-        ImGui.SameLine();
-        ImGui.TextDisabled("|");
-        ImGui.SameLine();
-
         if (OceanTripService.Running is { } trip) {
             StatusIcon(FontAwesomeIcon.Ship, ImGuiColors.ParsedGreen);
             ImGui.TextColored(ImGuiColors.ParsedGreen, $"{OceanTripService.RouteName(trip.Voyage.RouteId)}: {trip.Status}");
@@ -33,21 +25,32 @@ public static class OceanTripUi {
                 if (ImGuiComponents.IconButton("###StopTrip", FontAwesomeIcon.Stop))
                     OceanTripService.Stop();
             }
-            ImGui.TooltipOnHover("Stop the trip");
+            ImGui.TooltipOnHover(UIStrings.OceanTrip_StopTrip);
             return;
         }
 
         if (!Configuration.C.AutoOceanFish) {
             StatusIcon(FontAwesomeIcon.ExclamationTriangle, ImGuiColors.DalamudOrange);
-            ImGui.TextColored(ImGuiColors.DalamudOrange, "Trips need Auto Ocean Fish enabled in Settings > Ocean Fishing");
+            ImGui.TextColored(ImGuiColors.DalamudOrange, string.Format(UIStrings.OceanTrip_RequiresAutoOceanFish, UIStrings.AutoOceanFish));
+            ImGui.SameLine();
+            if (ImGui.SmallButton(UIStrings.Enable)) {
+                Configuration.C.AutoOceanFish = true;
+                Configuration.Save();
+            }
             return;
         }
 
         var now = Framework.GetServerTime();
+        if (Cfg.FullAuto && OceanPresetReadiness.ForFilteredRoutes(now) is { Ready: false } readiness) {
+            StatusIcon(FontAwesomeIcon.ExclamationTriangle, ImGuiColors.DalamudOrange);
+            ImGui.TextColored(ImGuiColors.DalamudOrange, string.Format(UIStrings.OceanTrip_StopsUncovered, readiness.Missing.Count));
+            ReadinessTooltip(readiness);
+            ImGui.SameLine();
+        }
         if (Cfg.FullAuto && OceanTripService.Get().NextTripVoyage(now) is { } next) {
             var leaves = Math.Max(OceanTripService.StartTime(next), now);
             StatusIcon(FontAwesomeIcon.Clock, ImGuiColors.DalamudGrey);
-            ImGui.Text($"Next: {OceanTripService.RouteName(next.RouteId)}, leaving {Clock(leaves)}");
+            ImGui.Text(string.Format(UIStrings.OceanTrip_NextTrip, OceanTripService.RouteName(next.RouteId), Clock(leaves)));
             if (OceanTripService.Get().LastMessage is { Length: > 0 } msg) {
                 ImGui.SameLine();
                 ImGui.TextDisabled($"({msg})");
@@ -55,9 +58,38 @@ public static class OceanTripUi {
             return;
         }
 
-        StatusIcon(FontAwesomeIcon.Anchor, ImGuiColors.DalamudGrey);
-        ImGui.TextDisabled(OceanTripService.Get().LastMessage is { Length: > 0 } last ? last : "Idle. Use the ship button on a boarding voyage, or the [Go] link in an alarm.");
+        if (OceanTripService.Get().LastMessage is { Length: > 0 } last) {
+            StatusIcon(FontAwesomeIcon.Anchor, ImGuiColors.DalamudGrey);
+            ImGui.TextDisabled(last);
+        }
     }
+
+    // preset coverage of the filtered routes' stops, under the goal settings
+    public static void DrawReadiness() {
+        var readiness = OceanPresetReadiness.ForFilteredRoutes(Framework.GetServerTime());
+        DrawUtil.Branch();
+        StatusIcon(readiness.Ready ? FontAwesomeIcon.Check : FontAwesomeIcon.ExclamationTriangle, readiness.Ready ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudOrange);
+        ImGui.TextColored(readiness.Ready ? ImGuiColors.ParsedGreen : ImGuiColors.DalamudOrange, string.Format(UIStrings.OceanTrip_Readiness, readiness.Covered, readiness.Total, GoalName(Configuration.C.AutoOceanFishGoal)));
+        ReadinessTooltip(readiness);
+    }
+
+    private static void ReadinessTooltip(OceanPresetReadiness.Summary readiness) {
+        if (readiness.Ready || !ImGui.IsItemHovered())
+            return;
+        using var tooltip = ImRaii.Tooltip();
+        ImGui.Text(UIStrings.OceanTrip_ReadinessMissing);
+        foreach (var stop in readiness.Missing)
+            ImGui.BulletText(stop.ToString());
+        ImGui.Spacing();
+        ImGui.TextDisabled(UIStrings.OceanTrip_ReadinessGated);
+    }
+
+    private static string GoalName(OceanFishGoalKind goal) => goal switch {
+        OceanFishGoalKind.Levelling => UIStrings.OceanFishGoal_Levelling,
+        OceanFishGoalKind.Achievement => UIStrings.OceanFishGoal_Achievements,
+        OceanFishGoalKind.Legendary => UIStrings.OceanFishGoal_Legendary,
+        _ => UIStrings.OceanFishGoal_Points,
+    };
 
     public static void DrawGoButton(OceanVoyage voyage) {
         using var disabled = ImRaii.Disabled(OceanTripService.Running != null);
@@ -65,20 +97,15 @@ public static class OceanTripUi {
             if (ImGuiComponents.IconButton("###Go", FontAwesomeIcon.Ship))
                 OceanTripService.Get().TryStart(voyage, OceanTripSource.Manual);
         }
-        ImGui.TooltipOnHover("Go now: travel to Limsa, buy bait, board this voyage, then run the after-voyage steps");
     }
 
-    public static void DrawSettings() {
-        if (!Cfg.FullAuto)
-            return;
+    // Settings > Ocean Fishing > Auto Ocean Fish > Voyages
+    public static void DrawVoyageSettings() {
         using var id = ImRaii.PushId("OceanTripSettings");
-        using var branches = DrawUtil.BeginBranches();
-        DrawUtil.DrawTreeNodeEx("Trip settings", () => {
-            DrawUtil.DrawTreeNodeEx("When to go", DrawWhen);
-            DrawUtil.DrawTreeNodeEx("Preparation", DrawPreparation);
-            DrawUtil.DrawTreeNodeEx("On board", DrawOnBoard);
-            DrawUtil.DrawTreeNodeEx("After the voyage", DrawAfter);
-        });
+        DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_GoAutomatically, ref Cfg.FullAuto, DrawWhen, UIStrings.FullAutoHelpText);
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_Preparation, DrawPreparation);
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_DuringTheVoyage, DrawOnBoard);
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_AfterTheVoyage, DrawAfter);
     }
 
     #endregion
@@ -87,14 +114,14 @@ public static class OceanTripUi {
 
     private static void DrawWhen() {
         DrawUtil.Branch();
-        ImGui.Text("Leave");
+        ImGui.Text(UIStrings.OceanTrip_Leave);
         ImGui.SameLine();
-        if (ImGui.RadioButton("when boarding opens (:00)", Cfg.Arrival == OceanTripArrival.Early)) {
+        if (ImGui.RadioButton(UIStrings.OceanTrip_LeaveWhenBoardingOpens, Cfg.Arrival == OceanTripArrival.Early)) {
             Cfg.Arrival = OceanTripArrival.Early;
             Configuration.Save();
         }
         ImGui.SameLine();
-        if (ImGui.RadioButton("late, at :", Cfg.Arrival == OceanTripArrival.Late)) {
+        if (ImGui.RadioButton(UIStrings.OceanTrip_LeaveLate, Cfg.Arrival == OceanTripArrival.Late)) {
             Cfg.Arrival = OceanTripArrival.Late;
             Configuration.Save();
         }
@@ -104,34 +131,45 @@ public static class OceanTripUi {
             Cfg.LateArrivalMinute = Math.Clamp(Cfg.LateArrivalMinute, 0, OceanTripService.LatestStartMinute);
             Configuration.Save();
         }
-        ImGuiComponents.HelpMarker($"Automatic trips set off at this time. Getting to the dock takes well under two minutes, so :{OceanTripService.LatestStartMinute} still makes the :15 departure. The ship button always goes straight away.");
 
         DrawUtil.Branch();
         if (ImGui.Checkbox("###UseActiveWindow", ref Cfg.UseActiveWindow))
             Configuration.Save();
         ImGui.SameLine();
         using (ImRaii.Disabled(!Cfg.UseActiveWindow)) {
-            ImGui.Text("Full auto only between");
-            ImGui.SameLine();
-            if (DrawClockInput("###ActiveFrom", ref Cfg.ActiveFromMinute))
-                Configuration.Save();
-            ImGui.SameLine();
-            ImGui.Text("and");
-            ImGui.SameLine();
-            if (DrawClockInput("###ActiveTo", ref Cfg.ActiveToMinute))
-                Configuration.Save();
+            // one translatable sentence, with the two time inputs drawn where {1} and {2} sit
+            var sentence = string.Format(UIStrings.OceanTrip_OnlyBetween, UIStrings.AutoOceanFish, "{1}", "{2}");
+            var first = true;
+            foreach (var part in System.Text.RegularExpressions.Regex.Split(sentence, @"(\{1\}|\{2\})")) {
+                if (part.Trim().Length == 0)
+                    continue;
+                if (!first)
+                    ImGui.SameLine();
+                first = false;
+                switch (part) {
+                    case "{1}":
+                        if (DrawClockInput("###ActiveFrom", ref Cfg.ActiveFromMinute))
+                            Configuration.Save();
+                        break;
+                    case "{2}":
+                        if (DrawClockInput("###ActiveTo", ref Cfg.ActiveToMinute))
+                            Configuration.Save();
+                        break;
+                    default:
+                        ImGui.AlignTextToFramePadding();
+                        ImGui.Text(part.Trim());
+                        break;
+                }
+            }
         }
-        ImGuiComponents.HelpMarker("Your local time, by when the trip would set off. A window like 22:00 to 02:00 runs past midnight; the same start and end means all day.");
 
         DrawUtil.Branch();
-        ImGui.Text("Full auto starts from");
-        ImGuiComponents.HelpMarker("Full auto never interrupts anything: it only sets off from one of these. Otherwise that voyage is skipped.");
+        ImGui.Text(string.Format(UIStrings.OceanTrip_StartsFrom, UIStrings.AutoOceanFish));
         using (DrawUtil.BeginBranches(indent: true)) {
-            DrawSafePoint("Inn room", OceanTripSafePoint.Inn, "Idle in an inn room");
-            DrawSafePoint("Housing (ward or interior)", OceanTripSafePoint.Housing, "Idle in a housing ward or inside a house");
-            DrawSafePoint("Any sanctuary", OceanTripSafePoint.Sanctuary, "Idle anywhere that gives rested experience: cities, hubs, inns and housing");
-            DrawUtil.DrawTreeNodeEx("AutoRetainer", DrawAutoRetainer,
-                "Everything AutoRetainer related runs voyages on one assigned character only.\nWhile multi mode is on, the inn and housing options are ignored, since AutoRetainer could relog mid-voyage.");
+            DrawSafePoint(UIStrings.OceanTrip_InnRoom, OceanTripSafePoint.Inn);
+            DrawSafePoint(UIStrings.OceanTrip_ResidentialSector, OceanTripSafePoint.Housing);
+            DrawSafePoint(UIStrings.OceanTrip_AnySanctuary, OceanTripSafePoint.Sanctuary);
+            DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_AutoRetainer, DrawAutoRetainer, UIStrings.OceanTrip_AutoRetainerHelp);
         }
     }
 
@@ -145,50 +183,45 @@ public static class OceanTripUi {
 
     private static void DrawAutoRetainer() {
         DrawUtil.Branch();
-        ImGui.Text("Character");
+        ImGui.Text(UIStrings.OceanTrip_Character);
         ImGui.SameLine();
         if (Cfg.ArCharacter.Length > 0)
             ImGui.TextColored(ImGuiColors.ParsedGreen, Cfg.ArCharacter);
         else
-            ImGui.TextColored(ImGuiColors.DalamudOrange, "none assigned");
+            ImGui.TextColored(ImGuiColors.DalamudOrange, UIStrings.OceanTrip_NoneAssigned);
 
         ImGui.SameLine();
         if (Cfg.ArCharacter.Length > 0) {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.UserTimes, "Unassign")) {
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.UserTimes, UIStrings.OceanTrip_Unassign)) {
                 Cfg.ArCharacter = "";
                 Configuration.Save();
             }
-            ImGui.TooltipOnHover("Stop sending this character on voyages through AutoRetainer");
         }
         else {
             var current = OceanTripService.CurrentCharacter;
             using (ImRaii.Disabled(current == null)) {
-                if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.UserCheck, "Use this character") && current != null) {
+                if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.UserCheck, UIStrings.OceanTrip_UseThisCharacter) && current != null) {
                     Cfg.ArCharacter = current;
                     Configuration.Save();
                 }
             }
-            ImGui.TooltipOnHover("Assign the character you're logged in as. Only this character is ever sent on voyages by AutoRetainer.");
         }
         DrawPluginState("AutoRetainer", AutoRetainerIPC.Get().Available);
 
         using (ImRaii.Disabled(Cfg.ArCharacter.Length == 0)) {
-            DrawSafePoint("Multi mode", OceanTripSafePoint.ArMultiMode,
-                "Only when AutoRetainer has nothing to do: waiting on the title screen (it logs in the character), or idle on the character.\n" +
-                "Multi mode is paused for the voyage and resumes afterwards, so it won't interrupt other characters.");
+            DrawSafePoint(UIStrings.OceanTrip_MultiMode, OceanTripSafePoint.ArMultiMode, UIStrings.OceanTrip_MultiModeHelp);
 
             var postprocess = Cfg.SafePoints.HasFlag(OceanTripSafePoint.ArPostprocess);
-            DrawUtil.DrawCheckboxTree("Post process", ref postprocess, () => {
+            DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_CharacterPostProcess, ref postprocess, () => {
                 DrawUtil.Branch();
-                ImGui.Text("When the voyage leaves within");
+                ImGui.Text(UIStrings.OceanTrip_WhenVoyageLeavesWithin);
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(80.Scaled());
-                if (ImGui.InputInt("min###ArLookahead", ref Cfg.ArLookaheadMinutes, 1)) {
+                if (ImGui.InputInt($"{UIStrings.OceanTrip_Min}###ArLookahead", ref Cfg.ArLookaheadMinutes, 1)) {
                     Cfg.ArLookaheadMinutes = Math.Clamp(Cfg.ArLookaheadMinutes, 0, 60);
                     Configuration.Save();
                 }
-            }, "Right after AutoRetainer finishes the character's retainers, hold it there for the voyage.\n" +
-               "This does interrupt multi mode: other characters wait until the voyage is done.");
+            }, UIStrings.OceanTrip_CharacterPostProcessHelp);
             if (postprocess != Cfg.SafePoints.HasFlag(OceanTripSafePoint.ArPostprocess)) {
                 Cfg.SafePoints ^= OceanTripSafePoint.ArPostprocess;
                 Configuration.Save();
@@ -201,16 +234,16 @@ public static class OceanTripUi {
     #region Preparation
 
     private static void DrawPreparation() {
-        DrawUtil.DrawCheckboxTree("Buy bait", ref Cfg.BuyBait, () => {
+        DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_BuyBait, ref Cfg.BuyBait, () => {
             DrawUtil.Branch();
             foreach (var bait in OceanTripConsts.Baits) {
                 DrawItemIcon(bait);
                 ImGui.SameLine(0, 2.Scaled());
             }
-            ImGui.Text("top up to");
+            ImGui.Text(UIStrings.OceanTrip_TopUpTo);
             ImGui.SameLine();
             ImGui.SetNextItemWidth(90.Scaled());
-            if (ImGui.InputInt("each###BaitCount", ref Cfg.BaitCount, 10)) {
+            if (ImGui.InputInt($"{UIStrings.OceanTrip_Each}###BaitCount", ref Cfg.BaitCount, 10)) {
                 Cfg.BaitCount = Math.Clamp(Cfg.BaitCount, 1, 999);
                 Configuration.Save();
             }
@@ -221,7 +254,7 @@ public static class OceanTripUi {
             ImGui.SameLine();
             DrawItemIcon(OceanTripConsts.VersatileLure);
             ImGui.SameLine(0, 2.Scaled());
-            ImGui.Text("top up to");
+            ImGui.Text(UIStrings.OceanTrip_TopUpTo);
             ImGui.SameLine();
             ImGui.SetNextItemWidth(90.Scaled());
             using (ImRaii.Disabled(!Cfg.BuyVersatileLure)) {
@@ -230,18 +263,17 @@ public static class OceanTripUi {
                     Configuration.Save();
                 }
             }
-            ImGuiComponents.HelpMarker("Versatile lures aren't used up on every cast, so a few go a long way.");
-        }, "Bought from the merchant next to Dryskthota before boarding");
+        });
 
         DrawUtil.Branch();
         var gearset = OceanTripTask.FindFisherGearset();
         if (gearset >= 0) {
             StatusIcon(FontAwesomeIcon.Check, ImGuiColors.ParsedGreen);
-            ImGui.Text($"Switches to your fisher gearset (#{gearset + 1})");
+            ImGui.Text(string.Format(UIStrings.OceanTrip_SwapToGearset, OceanTripTask.GearsetName(gearset), gearset + 1));
         }
         else {
             StatusIcon(FontAwesomeIcon.ExclamationTriangle, ImGuiColors.DalamudOrange);
-            ImGui.TextColored(ImGuiColors.DalamudOrange, "No fisher gearset found, trips will fail unless you're already a fisher");
+            ImGui.TextColored(ImGuiColors.DalamudOrange, UIStrings.OceanTrip_NoFisherGearset);
         }
     }
 
@@ -250,11 +282,7 @@ public static class OceanTripUi {
     #region On board
 
     private static void DrawOnBoard() {
-        DrawUtil.Checkbox("Leave early when there's nothing left to catch", ref Cfg.LeaveEarly,
-            "At the end of stop 1 or 2, if no later stop has a fish you haven't caught, leave the voyage and carry on with the after-voyage steps.\n" +
-            "e.g. a route whose only missing fish is Akupara at stop 1 ends after stop 1, caught or not.\n" +
-            "If what's left on the current stop only bites in the spectral current and that has already been and gone, it quits fishing and leaves straight away.\n" +
-            "Never after stop 3, since the voyage rewards come at the end. Stays on board when prioritising achievements this route still has.");
+        DrawUtil.Checkbox(UIStrings.OceanTrip_LeaveEarly, ref Cfg.LeaveEarly, UIStrings.OceanTrip_LeaveEarlyHelp);
     }
 
     #endregion
@@ -263,20 +291,20 @@ public static class OceanTripUi {
 
     private static void DrawAfter() {
         DrawUtil.Branch();
-        ImGui.Text("Ocean fish");
+        ImGui.Text(UIStrings.OceanTrip_Fish);
         ImGui.SameLine();
-        DrawCleanupRadio("Keep", OceanTripCleanup.None);
+        DrawCleanupRadio(UIStrings.OceanTrip_Keep, OceanTripCleanup.None);
         ImGui.SameLine();
-        DrawCleanupRadio("Desynth", OceanTripCleanup.Desynth);
+        DrawCleanupRadio(UIStrings.OceanTrip_Desynth, OceanTripCleanup.Desynth);
         ImGui.SameLine();
-        DrawCleanupRadio("Sell to vendor", OceanTripCleanup.Sell);
-        ImGuiComponents.HelpMarker("Only fish from the ocean routes. Legendary fish are never desynthed or sold.");
+        DrawCleanupRadio(UIStrings.OceanTrip_SellToVendor, OceanTripCleanup.Sell);
+        ImGuiComponents.HelpMarker(UIStrings.OceanTrip_LegendaryHelp);
         if (Cfg.Cleanup == OceanTripCleanup.Desynth && !OceanFishCleanup.DesynthUnlocked) {
             ImGui.SameLine();
-            ImGui.TextColored(ImGuiColors.DalamudOrange, "Desynthesis isn't unlocked");
+            ImGui.TextColored(ImGuiColors.DalamudOrange, DesynthLockedText);
         }
 
-        DrawUtil.DrawTreeNodeEx("Then", DrawSteps, "Runs in order once the fish are dealt with");
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_Then, DrawSteps);
     }
 
     private static void DrawCleanupRadio(string label, OceanTripCleanup mode) {
@@ -304,15 +332,16 @@ public static class OceanTripUi {
                             step.Arg = "";
                             Configuration.Save();
                         }
-                        ImGui.TooltipOnHover(StepHelp(kind));
+                        if (StepHelp(kind) is { Length: > 0 } help)
+                            ImGui.TooltipOnHover(help);
                     }
                 }
             }
 
-            if (step.Kind is OceanTripStepKind.ChatCommand or OceanTripStepKind.Wait) {
+            if (step.Kind == OceanTripStepKind.ChatCommand) {
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth((step.Kind == OceanTripStepKind.Wait ? 70 : 200).Scaled());
-                if (ImGui.InputTextWithHint("###Arg", step.Kind == OceanTripStepKind.Wait ? "seconds" : "/command", ref step.Arg, 200))
+                ImGui.SetNextItemWidth(200.Scaled());
+                if (ImGui.InputTextWithHint("###Arg", "/command", ref step.Arg, 200))
                     Configuration.Save();
             }
             if (StepRequirement(step.Kind) is { } requirement) {
@@ -339,7 +368,7 @@ public static class OceanTripUi {
         }
 
         DrawUtil.Branch();
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, "Add step")) {
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, UIStrings.Add)) {
             steps.Add(new OceanTripStep { Kind = OceanTripStepKind.ChatCommand });
             Configuration.Save();
         }
@@ -358,7 +387,7 @@ public static class OceanTripUi {
     private static void DrawStepHome(OceanTripStep step) {
         using var branches = DrawUtil.BeginBranches(indent: true);
         DrawUtil.Branch();
-        ImGui.Text(step.Kind == OceanTripStepKind.GoHome ? "Go to" : "If it started in housing, go back to");
+        ImGui.Text(step.Kind == OceanTripStepKind.GoHome ? UIStrings.OceanTrip_GoTo : UIStrings.OceanTrip_ReturnHousingTo);
         ImGui.SameLine();
         ImGui.SetNextItemWidth(140.Scaled());
         using (var combo = ImRaii.Combo("###Home", HomeName(step.Home))) {
@@ -381,29 +410,24 @@ public static class OceanTripUi {
     };
 
     private static string StepName(OceanTripStepKind kind) => kind switch {
-        OceanTripStepKind.ReturnToOrigin => "Return to where I was",
-        OceanTripStepKind.GoToInn => "Go to the inn",
-        OceanTripStepKind.GoHome => "Go home",
-        OceanTripStepKind.ChatCommand => "Chat command",
-        OceanTripStepKind.Wait => "Wait",
-        OceanTripStepKind.StartAutoRetainerMulti => "Start AutoRetainer multi mode",
+        OceanTripStepKind.ReturnToOrigin => UIStrings.OceanTrip_StepReturnToOrigin,
+        OceanTripStepKind.GoToInn => UIStrings.OceanTrip_StepGoToInn,
+        OceanTripStepKind.GoHome => UIStrings.OceanTrip_StepGoHome,
+        OceanTripStepKind.ChatCommand => UIStrings.OceanTrip_StepCommand,
+        OceanTripStepKind.StartAutoRetainerMulti => UIStrings.OceanTrip_StepStartAutoRetainerMulti,
         _ => kind.ToString(),
     };
 
     private static string StepHelp(OceanTripStepKind kind) => kind switch {
-        OceanTripStepKind.ReturnToOrigin => "Switch back to the previous gearset and go back where the trip started. Inns and housing need Lifestream.\nSkipped when the trip logged in from the title screen.",
-        OceanTripStepKind.GoToInn => "Needs Lifestream",
-        OceanTripStepKind.GoHome => "Needs Lifestream",
-        OceanTripStepKind.ChatCommand => "Send any command, e.g. /ice start",
-        OceanTripStepKind.Wait => "Pause for a number of seconds",
-        OceanTripStepKind.StartAutoRetainerMulti => "Skipped when AutoRetainer started the trip, since it carries on by itself",
+        OceanTripStepKind.ReturnToOrigin => UIStrings.OceanTrip_StepReturnToOriginHelp,
+        OceanTripStepKind.GoToInn or OceanTripStepKind.GoHome => UIStrings.OceanTrip_RequiresLifestream,
         _ => "",
     };
 
     private static string HomeName(OceanTripHome home) => home switch {
-        OceanTripHome.Home => "Private house",
-        OceanTripHome.FreeCompany => "FC house",
-        OceanTripHome.Apartment => "Apartment",
+        OceanTripHome.Home => UIStrings.OceanTrip_HomePrivate,
+        OceanTripHome.FreeCompany => UIStrings.OceanTrip_HomeFreeCompany,
+        OceanTripHome.Apartment => UIStrings.OceanTrip_HomeApartment,
         _ => home.ToString(),
     };
 
@@ -423,8 +447,11 @@ public static class OceanTripUi {
             return;
         ImGui.SameLine();
         StatusIcon(FontAwesomeIcon.ExclamationTriangle, ImGuiColors.DalamudOrange);
-        ImGui.TextColored(ImGuiColors.DalamudOrange, $"{plugin} not loaded");
+        ImGui.TextColored(ImGuiColors.DalamudOrange, string.Format(UIStrings.OceanTrip_PluginNotLoaded, plugin));
     }
+
+    // the game's own "desynthesis isn't unlocked" message
+    private static string DesynthLockedText => LogMessage.TryGetRow(10197, out var row) ? row.Text.ToString() : "";
 
     private static void DrawItemIcon(uint itemId) {
         if (Item.TryGetRow(itemId, out var item))
@@ -452,7 +479,7 @@ public static class OceanTripUi {
 
     public static void DrawAlarmSettings() {
         using var id = ImRaii.PushId("OceanAlarms");
-        DrawUtil.DrawTreeNodeEx("Boat alarms", () => {
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_BoatAlarms, () => {
             var reminders = Configuration.C.OceanAlarmReminders;
             int? remove = null;
             for (var i = 0; i < reminders.Count; i++) {
@@ -466,7 +493,7 @@ public static class OceanTripUi {
                     Configuration.Save();
                 }
                 ImGui.SameLine();
-                ImGui.Text("min before boarding");
+                ImGui.Text(UIStrings.OceanTrip_MinBeforeBoarding);
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(90.Scaled());
                 using (var combo = ImRaii.Combo("###Anchor", AnchorName(reminder.Anchor))) {
@@ -485,7 +512,7 @@ public static class OceanTripUi {
             }
 
             DrawUtil.Branch();
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, "Add reminder")) {
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, UIStrings.Add)) {
                 reminders.Add(new OceanAlarmReminder { Minutes = 5 });
                 Configuration.Save();
             }
@@ -494,12 +521,12 @@ public static class OceanTripUi {
                 reminders.RemoveAt(r);
                 Configuration.Save();
             }
-        }, "Reminders for voyages you set an alarm on with the bell in the Ocean Fishing tab. Each one comes with a [Go] link in chat.");
+        });
     }
 
     private static string AnchorName(OceanAlarmAnchor anchor) => anchor switch {
-        OceanAlarmAnchor.BoardingOpens => "opens",
-        OceanAlarmAnchor.BoardingCloses => "closes",
+        OceanAlarmAnchor.BoardingOpens => UIStrings.OceanTrip_Opens,
+        OceanAlarmAnchor.BoardingCloses => UIStrings.OceanTrip_Closes,
         _ => anchor.ToString(),
     };
 

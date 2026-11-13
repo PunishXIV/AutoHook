@@ -34,8 +34,7 @@ public enum OceanTripStepKind {
     GoToInn,
     GoHome,
     ChatCommand,
-    Wait,
-    StartAutoRetainerMulti,
+    StartAutoRetainerMulti = 5,
 }
 
 [Serializable]

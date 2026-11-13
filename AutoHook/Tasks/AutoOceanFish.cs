@@ -22,7 +22,7 @@ public sealed class AutoOceanFish(uint zoneIndex) : TaskBase {
     // shared with OceanTripTask, which runs the on-board part itself instead of handing off to a separate task
     public static async Task RunZone(TaskBase host, uint zoneIndex) {
         using var scope = host.BeginScope(nameof(AutoOceanFish));
-        var walk = zoneIndex == 0 && Configuration.C.AOF_WalkToRailing;
+        var walk = zoneIndex == 0 && (host is OceanTripTask || Configuration.C.AOF_WalkToRailing);
 
         if (walk) {
             host.Status = "Walking to railing";
