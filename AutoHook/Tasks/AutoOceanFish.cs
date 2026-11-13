@@ -17,19 +17,22 @@ public sealed class AutoOceanFish(uint zoneIndex) : TaskBase {
 
     private static WorldState Ws => WorldState.Get();
 
-    protected override async Task Execute() {
-        using var scope = BeginScope(nameof(AutoOceanFish));
-        var walk = ZoneIndex == 0 && Configuration.C.AOF_WalkToRailing;
+    protected override Task Execute() => RunZone(this, ZoneIndex);
+
+    // shared with OceanTripTask, which runs the on-board part itself instead of handing off to a separate task
+    public static async Task RunZone(TaskBase host, uint zoneIndex) {
+        using var scope = host.BeginScope(nameof(AutoOceanFish));
+        var walk = zoneIndex == 0 && Configuration.C.AOF_WalkToRailing;
 
         if (walk) {
-            Status = "Walking to railing";
-            await WalkToRailing();
+            host.Status = "Walking to railing";
+            await WalkToRailing(host);
             if (ShouldCancelMovement())
                 return;
         }
 
-        Status = "Starting fishing";
-        await WaitUntil(() => WorldState.Get().Fishing.CanFish, "WaitForCanFish", checkFrequency: 50);
+        host.Status = "Starting fishing";
+        await host.WaitUntil(() => WorldState.Get().Fishing.CanFish, "WaitForCanFish", checkFrequency: 50);
         FishingSessionManager.Get().StartFishing();
     }
 
@@ -40,21 +43,21 @@ public sealed class AutoOceanFish(uint zoneIndex) : TaskBase {
         return ValidFishingRegions[2].Sample(Rng);
     }
 
-    private async Task WalkToRailing() {
-        using var scope = BeginScope(nameof(WalkToRailing));
+    private static async Task WalkToRailing(TaskBase host) {
+        using var scope = host.BeginScope(nameof(WalkToRailing));
         var position = GetFishingPosition();
         var rotation = position.X > 0 ? 1.5f : -1.5f;
-        await MoveToDirectly(position, () => Player.DistanceTo(position) < 0.25f || ShouldCancelMovement());
+        await host.MoveToDirectly(position, () => Player.DistanceTo(position) < 0.25f || ShouldCancelMovement());
         unsafe {
             IObjectTable.Get().LocalPlayer?.Character->SetRotation(rotation);
         }
-        await AvoidStacking(rotation);
+        await AvoidStacking(host, rotation);
     }
 
     private const float MinFishingSpotDistance = 0.6f;
     private const float NudgeStepDistance = 1.2f;
-    private async Task AvoidStacking(float rotation, int maxAttempts = 3) {
-        using var scope = BeginScope(nameof(AvoidStacking));
+    private static async Task AvoidStacking(TaskBase host, float rotation, int maxAttempts = 3) {
+        using var scope = host.BeginScope(nameof(AvoidStacking));
         for (var attempt = 0; attempt < maxAttempts; attempt++) {
             var blockers = IObjectTable.Get().OfType<IPlayerCharacter>().Where(x => x.EntityId != Player.Object?.GameObjectId).Where(x => Vector3.Distance(Player.Position, x.Position) < MinFishingSpotDistance).ToList();
             if (blockers.Count == 0) return;
@@ -67,7 +70,7 @@ public sealed class AutoOceanFish(uint zoneIndex) : TaskBase {
             var step = Player.Position + Vector3.Normalize(away) * NudgeStepDistance;
             ClampToValidFishingRegions(ref step, onLeft);
 
-            await MoveToDirectly(step, () => Player.DistanceTo(step) < 0.1f || ShouldCancelMovement());
+            await host.MoveToDirectly(step, () => Player.DistanceTo(step) < 0.1f || ShouldCancelMovement());
             unsafe {
                 IObjectTable.Get().LocalPlayer?.Character->SetRotation(rotation);
             }

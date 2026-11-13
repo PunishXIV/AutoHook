@@ -36,5 +36,6 @@ public static class OceanSchedule {
         }
     }
 
+    public static bool IsIndigoRoute(uint routeId) => IKDRouteTable.Rows.Any(r => r.Route.RowId == routeId);
     public static int RotationLength => IKDRouteTable.Rows.Count(); // one full rotation: filters that match nothing stop here instead of searching forever
 }

@@ -16,16 +16,7 @@ public sealed class TabOceanFishing : BaseTab {
 
     private static readonly int[] CountOptions = [6, 12, 24, 48];
 
-    private static readonly OceanLine[] IndigoOnly = [OceanLine.Indigo];
-    private static readonly OceanLine[] RubyOnly = [OceanLine.Ruby];
-
-    private static OceanLine[] Lines {
-        get => Configuration.C.OceanTabLine switch {
-            OceanLineFilter.Ruby => RubyOnly,
-            OceanLineFilter.Both => field,
-            _ => IndigoOnly,
-        };
-    } = [OceanLine.Indigo, OceanLine.Ruby];
+    private static OceanLine[] Lines => OceanVoyageFilter.Lines;
 
     private static int CountIndex => Math.Clamp(Configuration.C.OceanTabCountIndex, 0, CountOptions.Length - 1);
 
@@ -34,6 +25,9 @@ public sealed class TabOceanFishing : BaseTab {
         var lineRoutes = RoutesOnLines(Lines);
 
         DrawControls(lineRoutes);
+        ImGui.Spacing();
+        OceanTripUi.DrawStatusBar();
+        OceanTripUi.DrawSettings();
         ImGui.Spacing();
         ImGui.Spacing();
 
@@ -147,30 +141,7 @@ public sealed class TabOceanFishing : BaseTab {
         }
     }
 
-    private static bool Matches(OceanVoyage voyage) {
-        var legendaryFilter = Configuration.C.OceanTabLegendaryFilter;
-        var achievementFilter = Configuration.C.OceanTabAchievementFilter;
-        var missingIndividual = Configuration.C.OceanTabMissingIndividual;
-        var missingParty = Configuration.C.OceanTabMissingParty;
-
-        var blueFish = OceanGoalCatalog.GetLegendariesForRoute(voyage.RouteId).ToList();
-        var achievements = OceanGoalCatalog.GetAchievementsForRoute(voyage.RouteId).ToList();
-
-        if (legendaryFilter != 0 && blueFish.All(f => f.FishParameterId != legendaryFilter))
-            return false;
-        if (achievementFilter != 0 && achievements.All(a => a.AchievementId != achievementFilter))
-            return false;
-        if (Configuration.C.OceanTabMissingLegendary || missingIndividual || missingParty || Configuration.C.OceanTabMissingAnyFish) {
-            var fishLeft = Configuration.C.OceanTabMissingLegendary && blueFish.Where(f => legendaryFilter == 0 || f.FishParameterId == legendaryFilter).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
-            var achievementsLeft = (missingIndividual || missingParty) && achievements
-                .Where(a => achievementFilter == 0 || a.AchievementId == achievementFilter)
-                .Any(a => (OceanGoalCatalog.IsPartyAchievement(a) ? missingParty : missingIndividual) && OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) != false);
-            var uncaughtLeft = Configuration.C.OceanTabMissingAnyFish && OceanRouteFishCatalog.GetFish(voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
-            if (!fishLeft && !achievementsLeft && !uncaughtLeft)
-                return false;
-        }
-        return true;
-    }
+    private static bool Matches(OceanVoyage voyage) => OceanVoyageFilter.Matches(voyage);
 
     private static void DrawTable(List<OceanVoyage> voyages, long now) {
         const ImGuiTableFlags flags = ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.SizingFixedFit;
@@ -197,9 +168,11 @@ public sealed class TabOceanFishing : BaseTab {
                 ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg1, ImGui.GetColorU32(ImGuiColors.ParsedGreen with { W = 0.2f }));
 
             ImGui.TableNextColumn();
-            // already boarding, nothing left to wait for
-            if (!boarding)
-                DrawAlarmButton(voyage);
+            DrawAlarmButton(voyage);
+            if (boarding) {
+                ImGui.SameLine(0, 2.Scaled());
+                OceanTripUi.DrawGoButton(voyage);
+            }
 
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
@@ -227,10 +200,10 @@ public sealed class TabOceanFishing : BaseTab {
     private static void DrawAlarmButton(OceanVoyage voyage) {
         var set = OceanAlarms.IsSet(voyage);
         using (ImRaii.PushColor(ImGuiCol.Text, set ? ImGuiColors.DalamudYellow : ImGuiColors.DalamudGrey)) {
-            if (ImGuiComponents.IconButton(FontAwesomeIcon.Bell))
+            if (ImGuiComponents.IconButton("###Alarm", FontAwesomeIcon.Bell))
                 OceanAlarms.Toggle(voyage);
         }
-        ImGui.TooltipOnHover(set ? "Alarm set, click to cancel" : "Alarm when boarding starts");
+        ImGui.TooltipOnHover(set ? "Alarm set, click to cancel" : "Set an alarm for this voyage (reminders are set up in Settings > Ocean Fishing)");
     }
 
     private static void DrawRoute(IKDRoute route) {

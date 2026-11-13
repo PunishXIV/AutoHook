@@ -54,6 +54,8 @@ public partial class Configuration : IPluginConfiguration, IPluginService {
     public bool OceanTabMissingIndividual = false;
     public bool OceanTabMissingParty = false;
     public bool OceanTabMissingAnyFish = false;
+    public OceanTripConfig OceanTrip = new();
+    public List<OceanAlarmReminder> OceanAlarmReminders = [new()];
     public bool DtrBarEnabled = false;
     public bool DtrPresetBarEnabled = false;
 

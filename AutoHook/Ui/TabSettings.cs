@@ -84,14 +84,16 @@ public class TabSettings : BaseTab {
 
     private void DrawOceanFishingSettings() {
         DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Configuration.C.AutoOceanFish, UIStrings.AutoOceanFishHelpText);
-        if (!Configuration.C.AutoOceanFish)
-            return;
-
-        using (DrawUtil.BeginBranches(indent: true)) {
-            DrawAutoOceanFishGoal();
-            DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Configuration.C.AOF_Fallthrough);
-            DrawUtil.Checkbox(UIStrings.AutoOceanFish_AllowMovement, ref Configuration.C.AOF_WalkToRailing, UIStrings.AutoOceanFish_AllowMovementHelpText);
+        if (Configuration.C.AutoOceanFish) {
+            using (DrawUtil.BeginBranches(indent: true)) {
+                DrawAutoOceanFishGoal();
+                DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Configuration.C.AOF_Fallthrough);
+                DrawUtil.Checkbox(UIStrings.AutoOceanFish_AllowMovement, ref Configuration.C.AOF_WalkToRailing, UIStrings.AutoOceanFish_AllowMovementHelpText);
+            }
         }
+
+        ImGui.Spacing();
+        OceanTripUi.DrawAlarmSettings();
     }
 
     private static void DrawAutoOceanFishGoal() {

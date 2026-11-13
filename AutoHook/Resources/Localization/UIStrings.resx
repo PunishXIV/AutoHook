@@ -1733,7 +1733,7 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
     <value>When</value>
   </data>
   <data name="AutoOceanFish" xml:space="preserve">
-    <value>AutoOceanFish</value>
+    <value>Auto Ocean Fish</value>
   </data>
   <data name="AutoOceanFishHelpText" xml:space="preserve">
     <value>Handles everything on the boat itself: moving into position, casting, preset management.</value>
@@ -1859,5 +1859,8 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="AnyAchievement" xml:space="preserve">
     <value>Any Achievement</value>
+  </data>
+  <data name="FullAutoHelpText" xml:space="preserve">
+    <value>Go for every voyage matching the filters above.</value>
   </data>
 </root>

@@ -714,7 +714,7 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AutoOceanFish.
+        ///   Looks up a localized string similar to Auto Ocean Fish.
         /// </summary>
         internal static string AutoOceanFish {
             get {
@@ -1993,6 +1993,15 @@ namespace AutoHook.Resources.Localization {
         internal static string ForceBaitSwap {
             get {
                 return ResourceManager.GetString("ForceBaitSwap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go for every voyage matching the filters above..
+        /// </summary>
+        internal static string FullAutoHelpText {
+            get {
+                return ResourceManager.GetString("FullAutoHelpText", resourceCulture);
             }
         }
         

@@ -128,6 +128,13 @@ public sealed class RodFishingModule : FishingModule {
             return;
         }
 
+        // a trip runs the on-board part itself, starting another would cancel it
+        if (Svc.Automation.CurrentTask is OceanTripTask trip) {
+            trip.NotifyZoneStarted(op.ZoneIndex);
+            Ws.Decide(DecisionContext.OceanPreset, true, "Trip zone started", OceanStopUtil.FormatStateLog(ocean));
+            return;
+        }
+
         if (Svc.Automation.CurrentTask is AutoOceanFish existing) {
             Ws.Decide(DecisionContext.OceanPreset, false, "Task not started", $"already running (zone {existing.ZoneIndex + 1})");
             return;
@@ -378,7 +385,7 @@ public sealed class RodFishingModule : FishingModule {
     }
 
     public bool ShouldSuppressAutoStartFishing()
-        => AutoStartLocked || Configuration.C.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
+        => AutoStartLocked || Svc.Automation.CurrentTask is OceanTripTask && Ws.OceanFishing == OceanFishingState.Empty || Configuration.C.AutoOceanFish &&(Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
 
     public void ClearWorldState() {
         var f = Ws.Fishing;
