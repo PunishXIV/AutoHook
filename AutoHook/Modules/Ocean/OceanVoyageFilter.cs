@@ -12,7 +12,9 @@ public static class OceanVoyageFilter {
         };
     } = [OceanLine.Indigo, OceanLine.Ruby];
 
-    public static bool Matches(OceanVoyage voyage) {
+    public static bool Matches(OceanVoyage voyage) => Matches(voyage, unknownCountsAsMissing: true);
+
+    public static bool Matches(OceanVoyage voyage, bool unknownCountsAsMissing) {
         var legendaryFilter = Configuration.C.OceanTabLegendaryFilter;
         var achievementFilter = Configuration.C.OceanTabAchievementFilter;
         var missingIndividual = Configuration.C.OceanTabMissingIndividual;
@@ -29,7 +31,7 @@ public static class OceanVoyageFilter {
             var fishLeft = Configuration.C.OceanTabMissingLegendary && blueFish.Where(f => legendaryFilter == 0 || f.FishParameterId == legendaryFilter).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
             var achievementsLeft = (missingIndividual || missingParty) && achievements
                 .Where(a => achievementFilter == 0 || a.AchievementId == achievementFilter)
-                .Any(a => (OceanGoalCatalog.IsPartyAchievement(a) ? missingParty : missingIndividual) && OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) != false);
+                .Any(a => (OceanGoalCatalog.IsPartyAchievement(a) ? missingParty : missingIndividual) && (OceanGoalCatalog.IsAchievementIncomplete(a.AchievementId) ?? unknownCountsAsMissing));
             var uncaughtLeft = Configuration.C.OceanTabMissingAnyFish && OceanRouteFishCatalog.GetFish(voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
             if (!fishLeft && !achievementsLeft && !uncaughtLeft)
                 return false;

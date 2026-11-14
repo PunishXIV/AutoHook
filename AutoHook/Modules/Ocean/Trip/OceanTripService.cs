@@ -135,7 +135,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
     public OceanVoyage? NextTripVoyage(long now)
         => OceanSchedule.Upcoming(OceanVoyageFilter.Lines, now)
             .Take(OceanSchedule.RotationLength * OceanVoyageFilter.Lines.Length * 2)
-            .Where(v => !_handled.Contains(v) && InActiveWindow(StartTime(v)) && OceanVoyageFilter.Matches(v) && OceanPresetReadiness.IsReady(v.RouteId))
+            .Where(v => !_handled.Contains(v) && InActiveWindow(StartTime(v)) && OceanVoyageFilter.Matches(v, unknownCountsAsMissing: false) && OceanPresetReadiness.IsReady(v.RouteId))
             .Cast<OceanVoyage?>()
             .FirstOrDefault();
 
@@ -168,15 +168,13 @@ public sealed class OceanTripService : IPluginService, IDisposable {
     public static bool InParty
         => IPartyList.Get().Length > 1 || FFXIVClientStructs.FFXIV.Client.UI.Info.InfoProxyCrossRealm.IsCrossRealmParty();
 
-    // queued for anything that isn't ocean fishing
     public static bool InOtherDutyQueue
         => ICondition.Get()[ConditionFlag.InDutyQueue] && !OceanTripTask.InOceanFishing && QueuedOceanContent() == 0;
 
-    // the ContentFinderCondition of an ocean fishing queue, 0 if not queued for one
     public static unsafe uint QueuedOceanContent() {
         if (!ICondition.Get()[ConditionFlag.InDutyQueue])
             return 0;
-        var finder = FFXIVClientStructs.FFXIV.Client.Game.UI.ContentsFinder.Instance();
+        var finder = ContentsFinder.Instance();
         if (finder == null)
             return 0;
         foreach (var entry in finder->GetQueueInfo()->QueuedEntries) {
@@ -186,7 +184,6 @@ public sealed class OceanTripService : IPluginService, IDisposable {
         return 0;
     }
 
-    // the voyage boarding now that the ocean fishing queue is for
     public static OceanVoyage? QueuedOceanVoyage(long now) {
         var content = QueuedOceanContent();
         if (content == 0)

@@ -9,9 +9,11 @@ public static class OceanRouteFishCatalog {
     private static Dictionary<uint, uint>? _fishParameterByItem;
 
     public static IReadOnlyList<OceanRouteFish> GetFish(uint routeId) {
-        if (!ByRoute.TryGetValue(routeId, out var fish))
-            ByRoute[routeId] = fish = Build(routeId);
-        return fish;
+        if (ByRoute.TryGetValue(routeId, out var fish))
+            return fish;
+        if (!FishBaitCatalog.Get().IsReady)
+            return [];
+        return ByRoute[routeId] = Build(routeId);
     }
 
     // null if the fish isn't on this route at a matching time of day
