@@ -76,7 +76,10 @@ public sealed class WorldState(ulong qpf, string gameVersion) : IPluginService {
         => ActionAvailable(IDs.Actions.Mooch) || ActionAvailable(IDs.Actions.Mooch2);
 
     public bool IsCastAvailable()
-        => ActionAvailable(IDs.Actions.Cast) && !Player.BlockCasting;
+        => ActionAvailable(IDs.Actions.Cast) && !Player.BlockCasting && !IsOceanZonePending();
+
+    public bool IsOceanZonePending()
+        => OceanFishing != OceanFishingState.Empty && !OceanFishing.IsZoneTimerStarted();
 
     public bool HasMultihookAvailable()
         => ActionAvailable(IDs.Actions.MultiHook, ActionType.Action);
