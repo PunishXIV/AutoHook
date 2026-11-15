@@ -63,37 +63,53 @@ public static class ConfigurationJsonMigrator {
     }
 
     private static void MigrateImportedPresetObject(JObject preset, int fromVersion) {
-        foreach (var migration in PresetImportMigrations) {
-            if (fromVersion < migration.ToVersion)
-                migration.Apply(preset);
+        foreach (var (version, apply) in PresetMigrations) {
+            if (fromVersion < version)
+                apply(preset);
         }
     }
 
-    private interface IPresetImportMigration {
-        int ToVersion { get; }
-        void Apply(JObject preset);
-    }
-
-    private sealed class PresetImportMigration(int toVersion, Action<JObject> apply) : IPresetImportMigration {
-        public int ToVersion { get; } = toVersion;
-        public void Apply(JObject preset) => apply(preset);
-    }
-
-    private static readonly IPresetImportMigration[] PresetImportMigrations =
+    // per-preset steps, keyed by the schema version they upgrade to. imports run these directly; saved configs run them on every fishing preset.
+    private static readonly (int Version, Action<JObject> Apply)[] PresetMigrations =
     [
-        new PresetImportMigration(6, preset => {
+        (6, preset => {
             MigratePresetExtra(preset);
             MigratePresetConditions(preset);
         }),
-        new PresetImportMigration(7, preset => {
+        (7, preset => {
             MigratePresetSwimbaitCountThreshold(preset);
             MigratePresetSparefulHandSwimbaitLimits(preset);
             MigratePresetFishCaughtActionEnabled(preset);
         }),
-        new PresetImportMigration(8, MigratePresetLuresToNested),
-        new PresetImportMigration(9, MigratePresetActionCooldownChecks),
-        new PresetImportMigration(11, MigratePresetV11Bools),
+        (8, MigratePresetLuresToNested),
+        (9, MigrateActionCooldownChecks),
+        (11, MigratePresetV11Bools),
     ];
+
+    private static void ApplyPresetMigration(JObject root, int version) {
+        var apply = PresetMigrations.First(m => m.Version == version).Apply;
+        foreach (var preset in FishingPresets(root))
+            apply(preset);
+    }
+
+    // default + custom fishing presets of a saved config
+    private static IEnumerable<JObject> FishingPresets(JObject root) {
+        if (root["HookPresets"] is not JObject hookPresets)
+            yield break;
+        if (hookPresets["DefaultPreset"] is JObject defaultPreset)
+            yield return defaultPreset;
+        foreach (var preset in EnumerateArray(hookPresets["CustomPresets"]).OfType<JObject>())
+            yield return preset;
+    }
+
+    // spearfishing presets plus the autogig root, which holds the global options
+    private static IEnumerable<JObject> AutoGigOwners(JObject root) {
+        if (root["AutoGigConfig"] is not JObject autoGig)
+            yield break;
+        yield return autoGig;
+        foreach (var preset in EnumerateArray(autoGig["Presets"]).OfType<JObject>())
+            yield return preset;
+    }
 
     internal static void MigrateV2ToV3Json(JObject root) {
         if (root["BaitPresetList"] is not JArray baitPresetList || baitPresetList.Count == 0) {
@@ -128,7 +144,8 @@ public static class ConfigurationJsonMigrator {
         root.Remove("BaitPresetList");
     }
 
-    internal static string RunRuntimeMigrationsUpTo5(JObject root) {
+    // v3/v4 -> v5 on the deserialized config: autogig PresetName from Name, default preset renamed.
+    internal static void MigrateV5(JObject root) {
         Configuration? config;
         try {
             config = root.ToObject<Configuration>(JsonSerializer.Create(new JsonSerializerSettings {
@@ -140,65 +157,38 @@ public static class ConfigurationJsonMigrator {
         }
 
         if (config == null)
-            return root.ToString(Formatting.None);
+            return;
 
         config.Initiate();
-        Configuration.RunMigrationsUpTo(config, 5);
+        foreach (var gig in config.AutoGigConfig.Presets)
+            gig.PresetName = gig.Name;
+        config.HookPresets.DefaultPreset.PresetName = AutoHook.GlobalPresetName;
+        config.Version = 5;
 
-        return JsonConvert.SerializeObject(config, new JsonSerializerSettings {
+        var next = JObject.Parse(JsonConvert.SerializeObject(config, new JsonSerializerSettings {
             Formatting = Formatting.None,
             DefaultValueHandling = DefaultValueHandling.Include
-        });
+        }));
+        root.RemoveAll();
+        foreach (var prop in next.Properties())
+            root[prop.Name] = prop.Value;
     }
 
-    internal static void MigrateV6(JObject root) {
-        if (root["HookPresets"] is not JObject hookPresets)
-            return;
+    internal static void MigrateV6(JObject root) => ApplyPresetMigration(root, 6);
 
-        static void MigratePreset(JObject? preset) {
-            if (preset == null) return;
-            MigratePresetExtra(preset);
-            MigratePresetConditions(preset);
-        }
+    internal static void MigrateV7(JObject root) => ApplyPresetMigration(root, 7);
 
-        MigratePreset(hookPresets["DefaultPreset"] as JObject);
-
-        if (hookPresets["CustomPresets"] is JArray customPresets) {
-            foreach (var token in customPresets) {
-                if (token is JObject presetObj)
-                    MigratePreset(presetObj);
-            }
-        }
-    }
-
-    internal static void MigrateV7(JObject root) {
-        MigrateSwimbaitCountThresholdToConditions(root);
-        MigrateSparefulHandSwimbaitLimits(root);
-        MigrateFishCaughtActionEnabledPresets(root);
-    }
-
+    // unlike the v8 import step (lure nesting only), saved configs re-run the full hookset migration
     internal static void MigrateV8(JObject root) {
-        if (root["HookPresets"] is not JObject hookPresets)
-            return;
-
-        static void MigratePreset(JObject? preset) {
-            if (preset == null) return;
-            foreach (var hook in EnumerateArray(preset["ListOfBaits"]).Concat(EnumerateArray(preset["ListOfMooch"]))) {
-                if (hook is not JObject hookObj) continue;
-                MigrateHooksetJson(hookObj["NormalHook"] as JObject);
-                MigrateHooksetJson(hookObj["IntuitionHook"] as JObject);
-            }
-        }
-
-        MigratePreset(hookPresets["DefaultPreset"] as JObject);
-        if (hookPresets["CustomPresets"] is JArray customPresets) {
-            foreach (var token in customPresets) {
-                if (token is JObject presetObj)
-                    MigratePreset(presetObj);
+        foreach (var preset in FishingPresets(root)) {
+            foreach (var hook in EnumerateArray(preset["ListOfBaits"]).Concat(EnumerateArray(preset["ListOfMooch"])).OfType<JObject>()) {
+                MigrateHooksetJson(hook["NormalHook"] as JObject);
+                MigrateHooksetJson(hook["IntuitionHook"] as JObject);
             }
         }
     }
 
+    // whole config, so spearfishing conditions are covered too
     internal static void MigrateV9(JObject root)
         => MigrateActionCooldownChecks(root);
 
@@ -211,63 +201,36 @@ public static class ConfigurationJsonMigrator {
         if ((bool?)autoGig["CatchAllNaturesBounty"] == true)
             EnableAction(autoGig, "CatchAllNaturesBountyAction");
 
-        if (autoGig["Presets"] is JArray presets) {
-            foreach (var token in presets) {
-                if (token is JObject preset)
-                    MigrateSpearfishingPreset(preset);
-            }
-        }
+        foreach (var preset in EnumerateArray(autoGig["Presets"]).OfType<JObject>())
+            MigrateSpearfishingPreset(preset);
     }
 
     internal static void MigrateV11(JObject root) {
-        if (root["HookPresets"] is JObject hookPresets) {
-            MigratePresetV11Bools(hookPresets["DefaultPreset"] as JObject);
-            foreach (var token in EnumerateArray(hookPresets["CustomPresets"])) {
-                if (token is JObject preset)
-                    MigratePresetV11Bools(preset);
-            }
-        }
-
-        if (root["AutoGigConfig"] is JObject autoGig) {
-            MigrateAutoCastsV11Bools(autoGig);
-            foreach (var token in EnumerateArray(autoGig["Presets"])) {
-                if (token is JObject preset)
-                    MigrateAutoCastsV11Bools(preset);
-            }
-        }
+        ApplyPresetMigration(root, 11);
+        foreach (var owner in AutoGigOwners(root))
+            MigrateAutoCastsV11Bools(owner);
     }
 
-    private static void MigratePresetV11Bools(JObject? preset) {
-        if (preset == null)
-            return;
+    private static void MigratePresetV11Bools(JObject preset) {
         if (preset["AutoCastsCfg"] is JObject autoCasts)
             MigrateAutoCastsV11Bools(autoCasts);
     }
 
     private static void MigrateAutoCastsV11Bools(JObject owner) {
         // Cordial may live on AutoCastsCfg or spearfishing owner directly
-        MigrateCordialIgnoreTimeWindow(owner["CastCordial"] as JObject ?? owner["Cordial"] as JObject);
+        if ((owner["CastCordial"] as JObject ?? owner["Cordial"] as JObject) is { } cordial) {
+            if ((bool?)cordial["IgnoreTimeWindow"] == true)
+                cordial["SkipGlobalTimeWindow"] = true;
+            cordial.Remove("IgnoreTimeWindow");
+        }
+
         (owner["CastLine"] as JObject)?.Remove("IgnoreMooch");
-        MigrateCastLineIgnoreMooch(owner["CastLine"] as JObject);
-        MigrateFishEyesIgnoreMooch(owner["CastFishEyes"] as JObject);
-    }
 
-    private static void MigrateCordialIgnoreTimeWindow(JObject? cordial) {
-        if (cordial == null)
-            return;
-        if ((bool?)cordial["IgnoreTimeWindow"] == true)
-            cordial["SkipGlobalTimeWindow"] = true;
-        cordial.Remove("IgnoreTimeWindow");
-    }
-
-    private static void MigrateCastLineIgnoreMooch(JObject? castLine) => castLine?.Remove("IgnoreMooch");
-
-    private static void MigrateFishEyesIgnoreMooch(JObject? fishEyes) {
-        if (fishEyes == null)
-            return;
-        if ((bool?)fishEyes["IgnoreMooch"] == true)
-            fishEyes["DontCancelMooch"] = false;
-        fishEyes.Remove("IgnoreMooch");
+        if (owner["CastFishEyes"] is JObject fishEyes) {
+            if ((bool?)fishEyes["IgnoreMooch"] == true)
+                fishEyes["DontCancelMooch"] = false;
+            fishEyes.Remove("IgnoreMooch");
+        }
     }
 
     private static void MigrateSpearfishingPreset(JObject preset) {
@@ -293,9 +256,6 @@ public static class ConfigurationJsonMigrator {
         }
         action["Enabled"] = true;
     }
-
-    private static void MigratePresetActionCooldownChecks(JObject preset)
-        => MigrateActionCooldownChecks(preset);
 
     private static void MigrateActionCooldownChecks(JObject root) {
         var typeId = Registry.GetId<ActionCooldownCD>();
@@ -356,14 +316,16 @@ public static class ConfigurationJsonMigrator {
         obj["ConditionSet"] = JToken.FromObject(set);
     }
 
+    private static void SetConditionsIfAny(JObject obj, List<Condition> conditions) {
+        if (conditions.Count > 0)
+            SetConditionSetIfEmpty(obj, Configuration.ConditionSetBuilder.All([.. conditions]));
+    }
+
     private static Condition ActionOnCd(uint actionId)
         => new() { TypeId = Registry.GetId<ActionCooldownCD>(), Params = new Dictionary<string, object> { ["id"] = (long)actionId, ["type"] = (long)0, ["chk"] = ActionCooldownCD.CheckCooldown, ["sec"] = (long)0, ["op"] = ">" } };
 
     private static Condition ItemOnCd(uint itemId)
         => new() { TypeId = Registry.GetId<ActionCooldownCD>(), Params = new Dictionary<string, object> { ["id"] = (long)itemId, ["type"] = (long)1, ["chk"] = ActionCooldownCD.CheckCooldown, ["sec"] = (long)0, ["op"] = ">" } };
-
-    private static ConditionSet Single(Condition c)
-        => new() { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = [c] }] };
 
     private static void MigrateCastMoochJson(JObject? obj) {
         if (obj == null || (bool?)obj["OnlyMoochIntuition"] != true) return;
@@ -379,13 +341,10 @@ public static class ConfigurationJsonMigrator {
         if (obj == null) return;
         var onlyIntuition = (bool?)obj["_onlyUseWithIntuition"] == true;
         var exceeds = (int?)(obj["_useWhenIntuitionExceeds"] ?? 0) ?? 0;
-        if (!onlyIntuition && exceeds <= 0) return;
         var conditions = new List<Condition>();
-        if (onlyIntuition) conditions.Add(Configuration.ConditionSetBuilder.SingleFlag<IntuitionActiveCD>().Groups[0].Conditions[0]);
-        if (exceeds > 0) conditions.Add(Configuration.ConditionSetBuilder.SingleStatusStacks(IDs.Status.FishersIntuition, exceeds).Groups[0].Conditions[0]);
-        if (conditions.Count == 0) return;
-        var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = conditions }] };
-        SetConditionSetIfEmpty(obj, set);
+        if (onlyIntuition) conditions.Add(Configuration.ConditionSetBuilder.IntuitionActive());
+        if (exceeds > 0) conditions.Add(Configuration.ConditionSetBuilder.StatusStacks(IDs.Status.FishersIntuition, exceeds));
+        SetConditionsIfAny(obj, conditions);
     }
 
     private static void MigrateCastPrizeCatchJson(JObject? obj) {
@@ -394,30 +353,26 @@ public static class ConfigurationJsonMigrator {
         if ((bool?)obj["UseWhenMoochIIOnCD"] == true) conditions.Add(ActionOnCd(IDs.Actions.Mooch2));
         if ((bool?)obj["UseOnlyWithIdenticalCast"] == true) conditions.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.IdenticalCast));
         if ((bool?)obj["UseOnlyWithActiveSlap"] == true) conditions.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.SurfaceSlap));
-        if (conditions.Count == 0) return;
-        var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = conditions }] };
-        SetConditionSetIfEmpty(obj, set);
+        SetConditionsIfAny(obj, conditions);
     }
 
     private static void MigrateCastPatienceJson(JObject? obj) {
         if (obj == null || (bool?)obj["UseOnlyWhenMoochIIOnCD"] != true) return;
-        SetConditionSetIfEmpty(obj, Single(ActionOnCd(IDs.Actions.Mooch2)));
+        SetConditionSetIfEmpty(obj, Configuration.ConditionSetBuilder.All(ActionOnCd(IDs.Actions.Mooch2)));
     }
 
     private static void MigrateCastThaliaksFavorJson(JObject? obj) {
         if (obj == null || (bool?)obj["UseWhenCordialCD"] != true) return;
-        SetConditionSetIfEmpty(obj, Single(ItemOnCd(IDs.Item.Cordial)));
+        SetConditionSetIfEmpty(obj, Configuration.ConditionSetBuilder.All(ItemOnCd(IDs.Item.Cordial)));
     }
 
     private static void MigrateCastMakeShiftBaitJson(JObject? obj) {
         if (obj == null) return;
         var conditions = new List<Condition>();
-        if ((bool?)obj["_onlyUseWithIntuition"] == true) conditions.Add(Configuration.ConditionSetBuilder.SingleFlag<IntuitionActiveCD>().Groups[0].Conditions[0]);
-        if ((bool?)obj["OnlyWhenMoochNotUp"] == true) conditions.Add(Configuration.ConditionSetBuilder.SingleFlag<MoochAvailableCD>(inverse: true).Groups[0].Conditions[0]);
+        if ((bool?)obj["_onlyUseWithIntuition"] == true) conditions.Add(Configuration.ConditionSetBuilder.IntuitionActive());
+        if ((bool?)obj["OnlyWhenMoochNotUp"] == true) conditions.Add(Configuration.ConditionSetBuilder.Flag<MoochAvailableCD>(inverse: true));
         if ((bool?)obj["UseOnlyWhenMoochIIOnCD"] == true) conditions.Add(ActionOnCd(IDs.Actions.Mooch2));
-        if (conditions.Count == 0) return;
-        var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = conditions }] };
-        SetConditionSetIfEmpty(obj, set);
+        SetConditionsIfAny(obj, conditions);
     }
 
     private static void MigrateCastLineJson(JObject? obj) {
@@ -425,9 +380,7 @@ public static class ConfigurationJsonMigrator {
         var conditions = new List<Condition>();
         if ((bool?)obj["OnlyCastWithFishEyes"] == true) conditions.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.FishEyes));
         if ((bool?)obj["OnlyCastLarge"] == true) conditions.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.PrizeCatch));
-        if (conditions.Count == 0) return;
-        var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = conditions }] };
-        SetConditionSetIfEmpty(obj, set);
+        SetConditionsIfAny(obj, conditions);
     }
 
     private static void MigrateCastBigGameJson(JObject? obj) {
@@ -435,9 +388,7 @@ public static class ConfigurationJsonMigrator {
         var conditions = new List<Condition>();
         if ((bool?)obj["WithIdenticalC"] == true) conditions.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.IdenticalCast));
         if ((bool?)obj["WithSlap"] == true) conditions.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.SurfaceSlap));
-        if (conditions.Count == 0) return;
-        var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = conditions }] };
-        SetConditionSetIfEmpty(obj, set);
+        SetConditionsIfAny(obj, conditions);
     }
 
     private static void MigrateCastMultihookJson(JObject? obj) {
@@ -534,9 +485,8 @@ public static class ConfigurationJsonMigrator {
             if (chum != null) conditions.Add(chum);
         }
 
-        if (conditions.Count == 0) return;
-        var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = conditions }] };
-        bite["ConditionSet"] = JToken.FromObject(set);
+        if (conditions.Count > 0)
+            bite["ConditionSet"] = JToken.FromObject(Configuration.ConditionSetBuilder.All([.. conditions]));
     }
 
     private static void MigrateLuresJson(JObject lures) {
@@ -553,10 +503,8 @@ public static class ConfigurationJsonMigrator {
                 group.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.IdenticalCast, inverse: true));
             if ((bool?)lures["OnlyCastLarge"] == true)
                 group.Add(Configuration.ConditionSetBuilder.StatusActive(IDs.Status.PrizeCatch));
-            if (group.Count > 0) {
-                var set = new ConditionSet { CombineMode = ConditionCombineMode.All, Groups = [new ConditionGroup { CombineMode = ConditionCombineMode.All, Conditions = group }] };
-                lures["ConditionSet"] = JToken.FromObject(set);
-            }
+            if (group.Count > 0)
+                lures["ConditionSet"] = JToken.FromObject(Configuration.ConditionSetBuilder.All([.. group]));
         }
 
         MigrateLuresToNestedJson(lures);
@@ -649,19 +597,7 @@ public static class ConfigurationJsonMigrator {
         MigrateSwimbaitCfgCountThreshold(intuition, hookFishId, threshold);
     }
 
-    private static void MigrateSwimbaitCountThresholdToConditions(JObject root) {
-        if (root["HookPresets"] is not JObject hookPresets)
-            return;
-
-        MigratePresetSwimbaitCountThreshold(hookPresets["DefaultPreset"] as JObject);
-        foreach (var token in EnumerateArray(hookPresets["CustomPresets"])) {
-            if (token is JObject presetObj)
-                MigratePresetSwimbaitCountThreshold(presetObj);
-        }
-    }
-
-    private static void MigratePresetSwimbaitCountThreshold(JObject? preset) {
-        if (preset == null) return;
+    private static void MigratePresetSwimbaitCountThreshold(JObject preset) {
         foreach (var hook in EnumerateArray(preset["ListOfBaits"]).Concat(EnumerateArray(preset["ListOfMooch"]))) {
             if (hook is not JObject hookObj) continue;
             var hookFishId = (int?)(hookObj["BaitFish"]?["Id"] ?? 0) ?? 0;
@@ -706,18 +642,7 @@ public static class ConfigurationJsonMigrator {
             return;
         }
 
-        var set = new ConditionSet {
-            CombineMode = ConditionCombineMode.All,
-            Groups =
-            [
-                new ConditionGroup
-                {
-                    CombineMode = ConditionCombineMode.All,
-                    Conditions = [countCond],
-                }
-            ]
-        };
-        swimbait["ConditionSet"] = JToken.FromObject(set);
+        swimbait["ConditionSet"] = JToken.FromObject(Configuration.ConditionSetBuilder.All(countCond));
     }
 
     private static bool ConditionSetHasAnyCondition(JObject? setObj)
@@ -752,19 +677,7 @@ public static class ConfigurationJsonMigrator {
             .Any(cond => (string?)cond["t"] == typeId);
     }
 
-    private static void MigrateSparefulHandSwimbaitLimits(JObject root) {
-        if (root["HookPresets"] is not JObject hookPresets)
-            return;
-
-        MigratePresetSparefulHandSwimbaitLimits(hookPresets["DefaultPreset"] as JObject);
-        foreach (var token in EnumerateArray(hookPresets["CustomPresets"])) {
-            if (token is JObject presetObj)
-                MigratePresetSparefulHandSwimbaitLimits(presetObj);
-        }
-    }
-
-    private static void MigratePresetSparefulHandSwimbaitLimits(JObject? preset) {
-        if (preset == null) return;
+    private static void MigratePresetSparefulHandSwimbaitLimits(JObject preset) {
         foreach (var token in EnumerateArray(preset["ListOfFish"])) {
             if (token is JObject fishObj)
                 MigrateFishSparefulHandSwimbaitLimit(fishObj);
@@ -803,17 +716,7 @@ public static class ConfigurationJsonMigrator {
             return;
         }
 
-        spareful["ConditionSet"] = JToken.FromObject(new ConditionSet {
-            CombineMode = ConditionCombineMode.All,
-            Groups =
-            [
-                new ConditionGroup
-                {
-                    CombineMode = ConditionCombineMode.All,
-                    Conditions = [countCond],
-                }
-            ]
-        });
+        spareful["ConditionSet"] = JToken.FromObject(Configuration.ConditionSetBuilder.All(countCond));
     }
 
     private static bool ConditionSetHasSwimbaitCountLessThan(JObject? setObj, int limit, int fishId) {
@@ -843,19 +746,7 @@ public static class ConfigurationJsonMigrator {
         fish["IgnoreConditionSet"] = JToken.FromObject(set);
     }
 
-    private static void MigrateFishCaughtActionEnabledPresets(JObject root) {
-        if (root["HookPresets"] is not JObject hookPresets)
-            return;
-
-        MigratePresetFishCaughtActionEnabled(hookPresets["DefaultPreset"] as JObject);
-        foreach (var token in EnumerateArray(hookPresets["CustomPresets"])) {
-            if (token is JObject presetObj)
-                MigratePresetFishCaughtActionEnabled(presetObj);
-        }
-    }
-
-    private static void MigratePresetFishCaughtActionEnabled(JObject? preset) {
-        if (preset == null) return;
+    private static void MigratePresetFishCaughtActionEnabled(JObject preset) {
         foreach (var token in EnumerateArray(preset["ListOfFish"])) {
             if (token is not JObject fishObj) continue;
             MigrateFishCaughtActionEnabled(fishObj, "SurfaceSlap", "UseSurfaceSlap");
@@ -922,10 +813,7 @@ public static class ConfigurationJsonMigrator {
         autoCasts["TimeWindowConditionSet"] = JToken.FromObject(set);
     }
 
-    private static void MigratePresetExtra(JObject? preset) {
-        if (preset == null)
-            return;
-
+    private static void MigratePresetExtra(JObject preset) {
         if (preset["ExtraCfg"] is not JObject extra)
             return;
 

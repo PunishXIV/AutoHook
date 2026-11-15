@@ -2,15 +2,17 @@ namespace AutoHook.Presets.Config;
 
 public partial class Configuration {
     internal static class ConditionSetBuilder {
-        public static ConditionSet SingleFlag<TDef>(bool inverse = false) where TDef : IConditionDefinition {
+        public static ConditionSet SingleFlag<TDef>(bool inverse = false) where TDef : IConditionDefinition
+            => Single(Flag<TDef>(inverse));
+
+        public static Condition Flag<TDef>(bool inverse = false) where TDef : IConditionDefinition {
             var cond = new Condition {
                 TypeId = Registry.GetId<TDef>(),
                 Params = []
             };
             if (inverse)
                 cond.Params["inv"] = true;
-
-            return Single(cond);
+            return cond;
         }
 
         public static ConditionSet SingleStatusStacks(uint statusId, int minStacks)

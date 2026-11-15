@@ -3,49 +3,17 @@ using Newtonsoft.Json.Linq;
 
 namespace AutoHook.Presets.Migration;
 
-file sealed class ConfigJsonV3 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 3;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV2ToV3Json(root);
+// clib discovers json migrations by type and needs one parameterless class per target version.
+file abstract class ConfigJsonStep(int targetVersion, Action<JObject> migrate) : IConfigJsonMigration<Configuration> {
+    public int TargetVersion => targetVersion;
+    public void Migrate(JObject root) => migrate(root);
 }
 
-file sealed class ConfigJsonV5 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 5;
-
-    public void Migrate(JObject root) {
-        var migrated = ConfigurationJsonMigrator.RunRuntimeMigrationsUpTo5(root);
-        var next = JObject.Parse(migrated);
-        root.RemoveAll();
-        foreach (var prop in next.Properties())
-            root[prop.Name] = prop.Value;
-    }
-}
-
-file sealed class ConfigJsonV6 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 6;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV6(root);
-}
-
-file sealed class ConfigJsonV7 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 7;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV7(root);
-}
-
-file sealed class ConfigJsonV8 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 8;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV8(root);
-}
-
-file sealed class ConfigJsonV9 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 9;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV9(root);
-}
-
-file sealed class ConfigJsonV10 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 10;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV10(root);
-}
-
-file sealed class ConfigJsonV11 : IConfigJsonMigration<Configuration> {
-    public int TargetVersion => 11;
-    public void Migrate(JObject root) => ConfigurationJsonMigrator.MigrateV11(root);
-}
+file sealed class ConfigJsonV3() : ConfigJsonStep(3, ConfigurationJsonMigrator.MigrateV2ToV3Json);
+file sealed class ConfigJsonV5() : ConfigJsonStep(5, ConfigurationJsonMigrator.MigrateV5);
+file sealed class ConfigJsonV6() : ConfigJsonStep(6, ConfigurationJsonMigrator.MigrateV6);
+file sealed class ConfigJsonV7() : ConfigJsonStep(7, ConfigurationJsonMigrator.MigrateV7);
+file sealed class ConfigJsonV8() : ConfigJsonStep(8, ConfigurationJsonMigrator.MigrateV8);
+file sealed class ConfigJsonV9() : ConfigJsonStep(9, ConfigurationJsonMigrator.MigrateV9);
+file sealed class ConfigJsonV10() : ConfigJsonStep(10, ConfigurationJsonMigrator.MigrateV10);
+file sealed class ConfigJsonV11() : ConfigJsonStep(11, ConfigurationJsonMigrator.MigrateV11);
