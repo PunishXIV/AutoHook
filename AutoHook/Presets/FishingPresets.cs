@@ -85,27 +85,108 @@ public class FishingPresets : BasePreset {
         Configuration.Save();
     }
 
-    public void AddNewFolder(string folderName) {
-        Folders.Add(new PresetFolder(folderName));
+    // folder ops mutate lists the preset tab may be iterating mid-draw, so PresetIds is always replaced, never edited in place.
+    public void AddNewFolder(string folderName, Guid? parentFolderId = null) {
+        Folders.Add(new PresetFolder(folderName) { ParentFolderId = parentFolderId });
         Configuration.Save();
     }
 
-    public void AddNewFolder(string folderName, Guid? parentFolderId) {
-        Folders.Add(new PresetFolder(folderName) {
-            ParentFolderId = parentFolderId,
-        });
+    public PresetFolder? FindFolder(Guid folderId) => Folders.Find(f => f.UniqueId == folderId);
+
+    public IEnumerable<PresetFolder> ChildFolders(PresetFolder folder) => Folders.Where(f => f.ParentFolderId == folder.UniqueId);
+
+    public IEnumerable<Guid> PresetIdsInTree(PresetFolder folder) => folder.PresetIds.Concat(ChildFolders(folder).SelectMany(PresetIdsInTree));
+
+    public bool IsDescendantOf(PresetFolder ancestor, PresetFolder candidate) {
+        var parentId = candidate.ParentFolderId;
+        while (parentId is { } id && FindFolder(id) is { } parent) {
+            if (parent == ancestor)
+                return true;
+            parentId = parent.ParentFolderId;
+        }
+        return false;
+    }
+
+    public void MovePresetToFolder(Guid presetId, PresetFolder folder) {
+        if (folder.ContainsPreset(presetId))
+            return;
+        foreach (var f in Folders)
+            f.RemovePreset(presetId);
+        folder.PresetIds = [.. folder.PresetIds, presetId];
         Configuration.Save();
     }
 
-    public void RemoveFolder(Guid folderId) {
-        var folder = Folders.Find(f => f.UniqueId == folderId);
-        if (folder != null)
-            Folders.Remove(folder);
+    public void MovePresetTo(Guid presetId, CustomPresetConfig target) {
+        if (presetId == target.UniqueId)
+            return;
+
+        var folder = GetFolderContainingPreset(target.UniqueId);
+        foreach (var f in Folders.Where(f => f != folder))
+            f.RemovePreset(presetId);
+
+        if (folder == null) {
+            var from = CustomPresets.FindIndex(p => p.UniqueId == presetId);
+            if (from >= 0)
+                SwapIndex(from, CustomPresets.IndexOf(target));
+        }
+        else {
+            var ids = folder.PresetIds.ToList();
+            var to = ids.IndexOf(target.UniqueId);
+            ids.Remove(presetId);
+            ids.Insert(Math.Min(to, ids.Count), presetId);
+            folder.PresetIds = ids;
+        }
         Configuration.Save();
+    }
+
+    public void MoveFolderOnto(PresetFolder moving, PresetFolder target) {
+        if (moving == target)
+            return;
+
+        if (moving.ParentFolderId == target.ParentFolderId) {
+            Folders.Remove(moving);
+            Folders.Insert(Folders.IndexOf(target), moving);
+        }
+        else if (target.ParentFolderId == moving.UniqueId)
+            (moving.ParentFolderId, target.ParentFolderId) = (target.UniqueId, moving.ParentFolderId);
+        else if (!IsDescendantOf(moving, target))
+            moving.ParentFolderId = target.UniqueId;
+        else
+            return;
+        Configuration.Save();
+    }
+
+    public void MoveFolderBeside(PresetFolder moving, CustomPresetConfig preset) {
+        var parent = GetFolderContainingPreset(preset.UniqueId);
+        if (parent != null && (parent == moving || IsDescendantOf(moving, parent)))
+            return;
+        moving.ParentFolderId = parent?.UniqueId;
+        Configuration.Save();
+    }
+
+    public void CopyFolder(PresetFolder source) {
+        CopyFolderTree(source, source.ParentFolderId, $"Copy_{source.FolderName}");
+        Configuration.Save();
+    }
+
+    private void CopyFolderTree(PresetFolder source, Guid? parentFolderId, string name) {
+        var copy = new PresetFolder(name) { ParentFolderId = parentFolderId, IsExpanded = source.IsExpanded };
+        foreach (var preset in source.PresetIds.Select(id => CustomPresets.Find(p => p.UniqueId == id)).OfType<CustomPresetConfig>()) {
+            var presetCopy = PresetImport.ClonePreset(preset);
+            presetCopy.UniqueId = Guid.NewGuid();
+            CustomPresets.Add(presetCopy);
+            copy.AddPreset(presetCopy.UniqueId);
+        }
+        InvalidatePresetListCache();
+
+        var children = ChildFolders(source).ToList();
+        Folders.Add(copy);
+        foreach (var child in children)
+            CopyFolderTree(child, copy.UniqueId, child.FolderName);
     }
 
     private void RemoveFolderWithContentsRecursive(PresetFolder folder) {
-        var childFolders = Folders.Where(f => f.ParentFolderId == folder.UniqueId).ToList();
+        var childFolders = ChildFolders(folder).ToList();
         foreach (var child in childFolders)
             RemoveFolderWithContentsRecursive(child);
 
@@ -133,8 +214,7 @@ public class FishingPresets : BasePreset {
     }
 
     public void RegisterPreset(CustomPresetConfig preset, bool select = true) {
-        CustomPresetConfig? oldPreset = null;
-        oldPreset = SelectedPreset;
+        var oldPreset = SelectedPreset;
         CustomPresets.Add(preset);
         InvalidatePresetListCache();
         if (select) {

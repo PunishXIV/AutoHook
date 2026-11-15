@@ -4,7 +4,6 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ECommons.ImGuiMethods;
-using Newtonsoft.Json;
 using System.Numerics;
 
 namespace AutoHook.Ui;
@@ -16,6 +15,9 @@ public class TabFishingPresets : BaseTab {
     public override OpenWindow Type => OpenWindow.FishingPreset;
 
     private static readonly FishingPresets _basePreset = Configuration.C.HookPresets;
+
+    private const string PresetPayload = "AH_PRESET";
+    private const string FolderPayload = "AH_FOLDER";
 
     public static bool OpenPresetGen;
     private readonly PresetCreator PresetCreator = new();
@@ -66,11 +68,12 @@ public class TabFishingPresets : BaseTab {
 
     private static BasePresetConfig? displayed = _basePreset.SelectedPreset ?? _basePreset.DefaultPreset;
 
-    private static bool IsAnonymousPreset(CustomPresetConfig preset)
-        => preset.IsAnonymous;
-
     private static string GetAnonymousPresetDisplayName(string presetName)
         => presetName.StartsWith(CustomPresetConfig.AnonymousPresetPrefix, StringComparison.Ordinal) ? presetName[CustomPresetConfig.AnonymousPresetPrefix.Length..] : presetName;
+
+    private bool SearchActive => !string.IsNullOrWhiteSpace(_searchFilter);
+
+    private bool MatchesSearch(string name) => !SearchActive || name.Contains(_searchFilter.Trim(), StringComparison.InvariantCultureIgnoreCase);
 
     private void DrawList() {
         using var table = ImRaii.Table($"###PresetTable", 2, ImGuiTableFlags.Resizable);
@@ -91,78 +94,48 @@ public class TabFishingPresets : BaseTab {
         ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
         ImGui.InputTextWithHint("##PresetSearch", UIStrings.Search_Hint, ref _searchFilter, 128);
 
-        if (promptingForFolderName) {
+        if (promptingForFolderName)
             DrawCreateFolderPopup();
-        }
 
-        if (renameFolderId != null) {
+        if (renameFolderId != null)
             DrawRenameFolderPopup();
-        }
 
         using var list = ImRaii.ListBox("preset_list", ImGui.GetContentRegionAvail());
         if (!list)
             return;
 
-        var searchActive = !string.IsNullOrWhiteSpace(_searchFilter);
-        var searchFilter = searchActive ? _searchFilter.Trim() : string.Empty;
-        bool MatchesSearch(string name) => !searchActive || name.Contains(searchFilter, StringComparison.InvariantCultureIgnoreCase);
+        DrawGlobalPresetItem();
 
-        var presetsInFolders = BuildPresetsInFoldersSet();
-        var presetById = searchActive ? _basePreset.CustomPresets.ToDictionary(p => p.UniqueId) : null;
-
-        DrawGlobalPresetItem(searchActive, MatchesSearch);
-
-        var anonPresets = _basePreset.CustomPresets.Where(IsAnonymousPreset).ToList();
-        if (searchActive) {
-            anonPresets = [.. anonPresets.Where(p => MatchesSearch(p.PresetName) || MatchesSearch(GetAnonymousPresetDisplayName(p.PresetName)))];
-        }
-
+        var anonPresets = _basePreset.CustomPresets.Where(p => p.IsAnonymous && (MatchesSearch(p.PresetName) || MatchesSearch(GetAnonymousPresetDisplayName(p.PresetName)))).ToList();
         if (anonPresets.Count > 0)
-            DrawAnonymousPresetsSection(anonPresets, searchActive);
+            DrawAnonymousPresetsSection(anonPresets);
 
         ImGui.Separator();
 
-        // Draw folders
-        for (var folderIndex = 0; folderIndex < _basePreset.Folders.Count; folderIndex++) {
-            var folder = _basePreset.Folders[folderIndex];
-
-            // Only draw top-level folders here; child folders are drawn within their parents
+        // top-level folders; children are drawn inside their parents
+        var presetById = SearchActive ? _basePreset.CustomPresets.ToDictionary(p => p.UniqueId) : null;
+        for (var i = 0; i < _basePreset.Folders.Count; i++) {
+            var folder = _basePreset.Folders[i];
             if (folder.ParentFolderId.HasValue)
                 continue;
-            if (searchActive) {
-                var folderNameMatches = MatchesSearch(folder.FolderName);
-                var anyPresetMatches = GetAllPresetIdsInFolderTree(folder).Any(id => {
-                    if (presetById == null || !presetById.TryGetValue(id, out var p))
-                        return false;
-                    return !IsAnonymousPreset(p) && MatchesSearch(p.PresetName);
-                });
-                if (!folderNameMatches && !anyPresetMatches)
-                    continue;
-            }
+            if (presetById != null && !MatchesSearch(folder.FolderName)
+                && !_basePreset.PresetIdsInTree(folder).Any(id => presetById.TryGetValue(id, out var p) && !p.IsAnonymous && MatchesSearch(p.PresetName)))
+                continue;
 
-            DrawFolder(folder, folderIndex);
+            DrawFolder(folder);
         }
 
-        // Draw non-folder presets
+        var presetsInFolders = _basePreset.Folders.SelectMany(f => f.PresetIds).ToHashSet();
         var customPresets = _basePreset.CustomPresets;
         for (var i = 0; i < customPresets.Count; i++) {
             var preset = customPresets[i];
-
-            if (presetsInFolders.Contains(preset.UniqueId))
-                continue;
-
-            if (IsAnonymousPreset(preset))
-                continue;
-
-            if (searchActive && !MatchesSearch(preset.PresetName))
-                continue;
-
-            DrawItem(preset, i);
+            if (!presetsInFolders.Contains(preset.UniqueId) && !preset.IsAnonymous && MatchesSearch(preset.PresetName))
+                DrawPresetRow(preset, draggable: true);
         }
     }
 
-    private void DrawGlobalPresetItem(bool searchActive, Func<string, bool> matchesSearch) {
-        if (searchActive && !matchesSearch(UIStrings.GlobalPreset))
+    private void DrawGlobalPresetItem() {
+        if (!MatchesSearch(UIStrings.GlobalPreset))
             return;
 
         DrawUtil.Info(UIStrings.GlobalPresetHelpText);
@@ -184,9 +157,9 @@ public class TabFishingPresets : BaseTab {
         }
     }
 
-    private void DrawAnonymousPresetsSection(List<CustomPresetConfig> anonPresets, bool searchActive) {
+    private void DrawAnonymousPresetsSection(List<CustomPresetConfig> anonPresets) {
         var headerFlags = ImGuiTreeNodeFlags.None;
-        if (searchActive || anonPresets.Any(p => _basePreset.SelectedGuid == p.UniqueId.ToString()))
+        if (SearchActive || anonPresets.Any(p => _basePreset.SelectedGuid == p.UniqueId.ToString()))
             headerFlags = ImGuiTreeNodeFlags.DefaultOpen;
 
         if (!ImGui.CollapsingHeader(string.Format(UIStrings.AnonymousPresets_Header, anonPresets.Count), headerFlags))
@@ -194,19 +167,15 @@ public class TabFishingPresets : BaseTab {
 
         using var indent = ImRaii.PushIndent(10.Scaled());
         foreach (var preset in anonPresets)
-            DrawAnonymousItem(preset);
+            DrawPresetRow(preset, draggable: false);
     }
 
-    private void DrawAnonymousItem(CustomPresetConfig preset) {
-        DrawPresetRow(preset);
-    }
-
-    private void DrawPresetRow(CustomPresetConfig preset, Action? drawDragDrop = null, string? label = null) {
+    private void DrawPresetRow(CustomPresetConfig preset, bool draggable) {
         using var id = ImRaii.PushId(preset.UniqueId.ToString());
         var selected = _basePreset.SelectedGuid == preset.UniqueId.ToString();
         var color = selected ? ImGuiColors.DalamudOrange : ImGuiColors.DalamudWhite;
         using (ImRaii.PushColor(ImGuiCol.Text, color)) {
-            if (ImGui.Selectable((selected ? "> " : "") + (label ?? preset.PresetName),
+            if (ImGui.Selectable((selected ? "> " : "") + preset.PresetName,
                     displayed?.UniqueId == preset.UniqueId,
                     ImGuiSelectableFlags.AllowDoubleClick)) {
                 displayed = preset;
@@ -218,319 +187,80 @@ public class TabFishingPresets : BaseTab {
             }
         }
 
-        drawDragDrop?.Invoke();
+        if (draggable) {
+            DragSource(PresetPayload, preset.UniqueId, $"{UIStrings.Moving_} {preset.PresetName}");
+            if (ImGui.BeginDragDropTarget()) {
+                if (AcceptDrop(PresetPayload, out var presetId))
+                    _basePreset.MovePresetTo(presetId, preset);
+                if (AcceptDrop(FolderPayload, out var folderId) && _basePreset.FindFolder(folderId) is { } moving)
+                    _basePreset.MoveFolderBeside(moving, preset);
+                ImGui.EndDragDropTarget();
+            }
+        }
+
         ImGui.TooltipOnHover(UIStrings.RightClickOptions);
         DrawPresetContext(preset);
     }
 
-    private HashSet<Guid> BuildPresetsInFoldersSet() {
-        var result = new HashSet<Guid>();
-        foreach (var folder in _basePreset.Folders) {
-            foreach (var presetId in folder.PresetIds)
-                result.Add(presetId);
-        }
-
-        return result;
+    private static void DragSource(string type, Guid id, string label) {
+        if (!ImGui.BeginDragDropSource())
+            return;
+        ImGuiDragDrop.SetDragDropPayload(type, id);
+        ImGui.Text(label);
+        ImGui.EndDragDropSource();
     }
 
-    private List<Guid> GetAllPresetIdsInFolderTree(PresetFolder rootFolder) {
-        var result = new List<Guid>();
-        Collect(rootFolder, result);
-        return result;
-
-        static void Collect(PresetFolder folder, List<Guid> acc) {
-            acc.AddRange(folder.PresetIds);
-
-            for (var i = 0; i < _basePreset.Folders.Count; i++) {
-                var child = _basePreset.Folders[i];
-                if (child.ParentFolderId == folder.UniqueId) {
-                    Collect(child, acc);
-                }
-            }
-        }
-    }
-
-    private void CopyFolderTree(PresetFolder source, Guid? parentFolderId, bool prefixName) {
-        var newFolder = new PresetFolder(prefixName ? $"Copy_{source.FolderName}" : source.FolderName) {
-            ParentFolderId = parentFolderId,
-            IsExpanded = source.IsExpanded
-        };
-
-        foreach (var presetId in source.PresetIds) {
-            var originalPreset = _basePreset.CustomPresets.FirstOrDefault(p => p.UniqueId == presetId);
-            if (originalPreset == null)
-                continue;
-
-            var json = JsonConvert.SerializeObject(originalPreset);
-            var presetCopy = JsonConvert.DeserializeObject<CustomPresetConfig>(json);
-            presetCopy!.UniqueId = Guid.NewGuid();
-            presetCopy.PresetName = originalPreset.PresetName;
-
-            _basePreset.CustomPresets.Add(presetCopy);
-            newFolder.AddPreset(presetCopy.UniqueId);
-        }
-
-        _basePreset.Folders.Add(newFolder);
-
-        foreach (var childFolder in _basePreset.Folders.Where(f => f.ParentFolderId == source.UniqueId))
-            CopyFolderTree(childFolder, newFolder.UniqueId, prefixName: false);
-    }
-
-    private bool IsFolderDescendantOf(PresetFolder potentialAncestor, PresetFolder candidate) {
-        var currentParentId = candidate.ParentFolderId;
-        while (currentParentId.HasValue) {
-            if (currentParentId.Value == potentialAncestor.UniqueId)
-                return true;
-
-            var parent = _basePreset.Folders.FirstOrDefault(f => f.UniqueId == currentParentId.Value);
-            if (parent == null)
-                break;
-
-            currentParentId = parent.ParentFolderId;
-        }
-
-        return false;
-    }
+    private static bool AcceptDrop(string type, out Guid id)
+        => ImGuiDragDrop.AcceptDragDropPayload(type, out id) && ImGui.IsMouseReleased(ImGuiMouseButton.Left);
 
     private bool FolderContainsSelectedPreset(PresetFolder folder) {
-        var selected = _basePreset.SelectedPreset;
-        if (selected == null)
+        if (_basePreset.SelectedPreset is not { } selected || _basePreset.GetFolderContainingPreset(selected.UniqueId) is not { } containing)
             return false;
-
-        if (folder.PresetIds.Contains(selected.UniqueId))
-            return true;
-
-        var containingFolder = _basePreset.Folders.FirstOrDefault(f => f.PresetIds.Contains(selected.UniqueId));
-        return containingFolder != null && IsFolderDescendantOf(folder, containingFolder);
+        return containing == folder || _basePreset.IsDescendantOf(folder, containing);
     }
 
-    private int GetFolderImmediateItemCount(PresetFolder folder) {
-        var directChildFolderCount = _basePreset.Folders.Count(f => f.ParentFolderId == folder.UniqueId);
-        return folder.PresetIds.Count + directChildFolderCount;
-    }
-
-    private void DrawFolder(PresetFolder folder, int folderIndex) {
+    private void DrawFolder(PresetFolder folder) {
         bool isOpen;
         using (var id = ImRaii.PushId($"folder_{folder.UniqueId}")) {
-            var icon = folder.IsExpanded ? FontAwesomeIcon.FolderOpen : FontAwesomeIcon.Folder;
-
-            var containsSelectedPreset = FolderContainsSelectedPreset(folder);
-            using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudOrange, containsSelectedPreset)) {
-                // Display folder name with item count
-                var displayName = $"{folder.FolderName} ({GetFolderImmediateItemCount(folder)})";
-
-                // Draw folder with tree node
-                isOpen = ImGui.TreeNodeEx(displayName,
+            using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudOrange, FolderContainsSelectedPreset(folder))) {
+                var itemCount = folder.PresetIds.Count + _basePreset.ChildFolders(folder).Count();
+                isOpen = ImGui.TreeNodeEx($"{folder.FolderName} ({itemCount})",
                     ImGuiTreeNodeFlags.AllowItemOverlap |
                     ImGuiTreeNodeFlags.SpanAvailWidth |
                     (folder.IsExpanded ? ImGuiTreeNodeFlags.DefaultOpen : 0));
             }
 
-            // Handle drag and drop onto folder (presets + folder reparent/reorder)
-            AcceptDropsOntoFolder(folder, folderIndex);
-
-            if (ImGui.BeginDragDropSource()) {
-                ImGuiDragDrop.SetDragDropPayload("FOLDER_ORDER", folderIndex);
-                ImGui.Text($"{UIStrings.MovingFolder_} {folder.FolderName}");
-                ImGui.EndDragDropSource();
+            if (ImGui.BeginDragDropTarget()) {
+                if (AcceptDrop(PresetPayload, out var presetId))
+                    _basePreset.MovePresetToFolder(presetId, folder);
+                if (AcceptDrop(FolderPayload, out var folderId) && _basePreset.FindFolder(folderId) is { } moving)
+                    _basePreset.MoveFolderOnto(moving, folder);
+                ImGui.EndDragDropTarget();
             }
 
-            // Right click for context menu
+            DragSource(FolderPayload, folder.UniqueId, $"{UIStrings.MovingFolder_} {folder.FolderName}");
             DrawFolderContextMenu(folder);
 
-            // Update folder expand state
             if (isOpen != folder.IsExpanded) {
                 folder.IsExpanded = isOpen;
                 Configuration.Save();
             }
         }
 
-        // Draw folder contents if expanded
-        if (isOpen) {
-            // Draw child folders
-            for (var childIndex = 0; childIndex < _basePreset.Folders.Count; childIndex++) {
-                var childFolder = _basePreset.Folders[childIndex];
-                if (childFolder.ParentFolderId == folder.UniqueId) {
-                    DrawFolder(childFolder, childIndex);
-                }
-            }
+        if (!isOpen)
+            return;
 
+        foreach (var child in _basePreset.ChildFolders(folder).ToList())
+            DrawFolder(child);
+
+        using (ImRaii.PushIndent(10.Scaled())) {
             foreach (var presetId in folder.PresetIds) {
-                var preset = _basePreset.CustomPresets.FirstOrDefault(p => p.UniqueId == presetId);
-                if (preset != null) {
-                    if (IsAnonymousPreset(preset))
-                        continue;
-
-                    if (!string.IsNullOrWhiteSpace(_searchFilter) &&
-                        !preset.PresetName.Contains(_searchFilter.Trim(), StringComparison.InvariantCultureIgnoreCase))
-                        continue;
-
-                    var index = _basePreset.CustomPresets.IndexOf(preset);
-                    DrawItemInFolder(preset, index, folder);
-                }
-            }
-
-            ImGui.TreePop();
-        }
-    }
-
-    private void DrawItemInFolder(CustomPresetConfig preset, int i, PresetFolder folder) {
-        ImGui.Indent(10.Scaled());
-        DrawPresetRow(preset, () => DrawFolderPresetDragDrop(preset, folder));
-        ImGui.Unindent(10.Scaled());
-    }
-
-    private void DrawItem(CustomPresetConfig preset, int i) {
-        DrawPresetRow(preset, () => DrawRootPresetDragDrop(preset, i));
-    }
-
-    private void AcceptDropsOntoFolder(PresetFolder folder, int folderIndex) {
-        if (!ImGui.BeginDragDropTarget())
-            return;
-
-        if (ImGuiDragDrop.AcceptDragDropPayload("PRESET_ORDER", out int itemIndex) && ImGui.IsMouseReleased(ImGuiMouseButton.Left)) {
-            folder.AddPreset(_basePreset.CustomPresets[itemIndex].UniqueId);
-            Configuration.Save();
-        }
-
-        if (ImGuiDragDrop.AcceptDragDropPayload("PRESET_IN_FOLDER", out Guid presetId) && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
-            AcceptPresetMoveIntoFolder(presetId, folder);
-
-        if (ImGuiDragDrop.AcceptDragDropPayload("FOLDER_ORDER", out int sourceFolderIndex) && ImGui.IsMouseReleased(ImGuiMouseButton.Left) && sourceFolderIndex != folderIndex) {
-            AcceptFolderOntoFolder(sourceFolderIndex, folder);
-        }
-
-        ImGui.EndDragDropTarget();
-    }
-
-    private void AcceptPresetMoveIntoFolder(Guid presetId, PresetFolder folder) {
-        var sourceFolder = _basePreset.Folders.FirstOrDefault(f => f.PresetIds.Contains(presetId));
-        if (sourceFolder != null && sourceFolder.UniqueId != folder.UniqueId) {
-            var sourcePresetIds = new List<Guid>(sourceFolder.PresetIds);
-            sourcePresetIds.Remove(presetId);
-            sourceFolder.PresetIds = sourcePresetIds;
-
-            if (!folder.PresetIds.Contains(presetId))
-                folder.AddPreset(presetId);
-
-            Configuration.Save();
-        }
-        else if (sourceFolder == null) {
-            folder.AddPreset(presetId);
-            Configuration.Save();
-        }
-    }
-
-    private void AcceptFolderOntoFolder(int sourceFolderIndex, PresetFolder folder) {
-        if (sourceFolderIndex < 0 || sourceFolderIndex >= _basePreset.Folders.Count)
-            return;
-
-        var movingFolder = _basePreset.Folders[sourceFolderIndex];
-
-        if (movingFolder.ParentFolderId == folder.ParentFolderId) {
-            _basePreset.Folders.RemoveAt(sourceFolderIndex);
-            var targetIndex = _basePreset.Folders.IndexOf(folder);
-            if (targetIndex < 0)
-                _basePreset.Folders.Add(movingFolder);
-            else
-                _basePreset.Folders.Insert(targetIndex, movingFolder);
-            Configuration.Save();
-            return;
-        }
-
-        if (folder.ParentFolderId == movingFolder.UniqueId) {
-            var oldParent = movingFolder.ParentFolderId;
-            movingFolder.ParentFolderId = folder.UniqueId;
-            folder.ParentFolderId = oldParent;
-            Configuration.Save();
-            return;
-        }
-
-        if (!IsFolderDescendantOf(movingFolder, folder)) {
-            movingFolder.ParentFolderId = folder.UniqueId;
-            Configuration.Save();
-        }
-    }
-
-    private void AcceptFolderReparentAtPresetLevel(CustomPresetConfig preset) {
-        if (!ImGuiDragDrop.AcceptDragDropPayload("FOLDER_ORDER", out int sourceFolderIndex) || !ImGui.IsMouseReleased(ImGuiMouseButton.Left))
-            return;
-
-        if (sourceFolderIndex < 0 || sourceFolderIndex >= _basePreset.Folders.Count)
-            return;
-
-        var movingFolder = _basePreset.Folders[sourceFolderIndex];
-        var targetFolder = _basePreset.GetFolderContainingPreset(preset.UniqueId);
-
-        if (targetFolder != null && (targetFolder.UniqueId == movingFolder.UniqueId || IsFolderDescendantOf(movingFolder, targetFolder)))
-            return;
-
-        movingFolder.ParentFolderId = targetFolder?.UniqueId;
-        Configuration.Save();
-    }
-
-    private void DrawRootPresetDragDrop(CustomPresetConfig preset, int i) {
-        if (ImGui.BeginDragDropSource()) {
-            ImGuiDragDrop.SetDragDropPayload("PRESET_ORDER", i);
-            ImGui.Text($"{UIStrings.Moving_} {preset.PresetName}");
-            ImGui.EndDragDropSource();
-        }
-
-        if (!ImGui.BeginDragDropTarget())
-            return;
-
-        if (ImGuiDragDrop.AcceptDragDropPayload("PRESET_ORDER", out int itemIndex) && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
-            _basePreset.SwapIndex(itemIndex, i);
-
-        if (ImGuiDragDrop.AcceptDragDropPayload("PRESET_IN_FOLDER", out Guid presetId) && ImGui.IsMouseReleased(ImGuiMouseButton.Left)) {
-            foreach (var folder in _basePreset.Folders)
-                folder.RemovePreset(presetId);
-
-            var draggedPreset = _basePreset.CustomPresets.FirstOrDefault(p => p.UniqueId == presetId);
-            if (draggedPreset != null) {
-                var draggedIndex = _basePreset.CustomPresets.IndexOf(draggedPreset);
-                if (draggedIndex >= 0)
-                    _basePreset.SwapIndex(draggedIndex, i);
-            }
-
-            Configuration.Save();
-        }
-
-        AcceptFolderReparentAtPresetLevel(preset);
-        ImGui.EndDragDropTarget();
-    }
-
-    private void DrawFolderPresetDragDrop(CustomPresetConfig preset, PresetFolder folder) {
-        if (ImGui.BeginDragDropSource()) {
-            ImGuiDragDrop.SetDragDropPayload("PRESET_IN_FOLDER", preset.UniqueId);
-            ImGui.Text($"{UIStrings.Moving_} {preset.PresetName}");
-            ImGui.EndDragDropSource();
-        }
-
-        if (!ImGui.BeginDragDropTarget())
-            return;
-
-        if (ImGuiDragDrop.AcceptDragDropPayload("PRESET_IN_FOLDER", out Guid presetId) && ImGui.IsMouseReleased(ImGuiMouseButton.Left)) {
-            try {
-                var targetIndex = folder.PresetIds.IndexOf(preset.UniqueId);
-                if (targetIndex >= 0) {
-                    var newPresetIds = new List<Guid>(folder.PresetIds);
-                    var currentIndex = newPresetIds.IndexOf(presetId);
-                    if (currentIndex >= 0) {
-                        newPresetIds.RemoveAt(currentIndex);
-                        newPresetIds.Insert(targetIndex, presetId);
-                        folder.PresetIds = newPresetIds;
-                        Configuration.Save();
-                    }
-                }
-            }
-            catch (Exception ex) {
-                IPluginLog.Get().Error(ex, "[TabFishingPresets] Error reordering presets.");
+                if (_basePreset.CustomPresets.Find(p => p.UniqueId == presetId) is { IsAnonymous: false } preset && MatchesSearch(preset.PresetName))
+                    DrawPresetRow(preset, draggable: true);
             }
         }
 
-        AcceptFolderReparentAtPresetLevel(preset);
-        ImGui.EndDragDropTarget();
+        ImGui.TreePop();
     }
 
     private void DrawPresetOptions(BasePresetConfig? preset) {
@@ -642,36 +372,17 @@ public class TabFishingPresets : BaseTab {
         }
     }
 
-    private void DrawImportFolderNode(PresetFolder folder, List<PresetFolder> allFolders, List<CustomPresetConfig> allPresets) {
-        var children = allFolders.Where(f => f.ParentFolderId == folder.UniqueId).ToList();
-        var directPresets = allPresets.Where(p => folder.PresetIds.Contains(p.UniqueId)).ToList();
-        var flags = ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.FramePadding;
-
-        using var tree = ImRaii.TreeNode($"{folder.FolderName} ({directPresets.Count + children.Count})###import-folder-{folder.UniqueId}", flags);
-        if (!tree)
-            return;
-
-        foreach (var child in children)
-            DrawImportFolderNode(child, allFolders, allPresets);
-
-        foreach (var preset in directPresets)
-            DrawImportPresetRow(preset);
-    }
-
-    private void DrawImportFolderTree(PresetFolder root, List<PresetFolder> allFolders, List<CustomPresetConfig> allPresets) {
-        var children = allFolders.Where(f => f.ParentFolderId == root.UniqueId).ToList();
-        var directPresets = allPresets.Where(p => root.PresetIds.Contains(p.UniqueId)).ToList();
-
-        if (children.Count == 0) {
-            foreach (var preset in directPresets)
-                DrawImportPresetRow(preset);
-            return;
+    // root's contents are drawn flat; nested folders get a tree node each
+    private void DrawImportFolderContents(PresetFolder folder, List<PresetFolder> allFolders, List<CustomPresetConfig> allPresets) {
+        foreach (var child in allFolders.Where(f => f.ParentFolderId == folder.UniqueId).ToList()) {
+            var childCount = child.PresetIds.Count + allFolders.Count(f => f.ParentFolderId == child.UniqueId);
+            using var tree = ImRaii.TreeNode($"{child.FolderName} ({childCount})###import-folder-{child.UniqueId}",
+                ImGuiTreeNodeFlags.DefaultOpen | ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.FramePadding);
+            if (tree)
+                DrawImportFolderContents(child, allFolders, allPresets);
         }
 
-        foreach (var child in children)
-            DrawImportFolderNode(child, allFolders, allPresets);
-
-        foreach (var preset in directPresets)
+        foreach (var preset in allPresets.Where(p => folder.PresetIds.Contains(p.UniqueId)).ToList())
             DrawImportPresetRow(preset);
     }
 
@@ -727,7 +438,7 @@ public class TabFishingPresets : BaseTab {
                     var treeHeight = Math.Max(180.Scaled(), ImGui.GetContentRegionAvail().Y - 52.Scaled());
                     using (var treeChild = ImRaii.Child("##import_folder_tree", new Vector2(0, treeHeight), true)) {
                         if (treeChild)
-                            DrawImportFolderTree(folder, folders, presets);
+                            DrawImportFolderContents(folder, folders, presets);
                     }
 
                     ImGui.Separator();
@@ -801,10 +512,7 @@ public class TabFishingPresets : BaseTab {
 
             if (ImGui.Button(UIStrings.Create, new Vector2(120.Scaled(), 0))) {
                 if (!string.IsNullOrWhiteSpace(newFolderName)) {
-                    if (_parentFolderForNewFolder.HasValue)
-                        _basePreset.AddNewFolder(newFolderName, _parentFolderForNewFolder.Value);
-                    else
-                        _basePreset.AddNewFolder(newFolderName);
+                    _basePreset.AddNewFolder(newFolderName, _parentFolderForNewFolder);
                     newFolderName = string.Empty;
                     promptingForFolderName = false;
                     _parentFolderForNewFolder = null;
@@ -838,8 +546,7 @@ public class TabFishingPresets : BaseTab {
 
             if (ImGui.Button(UIStrings.Rename, new Vector2(120.Scaled(), 0))) {
                 if (!string.IsNullOrWhiteSpace(renameFolderName) && renameFolderId.HasValue) {
-                    var folder = _basePreset.Folders.FirstOrDefault(f => f.UniqueId == renameFolderId.Value);
-                    if (folder != null) {
+                    if (_basePreset.FindFolder(renameFolderId.Value) is { } folder) {
                         folder.FolderName = renameFolderName;
                         Configuration.Save();
                     }
@@ -876,10 +583,8 @@ public class TabFishingPresets : BaseTab {
             renameFolderName = folder.FolderName;
         }
 
-        if (ImGui.Selectable(UIStrings.MakeACopy, false)) {
-            CopyFolderTree(folder, folder.ParentFolderId, prefixName: true);
-            Configuration.Save();
-        }
+        if (ImGui.Selectable(UIStrings.MakeACopy, false))
+            _basePreset.CopyFolder(folder);
 
         if (ImGui.Selectable(UIStrings.ExportFolderClipboard, false)) {
             var exportData = Configuration.ExportFolder(folder, _basePreset.CustomPresets, _basePreset.Folders);
@@ -887,23 +592,13 @@ public class TabFishingPresets : BaseTab {
             Notify.Success(UIStrings.FolderExported);
         }
 
-        var isEmpty = folder.PresetIds.Count == 0;
-        var hasChildFolders = _basePreset.Folders.Any(f => f.ParentFolderId == folder.UniqueId);
-        var hasContents = !isEmpty || hasChildFolders;
-
-        using (var disabled = ImRaii.Disabled(!ImGui.GetIO().KeyShift)) {
-            if (ImGui.Selectable(UIStrings.Delete, false, ImGuiSelectableFlags.DontClosePopups)) {
-                if (hasContents)
-                    _basePreset.RemoveFolderWithContents(folder.UniqueId);
-                else
-                    _basePreset.RemoveFolder(folder.UniqueId);
-                Configuration.Save();
-            }
+        using (ImRaii.Disabled(!ImGui.GetIO().KeyShift)) {
+            if (ImGui.Selectable(UIStrings.Delete, false, ImGuiSelectableFlags.DontClosePopups))
+                _basePreset.RemoveFolderWithContents(folder.UniqueId);
         }
 
-        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled)) {
+        if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
             ImGui.SetTooltip(UIStrings.HoldShiftToDelete);
-        }
     }
 
     public static void DrawPresetContext(BasePresetConfig preset) {
