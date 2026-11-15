@@ -38,7 +38,7 @@ public abstract class BaseActionCast {
     [NonSerialized] public bool IsSpearFishing;
 
     [DefaultValue(true)]
-    public bool GpThresholdAbove { get; set; } = true;
+    public bool GpThresholdAbove = true;
 
     public virtual bool DoesCancelMooch() => false;
 
@@ -253,19 +253,8 @@ public abstract class BaseActionCast {
         ImGui.TooltipOnHover(@$"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {(GpThresholdAbove ? UIStrings.Above : UIStrings.Below)} {GpThreshold}");
 
         ImGui.Separator();
-        if (ImGui.RadioButton(UIStrings.Above, GpThresholdAbove)) {
-            GpThresholdAbove = true;
-            Configuration.Save();
-        }
-
-        //ImGui.SameLine();
-
-        if (ImGui.RadioButton(UIStrings.Below, !GpThresholdAbove)) {
-            GpThresholdAbove = false;
-            Configuration.Save();
-        }
-
-        //ImGui.SameLine();
+        DrawUtil.Radio(UIStrings.Above, ref GpThresholdAbove, true);
+        DrawUtil.Radio(UIStrings.Below, ref GpThresholdAbove, false);
 
         ImGui.SetNextItemWidth(100.Scaled());
         if (ImGui.InputInt(UIStrings.GP, ref GpThreshold, 1, 1)) {

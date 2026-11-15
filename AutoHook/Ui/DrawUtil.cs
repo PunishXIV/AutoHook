@@ -11,58 +11,66 @@ using System.Numerics;
 namespace AutoHook.Ui;
 
 public static class DrawUtil {
-    public static bool EditFloatField(string label, ref float refValue, string helpText = "",
-        bool hoverHelpText = false) {
-        return EditFloatField(label, 85, ref refValue, helpText, hoverHelpText);
-    }
-
-    public static bool EditFloatField(string label, float fieldWidth, ref float refValue, string helpText = "",
-        bool hoverHelpText = false) {
+    // label + float input, clamped to [min, max]. saves on change.
+    public static bool EditFloatField(string label, ref float value, float min, float max, string helpText = "", bool hoverHelpText = false) {
         using var id = ImRaii.PushId(label);
         Branch();
         TextV(label);
-
         ImGui.SameLine();
 
-        using (ImRaii.ItemWidth(fieldWidth.Scale())) {
-            var clicked = ImGui.InputFloat($"##{label}###", ref refValue, .1f, 0, @"%.1f%");
+        bool changed;
+        using (ImRaii.ItemWidth(85f.Scale()))
+            changed = ImGui.InputFloat($"##{label}###", ref value, .1f, 0, @"%.1f%");
+        DrawHelp(helpText, hoverHelpText);
 
-            if (helpText != string.Empty) {
-                if (hoverHelpText)
-                    ImGui.TooltipOnHover(helpText);
-                else
-                    ImGuiComponents.HelpMarker(helpText);
-            }
-
-            return clicked;
+        if (changed) {
+            value = Math.Clamp(value, min, max);
+            Configuration.Save();
         }
+        return changed;
     }
 
-    public static bool EditNumberField(string label, ref int refValue, string helpText = "", int steps = 0) {
-        float fieldWidth = 30;
-
-        if (steps > 0)
-            fieldWidth = 85;
-
-        return EditNumberField(label, fieldWidth, ref refValue, helpText, steps);
-    }
-
-    public static bool EditNumberField(string label, float fieldWidth, ref int refValue, string helpText = "",
-        int steps = 0) {
+    // label + int input, clamped to [min, max]. saves on change.
+    public static bool EditNumberField(string label, ref int value, int min, int max, int steps = 0, string helpText = "") {
         Branch();
         TextV(label);
-
         ImGui.SameLine();
 
-        using (ImRaii.ItemWidth(fieldWidth.Scale())) {
-            var clicked = ImGui.InputInt($"##{label}###", ref refValue, steps, 0);
+        bool changed;
+        using (ImRaii.ItemWidth((steps > 0 ? 85f : 30f).Scale()))
+            changed = ImGui.InputInt($"##{label}###", ref value, steps, 0);
+        DrawHelp(helpText);
 
-            if (helpText != string.Empty) {
-                ImGuiComponents.HelpMarker(helpText);
-            }
-
-            return clicked;
+        if (changed) {
+            value = Math.Clamp(value, min, max);
+            Configuration.Save();
         }
+        return changed;
+    }
+
+    // one option of a radio group. starts a branch row when at line start; saves on change.
+    public static bool Radio<T>(string label, ref T value, T option, string helpText = "") {
+        Branch();
+        var changed = ImGui.RadioButton(label, EqualityComparer<T>.Default.Equals(value, option));
+        if (changed) {
+            value = option;
+            Configuration.Save();
+        }
+
+        if (helpText != string.Empty) {
+            ImGui.SameLine();
+            ImGuiComponents.HelpMarker(helpText);
+        }
+        return changed;
+    }
+
+    private static void DrawHelp(string helpText, bool hover = false) {
+        if (helpText == string.Empty)
+            return;
+        if (hover)
+            ImGui.TooltipOnHover(helpText);
+        else
+            ImGuiComponents.HelpMarker(helpText);
     }
 
     public static void GameIcon(uint iconId, Vector2 size, string tooltip = "", bool dim = false) {
@@ -169,13 +177,7 @@ public static class DrawUtil {
             Configuration.Save();
         }
 
-        if (helpText != string.Empty) {
-            if (hoverHelpText)
-                ImGui.TooltipOnHover(helpText);
-            else
-                ImGuiComponents.HelpMarker(helpText);
-        }
-
+        DrawHelp(helpText, hoverHelpText);
         return clicked;
     }
 
@@ -533,10 +535,8 @@ public static class DrawUtil {
         DrawEnabledLimitTree(label, condition, (ref limitLocal) => {
             Branch();
             ImGui.SetNextItemWidth(90.Scaled());
-            if (ImGui.InputInt(UIStrings.TimeS, ref limitLocal)) {
+            if (ImGui.InputInt(UIStrings.TimeS, ref limitLocal))
                 limitLocal = Math.Max(1, limitLocal);
-                Configuration.Save();
-            }
 
             drawBody();
         });
@@ -579,33 +579,9 @@ public static class DrawUtil {
         var step = stopStep;
         var reset = resetCount;
         DrawCaughtCountLimitTree(label, condition, () => {
-            Branch();
-            if (ImGui.RadioButton(UIStrings.Stop_Casting, step == FishingSteps.StopCasting)) {
-                step = FishingSteps.StopCasting;
-                Configuration.Save();
-            }
-
-            ImGui.SameLine();
-            ImGuiComponents.HelpMarker(UIStrings.Auto_Cast_Stopped);
-
-            Branch();
-            if (ImGui.RadioButton(UIStrings.Quit_Fishing, step == FishingSteps.QuitRequested)) {
-                step = FishingSteps.QuitRequested;
-                Configuration.Save();
-            }
-
-            ImGui.SameLine();
-            ImGuiComponents.HelpMarker(UIStrings.Quit_Action_HelpText);
-
-            Branch();
-            if (ImGui.RadioButton(UIStrings.Hard_Quit_Fishing, step == FishingSteps.HardQuit)) {
-                step = FishingSteps.HardQuit;
-                Configuration.Save();
-            }
-
-            ImGui.SameLine();
-            ImGuiComponents.HelpMarker(UIStrings.Hard_Quit_Action_HelpText);
-
+            Radio(UIStrings.Stop_Casting, ref step, FishingSteps.StopCasting, UIStrings.Auto_Cast_Stopped);
+            Radio(UIStrings.Quit_Fishing, ref step, FishingSteps.QuitRequested, UIStrings.Quit_Action_HelpText);
+            Radio(UIStrings.Hard_Quit_Fishing, ref step, FishingSteps.HardQuit, UIStrings.Hard_Quit_Action_HelpText);
             Checkbox(UIStrings.Reset_the_counter, ref reset);
         });
         stopStep = step;

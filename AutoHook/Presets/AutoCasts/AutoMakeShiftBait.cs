@@ -30,11 +30,7 @@ public sealed class AutoMakeShiftBait : BaseActionCast {
     }
 
     protected override DrawOptionsDelegate DrawOptions => () => {
-        var stack = MakeshiftBaitStacks;
-        if (DrawUtil.EditNumberField(UIStrings.TabAutoCasts_When_Stack_Equals, ref stack)) {
-            MakeshiftBaitStacks = Math.Max(5, Math.Min(stack, 10));
-            Configuration.Save();
-        }
+        DrawUtil.EditNumberField(UIStrings.TabAutoCasts_When_Stack_Equals, ref MakeshiftBaitStacks, 5, 10);
 
         DrawAutoCastConditions();
     };

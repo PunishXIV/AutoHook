@@ -31,23 +31,9 @@ public sealed class AutoPatience : BaseActionCast {
     }
 
     protected override DrawOptionsDelegate DrawOptions => () => {
-        DrawUtil.Branch();
-        if (ImGui.RadioButton(UIStrings.Patience_I, Id == IDs.Actions.Patience)) {
-            Id = IDs.Actions.Patience;
-            Configuration.Save();
-        }
-
-        DrawUtil.Branch();
-        if (ImGui.RadioButton(UIStrings.Patience_II, Id == IDs.Actions.Patience2)) {
-            Id = IDs.Actions.Patience2;
-            Configuration.Save();
-        }
-
-        var time = RefreshEarlyTime;
-        if (DrawUtil.EditNumberField(UIStrings.RefreshWhenTimeIsLessThanOrEqual, ref time)) {
-            RefreshEarlyTime = Math.Max(0, Math.Min(time, 999));
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.Patience_I, ref Id, IDs.Actions.Patience);
+        DrawUtil.Radio(UIStrings.Patience_II, ref Id, IDs.Actions.Patience2);
+        DrawUtil.EditNumberField(UIStrings.RefreshWhenTimeIsLessThanOrEqual, ref RefreshEarlyTime, 0, 999);
 
         DrawAutoCastConditions();
     };

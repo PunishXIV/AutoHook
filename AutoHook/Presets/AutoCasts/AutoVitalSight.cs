@@ -25,11 +25,7 @@ public sealed class AutoVitalSight : BaseActionCast {
     }
 
     protected override DrawOptionsDelegate DrawOptions => () => {
-        var stack = RequiredStacks;
-        if (DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref stack)) {
-            RequiredStacks = Math.Max(2, Math.Min(stack, 10));
-            Configuration.Save();
-        }
+        DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref RequiredStacks, 2, 10);
         DrawAutoCastConditions();
     };
 

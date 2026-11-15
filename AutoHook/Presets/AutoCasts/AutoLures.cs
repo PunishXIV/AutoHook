@@ -133,11 +133,7 @@ public sealed class AutoLures : BaseActionCast {
     }
 
     private static void DrawTargetOptions(LureTargetConfig config) {
-        var stack = config.LureStacks;
-        if (DrawUtil.EditNumberField(UIStrings.MaxAttempts, ref stack, "", 1)) {
-            config.LureStacks = Math.Clamp(stack, 1, 3);
-            Configuration.Save();
-        }
+        DrawUtil.EditNumberField(UIStrings.MaxAttempts, ref config.LureStacks, 1, 3, steps: 1);
 
         ImGui.SameLine();
         DrawUtil.Checkbox(UIStrings.ForceAttemptLimit, ref config.ForceAttemptLimit, UIStrings.ForceAttemptLimitHelp);

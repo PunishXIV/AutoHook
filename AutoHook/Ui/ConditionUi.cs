@@ -115,11 +115,8 @@ public static class ConditionUi {
             var g = set.Groups[gi];
             using var _ = ImRaii.PushId($"slim_adv_grp{gi}");
             DrawUtil.Branch();
-            var gEnabled = g.Enabled;
-            if (ImGui.Checkbox("##grp_enabled", ref gEnabled)) {
-                g.Enabled = gEnabled;
+            if (ImGui.Checkbox("##grp_enabled", ref g.Enabled))
                 Configuration.Save();
-            }
             ImGui.TooltipOnHover("Enable group");
 
             ImGui.SameLine();
@@ -210,11 +207,8 @@ public static class ConditionUi {
 
             using (var popup = ImRaii.Popup("cond_edit")) {
                 if (popup) {
-                    var enabled = cond.Enabled;
-                    if (ImGui.Checkbox("##enabled", ref enabled)) {
-                        cond.Enabled = enabled;
+                    if (ImGui.Checkbox("##enabled", ref cond.Enabled))
                         Configuration.Save();
-                    }
                     ImGui.TooltipOnHover("Enabled");
                     ImGui.SameLine();
                     if (DrawConditionContent(cond, scope, types))

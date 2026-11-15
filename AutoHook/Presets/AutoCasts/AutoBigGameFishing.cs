@@ -14,11 +14,7 @@ public sealed class AutoBigGameFishing : BaseActionCast {
         => EvaluateConditionSet(ws) && !ws.Player.HasStatus(IDs.Status.BigGameFishing) && ws.HasAnglersArtStacks(AnglersStacks);
 
     protected override DrawOptionsDelegate DrawOptions => () => {
-        var stack = AnglersStacks;
-        if (DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref stack, "", 1)) {
-            AnglersStacks = Math.Max(2, Math.Min(stack, 10));
-            Configuration.Save();
-        }
+        DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref AnglersStacks, 2, 10, steps: 1);
 
         DrawAutoCastConditions();
     };

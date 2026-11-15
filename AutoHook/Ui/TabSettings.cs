@@ -115,27 +115,14 @@ public class TabSettings : BaseTab {
         ImGui.TextV($"{UIStrings.Prioritise}:");
         ImGui.SameLine();
 
-        var goal = Configuration.C.AutoOceanFishGoal;
-
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Levelling, goal == OceanFishGoalKind.Levelling)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Levelling;
-            Configuration.Save();
-        }
+        ref var goal = ref Configuration.C.AutoOceanFishGoal;
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Levelling, ref goal, OceanFishGoalKind.Levelling);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Achievements, goal == OceanFishGoalKind.Achievement)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Achievement;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Achievements, ref goal, OceanFishGoalKind.Achievement);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Legendary, goal == OceanFishGoalKind.Legendary)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Legendary;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Legendary, ref goal, OceanFishGoalKind.Legendary);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Points, goal == OceanFishGoalKind.Points)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Points;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Points, ref goal, OceanFishGoalKind.Points);
     }
 
     private static void DrawDelayHook() {

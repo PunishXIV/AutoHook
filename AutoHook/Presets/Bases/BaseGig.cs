@@ -55,17 +55,8 @@ public class BaseGig(int itemId) : BaseOption {
 
         ImGui.Spacing();
         DrawUtil.DrawTreeNodeEx(UIStrings.Fish_Hitbox_Offset, () => {
-            if (DrawUtil.EditFloatField(UIStrings.OffsetLR, ref LeftOffset,
-                    UIStrings.OffsetLRHelpText, true)) {
-                LeftOffset = Math.Max(-10, Math.Min(LeftOffset, 10));
-                Configuration.Save();
-            }
-
-            if (DrawUtil.EditFloatField(UIStrings.OffsetRL, ref RightOffset,
-                    UIStrings.OffsetRLHelpText, true)) {
-                RightOffset = Math.Max(-10, Math.Min(RightOffset, 10));
-                Configuration.Save();
-            }
+            DrawUtil.EditFloatField(UIStrings.OffsetLR, ref LeftOffset, -10, 10, UIStrings.OffsetLRHelpText, hoverHelpText: true);
+            DrawUtil.EditFloatField(UIStrings.OffsetRL, ref RightOffset, -10, 10, UIStrings.OffsetRLHelpText, hoverHelpText: true);
         }, UIStrings.FishHitboxHelpText);
     }
 

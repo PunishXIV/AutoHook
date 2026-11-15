@@ -116,15 +116,9 @@ public static class OceanTripUi {
         DrawUtil.Branch();
         ImGui.Text(UIStrings.OceanTrip_Leave);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanTrip_LeaveWhenBoardingOpens, Cfg.Arrival == OceanTripArrival.Early)) {
-            Cfg.Arrival = OceanTripArrival.Early;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanTrip_LeaveWhenBoardingOpens, ref Cfg.Arrival, OceanTripArrival.Early);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanTrip_LeaveLate, Cfg.Arrival == OceanTripArrival.Late)) {
-            Cfg.Arrival = OceanTripArrival.Late;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanTrip_LeaveLate, ref Cfg.Arrival, OceanTripArrival.Late);
         ImGui.SameLine(0, 0);
         ImGui.SetNextItemWidth(30.Scaled());
         if (ImGui.InputInt("###LateMinute", ref Cfg.LateArrivalMinute, 0)) {
@@ -236,16 +230,9 @@ public static class OceanTripUi {
         DrawUtil.Checkbox(UIStrings.OceanTrip_EquipRecommended, ref Cfg.EquipRecommended);
 
         DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_Repair, ref Cfg.Repair, () => {
-            DrawUtil.Branch();
-            if (ImGui.RadioButton(UIStrings.OceanTrip_RepairSelfThenNpc, Cfg.RepairMode == OceanTripRepair.SelfThenNpc)) {
-                Cfg.RepairMode = OceanTripRepair.SelfThenNpc;
-                Configuration.Save();
-            }
+            DrawUtil.Radio(UIStrings.OceanTrip_RepairSelfThenNpc, ref Cfg.RepairMode, OceanTripRepair.SelfThenNpc);
             ImGui.SameLine();
-            if (ImGui.RadioButton(UIStrings.OceanTrip_RepairNpc, Cfg.RepairMode == OceanTripRepair.Npc)) {
-                Cfg.RepairMode = OceanTripRepair.Npc;
-                Configuration.Save();
-            }
+            DrawUtil.Radio(UIStrings.OceanTrip_RepairNpc, ref Cfg.RepairMode, OceanTripRepair.Npc);
             DrawUtil.Branch();
             DrawSentence(UIStrings.OceanTrip_RepairBelow, ("{0}", () => {
                 ImGui.SetNextItemWidth(80.Scaled());
@@ -286,6 +273,25 @@ public static class OceanTripUi {
                     Configuration.Save();
                 }
             }
+
+            DrawUtil.Branch();
+            if (ImGui.Checkbox("###BuyScripBait", ref Cfg.BuyScripBait))
+                Configuration.Save();
+            ImGui.SameLine();
+            foreach (var bait in OceanScripShop.OceanBaits) {
+                DrawItemIcon(bait.ItemId);
+                ImGui.SameLine(0, 2.Scaled());
+            }
+            using (ImRaii.Disabled(!Cfg.BuyScripBait)) {
+                DrawSentence(UIStrings.OceanTrip_ScripBait, ("{0}", () => {
+                    ImGui.SetNextItemWidth(90.Scaled());
+                    if (ImGui.InputInt("###ScripBaitCount", ref Cfg.ScripBaitCount, 10)) {
+                        Cfg.ScripBaitCount = Math.Clamp(Cfg.ScripBaitCount, 1, 999);
+                        Configuration.Save();
+                    }
+                }
+                ));
+            }
         });
 
         DrawUtil.Branch();
@@ -316,26 +322,118 @@ public static class OceanTripUi {
         DrawUtil.Branch();
         ImGui.Text(UIStrings.OceanTrip_Fish);
         ImGui.SameLine();
-        DrawCleanupRadio(UIStrings.OceanTrip_Keep, OceanTripCleanup.None);
+        DrawUtil.Radio(UIStrings.OceanTrip_Keep, ref Cfg.Cleanup, OceanTripCleanup.None);
         ImGui.SameLine();
-        DrawCleanupRadio(UIStrings.OceanTrip_Desynth, OceanTripCleanup.Desynth);
+        DrawUtil.Radio(UIStrings.OceanTrip_Desynth, ref Cfg.Cleanup, OceanTripCleanup.Desynth);
         ImGui.SameLine();
-        DrawCleanupRadio(UIStrings.OceanTrip_SellToVendor, OceanTripCleanup.Sell);
+        DrawUtil.Radio(UIStrings.OceanTrip_SellToVendor, ref Cfg.Cleanup, OceanTripCleanup.Sell);
         ImGuiComponents.HelpMarker(UIStrings.OceanTrip_LegendaryHelp);
         if (Cfg.Cleanup == OceanTripCleanup.Desynth && !OceanFishCleanup.DesynthUnlocked) {
             ImGui.SameLine();
             ImGui.TextColored(ImGuiColors.DalamudOrange, DesynthLockedText);
         }
 
+        DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_SpendScrips, ref Cfg.SpendScrips, DrawScripPurchases);
+
         DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_Then, DrawSteps);
     }
 
-    private static void DrawCleanupRadio(string label, OceanTripCleanup mode) {
-        if (!ImGui.RadioButton(label, Cfg.Cleanup == mode))
-            return;
-        Cfg.Cleanup = mode;
-        Configuration.Save();
+    private static string _scripSearch = "";
+
+    private static void DrawScripPurchases() {
+        var purchases = Cfg.ScripPurchases;
+        int? remove = null, swap = null;
+
+        for (var i = 0; i < purchases.Count; i++) {
+            using var id = ImRaii.PushId(i);
+            var purchase = purchases[i];
+
+            DrawUtil.Branch();
+            var entry = OceanScripShop.Find(purchase.ItemId);
+            if (entry != null) {
+                DrawItemIcon(entry.ItemId);
+                ImGui.SameLine(0, 2.Scaled());
+            }
+            ImGui.SetNextItemWidth(260.Scaled());
+            using (var combo = ImRaii.Combo("###Item", entry?.Name ?? UIStrings.OceanTrip_SelectItem, ImGuiComboFlags.HeightLarge)) {
+                if (combo)
+                    DrawScripItemList(purchase);
+            }
+            if (entry != null)
+                ImGui.TooltipOnHover($"{entry.Category}\n{entry.SubCategory}\n{entry.Cost} {CurrencyName(entry.CurrencySpecialId)}");
+
+            ImGui.SameLine();
+            ImGui.AlignTextToFramePadding();
+            ImGui.Text(UIStrings.OceanTrip_ScripKeep);
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(90.Scaled());
+            if (ImGui.InputInt("###Keep", ref purchase.Keep, 1)) {
+                purchase.Keep = Math.Clamp(purchase.Keep, 0, 9999);
+                Configuration.Save();
+            }
+            ImGui.SameLine();
+            ImGuiComponents.HelpMarker(UIStrings.OceanTrip_ScripKeepHelp);
+
+            ImGui.SameLine();
+            using (ImRaii.Disabled(i == 0)) {
+                if (ImGuiComponents.IconButton("###Up", FontAwesomeIcon.ArrowUp))
+                    swap = i - 1;
+            }
+            ImGui.SameLine(0, 2.Scaled());
+            using (ImRaii.Disabled(i == purchases.Count - 1)) {
+                if (ImGuiComponents.IconButton("###Down", FontAwesomeIcon.ArrowDown))
+                    swap = i;
+            }
+            ImGui.SameLine(0, 2.Scaled());
+            if (ImGuiComponents.IconButton("###Remove", FontAwesomeIcon.Trash))
+                remove = i;
+        }
+
+        DrawUtil.Branch();
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, UIStrings.Add)) {
+            purchases.Add(new OceanScripPurchase());
+            Configuration.Save();
+        }
+
+        if (swap is { } s) {
+            (purchases[s], purchases[s + 1]) = (purchases[s + 1], purchases[s]);
+            Configuration.Save();
+        }
+        if (remove is { } r) {
+            purchases.RemoveAt(r);
+            Configuration.Save();
+        }
     }
+
+    // searchable, grouped by subcategory
+    private static void DrawScripItemList(OceanScripPurchase purchase) {
+        if (ImGui.IsWindowAppearing()) {
+            _scripSearch = "";
+            ImGui.SetKeyboardFocusHere();
+        }
+        ImGui.SetNextItemWidth(-1);
+        ImGui.InputTextWithHint("###Search", UIStrings.Search_Hint, ref _scripSearch, 100);
+
+        string? group = null;
+        foreach (var item in OceanScripShop.Items) {
+            if (_scripSearch.Length > 0 && !item.Name.Contains(_scripSearch, StringComparison.OrdinalIgnoreCase))
+                continue;
+            if (item.SubCategory != group) {
+                group = item.SubCategory;
+                ImGui.TextDisabled(group);
+            }
+            using var itemId = ImRaii.PushId((int)item.ItemId);
+            DrawUtil.GameIcon(item.Icon, IconSize * 0.8f);
+            ImGui.SameLine();
+            if (ImGui.Selectable($"{item.Name}  ({item.Cost})", item.ItemId == purchase.ItemId)) {
+                purchase.ItemId = item.ItemId;
+                Configuration.Save();
+            }
+        }
+    }
+
+    private static string CurrencyName(uint specialId)
+        => OceanScripShop.CurrencyItemId(specialId) is var id and not 0 && Item.TryGetRow(id, out var row) ? row.Name.ToString() : "";
 
     private static void DrawSteps() {
         var steps = Cfg.PostSteps;
