@@ -1,5 +1,3 @@
-using FFXIVClientStructs.FFXIV.Client.Game;
-
 using System.ComponentModel;
 
 namespace AutoHook.Presets.AutoCasts;
@@ -10,7 +8,7 @@ public sealed class AutoThaliaksFavor : BaseActionCast {
     [DefaultValue(150)]
     public int ThaliaksFavorRecover = 150;
 
-    public AutoThaliaksFavor(bool isSpearfishing = false) : base(IDs.Actions.ThaliaksFavor, ActionType.Action) {
+    public AutoThaliaksFavor(bool isSpearfishing = false) : base(IDs.Actions.ThaliaksFavor, priority: 16) {
         IsSpearFishing = isSpearfishing;
     }
 
@@ -30,12 +28,8 @@ public sealed class AutoThaliaksFavor : BaseActionCast {
         return hasStacks && notOvercaped;
     }
 
-    protected override DrawOptionsDelegate DrawOptions => () => {
+    protected override void DrawOptions() {
         DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref ThaliaksFavorStacks, 3, 10);
         DrawAutoCastConditions();
-    };
-
-    [DefaultValue(16)]
-    public override int Priority { get; set; } = 16;
-    public override bool IsExcludedPriority { get; set; } = false;
+    }
 }

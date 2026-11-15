@@ -1,6 +1,4 @@
 using Dalamud.Bindings.ImGui;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using System.ComponentModel;
 
 namespace AutoHook.Presets.AutoCasts;
 
@@ -11,7 +9,7 @@ public sealed class AutoPatience : BaseActionCast {
 
     public override bool DoesCancelMooch() => true;
 
-    public AutoPatience() : base(IDs.Actions.Patience2, ActionType.Action) { }
+    public AutoPatience() : base(IDs.Actions.Patience2, priority: 12) { }
 
     public override string GetName() => UIStrings.AutoPatience_Patience;
 
@@ -30,15 +28,11 @@ public sealed class AutoPatience : BaseActionCast {
         return true;
     }
 
-    protected override DrawOptionsDelegate DrawOptions => () => {
+    protected override void DrawOptions() {
         DrawUtil.Radio(UIStrings.Patience_I, ref Id, IDs.Actions.Patience);
         DrawUtil.Radio(UIStrings.Patience_II, ref Id, IDs.Actions.Patience2);
         DrawUtil.EditNumberField(UIStrings.RefreshWhenTimeIsLessThanOrEqual, ref RefreshEarlyTime, 0, 999);
 
         DrawAutoCastConditions();
-    };
-
-    [DefaultValue(12)]
-    public override int Priority { get; set; } = 12;
-    public override bool IsExcludedPriority { get; set; } = false;
+    }
 }

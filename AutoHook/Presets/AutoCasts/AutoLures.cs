@@ -40,7 +40,7 @@ public sealed class AutoLures : BaseActionCast {
     public LureTypeConfig Ambitious = new();
     public LureTypeConfig Modest = new();
 
-    public AutoLures() : base(IDs.Actions.AmbitiousLure) { }
+    public AutoLures() : base(IDs.Actions.AmbitiousLure, excludedPriority: true) { }
 
     public override string GetName() => UIStrings.UseLures;
 
@@ -102,7 +102,7 @@ public sealed class AutoLures : BaseActionCast {
         return ws.Fishing.FishingState is FishingState.AmbitiousLure or FishingState.ModestLure or FishingState.LineInWater;
     }
 
-    protected override DrawOptionsDelegate DrawOptions => () => {
+    protected override void DrawOptions() {
         if (CountValidOptions(WorldState.Get()) > 1) {
             DrawUtil.Branch();
             ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.LureMultipleOptionsWarning);
@@ -111,7 +111,7 @@ public sealed class AutoLures : BaseActionCast {
 
         DrawLureType(UIStrings.AmbitiousLure, Ambitious);
         DrawLureType(UIStrings.ModestLure, Modest);
-    };
+    }
 
     private static void DrawLureType(string label, LureTypeConfig type) {
         using var id = ImRaii.PushId(label);
@@ -174,8 +174,4 @@ public sealed class AutoLures : BaseActionCast {
 
         EzThrottler.Throttle("CastingLure", 2500);
     }
-
-    public override int Priority { get; set; } = 0;
-    [DefaultValue(true)]
-    public override bool IsExcludedPriority { get; set; } = true;
 }

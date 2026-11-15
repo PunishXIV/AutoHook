@@ -1,10 +1,7 @@
-using FFXIVClientStructs.FFXIV.Client.Game;
-using System.ComponentModel;
-
 namespace AutoHook.Presets.AutoCasts;
 
 public sealed class AutoSparefulHand : BaseActionCast {
-    public AutoSparefulHand() : base(IDs.Actions.SparefulHand, ActionType.Action) { }
+    public AutoSparefulHand() : base(IDs.Actions.SparefulHand, priority: 20) { }
 
     public override string GetName() => UIStrings.SparefulHand;
 
@@ -22,10 +19,4 @@ public sealed class AutoSparefulHand : BaseActionCast {
             ws.SwimbaitEvaluationFishId = 0;
         }
     }
-
-    protected override DrawOptionsDelegate? DrawOptions => () => DrawAutoCastConditions();
-
-    [DefaultValue(20)]
-    public override int Priority { get; set; } = 20;
-    public override bool IsExcludedPriority { get; set; } = false;
 }

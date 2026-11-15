@@ -1,5 +1,3 @@
-using FFXIVClientStructs.FFXIV.Client.Game;
-
 using System.ComponentModel;
 
 namespace AutoHook.Presets.AutoCasts;
@@ -10,7 +8,7 @@ public sealed class AutoMakeShiftBait : BaseActionCast {
 
     public override bool RequiresTimeWindow() => true;
 
-    public AutoMakeShiftBait() : base(IDs.Actions.MakeshiftBait, ActionType.Action) { }
+    public AutoMakeShiftBait() : base(IDs.Actions.MakeshiftBait, priority: 9) { }
 
     public override string GetName() => UIStrings.MakeShift_Bait;
 
@@ -29,13 +27,9 @@ public sealed class AutoMakeShiftBait : BaseActionCast {
         return hasStacks && available;
     }
 
-    protected override DrawOptionsDelegate DrawOptions => () => {
+    protected override void DrawOptions() {
         DrawUtil.EditNumberField(UIStrings.TabAutoCasts_When_Stack_Equals, ref MakeshiftBaitStacks, 5, 10);
 
         DrawAutoCastConditions();
-    };
-
-    [DefaultValue(9)]
-    public override int Priority { get; set; } = 9;
-    public override bool IsExcludedPriority { get; set; } = false;
+    }
 }
