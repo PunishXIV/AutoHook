@@ -251,10 +251,6 @@ public class FishingPresets : BasePreset {
         }
     }
 
-    public bool IsPresetInAnyFolder(Guid presetId) {
-        return Folders.Any(f => f.ContainsPreset(presetId));
-    }
-
     public PresetFolder? GetFolderContainingPreset(Guid presetId) {
         return Folders.FirstOrDefault(f => f.ContainsPreset(presetId));
     }

@@ -38,7 +38,4 @@ public static class OceanVoyageFilter {
         }
         return true;
     }
-
-    public static OceanVoyage? NextMatching(long now)
-        => OceanSchedule.Upcoming(Lines, now).Take(OceanSchedule.RotationLength * Lines.Length * 2).Where(Matches).Cast<OceanVoyage?>().FirstOrDefault();
 }

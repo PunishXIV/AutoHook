@@ -42,12 +42,6 @@ public sealed class PlayerState {
     public float GetStatusTime(uint statusId) => Statuses.TryGetValue(statusId, out var t) ? t.Time : 0f;
     public int GetStatusStacks(uint statusId) => Statuses.TryGetValue(statusId, out var s) ? s.Stacks : 0;
 
-    public bool HasAnyStatus(uint[] statusIds) {
-        foreach (var id in statusIds)
-            if (HasStatus(id)) return true;
-        return false;
-    }
-
     public void Tick(float dt) {
         if (dt <= 0f)
             return;

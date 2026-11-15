@@ -215,54 +215,6 @@ public static class DrawUtil {
         ImGui.TooltipOnHover(selectedItem);
     }
 
-    public static void DrawComboSelectorPreset(BasePreset presetList) {
-        ImGui.SetNextItemWidth(220.Scaled());
-
-        var selectedPreset = presetList.SelectedPreset;
-        var comboOpen = false;
-        using (var combo = ImRaii.Combo("###search", selectedPreset?.PresetName ?? UIStrings.Disabled)) {
-            comboOpen = combo.Success;
-            if (combo.Success) {
-                ImGui.SetNextItemWidth(210.Scaled());
-                ImGui.InputTextWithHint("##filter", UIStrings.Search_Hint, ref _filterText, 100);
-                ImGui.Separator();
-
-                using var child = ImRaii.Child("###ComboPreset", new Vector2(0, 100.Scaled()), false);
-                if (ImGui.Selectable(UIStrings.Disabled, presetList.SelectedPreset == null)) {
-                    Configuration.Save();
-                    presetList.SelectedPreset = null;
-                    ImGui.CloseCurrentPopup();
-                }
-
-                foreach (var item in presetList.PresetList) {
-                    using var id = ImRaii.PushId(item.UniqueId.ToString());
-                    var itemName = item.PresetName ?? $"Error, Try renaming";
-
-                    if (_filterText.Length != 0 && !itemName.Contains(_filterText, StringComparison.CurrentCultureIgnoreCase))
-                        continue;
-
-                    var color = selectedPreset?.PresetName == itemName ? ImGuiColors.DalamudYellow : ImGuiColors.DalamudWhite;
-                    using var a = ImRaii.PushColor(ImGuiCol.Text, color);
-                    if (ImGui.Selectable(itemName, false)) {
-                        presetList.SelectedGuid = item.UniqueId.ToString();
-                        _filterText = "";
-                        Configuration.Save();
-                        ImGui.CloseCurrentPopup();
-                    }
-                }
-            }
-        }
-
-        if (!comboOpen && selectedPreset != null) {
-            ImGui.TooltipOnHover(UIStrings.RightClickToRename);
-
-            if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
-                ImGui.OpenPopup(@$"PresetRenameName");
-
-            DrawRenamePreset(selectedPreset);
-        }
-    }
-
     public static void DrawPresetContextMenu(BasePreset list, BasePresetConfig preset, bool isActive, Action toggleActive, Action? onDeleted = null) {
         using var ctx = ImRaii.ContextPopupItem(@$"PresetOptions###{preset.UniqueId}");
         if (!ctx.Success) return;

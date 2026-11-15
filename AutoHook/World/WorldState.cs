@@ -26,8 +26,6 @@ public sealed class WorldState(ulong qpf, string gameVersion) : IPluginService {
     public uint TerritoryId;
 
     public DateTime CurrentTime => Frame.Timestamp;
-    public DateTime FutureTime(float deltaSeconds) => Frame.Timestamp.AddSeconds(deltaSeconds);
-
     public DateTime? FishingSessionStartedAt;
 
     public bool HasAnglersArtStacks(int amount) => Player.GetStatusStacks(IDs.Status.AnglersArt) >= amount;

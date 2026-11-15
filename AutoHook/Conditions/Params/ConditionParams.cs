@@ -64,26 +64,6 @@ public static class ConditionParams {
         };
     }
 
-    public static void DrawIdsParams(Condition cond, string label) {
-        var ids = GetIds(cond.Params);
-        var text = string.Join(", ", ids);
-        var buf = text;
-        ImGui.SetNextItemWidth(140.Scaled());
-        if (!ImGui.InputText(label, ref buf, 128))
-            return;
-
-        var list = new List<object>();
-        foreach (var part in buf.Split(',', StringSplitOptions.RemoveEmptyEntries)) {
-            if (uint.TryParse(part.Trim(), out var id))
-                list.Add((long)id);
-        }
-
-        if (list.Count > 0)
-            cond.Params["ids"] = list;
-        else
-            cond.Params.Remove("ids");
-    }
-
     public static List<(double min, double max)> GetRanges(IReadOnlyDictionary<string, object> p) {
         if (!p.TryGetValue("r", out var o) || o is not List<object> list) return [];
         var result = new List<(double, double)>();

@@ -69,8 +69,4 @@ public static class FishDataQueries {
         }
         return merged;
     }
-
-    // every fish with bite data for this bait, so a bite timeline can list them
-    public static IReadOnlyList<int> FishWithBites(IEnumerable<SpotObservations> sources, uint bait)
-        => [.. sources.SelectMany(s => s.Bites.Keys).Where(k => k.Bait == bait).Select(k => k.Fish).Distinct()];
 }
