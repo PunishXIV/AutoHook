@@ -104,8 +104,8 @@ public static class OceanTripUi {
         using var id = ImRaii.PushId("OceanTripSettings");
         DrawUtil.DrawCheckboxTree(UIStrings.OceanTrip_GoAutomatically, ref Cfg.FullAuto, DrawWhen, UIStrings.FullAutoHelpText);
         DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_Preparation, DrawPreparation);
-        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_DuringTheVoyage, DrawOnBoard);
-        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_AfterTheVoyage, DrawAfter);
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_During, DrawOnBoard);
+        DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_After, DrawAfter);
     }
 
     #endregion
@@ -343,6 +343,16 @@ public static class OceanTripUi {
     private static void DrawScripPurchases() {
         var purchases = Cfg.ScripPurchases;
         int? remove = null, swap = null;
+
+        DrawUtil.Branch();
+        DrawSentence(UIStrings.OceanTrip_ScripReserve, ("{0}", () => {
+            ImGui.SetNextItemWidth(90.Scaled());
+            if (ImGui.InputInt("###ScripReserve", ref Cfg.ScripReserve, 100)) {
+                Cfg.ScripReserve = Math.Clamp(Cfg.ScripReserve, 0, 99999);
+                Configuration.Save();
+            }
+        }
+        ));
 
         for (var i = 0; i < purchases.Count; i++) {
             using var id = ImRaii.PushId(i);

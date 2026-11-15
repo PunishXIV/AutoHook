@@ -125,8 +125,8 @@ public static class OceanScripShop {
 
     public static unsafe bool SelectTab(int tab) => Data != null && Data->SelectSubCategory((byte)tab);
 
-    // how many the scrips on hand pay for, from the selected subcategory
-    public static unsafe int Affordable(uint itemId) {
+    // how many the scrips on hand (above the reserve) pay for, from the selected subcategory
+    public static unsafe int Affordable(uint itemId, int reserve = 0) {
         var data = Data;
         if (data == null)
             return 0;
@@ -136,7 +136,7 @@ public static class OceanScripShop {
         var item = FindItem(&category->SubCategories[data->SelectedSubCategoryIndex], itemId);
         if (item == null || item->CostAmount[0] == 0)
             return 0;
-        return (int)(item->CostOwnedCount[0] / item->CostAmount[0]);
+        return (int)(Math.Max((long)item->CostOwnedCount[0] - reserve, 0) / item->CostAmount[0]);
     }
 
     // position of the item in the window's list, -1 if not listed

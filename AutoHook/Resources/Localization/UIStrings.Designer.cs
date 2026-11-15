@@ -3052,11 +3052,11 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to After The Voyage.
+        ///   Looks up a localized string similar to After.
         /// </summary>
-        internal static string OceanTrip_AfterTheVoyage {
+        internal static string OceanTrip_After {
             get {
-                return ResourceManager.GetString("OceanTrip_AfterTheVoyage", resourceCulture);
+                return ResourceManager.GetString("OceanTrip_After", resourceCulture);
             }
         }
         
@@ -3178,11 +3178,11 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to During The Voyage.
+        ///   Looks up a localized string similar to During.
         /// </summary>
-        internal static string OceanTrip_DuringTheVoyage {
+        internal static string OceanTrip_During {
             get {
-                return ResourceManager.GetString("OceanTrip_DuringTheVoyage", resourceCulture);
+                return ResourceManager.GetString("OceanTrip_During", resourceCulture);
             }
         }
         
@@ -3723,6 +3723,15 @@ namespace AutoHook.Resources.Localization {
         internal static string OceanTrip_ScripKeepHelp {
             get {
                 return ResourceManager.GetString("OceanTrip_ScripKeepHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Keep {0} scrips.
+        /// </summary>
+        internal static string OceanTrip_ScripReserve {
+            get {
+                return ResourceManager.GetString("OceanTrip_ScripReserve", resourceCulture);
             }
         }
         

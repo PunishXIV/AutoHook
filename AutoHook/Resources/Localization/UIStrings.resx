@@ -1875,8 +1875,8 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_Preparation" xml:space="preserve">
     <value>Preparation</value>
   </data>
-  <data name="OceanTrip_AfterTheVoyage" xml:space="preserve">
-    <value>After The Voyage</value>
+  <data name="OceanTrip_After" xml:space="preserve">
+    <value>After</value>
   </data>
   <data name="OceanTrip_Leave" xml:space="preserve">
     <value>Leave</value>
@@ -2142,8 +2142,8 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_GoAutomatically" xml:space="preserve">
     <value>Go automatically</value>
   </data>
-  <data name="OceanTrip_DuringTheVoyage" xml:space="preserve">
-    <value>During The Voyage</value>
+  <data name="OceanTrip_During" xml:space="preserve">
+    <value>During</value>
   </data>
   <data name="OceanTrip_Readiness" xml:space="preserve">
     <value>Presets: {0}/{1} stops covered for {2}</value>
@@ -2213,6 +2213,9 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="OceanTrip_ScripKeepHelp" xml:space="preserve">
     <value>How many to have in your inventory. 0 buys as many as possible.</value>
+  </data>
+  <data name="OceanTrip_ScripReserve" xml:space="preserve">
+    <value>Keep {0} scrips</value>
   </data>
   <data name="OceanTrip_SelectItem" xml:space="preserve">
     <value>Select an item</value>

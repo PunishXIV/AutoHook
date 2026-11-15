@@ -288,7 +288,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         await OpenScripShop();
         // in list order: the first one gets everything it wants before the next is looked at
         foreach (var purchase in purchases)
-            await BuyScripItem(purchase.ItemId, purchase.Keep <= 0 ? int.MaxValue : purchase.Keep - ItemCount(purchase.ItemId));
+            await BuyScripItem(purchase.ItemId, purchase.Keep <= 0 ? int.MaxValue : purchase.Keep - ItemCount(purchase.ItemId), Math.Max(Cfg.ScripReserve, 0));
         await CloseScripShop();
     }
 
@@ -310,7 +310,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         await WaitUntil(() => { ConfirmPrompts(); return !OceanScripShop.IsOpen && !IsOccupied(); }, "WaitShopClosed", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
     }
 
-    private async Task BuyScripItem(uint itemId, int count) {
+    private async Task BuyScripItem(uint itemId, int count, int reserve = 0) {
         using var scope = BeginScope(nameof(BuyScripItem));
         if (OceanScripShop.Find(itemId) is not { } entry) {
             Warning($"{itemId} isn't sold at the scrip exchange");
@@ -326,7 +326,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         while (remaining > 0) {
             var index = OceanScripShop.ListIndex(itemId, out var max);
             var wanted = remaining == int.MaxValue ? int.MaxValue : (remaining + perExchange - 1) / perExchange;
-            var amount = Math.Min(Math.Min(wanted, OceanScripShop.Affordable(itemId)), OceanTripConsts.MaxPurchaseBatch);
+            var amount = Math.Min(Math.Min(wanted, OceanScripShop.Affordable(itemId, reserve)),OceanTripConsts.MaxPurchaseBatch);
             if (max > 0)
                 amount = Math.Min(amount, max);
             if (index < 0 || amount <= 0)

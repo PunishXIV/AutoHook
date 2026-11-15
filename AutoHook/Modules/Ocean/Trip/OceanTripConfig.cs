@@ -77,6 +77,7 @@ public sealed class OceanTripConfig {
     public OceanTripCleanup Cleanup = OceanTripCleanup.None;
 
     public bool SpendScrips = false;
+    public int ScripReserve = 0;
     public List<OceanScripPurchase> ScripPurchases = [];
 
     public List<OceanTripStep> PostSteps = [new()];
