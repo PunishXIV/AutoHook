@@ -2202,4 +2202,22 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="ZeroToDisable" xml:space="preserve">
     <value>0 to disable</value>
   </data>
+  <data name="OceanTrip_ScripBait" xml:space="preserve">
+    <value>Scrip bait for uncaught fish, top up to {0} each</value>
+  </data>
+  <data name="OceanTrip_SpendScrips" xml:space="preserve">
+    <value>Spend scrips</value>
+  </data>
+  <data name="OceanTrip_ScripKeep" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="OceanTrip_ScripKeepHelp" xml:space="preserve">
+    <value>How many to have in your inventory. 0 buys as many as possible.</value>
+  </data>
+  <data name="OceanTrip_SelectItem" xml:space="preserve">
+    <value>Select an item</value>
+  </data>
+  <data name="OceanTrip_StatusBuyingScripItems" xml:space="preserve">
+    <value>Buying from the scrip exchange</value>
+  </data>
 </root>

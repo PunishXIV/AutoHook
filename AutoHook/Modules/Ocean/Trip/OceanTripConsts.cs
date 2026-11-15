@@ -14,6 +14,7 @@ public static class OceanTripConsts {
     public const uint Krill = 29715;
     public const uint PlumpWorm = 29716;
     public const uint VersatileLure = 29717;
+    public const int MaxPurchaseBatch = 99;
 
     public static readonly uint[] Baits = [Ragworm, Krill, PlumpWorm];
 }

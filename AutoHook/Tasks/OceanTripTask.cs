@@ -54,8 +54,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     // called by RodFishingModule instead of starting a separate AutoOceanFish task, which would cancel this one
     public void NotifyZoneStarted(uint zoneIndex) => _pendingZone = zoneIndex;
-
-    // a click means go now; automatic trips (and AutoRetainer, which can claim early) keep to the arrival setting
     public long BoardTime => Source is OceanTripSource.Manual or OceanTripSource.Alert ? Voyage.BoardingStart : OceanTripService.StartTime(Voyage);
 
     protected override async Task Execute() {
@@ -74,6 +72,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                     await RepairGear();
                 if (Cfg.BuyBait)
                     await BuyBait();
+                if (Cfg.BuyBait && Cfg.BuyScripBait)
+                    await BuyScripBait();
                 await WaitForBoardTime();
             }
             else {
@@ -82,6 +82,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             await Register();
             await RideVoyage();
             await Cleanup();
+            if (Cfg.SpendScrips)
+                await SpendScrips();
             await RunPostSteps();
         }
         catch (OperationCanceledException) {
@@ -215,7 +217,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         foreach (var (id, count) in toBuy) {
             var remaining = count;
             while (remaining > 0) {
-                var batch = Math.Min(remaining, 99);
+                var batch = Math.Min(remaining, OceanTripConsts.MaxPurchaseBatch);
                 var before = ItemCount(id);
                 Log($"Buying {batch}x {id}");
                 ErrorIf(!AgentShop.BuyItemFromShop(OceanTripConsts.BaitShopId, id, batch), string.Format(UIStrings.OceanTrip_ErrorBuyFailed, id));
@@ -236,10 +238,12 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         await WaitUntilSkipping(() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop"), "WaitShopOpen", UiSkipOptions.Talk);
     }
 
-    private async Task<IGameObject> ApproachBaitVendor() {
-        if (FindObject(OceanTripConsts.BaitVendorId) == null)
+    private Task<IGameObject> ApproachBaitVendor() => ApproachNpc(OceanTripConsts.BaitVendorId);
+
+    private async Task<IGameObject> ApproachNpc(uint baseId) {
+        if (FindObject(baseId) == null)
             await MoveTo(OceanTripConsts.DockTerritory, OceanTripConsts.DryskthotaPosition, MovementConfig.Default.WithTolerance(4f));
-        var vendor = FindObject(OceanTripConsts.BaitVendorId) ?? throw new InvalidOperationException(UIStrings.OceanTrip_ErrorVendorNotFound);
+        var vendor = FindObject(baseId) ?? throw new InvalidOperationException(UIStrings.OceanTrip_ErrorVendorNotFound);
         if (!vendor.IsInInteractRange())
             await MoveToDirectly(vendor.Position, vendor.IsInInteractRange);
         await WaitWhile(() => IsMoving, "WaitStopped");
@@ -252,6 +256,123 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             return;
         AgentShop.CloseShop();
         await WaitWhile(() => AgentShop.IsShopOpen() || IsOccupied(), "WaitShopClosed", timeout: TimeSpan.FromSeconds(10));
+    }
+
+    #endregion
+
+    #region Scrip exchange
+
+    private async Task BuyScripBait() {
+        using var scope = BeginScope(nameof(BuyScripBait));
+        if (InOceanFishing)
+            return;
+        var target = Math.Clamp(Cfg.ScripBaitCount, 1, 999);
+        var toBuy = OceanScripShop.BaitsFor(Voyage.RouteId).Select(id => (Id: id, Count: target - ItemCount(id))).Where(x => x.Count > 0).ToList();
+        if (toBuy.Count == 0)
+            return;
+
+        Status = UIStrings.OceanTrip_StatusBuyingScripItems;
+        await OpenScripShop();
+        foreach (var (id, count) in toBuy)
+            await BuyScripItem(id, count);
+        await CloseScripShop();
+    }
+
+    private async Task SpendScrips() {
+        using var scope = BeginScope(nameof(SpendScrips));
+        var purchases = Cfg.ScripPurchases.Where(p => p.ItemId != 0 && (p.Keep <= 0 || ItemCount(p.ItemId) < p.Keep)).ToList();
+        if (purchases.Count == 0)
+            return;
+
+        Status = UIStrings.OceanTrip_StatusBuyingScripItems;
+        await OpenScripShop();
+        // in list order: the first one gets everything it wants before the next is looked at
+        foreach (var purchase in purchases)
+            await BuyScripItem(purchase.ItemId, purchase.Keep <= 0 ? int.MaxValue : purchase.Keep - ItemCount(purchase.ItemId));
+        await CloseScripShop();
+    }
+
+    private async Task OpenScripShop() {
+        using var scope = BeginScope(nameof(OpenScripShop));
+        if (OceanScripShop.IsReady)
+            return;
+        var vendor = await ApproachNpc(OceanScripShop.VendorId);
+        await InteractWith(vendor);
+        await WaitUntil(() => { ConfirmPrompts(); return TryGetSelectStringText(out _) || OceanScripShop.IsOpen; }, "WaitMenu", timeout: TimeSpan.FromSeconds(10));
+        if (TryGetSelectStringText(out var text))
+            SelectString(OceanScripShop.MenuIndex, text);
+        await WaitUntil(() => { ConfirmPrompts(); return OceanScripShop.IsReady; }, "WaitShopOpen", timeout: TimeSpan.FromSeconds(10));
+    }
+
+    private async Task CloseScripShop() {
+        using var scope = BeginScope(nameof(CloseScripShop));
+        OceanScripShop.Close();
+        await WaitUntil(() => { ConfirmPrompts(); return !OceanScripShop.IsOpen && !IsOccupied(); }, "WaitShopClosed", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+    }
+
+    private async Task BuyScripItem(uint itemId, int count) {
+        using var scope = BeginScope(nameof(BuyScripItem));
+        if (OceanScripShop.Find(itemId) is not { } entry) {
+            Warning($"{itemId} isn't sold at the scrip exchange");
+            return;
+        }
+        if (!await ShowScripItem(itemId)) {
+            Warning($"Couldn't find {entry.Name} in the scrip exchange");
+            return;
+        }
+
+        var remaining = count;
+        var perExchange = (int)entry.ReceiveCount;
+        while (remaining > 0) {
+            var index = OceanScripShop.ListIndex(itemId, out var max);
+            var wanted = remaining == int.MaxValue ? int.MaxValue : (remaining + perExchange - 1) / perExchange;
+            var amount = Math.Min(Math.Min(wanted, OceanScripShop.Affordable(itemId)), OceanTripConsts.MaxPurchaseBatch);
+            if (max > 0)
+                amount = Math.Min(amount, max);
+            if (index < 0 || amount <= 0)
+                break;
+
+            var before = ItemCount(itemId);
+            Log($"Buying {amount}x {entry.Name} ({entry.Cost} scrips each)");
+            OceanScripShop.Buy(index, amount);
+            await WaitUntil(() => OceanScripShop.ConfirmOpen, "WaitConfirm", timeout: TimeSpan.FromSeconds(5), abortOnTimeout: false);
+            if (!OceanScripShop.ConfirmOpen) {
+                Warning($"No exchange prompt for {entry.Name}");
+                break;
+            }
+            OceanScripShop.Confirm();
+            await WaitUntil(() => ItemCount(itemId) > before, "WaitBought", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+            var bought = ItemCount(itemId) - before;
+            if (bought <= 0) {
+                Warning($"Buying {entry.Name} didn't go through");
+                break;
+            }
+            if (remaining != int.MaxValue)
+                remaining -= bought;
+            await WaitUntil(() => OceanScripShop.IsReady && !OceanScripShop.ConfirmOpen, "WaitShopReady", timeout: TimeSpan.FromSeconds(5), abortOnTimeout: false);
+        }
+    }
+
+    // picks the dropdown entry and subcategory tab listing the item
+    private async Task<bool> ShowScripItem(uint itemId) {
+        if (OceanScripShop.ListIndex(itemId, out _) >= 0)
+            return true;
+        foreach (var category in OceanScripShop.CategoryOrder(itemId)) {
+            if (OceanScripShop.SelectedCategory != category) {
+                OceanScripShop.SelectCategory(category);
+                await DelayMs(300);
+            }
+            // the subcategories load in after picking the category
+            await WaitUntil(() => OceanScripShop.IsReady && OceanScripShop.FindTab(itemId) >= 0, "WaitCategory", timeout: TimeSpan.FromSeconds(3), abortOnTimeout: false);
+            var tab = OceanScripShop.FindTab(itemId);
+            if (tab < 0)
+                continue;
+            OceanScripShop.SelectTab(tab);
+            await WaitUntil(() => OceanScripShop.IsReady && OceanScripShop.ListIndex(itemId, out _) >= 0, "WaitTab", timeout: TimeSpan.FromSeconds(3), abortOnTimeout: false);
+            if (OceanScripShop.ListIndex(itemId, out _) >= 0)
+                return true;
+        }
+        return false;
     }
 
     #endregion

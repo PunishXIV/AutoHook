@@ -71,10 +71,21 @@ public sealed class OceanTripConfig {
     [DefaultValue(100)] public int BaitCount = 100;
     [DefaultValue(true)] public bool BuyVersatileLure = true;
     [DefaultValue(5)] public int LureCount = 5;
+    [DefaultValue(true)] public bool BuyScripBait = true; // from the scrip exchange, only what the route's uncaught fish need
+    [DefaultValue(30)] public int ScripBaitCount = 30;
 
     public OceanTripCleanup Cleanup = OceanTripCleanup.None;
 
+    public bool SpendScrips = false;
+    public List<OceanScripPurchase> ScripPurchases = [];
+
     public List<OceanTripStep> PostSteps = [new()];
+}
+
+[Serializable]
+public sealed class OceanScripPurchase {
+    public uint ItemId;
+    public int Keep; // how many to have, 0 = as many as the scrips pay for
 }
 
 public enum OceanTripRepair {
