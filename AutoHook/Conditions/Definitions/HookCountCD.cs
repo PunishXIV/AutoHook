@@ -3,7 +3,6 @@ using Dalamud.Bindings.ImGui;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class HookCountCD : IConditionDefinition, ISimpleConditionValue<(bool Enabled, int Limit)> {
-    public string Id => nameof(HookCountCD);
     public string Name => "Hook count";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook;
 

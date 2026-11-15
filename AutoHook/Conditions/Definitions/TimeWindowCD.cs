@@ -3,7 +3,6 @@ using Dalamud.Bindings.ImGui;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class TimeWindowCD : SnapshottableConditionDefinition, ISimpleConditionValue<(bool Enabled, TimeOnly Start, TimeOnly End)> {
-    public override string Id => nameof(TimeWindowCD);
     public override string Name => "Time window";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.All;
 

@@ -1,14 +1,12 @@
-using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.Utility.Raii;
-
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanTimeOfDayCD : IConditionDefinition {
-    public string Id => nameof(OceanTimeOfDayCD);
     public string Name => "Ocean time of day";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
     private const int DefaultTod = (int)TimeOfDay.Day;
+
+    private static readonly (int, string)[] Times = [((int)TimeOfDay.Day, "Day"), ((int)TimeOfDay.Sunset, "Sunset"), ((int)TimeOfDay.Night, "Night")];
 
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
         var wanted = (TimeOfDay)GetInt(parameters, "tod", DefaultTod);
@@ -21,40 +19,13 @@ public sealed class OceanTimeOfDayCD : IConditionDefinition {
         if (!condition.Params.ContainsKey("tod"))
             condition.Params["tod"] = (long)DefaultTod;
 
-        var tod = (TimeOfDay)Math.Clamp(GetInt(condition.Params, "tod", DefaultTod), 1, 3);
-
-        ImGui.SetNextItemWidth(80.Scaled());
-        var label = tod switch {
-            TimeOfDay.Day => "Day",
-            TimeOfDay.Sunset => "Sunset",
-            TimeOfDay.Night => "Night",
-            _ => "Day",
-        };
-
-        using var combo = ImRaii.Combo("Time of day", label);
-        if (!combo)
-            return;
-
-        if (ImGui.Selectable("Day", tod == TimeOfDay.Day)) {
-            condition.Params["tod"] = (long)TimeOfDay.Day;
-        }
-
-        if (ImGui.Selectable("Sunset", tod == TimeOfDay.Sunset)) {
-            condition.Params["tod"] = (long)TimeOfDay.Sunset;
-        }
-
-        if (ImGui.Selectable("Night", tod == TimeOfDay.Night)) {
-            condition.Params["tod"] = (long)TimeOfDay.Night;
-        }
+        DrawChoiceParam(condition, "tod", "Time of day", Math.Clamp(GetInt(condition.Params, "tod", DefaultTod), 1, 3), Times);
     }
 
-    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
-        var tod = (TimeOfDay)GetInt(parameters, "tod", DefaultTod);
-        return tod switch {
-            TimeOfDay.Day => "day",
+    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
+        => (TimeOfDay)GetInt(parameters, "tod", DefaultTod) switch {
             TimeOfDay.Sunset => "sunset",
             TimeOfDay.Night => "night",
             _ => "day",
         };
-    }
 }

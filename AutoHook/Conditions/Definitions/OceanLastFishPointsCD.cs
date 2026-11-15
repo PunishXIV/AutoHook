@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanLastFishPointsCD : IntCompareConditionDefinition {
-    public override string Id => nameof(OceanLastFishPointsCD);
     public override string Name => "Last ocean fish points";
     public override ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;

@@ -4,7 +4,6 @@ using Dalamud.Interface.Utility.Raii;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class LureElapsedCD : IConditionDefinition {
-    public string Id => nameof(LureElapsedCD);
     public string Name => "Lure elapsed";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCast;
 

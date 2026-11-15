@@ -3,7 +3,6 @@ using Dalamud.Bindings.ImGui;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class StatusTimeCD : IConditionDefinition {
-    public string Id => nameof(StatusTimeCD);
     public string Name => "Status time";
     public ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast | ConditionScopeFlags.Spearfishing;

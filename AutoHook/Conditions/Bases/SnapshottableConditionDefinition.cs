@@ -1,7 +1,7 @@
 namespace AutoHook.Conditions.Bases;
 
 public abstract class SnapshottableConditionDefinition : IConditionDefinition {
-    public abstract string Id { get; }
+    public string Id => GetType().Name;
     public abstract string Name { get; }
     public abstract ConditionScopeFlags AllowedScopes { get; }
     public virtual bool SnapshottableOnCast => true;

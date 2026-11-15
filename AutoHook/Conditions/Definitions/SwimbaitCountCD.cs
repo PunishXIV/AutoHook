@@ -3,7 +3,6 @@ using Dalamud.Bindings.ImGui;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class SwimbaitCountCD : IConditionDefinition {
-    public string Id => nameof(SwimbaitCountCD);
     public string Name => "Swimbait count";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCast;
 

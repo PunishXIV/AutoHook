@@ -178,6 +178,19 @@ public static class ConditionParams {
             condition.Params.Remove("inv");
     }
 
+    // combo over a fixed set of int values, stored as long under key
+    public static void DrawChoiceParam(Condition condition, string key, string label, int current, IReadOnlyList<(int Value, string Name)> options, float width = 80f) {
+        ImGui.SetNextItemWidth(width.Scale());
+        using var combo = ImRaii.Combo(label, options.FirstOrDefault(o => o.Value == current).Name ?? $"{current}");
+        if (!combo)
+            return;
+
+        foreach (var (value, name) in options) {
+            if (ImGui.Selectable(name, current == value))
+                condition.Params[key] = (long)value;
+        }
+    }
+
     public static void DrawSingleRangeParams(Condition condition) {
         var args = GetRangeParams(condition.Params);
         var ranges = args.Ranges;

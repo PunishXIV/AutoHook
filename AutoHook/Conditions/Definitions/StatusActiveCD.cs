@@ -3,7 +3,6 @@ using Lumina.Excel.Sheets;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class StatusActiveCD : IConditionDefinition {
-    public string Id => nameof(StatusActiveCD);
     public string Name => "Status";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.All;
 

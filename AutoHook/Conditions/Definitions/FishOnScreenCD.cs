@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class FishOnScreenCD : IntCompareConditionDefinition {
-    public override string Id => nameof(FishOnScreenCD);
     public override string Name => "Fish on screen";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Spearfishing;
     protected override string ValueLabel => "Fish";

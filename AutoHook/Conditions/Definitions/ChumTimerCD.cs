@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class ChumTimerCD : IConditionDefinition {
-    public string Id => nameof(ChumTimerCD);
     public string Name => "Chum timer";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 

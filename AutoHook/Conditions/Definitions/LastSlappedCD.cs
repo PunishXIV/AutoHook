@@ -3,7 +3,6 @@ using Lumina.Excel.Sheets;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class LastSlappedCD : IConditionDefinition {
-    public string Id => nameof(LastSlappedCD);
     public string Name => "Last slapped";
     public ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;

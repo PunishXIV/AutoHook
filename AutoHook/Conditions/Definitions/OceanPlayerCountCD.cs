@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanPlayerCountCD : IntCompareConditionDefinition {
-    public override string Id => nameof(OceanPlayerCountCD);
     public override string Name => "Ocean player count";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
     protected override string ValueLabel => "Players";

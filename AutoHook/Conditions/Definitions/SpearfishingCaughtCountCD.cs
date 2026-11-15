@@ -3,7 +3,6 @@ using Dalamud.Bindings.ImGui;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class SpearfishingCaughtCountCD : IConditionDefinition {
-    public string Id => nameof(SpearfishingCaughtCountCD);
     public string Name => "Spearfishing caught count";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Spearfishing;
 

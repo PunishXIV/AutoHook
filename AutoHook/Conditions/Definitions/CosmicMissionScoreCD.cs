@@ -1,7 +1,6 @@
 ﻿namespace AutoHook.Conditions.Definitions;
 
 public sealed class CosmicMissionScoreCD : IntCompareConditionDefinition {
-    public override string Id => nameof(CosmicMissionScoreCD);
     public override string Name => "Cosmic mission score";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
     protected override string ValueLabel => "Current Score";

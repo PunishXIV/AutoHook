@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class CosmicCollectedTotalCD : IntCompareConditionDefinition {
-    public override string Id => nameof(CosmicCollectedTotalCD);
     public override string Name => "Cosmic collected total";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
     protected override string ValueLabel => "Collected";

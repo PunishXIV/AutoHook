@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanZoneTimeRemainingCD : IntCompareConditionDefinition {
-    public override string Id => nameof(OceanZoneTimeRemainingCD);
     public override string Name => "Ocean time left";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
     protected override string ValueKey => "sec";
