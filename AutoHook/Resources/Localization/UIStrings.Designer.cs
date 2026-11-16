@@ -3610,6 +3610,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to another duty started.
+        /// </summary>
+        internal static string OceanTrip_ReasonOtherDuty {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonOtherDuty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to busy.
         /// </summary>
         internal static string OceanTrip_ReasonBusy {

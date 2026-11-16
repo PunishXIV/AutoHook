@@ -200,7 +200,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
     public static unsafe int FreeSlots => (int)FFXIVClientStructs.FFXIV.Client.Game.InventoryManager.Instance()->GetEmptySlotsInBag();
 
     public static bool IsIdle()
-        => !Svc.Automation.Running && !IsOccupied() && !ICondition.Get()[ConditionFlag.InDutyQueue] && !InParty && WorldState.Get().Fishing.FishingState == FishingState.None && !AutoRetainerIPC.Get().IsBusy && !LifestreamIPC.Get().IsBusy;
+        => !Svc.Automation.Running && !IsOccupied() && !ICondition.Get()[ConditionFlag.InDutyQueue] && !InParty && WorldState.Get().Fishing.FishingState == FishingState.None && !AutoRetainerIPC.Get().IsBusy && !LifestreamIPC.Get().IsBusy && !AutoDutyIPC.Get().IsBusy;
 
     #region AutoRetainer multi mode
 

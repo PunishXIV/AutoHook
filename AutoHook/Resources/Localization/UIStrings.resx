@@ -2223,6 +2223,9 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_ScripKeepHelp" xml:space="preserve">
     <value>How many to have in your inventory. 0 buys as many as possible.</value>
   </data>
+  <data name="OceanTrip_ReasonOtherDuty" xml:space="preserve">
+    <value>another duty started</value>
+  </data>
   <data name="OceanTrip_ScripReserve" xml:space="preserve">
     <value>Keep {0} scrips</value>
   </data>
