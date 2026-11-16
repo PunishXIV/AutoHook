@@ -494,6 +494,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cast Light.
+        /// </summary>
+        internal static string AutoCastLight {
+            get {
+                return ResourceManager.GetString("AutoCastLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto Cast Line.
         /// </summary>
         internal static string AutoCastLine_Auto_Cast_Line {
@@ -782,6 +791,15 @@ namespace AutoHook.Resources.Localization {
         internal static string AutoPatience_Patience {
             get {
                 return ResourceManager.GetString("AutoPatience_Patience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sit.
+        /// </summary>
+        internal static string AutoSit {
+            get {
+                return ResourceManager.GetString("AutoSit", resourceCulture);
             }
         }
         
@@ -1939,6 +1957,15 @@ namespace AutoHook.Resources.Localization {
         internal static string FishingPresets {
             get {
                 return ResourceManager.GetString("FishingPresets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not during ocean fishing.
+        /// </summary>
+        internal static string FlairSkipOceanFishing {
+            get {
+                return ResourceManager.GetString("FlairSkipOceanFishing", resourceCulture);
             }
         }
         

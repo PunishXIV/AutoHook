@@ -23,6 +23,7 @@ public sealed class RodFishingModule : FishingModule {
     public ExtraComponent Extra { get; }
     public BaitComponent Bait { get; }
     public LureChatComponent LureChat { get; }
+    public FlairComponent Flair { get; }
 
     public ActionHints Hints { get; } = new();
     public ActionHintsResolver Resolver { get; } = new();
@@ -66,6 +67,7 @@ public sealed class RodFishingModule : FishingModule {
         Extra = AddComponent(new ExtraComponent(this));
         Bait = AddComponent(new BaitComponent(this));
         LureChat = AddComponent(new LureChatComponent(this));
+        Flair = AddComponent(new FlairComponent(this));
 
         _eventSubs = new(Ws.OceanZoneStarted.Subscribe(OnOceanZoneStarted), Ws.SpectralCurrentChanged.Subscribe(BiteHook.OnSpectralCurrentChanged), Ws.TerritoryChanged.Subscribe(_ => ClearAutoStartLock()));
         IChatGui.Get().LogMessage += LureChat.OnLogMessage;
@@ -309,6 +311,9 @@ public sealed class RodFishingModule : FishingModule {
             AutoCast.CheckWhileFishingActions();
             BiteHook.CheckTimeout();
         }
+
+        if (currentState == FishingState.LineInWater)
+            Flair.TryUse();
 
         var previousState = Ws.Fishing.PreviousFishingState;
         if (previousState == currentState)

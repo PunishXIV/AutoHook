@@ -1768,6 +1768,15 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="SpectralRestOnGainHelpText" xml:space="preserve">
     <value>Rest and re-cast when a spectral current starts mid-cast</value>
   </data>
+  <data name="AutoSit" xml:space="preserve">
+    <value>Sit</value>
+  </data>
+  <data name="AutoCastLight" xml:space="preserve">
+    <value>Cast Light</value>
+  </data>
+  <data name="FlairSkipOceanFishing" xml:space="preserve">
+    <value>Not during ocean fishing</value>
+  </data>
   <data name="AutoHandleCollectables" xml:space="preserve">
     <value>Auto handle collectables</value>
   </data>

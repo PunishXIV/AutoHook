@@ -75,6 +75,19 @@ public class TabSettings : BaseTab {
         DrawUtil.Checkbox(UIStrings.AutoStartFishing, ref Configuration.C.AutoStartFishing, UIStrings.AutoStartFishingHelpText);
         DrawUtil.Checkbox(UIStrings.SpectralRestOnGain, ref Configuration.C.SpectralRest, UIStrings.SpectralRestOnGainHelpText);
         DrawUtil.Checkbox(UIStrings.AutoHandleCollectables, ref Configuration.C.AutoCollectablesEnabled, UIStrings.AutoHandleCollectablesHelpText);
+        DrawFlair();
+    }
+
+    private static void DrawFlair() {
+        using var id = ImRaii.PushId(nameof(DrawFlair));
+        var cfg = Configuration.C;
+
+        DrawUtil.Checkbox(UIStrings.AutoSit, ref cfg.AutoSit);
+        ImGui.SameLine();
+        DrawUtil.Checkbox(UIStrings.AutoCastLight, ref cfg.AutoCastLight);
+
+        if (cfg.AutoSit || cfg.AutoCastLight)
+            DrawUtil.SubCheckbox(UIStrings.FlairSkipOceanFishing, ref cfg.FlairSkipOceanFishing);
     }
 
     private void DrawSpearfishingSettings() {
