@@ -1582,4 +1582,7 @@
   <data name="Prioritise" xml:space="preserve">
     <value>优先考虑</value>
   </data>
+  <data name="OceanFishing" xml:space="preserve">
+    <value>出海垂钓</value>
+  </data>
 </root>
