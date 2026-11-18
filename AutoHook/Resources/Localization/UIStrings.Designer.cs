@@ -3403,7 +3403,7 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quit fishing and leave the voyage if you&apos;re in zone 1 or 2 and there&apos;s no more uncaught fish in the remaining zones. Does not leave early if there&apos;s achievements remaining..
+        ///   Looks up a localized string similar to Quit fishing and leave the voyage if you&apos;re in zone 1 or 2 and there&apos;s no more uncaught fish in the remaining zones. Does not leave early if there&apos;s achievements remaining, or if the route had no uncaught fish to begin with..
         /// </summary>
         internal static string OceanTrip_LeaveEarlyHelp {
             get {

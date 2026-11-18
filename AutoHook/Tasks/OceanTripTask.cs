@@ -237,18 +237,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             return;
 
         var vendor = await ApproachBaitVendor();
-        for (var attempt = 1; ; attempt++) {
-            await WaitUntil(() => IObjectTable.Get().LocalPlayer.CanInteract && !IsMoving, "WaitForInteractReady");
-            ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), UIStrings.OceanTrip_ErrorOpenShopFailed);
-            var deadline = DateTime.Now.AddSeconds(5);
-            await WaitUntilSkipping(() => ShopReady() || DateTime.Now > deadline && !ICondition.Get()[ConditionFlag.OccupiedInEvent], "WaitShopOpen", UiSkipOptions.Talk);
-            if (ShopReady())
-                return;
-            ErrorIf(attempt >= 3, UIStrings.OceanTrip_ErrorOpenShopFailed);
-            Log($"Shop didn't open, retrying ({attempt})");
-        }
-
-        static bool ShopReady() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop");
+        await OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId);
     }
 
     private Task<IGameObject> ApproachBaitVendor() => ApproachNpc(OceanTripConsts.BaitVendorId);
@@ -414,17 +403,18 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         Status = UIStrings.OceanTrip_StatusRegistering;
         // world state, presets and the zone start event all need the plugin on, and the first zone can start soon after boarding
         Configuration.C.PluginEnabled = true;
-        if (FindObject(OceanTripConsts.DryskthotaId) is not { } npc) {
+        if (FindObject(OceanTripConsts.DryskthotaId) == null) {
             Error(UIStrings.OceanTrip_ErrorDryskthotaNotFound);
             return;
         }
+
+        var npc = await ApproachNpc(OceanTripConsts.DryskthotaId); // re-approach after buying bait
 
         // dryskthota: talk -> "Register to board." -> route menu (indigo first) -> yes/no -> queued until departure -> duty pop
         var menusSeen = 0;
         var routeIndex = OceanSchedule.IsIndigoRoute(Voyage.RouteId) ? 0 : 1;
         var deadline = Environment.TickCount64 + 60_000;
-        await InteractUntil(npc.GameObjectId, () => TryGetSelectStringText(out _) || AtkUnitBase.IsAddonReady("Talk") || AtkUnitBase.IsAddonReady("SelectYesno")
-            || InOceanFishing || ContentsFinderConfirmReady || OceanTripService.QueuedOceanContent() != 0, "WaitTalk");
+        await InteractUntil(npc.GameObjectId, () => TryGetSelectStringText(out _) || AtkUnitBase.IsAddonReady("Talk") || AtkUnitBase.IsAddonReady("SelectYesno") || InOceanFishing || ContentsFinderConfirmReady || OceanTripService.QueuedOceanContent() != 0, "WaitTalk");
         while (!InOceanFishing && !ContentsFinderConfirmReady && OceanTripService.QueuedOceanContent() == 0) {
             ErrorIf(Environment.TickCount64 > deadline, UIStrings.OceanTrip_ErrorRegisterTimeout);
             if (TryGetSelectStringText(out var text)) {
@@ -459,13 +449,17 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         Configuration.C.PluginEnabled = true;
         await WaitUntil(() => Player.Interactable && !IsOccupied() || _pendingZone != null, "WaitAboard", timeout: TimeSpan.FromMinutes(2), abortOnTimeout: false);
 
+        var leaveEarly = Cfg.LeaveEarly && HasUncaughtFish();
+        if (Cfg.LeaveEarly && !leaveEarly)
+            Log("Nothing uncaught on this route, not leaving early");
+
         var fishingZone = -1;
         var nextMidZoneCheck = 0L;
         while (InOceanFishing) {
             var ocean = Ws.OceanFishing;
             if (ocean.Status == InstanceContentOceanFishing.OceanFishingStatus.Fishing) {
                 fishingZone = (int)ocean.CurrentZone;
-                if (Cfg.LeaveEarly && Environment.TickCount64 >= nextMidZoneCheck) {
+                if (leaveEarly && Environment.TickCount64 >= nextMidZoneCheck) {
                     nextMidZoneCheck = Environment.TickCount64 + 2000;
                     if (ShouldLeaveMidZone(fishingZone, ocean)) {
                         await LeaveEarly(fishingZone, midZone: true);
@@ -477,7 +471,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
                 // a stop just ended
                 var ended = fishingZone;
                 fishingZone = -1;
-                if (Cfg.LeaveEarly && ShouldLeaveAfter(ended)) {
+                if (leaveEarly && ShouldLeaveAfter(ended)) {
                     await LeaveEarly(ended, midZone: false);
                     break;
                 }
@@ -521,6 +515,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         return ShouldLeaveAfter(stop);
     }
 
+    private bool HasUncaughtFish() => OceanRouteFishCatalog.GetFish(Voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
     private bool RouteFishUnknown => OceanRouteFishCatalog.GetFish(Voyage.RouteId).Count == 0;
 
     private async Task LeaveEarly(int stop, bool midZone) {

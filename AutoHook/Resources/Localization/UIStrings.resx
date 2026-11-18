@@ -1969,7 +1969,7 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
     <value>Leave early when there's nothing left to catch</value>
   </data>
   <data name="OceanTrip_LeaveEarlyHelp" xml:space="preserve">
-    <value>Quit fishing and leave the voyage if you're in zone 1 or 2 and there's no more uncaught fish in the remaining zones. Does not leave early if there's achievements remaining.</value>
+    <value>Quit fishing and leave the voyage if you're in zone 1 or 2 and there's no more uncaught fish in the remaining zones. Does not leave early if there's achievements remaining, or if the route had no uncaught fish to begin with.</value>
   </data>
   <data name="OceanTrip_Fish" xml:space="preserve">
     <value>Fish:</value>
