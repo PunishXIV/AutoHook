@@ -188,8 +188,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
     private async Task NpcRepair() {
         using var scope = BeginScope(nameof(NpcRepair));
         var vendor = await ApproachBaitVendor();
-        await InteractWith(vendor);
-        await WaitUntil(() => TryGetSelectStringText(out _), "WaitMenu", timeout: TimeSpan.FromSeconds(10));
+        await InteractUntil(vendor.GameObjectId, () => TryGetSelectStringText(out _), "WaitMenu", UiSkipOptions.Talk);
         TryGetSelectStringText(out var text);
         SelectString(1, text);
         await WaitUntil(() => { ConfirmPrompts(); return AtkUnitBase.IsAddonReady("Repair"); }, "WaitRepairOpen", timeout: TimeSpan.FromSeconds(10));
@@ -238,8 +237,18 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             return;
 
         var vendor = await ApproachBaitVendor();
-        ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), UIStrings.OceanTrip_ErrorOpenShopFailed);
-        await WaitUntilSkipping(() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop"), "WaitShopOpen", UiSkipOptions.Talk);
+        for (var attempt = 1; ; attempt++) {
+            await WaitUntil(() => IObjectTable.Get().LocalPlayer.CanInteract && !IsMoving, "WaitForInteractReady");
+            ErrorIf(!AgentShop.OpenShop(vendor.GameObjectId, OceanTripConsts.BaitShopId), UIStrings.OceanTrip_ErrorOpenShopFailed);
+            var deadline = DateTime.Now.AddSeconds(5);
+            await WaitUntilSkipping(() => ShopReady() || DateTime.Now > deadline && !ICondition.Get()[ConditionFlag.OccupiedInEvent], "WaitShopOpen", UiSkipOptions.Talk);
+            if (ShopReady())
+                return;
+            ErrorIf(attempt >= 3, UIStrings.OceanTrip_ErrorOpenShopFailed);
+            Log($"Shop didn't open, retrying ({attempt})");
+        }
+
+        static bool ShopReady() => AgentShop.IsShopOpen(OceanTripConsts.BaitShopId) && AtkUnitBase.IsAddonReady("Shop");
     }
 
     private Task<IGameObject> ApproachBaitVendor() => ApproachNpc(OceanTripConsts.BaitVendorId);
@@ -301,8 +310,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (OceanScripShop.IsReady)
             return;
         var vendor = await ApproachNpc(OceanScripShop.VendorId);
-        await InteractWith(vendor);
-        await WaitUntil(() => { ConfirmPrompts(); return TryGetSelectStringText(out _) || OceanScripShop.IsOpen; }, "WaitMenu", timeout: TimeSpan.FromSeconds(10));
+        await InteractUntil(vendor.GameObjectId, () => { ConfirmPrompts(); return TryGetSelectStringText(out _) || OceanScripShop.IsOpen; }, "WaitMenu");
         if (TryGetSelectStringText(out var text))
             SelectString(OceanScripShop.MenuIndex, text);
         await WaitUntil(() => { ConfirmPrompts(); return OceanScripShop.IsReady; }, "WaitShopOpen", timeout: TimeSpan.FromSeconds(10));
@@ -415,7 +423,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var menusSeen = 0;
         var routeIndex = OceanSchedule.IsIndigoRoute(Voyage.RouteId) ? 0 : 1;
         var deadline = Environment.TickCount64 + 60_000;
-        await InteractWith(npc);
+        await InteractUntil(npc.GameObjectId, () => TryGetSelectStringText(out _) || AtkUnitBase.IsAddonReady("Talk") || AtkUnitBase.IsAddonReady("SelectYesno")
+            || InOceanFishing || ContentsFinderConfirmReady || OceanTripService.QueuedOceanContent() != 0, "WaitTalk");
         while (!InOceanFishing && !ContentsFinderConfirmReady && OceanTripService.QueuedOceanContent() == 0) {
             ErrorIf(Environment.TickCount64 > deadline, UIStrings.OceanTrip_ErrorRegisterTimeout);
             if (TryGetSelectStringText(out var text)) {
