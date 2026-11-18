@@ -16,5 +16,7 @@ public static class OceanTripConsts {
     public const uint VersatileLure = 29717;
     public const int MaxPurchaseBatch = 99;
 
+    public const float SpectralCutoffSeconds = 90f; // evi said this is the cutoff so if it's wrong I'm blaming them
+
     public static readonly uint[] Baits = [Ragworm, Krill, PlumpWorm];
 }

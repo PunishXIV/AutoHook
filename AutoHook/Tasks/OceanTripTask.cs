@@ -505,14 +505,16 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         return wanted.Count == 0;
     }
 
-    // the stop's spectral current is over and all that's left uncaught here is spectral-only, so the rest of the stop is pointless
+    // the stop's spectral current is over (or can no longer start) and all that's left uncaught here is spectral-only, so the rest of the stop is pointless
     private bool ShouldLeaveMidZone(int stop, OceanFishingState ocean) {
-        if (ocean.SpectralCurrentActive || !Ws.SpectralHistory.Any(r => r.ZoneIndex == stop && r.Ended != null))
+        if (ocean.SpectralCurrentActive)
+            return false;
+        var spectralEnded = Ws.SpectralHistory.Any(r => r.ZoneIndex == stop && r.Ended != null);
+        var tooLateForSpectral = ocean.TimeLeftInZone is > 0 and < OceanTripConsts.SpectralCutoffSeconds;
+        if (!spectralEnded && !tooLateForSpectral)
             return false;
         var here = OceanRouteFishCatalog.GetFish(Voyage.RouteId).Where(f => f.Stop == stop && !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId)).ToList();
-        if (here.Any(f => !f.Spectral))
-            return false;
-        return ShouldLeaveAfter(stop);
+        return !here.Any(f => !f.Spectral) && ShouldLeaveAfter(stop);
     }
 
     private bool HasUncaughtFish() => OceanRouteFishCatalog.GetFish(Voyage.RouteId).Any(f => !OceanGoalCatalog.IsLegendaryCaught(f.FishParameterId));
@@ -520,9 +522,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task LeaveEarly(int stop, bool midZone) {
         using var scope = BeginScope(nameof(LeaveEarly));
-        Log(midZone
-            ? $"Spectral current over and nothing else left to catch from stop {stop + 1} on, leaving the voyage"
-            : $"Nothing left to catch after stop {stop + 1}, leaving the voyage");
+        Log(midZone ? $"No more spectral current possible and nothing else left to catch from stop {stop + 1} on, leaving the voyage" : $"Nothing left to catch after stop {stop + 1}, leaving the voyage");
         Status = UIStrings.OceanTrip_StatusLeavingEarly;
         if (Ws.Fishing.FishingState != FishingState.None)
             FishingSessionManager.Get().Rod.RequestHardQuit();
