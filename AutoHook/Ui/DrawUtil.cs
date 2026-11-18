@@ -515,7 +515,7 @@ public static class DrawUtil {
         => DrawComboSelector(FishBaitCatalog.Get().Baits, b => $"[#{b.Id}] {b.Name}", bait.Name, b => onSelect(new BaitFishClass(b)));
 
     public static void DrawPresetSwapSelector(string presetName, Action<string> onSelect)
-        => DrawComboSelector(Configuration.C.HookPresets.CustomPresets, preset => preset.PresetName, presetName, preset => onSelect(preset.PresetName));
+        => DrawComboSelector([.. Configuration.C.HookPresets.CustomPresets.Select(p => p.PresetName).Prepend(@"-")], name => name, presetName, onSelect);
 
     public static void DrawSurfaceSlapAndIdenticalCast(AutoSurfaceSlap surfaceSlap, AutoIdenticalCast identicalCast) {
         DrawCheckboxTree(UIStrings.UseSurfaceSlap, ref surfaceSlap.Enabled,
