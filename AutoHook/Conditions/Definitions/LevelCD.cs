@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class LevelCD : IntCompareConditionDefinition {
-    public override string Id => nameof(LevelCD);
     public override string Name => "Level";
     public override ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCordial | ConditionScopeFlags.AutoCast | ConditionScopeFlags.Spearfishing;

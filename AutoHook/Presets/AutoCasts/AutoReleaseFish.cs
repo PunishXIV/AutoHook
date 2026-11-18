@@ -1,14 +1,13 @@
 namespace AutoHook.Presets.AutoCasts;
 
 public sealed class AutoReleaseFish : BaseActionCast {
-    public AutoReleaseFish() : base(IDs.Actions.Release) { }
+    public AutoReleaseFish() : base(IDs.Actions.Release, priority: 14) { }
 
     public override string GetName() => UIStrings.ReleaseAllFish;
 
-    public override string GetHelpText() => UIStrings.ReleaseAllFishHelpText;
+    protected override bool HasOptions => false;
 
-    public override int Priority { get; set; } = 14;
-    public override bool IsExcludedPriority { get; set; } = false;
+    public override string GetHelpText() => UIStrings.ReleaseAllFishHelpText;
 
     public override bool CastCondition(WorldState ws) => true;
 }

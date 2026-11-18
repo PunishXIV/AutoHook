@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class FreeInventorySlotsCD : IntCompareConditionDefinition {
-    public override string Id => nameof(FreeInventorySlotsCD);
     public override string Name => "Free inventory slots";
     public override ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast | ConditionScopeFlags.Spearfishing;

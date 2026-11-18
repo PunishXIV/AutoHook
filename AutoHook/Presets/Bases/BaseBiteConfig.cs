@@ -57,29 +57,10 @@ public class BaseBiteConfig(HookType type) {
         DrawUtil.Checkbox(UIStrings.UseMultipleHooksByTimer, ref UseMultipleHookTypesByTimer);
 
         if (!UseMultipleHookTypesByTimer) {
-            DrawUtil.Branch();
-            if (ImGui.RadioButton(UIStrings.Normal_Hook, HooksetType == HookType.Normal)) {
-                HooksetType = HookType.Normal;
-                Configuration.Save();
-            }
-
-            DrawUtil.Branch();
-            if (ImGui.RadioButton(UIStrings.PrecisionHookset, HooksetType == HookType.Precision)) {
-                HooksetType = HookType.Precision;
-                Configuration.Save();
-            }
-
-            DrawUtil.Branch();
-            if (ImGui.RadioButton(UIStrings.PowerfulHookset, HooksetType == HookType.Powerful)) {
-                HooksetType = HookType.Powerful;
-                Configuration.Save();
-            }
-
-            DrawUtil.Branch();
-            if (ImGui.RadioButton(UIStrings.StellarHookset, HooksetType == HookType.Stellar)) {
-                HooksetType = HookType.Stellar;
-                Configuration.Save();
-            }
+            DrawUtil.Radio(UIStrings.Normal_Hook, ref HooksetType, HookType.Normal);
+            DrawUtil.Radio(UIStrings.PrecisionHookset, ref HooksetType, HookType.Precision);
+            DrawUtil.Radio(UIStrings.PowerfulHookset, ref HooksetType, HookType.Powerful);
+            DrawUtil.Radio(UIStrings.StellarHookset, ref HooksetType, HookType.Stellar);
 
             HookTypeConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, HookTypeConditionSet, ConditionScope.Hook, showAdvanced: true);
         }

@@ -64,26 +64,6 @@ public static class ConditionParams {
         };
     }
 
-    public static void DrawIdsParams(Condition cond, string label) {
-        var ids = GetIds(cond.Params);
-        var text = string.Join(", ", ids);
-        var buf = text;
-        ImGui.SetNextItemWidth(140.Scaled());
-        if (!ImGui.InputText(label, ref buf, 128))
-            return;
-
-        var list = new List<object>();
-        foreach (var part in buf.Split(',', StringSplitOptions.RemoveEmptyEntries)) {
-            if (uint.TryParse(part.Trim(), out var id))
-                list.Add((long)id);
-        }
-
-        if (list.Count > 0)
-            cond.Params["ids"] = list;
-        else
-            cond.Params.Remove("ids");
-    }
-
     public static List<(double min, double max)> GetRanges(IReadOnlyDictionary<string, object> p) {
         if (!p.TryGetValue("r", out var o) || o is not List<object> list) return [];
         var result = new List<(double, double)>();
@@ -176,6 +156,19 @@ public static class ConditionParams {
             condition.Params["inv"] = true;
         else
             condition.Params.Remove("inv");
+    }
+
+    // combo over a fixed set of int values, stored as long under key
+    public static void DrawChoiceParam(Condition condition, string key, string label, int current, IReadOnlyList<(int Value, string Name)> options, float width = 80f) {
+        ImGui.SetNextItemWidth(width.Scale());
+        using var combo = ImRaii.Combo(label, options.FirstOrDefault(o => o.Value == current).Name ?? $"{current}");
+        if (!combo)
+            return;
+
+        foreach (var (value, name) in options) {
+            if (ImGui.Selectable(name, current == value))
+                condition.Params[key] = (long)value;
+        }
     }
 
     public static void DrawSingleRangeParams(Condition condition) {

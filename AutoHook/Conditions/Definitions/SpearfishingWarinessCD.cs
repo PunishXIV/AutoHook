@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class SpearfishingWarinessCD : IntCompareConditionDefinition {
-    public override string Id => nameof(SpearfishingWarinessCD);
     public override string Name => "Wariness";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Spearfishing;
     protected override string ValueLabel => "Wariness";

@@ -29,9 +29,6 @@ public sealed class ReplayPlayer(FishingReplay replay) {
         }
     }
 
-    public DateTime NextTimestamp()
-        => NextOpIndex < Replay.Ops.Count ? Replay.Ops[NextOpIndex].Timestamp : default;
-
     public DateTime CurrTimestamp()
         => NextOpIndex > 0 ? Replay.Ops[NextOpIndex - 1].Timestamp : default;
 

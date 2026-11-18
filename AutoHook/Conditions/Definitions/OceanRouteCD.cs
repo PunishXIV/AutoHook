@@ -3,7 +3,6 @@ using Lumina.Excel.Sheets;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanRouteCD : IConditionDefinition {
-    public string Id => nameof(OceanRouteCD);
     public string Name => "Ocean route";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 

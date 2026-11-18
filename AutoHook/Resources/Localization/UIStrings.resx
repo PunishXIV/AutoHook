@@ -1733,7 +1733,7 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
     <value>When</value>
   </data>
   <data name="AutoOceanFish" xml:space="preserve">
-    <value>AutoOceanFish</value>
+    <value>Auto Ocean Fish</value>
   </data>
   <data name="AutoOceanFishHelpText" xml:space="preserve">
     <value>Handles everything on the boat itself: moving into position, casting, preset management.</value>
@@ -1767,6 +1767,15 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="SpectralRestOnGainHelpText" xml:space="preserve">
     <value>Rest and re-cast when a spectral current starts mid-cast</value>
+  </data>
+  <data name="AutoSit" xml:space="preserve">
+    <value>Sit</value>
+  </data>
+  <data name="AutoCastLight" xml:space="preserve">
+    <value>Cast Light</value>
+  </data>
+  <data name="FlairSkipOceanFishing" xml:space="preserve">
+    <value>Not during ocean fishing</value>
   </data>
   <data name="AutoHandleCollectables" xml:space="preserve">
     <value>Auto handle collectables</value>
@@ -1859,5 +1868,371 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="AnyAchievement" xml:space="preserve">
     <value>Any Achievement</value>
+  </data>
+  <data name="FullAutoHelpText" xml:space="preserve">
+    <value>Queues by itself for every voyage matching the Ocean Fishing tab filters.</value>
+  </data>
+  <data name="OceanTrip_StopTrip" xml:space="preserve">
+    <value>Stop the trip</value>
+  </data>
+  <data name="OceanTrip_RequiresAutoOceanFish" xml:space="preserve">
+    <value>Trips require {0} enabled.</value>
+  </data>
+  <data name="OceanTrip_NextTrip" xml:space="preserve">
+    <value>Next: {0}, leaving {1}</value>
+  </data>
+  <data name="OceanTrip_Preparation" xml:space="preserve">
+    <value>Preparation</value>
+  </data>
+  <data name="OceanTrip_After" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="OceanTrip_Leave" xml:space="preserve">
+    <value>Leave</value>
+  </data>
+  <data name="OceanTrip_LeaveWhenBoardingOpens" xml:space="preserve">
+    <value>when boarding opens (:00)</value>
+  </data>
+  <data name="OceanTrip_LeaveLate" xml:space="preserve">
+    <value>late, at :</value>
+  </data>
+  <data name="OceanTrip_OnlyBetween" xml:space="preserve">
+    <value>{0} only between {1} and {2} local time</value>
+  </data>
+  <data name="OceanTrip_StartsFrom" xml:space="preserve">
+    <value>{0} starts from</value>
+  </data>
+  <data name="OceanTrip_InnRoom" xml:space="preserve">
+    <value>Inn room</value>
+  </data>
+  <data name="OceanTrip_ResidentialSector" xml:space="preserve">
+    <value>Residential sector</value>
+  </data>
+  <data name="OceanTrip_AnySanctuary" xml:space="preserve">
+    <value>Any sanctuary</value>
+  </data>
+  <data name="OceanTrip_AutoRetainer" xml:space="preserve">
+    <value>AutoRetainer</value>
+  </data>
+  <data name="OceanTrip_AutoRetainerHelp" xml:space="preserve">
+    <value>Ignores starting zone options</value>
+  </data>
+  <data name="OceanTrip_Character" xml:space="preserve">
+    <value>Character</value>
+  </data>
+  <data name="OceanTrip_NoneAssigned" xml:space="preserve">
+    <value>none assigned</value>
+  </data>
+  <data name="OceanTrip_UseThisCharacter" xml:space="preserve">
+    <value>Use this character</value>
+  </data>
+  <data name="OceanTrip_Unassign" xml:space="preserve">
+    <value>Unassign</value>
+  </data>
+  <data name="OceanTrip_MultiMode" xml:space="preserve">
+    <value>Multi mode</value>
+  </data>
+  <data name="OceanTrip_MultiModeHelp" xml:space="preserve">
+    <value>Triggers when AutoRetainer is idle. Pauses multimode and resumes afterwards.</value>
+  </data>
+  <data name="OceanTrip_CharacterPostProcess" xml:space="preserve">
+    <value>Character Post Process</value>
+  </data>
+  <data name="OceanTrip_CharacterPostProcessHelp" xml:space="preserve">
+    <value>Triggers after your character has finished their retainers if it coincides with a boat.</value>
+  </data>
+  <data name="OceanTrip_WhenVoyageLeavesWithin" xml:space="preserve">
+    <value>When the voyage leaves within</value>
+  </data>
+  <data name="OceanTrip_Min" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="OceanTrip_PluginNotLoaded" xml:space="preserve">
+    <value>{0} not loaded</value>
+  </data>
+  <data name="OceanTrip_BuyBait" xml:space="preserve">
+    <value>Buy bait</value>
+  </data>
+  <data name="OceanTrip_TopUpTo" xml:space="preserve">
+    <value>top up to</value>
+  </data>
+  <data name="OceanTrip_Each" xml:space="preserve">
+    <value>each</value>
+  </data>
+  <data name="OceanTrip_SwapToGearset" xml:space="preserve">
+    <value>Swap to {0} (#{1})</value>
+  </data>
+  <data name="OceanTrip_NoFisherGearset" xml:space="preserve">
+    <value>No fisher gearset found</value>
+  </data>
+  <data name="OceanTrip_LeaveEarly" xml:space="preserve">
+    <value>Leave early when there's nothing left to catch</value>
+  </data>
+  <data name="OceanTrip_LeaveEarlyHelp" xml:space="preserve">
+    <value>Quit fishing and leave the voyage if you're in zone 1 or 2 and there's no more uncaught fish in the remaining zones. Does not leave early if there's achievements remaining, or if the route had no uncaught fish to begin with.</value>
+  </data>
+  <data name="OceanTrip_Fish" xml:space="preserve">
+    <value>Fish:</value>
+  </data>
+  <data name="OceanTrip_Keep" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="OceanTrip_Desynth" xml:space="preserve">
+    <value>Desynth</value>
+  </data>
+  <data name="OceanTrip_SellToVendor" xml:space="preserve">
+    <value>Sell to vendor</value>
+  </data>
+  <data name="OceanTrip_LegendaryHelp" xml:space="preserve">
+    <value>Legendary fish are always kept and are immune from post-voyage actions.</value>
+  </data>
+  <data name="OceanTrip_Then" xml:space="preserve">
+    <value>Then</value>
+  </data>
+  <data name="OceanTrip_StepReturnToOrigin" xml:space="preserve">
+    <value>Return to where I was</value>
+  </data>
+  <data name="OceanTrip_StepReturnToOriginHelp" xml:space="preserve">
+    <value>Swap back to previous gearset and go back to the zone and position you were in before.</value>
+  </data>
+  <data name="OceanTrip_StepGoToInn" xml:space="preserve">
+    <value>Go to the inn</value>
+  </data>
+  <data name="OceanTrip_StepGoHome" xml:space="preserve">
+    <value>Go home</value>
+  </data>
+  <data name="OceanTrip_StepCommand" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="OceanTrip_StepStartAutoRetainerMulti" xml:space="preserve">
+    <value>Start AutoRetainer multi mode</value>
+  </data>
+  <data name="OceanTrip_RequiresLifestream" xml:space="preserve">
+    <value>Requires Lifestream</value>
+  </data>
+  <data name="OceanTrip_GoTo" xml:space="preserve">
+    <value>Go to</value>
+  </data>
+  <data name="OceanTrip_ReturnHousingTo" xml:space="preserve">
+    <value>If it started in housing, go back to</value>
+  </data>
+  <data name="OceanTrip_HomePrivate" xml:space="preserve">
+    <value>Private house</value>
+  </data>
+  <data name="OceanTrip_HomeFreeCompany" xml:space="preserve">
+    <value>FC house</value>
+  </data>
+  <data name="OceanTrip_HomeApartment" xml:space="preserve">
+    <value>Apartment</value>
+  </data>
+  <data name="OceanTrip_BoatAlarms" xml:space="preserve">
+    <value>Boat alarms</value>
+  </data>
+  <data name="OceanTrip_MinBeforeBoarding" xml:space="preserve">
+    <value>min before boarding</value>
+  </data>
+  <data name="OceanTrip_Opens" xml:space="preserve">
+    <value>opens</value>
+  </data>
+  <data name="OceanTrip_Closes" xml:space="preserve">
+    <value>closes</value>
+  </data>
+  <data name="OceanTrip_AlarmBoardingNow" xml:space="preserve">
+    <value>Boat boarding now, closes in {0}: {1}</value>
+  </data>
+  <data name="OceanTrip_AlarmBoardingIn" xml:space="preserve">
+    <value>Boat boarding in {0}: {1}</value>
+  </data>
+  <data name="OceanTrip_SecondsShort" xml:space="preserve">
+    <value>{0}s</value>
+  </data>
+  <data name="OceanTrip_MinutesShort" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="OceanTrip_GoLink" xml:space="preserve">
+    <value>[Go]</value>
+  </data>
+  <data name="OceanTrip_NotStarted" xml:space="preserve">
+    <value>Ocean trip not started: {0}</value>
+  </data>
+  <data name="OceanTrip_ReasonNotLoggedIn" xml:space="preserve">
+    <value>not logged in</value>
+  </data>
+  <data name="OceanTrip_ReasonAutoOceanFishDisabled" xml:space="preserve">
+    <value>auto ocean fishing is disabled in the settings</value>
+  </data>
+  <data name="OceanTrip_ReasonAlreadyRunning" xml:space="preserve">
+    <value>{0} is already running</value>
+  </data>
+  <data name="OceanTrip_ReasonBusy" xml:space="preserve">
+    <value>busy</value>
+  </data>
+  <data name="OceanTrip_ReasonMissedBoat" xml:space="preserve">
+    <value>missed boat</value>
+  </data>
+  <data name="OceanTrip_Started" xml:space="preserve">
+    <value>Ocean trip started ({0}) for {1}</value>
+  </data>
+  <data name="OceanTrip_Departing" xml:space="preserve">
+    <value>Departing for {0}</value>
+  </data>
+  <data name="OceanTrip_Stopped" xml:space="preserve">
+    <value>Ocean trip stopped: {0}</value>
+  </data>
+  <data name="OceanTrip_StatusTravelling" xml:space="preserve">
+    <value>Travelling to docks</value>
+  </data>
+  <data name="OceanTrip_StatusSwappingGearsets" xml:space="preserve">
+    <value>Swapping gearsets</value>
+  </data>
+  <data name="OceanTrip_StatusBuyingBait" xml:space="preserve">
+    <value>Buying bait</value>
+  </data>
+  <data name="OceanTrip_StatusWaitingToBoard" xml:space="preserve">
+    <value>Waiting to board</value>
+  </data>
+  <data name="OceanTrip_StatusRegistering" xml:space="preserve">
+    <value>Registering to board</value>
+  </data>
+  <data name="OceanTrip_StatusRegistered" xml:space="preserve">
+    <value>Registered, waiting for departure</value>
+  </data>
+  <data name="OceanTrip_StatusBoarding" xml:space="preserve">
+    <value>Boarding</value>
+  </data>
+  <data name="OceanTrip_StatusFishingStop" xml:space="preserve">
+    <value>Fishing stop {0}</value>
+  </data>
+  <data name="OceanTrip_StatusWaitingToDepart" xml:space="preserve">
+    <value>Waiting to depart</value>
+  </data>
+  <data name="OceanTrip_StatusReturningToDock" xml:space="preserve">
+    <value>Returning to the dock</value>
+  </data>
+  <data name="OceanTrip_StatusLeavingEarly" xml:space="preserve">
+    <value>Leaving early</value>
+  </data>
+  <data name="OceanTrip_StatusDesynthing" xml:space="preserve">
+    <value>Desynthing fish</value>
+  </data>
+  <data name="OceanTrip_StatusSelling" xml:space="preserve">
+    <value>Selling fish</value>
+  </data>
+  <data name="OceanTrip_StatusPostSteps" xml:space="preserve">
+    <value>Executing post-voyage steps</value>
+  </data>
+  <data name="OceanTrip_ErrorBuyFailed" xml:space="preserve">
+    <value>Failed to buy item {0}</value>
+  </data>
+  <data name="OceanTrip_ErrorVendorNotFound" xml:space="preserve">
+    <value>Bait vendor not found</value>
+  </data>
+  <data name="OceanTrip_ErrorOpenShopFailed" xml:space="preserve">
+    <value>Failed to open bait shop</value>
+  </data>
+  <data name="OceanTrip_ErrorBoardingClosed" xml:space="preserve">
+    <value>Boarding has closed</value>
+  </data>
+  <data name="OceanTrip_ErrorDryskthotaNotFound" xml:space="preserve">
+    <value>Dryskthota not found</value>
+  </data>
+  <data name="OceanTrip_ErrorRegisterTimeout" xml:space="preserve">
+    <value>Timed out registering with Dryskthota</value>
+  </data>
+  <data name="OceanTrip_ErrorDesynthFailed" xml:space="preserve">
+    <value>Failed to desynth {0}</value>
+  </data>
+  <data name="OceanTrip_ErrorSellFunctionMissing" xml:space="preserve">
+    <value>Couldn't find the game's sell function</value>
+  </data>
+  <data name="OceanTrip_Voyages" xml:space="preserve">
+    <value>Voyages</value>
+  </data>
+  <data name="OceanTrip_GoAutomatically" xml:space="preserve">
+    <value>Go automatically</value>
+  </data>
+  <data name="OceanTrip_During" xml:space="preserve">
+    <value>During</value>
+  </data>
+  <data name="OceanTrip_Readiness" xml:space="preserve">
+    <value>Presets: {0}/{1} stops covered for {2}</value>
+  </data>
+  <data name="OceanTrip_ReadinessMissing" xml:space="preserve">
+    <value>No preset for:</value>
+  </data>
+  <data name="OceanTrip_ReadinessGated" xml:space="preserve">
+    <value>Go automatically skips voyages with an uncovered stop.</value>
+  </data>
+  <data name="OceanTrip_StopsUncovered" xml:space="preserve">
+    <value>{0} stops have no preset</value>
+  </data>
+  <data name="AutoOceanFish_Description" xml:space="preserve">
+    <value>Casts and switches presets for each stop while you are on a voyage.</value>
+  </data>
+  <data name="OceanTrip_VoyagesHelp" xml:space="preserve">
+    <value>Getting to the boat, buying bait and what happens after the voyage.</value>
+  </data>
+  <data name="OverriddenBy" xml:space="preserve">
+    <value>This functionality is overridden by {0}</value>
+  </data>
+  <data name="AutoOceanFish_WalkToRailing" xml:space="preserve">
+    <value>Walk to railing</value>
+  </data>
+  <data name="OceanTrip_MinFreeSlots" xml:space="preserve">
+    <value>Skip the voyage with fewer than {0} free inventory slots</value>
+  </data>
+  <data name="OceanTrip_EquipRecommended" xml:space="preserve">
+    <value>Equip recommended gear</value>
+  </data>
+  <data name="OceanTrip_Repair" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="OceanTrip_RepairBelow" xml:space="preserve">
+    <value>When any equipped piece is below {0}%</value>
+  </data>
+  <data name="OceanTrip_RepairSelfThenNpc" xml:space="preserve">
+    <value>Self repair, mender as fallback</value>
+  </data>
+  <data name="OceanTrip_RepairNpc" xml:space="preserve">
+    <value>Mender only</value>
+  </data>
+  <data name="OceanTrip_StatusEquippingRecommended" xml:space="preserve">
+    <value>Equipping recommended gear</value>
+  </data>
+  <data name="OceanTrip_StatusRepairing" xml:space="preserve">
+    <value>Repairing gear</value>
+  </data>
+  <data name="OceanTrip_ReasonInventoryFull" xml:space="preserve">
+    <value>not enough free inventory slots</value>
+  </data>
+  <data name="OceanTrip_ReasonInParty" xml:space="preserve">
+    <value>in a party</value>
+  </data>
+  <data name="ZeroToDisable" xml:space="preserve">
+    <value>0 to disable</value>
+  </data>
+  <data name="OceanTrip_ScripBait" xml:space="preserve">
+    <value>Scrip bait for uncaught fish, top up to {0} each</value>
+  </data>
+  <data name="OceanTrip_SpendScrips" xml:space="preserve">
+    <value>Spend scrips</value>
+  </data>
+  <data name="OceanTrip_ScripKeep" xml:space="preserve">
+    <value>Keep</value>
+  </data>
+  <data name="OceanTrip_ScripKeepHelp" xml:space="preserve">
+    <value>How many to have in your inventory. 0 buys as many as possible.</value>
+  </data>
+  <data name="OceanTrip_ReasonOtherDuty" xml:space="preserve">
+    <value>another duty started</value>
+  </data>
+  <data name="OceanTrip_ScripReserve" xml:space="preserve">
+    <value>Keep {0} scrips</value>
+  </data>
+  <data name="OceanTrip_SelectItem" xml:space="preserve">
+    <value>Select an item</value>
+  </data>
+  <data name="OceanTrip_StatusBuyingScripItems" xml:space="preserve">
+    <value>Buying from the scrip exchange</value>
   </data>
 </root>

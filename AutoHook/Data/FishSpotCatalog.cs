@@ -8,13 +8,11 @@ public sealed class FishSpotCatalog : IPluginService {
     public readonly record struct SpearfishingPoolRef(uint NotebookId, uint GatheringPointBaseId, string Name, bool IsShadowNode, IReadOnlyList<uint> ItemIds);
 
     private Dictionary<uint, SpearfishingPoolRef> _poolsByNotebookId = [];
-    private Dictionary<uint, IReadOnlyList<uint>> _notebookIdsByItemId = [];
     private Dictionary<uint, SpearfishingSpotRef> _spotsByPointId = [];
 
     public async Task InitializeAsync(CancellationToken cancellationToken = default) {
         var built = await Task.Run(() => Build(cancellationToken), cancellationToken).ConfigureAwait(true);
         _poolsByNotebookId = built.Pools;
-        _notebookIdsByItemId = built.NotebooksByItem;
         _spotsByPointId = built.Spots;
     }
 
@@ -29,9 +27,6 @@ public sealed class FishSpotCatalog : IPluginService {
 
     public bool TryGetSpot(uint gatheringPointId, out SpearfishingSpotRef spot)
         => _spotsByPointId.TryGetValue(gatheringPointId, out spot);
-
-    public IReadOnlyList<uint> GetNotebookIdsForItem(uint itemId)
-        => _notebookIdsByItemId.TryGetValue(itemId, out var ids) ? ids : [];
 
     public static uint FindFishingSpot(uint placeNameId, uint territoryId) {
         if (territoryId == 0)
@@ -80,11 +75,6 @@ public sealed class FishSpotCatalog : IPluginService {
             pools[notebook.RowId] = new SpearfishingPoolRef(notebook.RowId, baseId, notebook.PlaceName.Value.Name.ToString(), notebook.IsShadowNode, itemIds);
         }
 
-        var notebooksByItem = pools.Values
-            .SelectMany(pool => pool.ItemIds.Select(itemId => (itemId, pool.NotebookId)))
-            .GroupBy(entry => entry.itemId)
-            .ToDictionary(group => group.Key, group => (IReadOnlyList<uint>)[.. group.Select(entry => entry.NotebookId).Distinct().OrderBy(id => id)]);
-
         var poolByBaseId = pools.Values
             .Where(pool => pool.GatheringPointBaseId != 0)
             .GroupBy(pool => pool.GatheringPointBaseId)
@@ -98,8 +88,8 @@ public sealed class FishSpotCatalog : IPluginService {
             spots[point.RowId] = new SpearfishingSpotRef(point.RowId, baseId, pool.NotebookId, pool.IsShadowNode);
         }
 
-        return new BuiltSpots(pools, notebooksByItem, spots);
+        return new BuiltSpots(pools, spots);
     }
 
-    private readonly record struct BuiltSpots(Dictionary<uint, SpearfishingPoolRef> Pools, Dictionary<uint, IReadOnlyList<uint>> NotebooksByItem, Dictionary<uint, SpearfishingSpotRef> Spots);
+    private readonly record struct BuiltSpots(Dictionary<uint, SpearfishingPoolRef> Pools, Dictionary<uint, SpearfishingSpotRef> Spots);
 }

@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class SpectralTimerCD : IntCompareConditionDefinition {
-    public override string Id => nameof(SpectralTimerCD);
     public override string Name => "Spectral time";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
     protected override string ValueKey => "sec";

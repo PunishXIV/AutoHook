@@ -4,7 +4,6 @@ using Dalamud.Interface.Utility.Raii;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanMissionProgressCD : IConditionDefinition {
-    public string Id => nameof(OceanMissionProgressCD);
     public string Name => "Ocean mission progress";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 

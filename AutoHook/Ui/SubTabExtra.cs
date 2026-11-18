@@ -212,94 +212,35 @@ public class SubTabExtra {
 
                 ImGui.Separator();
                 using var actions = DrawUtil.BeginBranches(indent: true);
-                var startFishing = trig.StartFishing;
-                DrawUtil.DrawCheckboxTree("Start Fishing", ref startFishing, null);
-                trig.StartFishing = startFishing;
-
-                var reduceFish = trig.ReduceFish;
-                DrawUtil.DrawCheckboxTree(UIStrings.AetherialReduction_ReduceFish, ref reduceFish, null,
-                    UIStrings.AetherialReduction_ReduceFishHelp);
-                trig.ReduceFish = reduceFish;
+                DrawUtil.DrawCheckboxTree("Start Fishing", ref trig.StartFishing);
+                DrawUtil.DrawCheckboxTree(UIStrings.AetherialReduction_ReduceFish, ref trig.ReduceFish, null, UIStrings.AetherialReduction_ReduceFishHelp);
 
                 var stopEnabled = trig.StopAction != ExtraStopAction.None;
-                DrawUtil.DrawCheckboxTree(UIStrings.StopQuitFishing, ref stopEnabled,
-                    () => {
-                        DrawUtil.Branch();
-                        if (ImGui.RadioButton(UIStrings.Stop_Casting, trig.StopAction == ExtraStopAction.StopOnly)) {
-                            trig.StopAction = ExtraStopAction.StopOnly;
-                            Configuration.Save();
-                        }
+                DrawUtil.DrawCheckboxTree(UIStrings.StopQuitFishing, ref stopEnabled, () => {
+                    DrawUtil.Radio(UIStrings.Stop_Casting, ref trig.StopAction, ExtraStopAction.StopOnly, UIStrings.Auto_Cast_Stopped);
+                    DrawUtil.Radio(UIStrings.Quit_Fishing, ref trig.StopAction, ExtraStopAction.QuitFishing);
+                    DrawUtil.Radio(UIStrings.Hard_Quit_Fishing, ref trig.StopAction, ExtraStopAction.HardQuit, UIStrings.Hard_Quit_Action_HelpText);
+                });
+                if (stopEnabled != (trig.StopAction != ExtraStopAction.None))
+                    trig.StopAction = stopEnabled ? ExtraStopAction.StopOnly : ExtraStopAction.None;
 
-                        ImGui.SameLine();
-                        ImGuiComponents.HelpMarker(UIStrings.Auto_Cast_Stopped);
+                DrawEnabledSelector(UIStrings.Swap_Preset, ref trig.SwapPreset, () => DrawUtil.DrawPresetSwapSelector(trig.PresetToSwap, preset => trig.PresetToSwap = preset));
+                DrawEnabledSelector(UIStrings.Swap_Bait, ref trig.SwapBait, () => DrawUtil.DrawBaitSwapSelector(trig.BaitToSwap, b => trig.BaitToSwap = b));
+                DrawUtil.DrawCheckboxTree(UIStrings.Reset_fish_caught_counter, ref trig.ResetFishCaughtCounter);
 
-                        DrawUtil.Branch();
-                        if (ImGui.RadioButton(UIStrings.Quit_Fishing, trig.StopAction == ExtraStopAction.QuitFishing)) {
-                            trig.StopAction = ExtraStopAction.QuitFishing;
-                            Configuration.Save();
-                        }
-
-                        DrawUtil.Branch();
-                        if (ImGui.RadioButton(UIStrings.Hard_Quit_Fishing, trig.StopAction == ExtraStopAction.HardQuit)) {
-                            trig.StopAction = ExtraStopAction.HardQuit;
-                            Configuration.Save();
-                        }
-
-                        ImGui.SameLine();
-                        ImGuiComponents.HelpMarker(UIStrings.Hard_Quit_Action_HelpText);
-                    });
-
-                if (!stopEnabled && trig.StopAction != ExtraStopAction.None) {
-                    trig.StopAction = ExtraStopAction.None;
-                    Configuration.Save();
-                }
-                else if (stopEnabled && trig.StopAction == ExtraStopAction.None) {
-                    trig.StopAction = ExtraStopAction.StopOnly;
-                    Configuration.Save();
-                }
-
-                var swapPreset = trig.SwapPreset;
-                var presetName = trig.PresetToSwap;
-                DrawEnabledSelector(UIStrings.Swap_Preset, ref swapPreset, () => DrawUtil.DrawPresetSwapSelector(presetName, preset => presetName = preset));
-                trig.SwapPreset = swapPreset;
-                trig.PresetToSwap = presetName;
-
-                var swapBait = trig.SwapBait;
-                var bait = trig.BaitToSwap;
-                DrawEnabledSelector(UIStrings.Swap_Bait, ref swapBait, () => DrawUtil.DrawBaitSwapSelector(bait, b => bait = b));
-                trig.SwapBait = swapBait;
-                trig.BaitToSwap = bait;
-
-                var resetFishCaughtCounter = trig.ResetFishCaughtCounter;
-                DrawUtil.DrawCheckboxTree(UIStrings.Reset_fish_caught_counter, ref resetFishCaughtCounter, null);
-                trig.ResetFishCaughtCounter = resetFishCaughtCounter;
-
-                var resolve = trig.ResolveCollectablesWindow;
-                var forceNo = trig.ResolveCollectablesForceNo;
-                DrawUtil.DrawCheckboxTree("Resolve Collectables Window", ref resolve, () => {
-                    DrawUtil.Checkbox("Force No", ref forceNo);
+                DrawUtil.DrawCheckboxTree("Resolve Collectables Window", ref trig.ResolveCollectablesWindow, () => {
+                    DrawUtil.Checkbox("Force No", ref trig.ResolveCollectablesForceNo);
                     DrawUtil.Branch();
                     ImGui.TextColored(ImGuiColors.DalamudYellow, UIStrings.AutoHandleCollectables_Preset_HelpText);
                 });
-                trig.ResolveCollectablesWindow = resolve;
-                trig.ResolveCollectablesForceNo = forceNo;
 
-                var removeStatus = trig.RemoveStatus;
-                var statusToRemove = trig.StatusToRemove;
-                DrawEnabledSelector("Remove Status", ref removeStatus, () => {
-                    if (FishBaitCatalog.Get().FishingStatuses.Count == 0)
-                        return;
-
-                    if (statusToRemove == 0 || FishBaitCatalog.Get().FishingStatuses.All(s => s != statusToRemove))
-                        statusToRemove = FishBaitCatalog.Get().FishingStatuses[0];
-
-                    var selectedLabel = $"{statusToRemove}: {Status.GetRow(statusToRemove).Name}";
-                    DrawUtil.DrawComboSelector(FishBaitCatalog.Get().FishingStatuses, s => $"{s}: {Status.GetRow(s).Name}", selectedLabel, s => statusToRemove = s);
+                var statuses = FishBaitCatalog.Get().FishingStatuses;
+                if (trig.RemoveStatus && statuses.Count > 0 && !statuses.Contains(trig.StatusToRemove))
+                    trig.StatusToRemove = statuses[0];
+                DrawEnabledSelector("Remove Status", ref trig.RemoveStatus, () => {
+                    if (statuses.Count > 0)
+                        DrawUtil.DrawComboSelector(statuses, s => $"{s}: {Status.GetRow(s).Name}", $"{trig.StatusToRemove}: {Status.GetRow(trig.StatusToRemove).Name}", s => trig.StatusToRemove = s);
                 });
-                if (removeStatus && statusToRemove == 0 && FishBaitCatalog.Get().FishingStatuses.Count > 0)
-                    statusToRemove = FishBaitCatalog.Get().FishingStatuses[0];
-                trig.RemoveStatus = removeStatus;
-                trig.StatusToRemove = statusToRemove;
 
                 trig.NotifyOnSuccess.DrawConfig(string.Empty);
             }, helpText: string.Empty, forceOpen: forceOpen)) {

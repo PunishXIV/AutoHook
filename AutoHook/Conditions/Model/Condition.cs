@@ -22,7 +22,7 @@ public class Condition {
     // false = skipped in eval (toggle without deleting).
     [JsonProperty("e")]
     [DefaultValue(true)]
-    public bool Enabled { get; set; } = true;
+    public bool Enabled = true;
 
     // ui: stable imgui id so open/closed state doesn't reuse across recreate.
     [JsonIgnore]

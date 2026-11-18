@@ -23,6 +23,7 @@ public sealed class RodFishingModule : FishingModule {
     public ExtraComponent Extra { get; }
     public BaitComponent Bait { get; }
     public LureChatComponent LureChat { get; }
+    public FlairComponent Flair { get; }
 
     public ActionHints Hints { get; } = new();
     public ActionHintsResolver Resolver { get; } = new();
@@ -31,6 +32,7 @@ public sealed class RodFishingModule : FishingModule {
     public Random Rng { get; } = new();
     public StopAfterState StopAfterNextFish { get; set; }
     public bool SpectralRestPending { get; set; }
+    public SpectralCurrentStatus? CastSpectralStatus { get; set; } // status when the current cast went out since the line lands half a second later and spectral can occur in that window
     public uint FishingSpotId { get; set; }
 
     public static bool AutoStartLocked { get; private set; } // set by hard quit
@@ -66,6 +68,7 @@ public sealed class RodFishingModule : FishingModule {
         Extra = AddComponent(new ExtraComponent(this));
         Bait = AddComponent(new BaitComponent(this));
         LureChat = AddComponent(new LureChatComponent(this));
+        Flair = AddComponent(new FlairComponent(this));
 
         _eventSubs = new(Ws.OceanZoneStarted.Subscribe(OnOceanZoneStarted), Ws.SpectralCurrentChanged.Subscribe(BiteHook.OnSpectralCurrentChanged), Ws.TerritoryChanged.Subscribe(_ => ClearAutoStartLock()));
         IChatGui.Get().LogMessage += LureChat.OnLogMessage;
@@ -128,6 +131,13 @@ public sealed class RodFishingModule : FishingModule {
             return;
         }
 
+        // a trip runs the on-board part itself, starting another would cancel it
+        if (Svc.Automation.CurrentTask is OceanTripTask trip) {
+            trip.NotifyZoneStarted(op.ZoneIndex);
+            Ws.Decide(DecisionContext.OceanPreset, true, "Trip zone started", OceanStopUtil.FormatStateLog(ocean));
+            return;
+        }
+
         if (Svc.Automation.CurrentTask is AutoOceanFish existing) {
             Ws.Decide(DecisionContext.OceanPreset, false, "Task not started", $"already running (zone {existing.ZoneIndex + 1})");
             return;
@@ -154,10 +164,12 @@ public sealed class RodFishingModule : FishingModule {
                             // can't cast while locked, unless the cast was queued just before a hard quit
                             if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested))
                                 ClearAutoStartLock();
+                            CastSpectralStatus = Ws.SpectralCurrentStatus;
                             BiteHook.OnBeganFishing(false);
                             break;
                         case IDs.Actions.Mooch:
                         case IDs.Actions.Mooch2:
+                            CastSpectralStatus = Ws.SpectralCurrentStatus;
                             BiteHook.OnBeganFishing(true);
                             break;
                         case IDs.Actions.AmbitiousLure:
@@ -303,6 +315,9 @@ public sealed class RodFishingModule : FishingModule {
             BiteHook.CheckTimeout();
         }
 
+        if (currentState == FishingState.LineInWater)
+            Flair.TryUse();
+
         var previousState = Ws.Fishing.PreviousFishingState;
         if (previousState == currentState)
             return;
@@ -378,7 +393,7 @@ public sealed class RodFishingModule : FishingModule {
     }
 
     public bool ShouldSuppressAutoStartFishing()
-        => AutoStartLocked || Configuration.C.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
+        => AutoStartLocked || Svc.Automation.CurrentTask is OceanTripTask && Ws.OceanFishing == OceanFishingState.Empty || Configuration.C.AutoOceanFish && (Svc.Automation.CurrentTask is AutoOceanFish || Ws.OceanFishing != OceanFishingState.Empty);
 
     public void ClearWorldState() {
         var f = Ws.Fishing;

@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class IntuitionEventCD : IConditionDefinition {
-    public string Id => nameof(IntuitionEventCD);
     public string Name => "Intuition Event";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook;
 

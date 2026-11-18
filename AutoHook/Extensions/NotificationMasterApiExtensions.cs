@@ -2,7 +2,7 @@ namespace AutoHook.Extensions;
 
 public static class NotificationMasterApiExtensions {
     extension(NotificationMasterAPI.NotificationMasterApi api) {
-        public bool TryNotify(NotificationConfig cfg, string? fallbackText = null) {
+        public bool TryNotify(NotificationConfig cfg, string? fallbackText = null, Dalamud.Game.Text.SeStringHandling.SeString? chatOverride = null) {
             if (!cfg.Enabled)
                 return false;
 
@@ -13,7 +13,11 @@ public static class NotificationMasterApiExtensions {
             var master = NotificationMasterService.Get().Api;
 
             try {
-                if (cfg.EchoChatMessage && !string.IsNullOrWhiteSpace(chatMessage)) {
+                if (cfg.EchoChatMessage && chatOverride != null) {
+                    IChatGui.Get().Print(new Dalamud.Game.Text.XivChatEntry() { Message = chatOverride, Type = Dalamud.Game.Text.XivChatType.Echo });
+                    success = true;
+                }
+                else if (cfg.EchoChatMessage && !string.IsNullOrWhiteSpace(chatMessage)) {
                     IChatGui.Get().Print(new Dalamud.Game.Text.XivChatEntry() { Message = $"[AutoHook] {chatMessage}", Type = Dalamud.Game.Text.XivChatType.Echo });
                     success = true;
                 }

@@ -3,7 +3,6 @@ using Dalamud.Bindings.ImGui;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class MoochAvailableCD : IConditionDefinition {
-    public string Id => nameof(MoochAvailableCD);
     public string Name => "Mooch available";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCast;
 

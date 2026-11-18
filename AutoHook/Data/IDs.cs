@@ -38,9 +38,14 @@ public static class IDs {
             BigGameFishing = 37046,
             AmbitiousLure = 37594,
             ModestLure = 37595,
+            CastLight = 2135,
             TruthOcean = 7911,
             MultiHook = 42059,
             None = 0;
+    }
+
+    public static class Emotes {
+        public const ushort Sit = 50;
     }
 
     public static class Status {

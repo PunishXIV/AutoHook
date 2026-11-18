@@ -153,10 +153,8 @@ public class SubTabBaitMooch {
             : UIStrings.UseSwimbait;
         var helpText = isGlobal ? UIStrings.UseSwimbaitHelpTextGlobal : UIStrings.UseSwimbaitHelpText;
 
-        var useSwimbait = config.UseSwimbait;
-        DrawUtil.DrawCheckboxTree(headerLabel, ref useSwimbait, () => {
+        DrawUtil.DrawCheckboxTree(headerLabel, ref config.UseSwimbait, () => {
             config.ConditionSet = ConditionUi.DrawConditionSet(UIStrings.Conditions, config.ConditionSet, ConditionScope.Hook, showAdvanced: true);
         }, helpText);
-        config.UseSwimbait = useSwimbait;
     }
 }

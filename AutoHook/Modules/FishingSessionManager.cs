@@ -48,6 +48,7 @@ public sealed class FishingSessionManager : IPluginService, IDisposable {
             return;
 
         OceanAlarms.Update();
+        OceanTripService.Get().Update();
 
         if (!Configuration.C.PluginEnabled || !IClientState.Get().IsLoggedIn || IObjectTable.Get().LocalPlayer == null) {
             if (!Configuration.C.PluginEnabled && Svc.Automation.CurrentTask is AutoOceanFish)

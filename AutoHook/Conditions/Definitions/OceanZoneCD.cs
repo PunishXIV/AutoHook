@@ -1,48 +1,20 @@
-using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.Utility.Raii;
-
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class OceanZoneCD : IConditionDefinition {
-    public string Id => nameof(OceanZoneCD);
     public string Name => "Ocean zone";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 
+    // stored 0-based
+    private static readonly (int, string)[] Zones = [(0, "Zone 1"), (1, "Zone 2"), (2, "Zone 3")];
+
     public bool Evaluate(WorldState world, IReadOnlyDictionary<string, object> parameters) {
-        var wanted = GetInt(parameters, "zone", 0);
-        var zone = (int)world.OceanFishing.CurrentZone;
-        var result = zone == wanted;
+        var result = (int)world.OceanFishing.CurrentZone == GetInt(parameters, "zone", 0);
         return GetBool(parameters, "inv", false) ? !result : result;
     }
 
-    public void DrawParams(Condition condition) {
-        var zone = GetInt(condition.Params, "zone", 0);
-        zone = Math.Clamp(zone, 0, 2);
+    public void DrawParams(Condition condition)
+        => DrawChoiceParam(condition, "zone", "Zone", Math.Clamp(GetInt(condition.Params, "zone", 0), 0, 2), Zones);
 
-        ImGui.SetNextItemWidth(60.Scaled());
-        var label = zone switch {
-            0 => "1",
-            1 => "2",
-            2 => "3",
-            _ => $"{zone}",
-        };
-
-        using var combo = ImRaii.Combo("Zone", label);
-        if (!combo)
-            return;
-
-        if (ImGui.Selectable("Zone 1", zone == 0)) { zone = 0; condition.Params["zone"] = (long)0; }
-        if (ImGui.Selectable("Zone 2", zone == 1)) { zone = 1; condition.Params["zone"] = (long)1; }
-        if (ImGui.Selectable("Zone 3", zone == 2)) { zone = 2; condition.Params["zone"] = (long)2; }
-    }
-
-    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters) {
-        var zone = GetInt(parameters, "zone", 0);
-        return zone switch {
-            0 => "zone 1",
-            1 => "zone 2",
-            2 => "zone 3",
-            _ => $"zone {zone}",
-        };
-    }
+    public string DescribeParameters(IReadOnlyDictionary<string, object> parameters)
+        => $"zone {GetInt(parameters, "zone", 0) + 1}";
 }

@@ -1,6 +1,5 @@
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using System.ComponentModel;
 
 namespace AutoHook.Presets.AutoCasts;
 
@@ -39,7 +38,7 @@ public sealed class AutoCordial : BaseActionCast {
         (IDs.Item.HiCordial,        CordialHiRecovery)
     ];
 
-    public AutoCordial(bool isSpearFishing = false) : base(IDs.Item.Cordial, ActionType.Item) {
+    public AutoCordial(bool isSpearFishing = false) : base(IDs.Item.Cordial, priority: 4, actionType: ActionType.Item) {
         IsSpearFishing = isSpearFishing;
     }
 
@@ -87,7 +86,7 @@ public sealed class AutoCordial : BaseActionCast {
         return ws.Player.CurrentGp + recovery <= ws.Player.MaxGp;
     }
 
-    protected override DrawOptionsDelegate DrawOptions => () => {
+    protected override void DrawOptions() {
         DrawUtil.Checkbox(UIStrings.AutoCastCordialPriority, ref InvertCordialPriority);
 
         if (!IsSpearFishing)
@@ -100,9 +99,5 @@ public sealed class AutoCordial : BaseActionCast {
             using (ImRaii.PushId("OvercapConditions"))
                 OvercapConditionSet = ConditionUi.DrawConditionSet("Overcap conditions", OvercapConditionSet, ConditionScope.AutoCordial, showAdvanced: true);
         }
-    };
-
-    [DefaultValue(4)]
-    public override int Priority { get; set; } = 4;
-    public override bool IsExcludedPriority { get; set; } = false;
+    }
 }

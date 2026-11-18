@@ -6,7 +6,7 @@ public sealed class AutoVitalSight : BaseActionCast {
     [DefaultValue(2)]
     public int RequiredStacks = 2;
 
-    public AutoVitalSight(bool isSpearfishing = true) : base(IDs.Actions.VitalSight) {
+    public AutoVitalSight(bool isSpearfishing = true) : base(IDs.Actions.VitalSight, excludedPriority: true) {
         IsSpearFishing = isSpearfishing;
     }
 
@@ -24,15 +24,8 @@ public sealed class AutoVitalSight : BaseActionCast {
         return ws.Player.GetStatusStacks(IDs.Status.AnglersArt) >= RequiredStacks;
     }
 
-    protected override DrawOptionsDelegate DrawOptions => () => {
-        var stack = RequiredStacks;
-        if (DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref stack)) {
-            RequiredStacks = Math.Max(2, Math.Min(stack, 10));
-            Configuration.Save();
-        }
+    protected override void DrawOptions() {
+        DrawUtil.EditNumberField(UIStrings.TabAutoCasts_DrawExtraOptionsThaliaksFavor_, ref RequiredStacks, 2, 10);
         DrawAutoCastConditions();
-    };
-
-    [DefaultValue(true)]
-    public override bool IsExcludedPriority { get; set; } = true;
+    }
 }

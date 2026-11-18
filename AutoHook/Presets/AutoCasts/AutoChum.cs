@@ -1,21 +1,11 @@
-using System.ComponentModel;
-
 namespace AutoHook.Presets.AutoCasts;
 
 public sealed class AutoChum : BaseActionCast {
     public override bool DoesCancelMooch() => true;
 
-    public AutoChum() : base(IDs.Actions.Chum) { }
+    public AutoChum() : base(IDs.Actions.Chum, priority: 1) { }
 
     public override string GetName() => UIStrings.Chum;
 
     public override string GetHelpText() => UIStrings.CancelsCurrentMooch;
-
-    public override bool CastCondition(WorldState ws) => EvaluateConditionSet(ws);
-
-    protected override DrawOptionsDelegate DrawOptions => () => DrawAutoCastConditions();
-
-    [DefaultValue(1)]
-    public override int Priority { get; set; } = 1;
-    public override bool IsExcludedPriority { get; set; } = false;
 }

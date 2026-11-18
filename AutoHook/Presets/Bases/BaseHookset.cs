@@ -10,8 +10,6 @@ public class BaseHookset(uint requiredStatus) {
     // for future use, maybe we need a hooking condition under a different status?
     public uint RequiredStatus = requiredStatus;
 
-    private Guid _uniqueId;
-
     // Patience > Normal, Precision and Powerful
     public BaseBiteConfig PatienceWeak = new(HookType.Precision);
     public BaseBiteConfig PatienceStrong = new(HookType.Powerful);
@@ -41,13 +39,6 @@ public class BaseHookset(uint requiredStatus) {
     public bool UseCustomStatusHook;
 
     public AutoLures CastLures = new();
-
-    public Guid GetUniqueId() {
-        if (_uniqueId == Guid.Empty)
-            _uniqueId = Guid.NewGuid();
-
-        return _uniqueId;
-    }
 
     public double GetEffectiveTimeoutMax(WorldState ws, bool chumActive) {
         var timeout = chumActive ? ChumTimeoutMax : TimeoutMax;

@@ -41,13 +41,6 @@ public sealed class SpearfishingState {
     public int FishOnScreenCount
         => (Lane0.Available ? 1 : 0) + (Lane1.Available ? 1 : 0) + (Lane2.Available ? 1 : 0);
 
-    public FishInfo GetLane(int index) => index switch {
-        0 => Lane0,
-        1 => Lane1,
-        2 => Lane2,
-        _ => default,
-    };
-
     public SpearFishLayout GetFishLayout(int index) => index switch {
         0 => FishLayout0,
         1 => FishLayout1,

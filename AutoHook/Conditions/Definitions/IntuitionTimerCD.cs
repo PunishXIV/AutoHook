@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class IntuitionTimerCD : IntCompareConditionDefinition {
-    public override string Id => nameof(IntuitionTimerCD);
     public override string Name => "Intuition time";
     public override ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
     protected override string ValueKey => "sec";

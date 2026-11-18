@@ -4,6 +4,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Numerics;
 
@@ -12,12 +13,11 @@ namespace AutoHook.Presets.Bases;
 public abstract class BaseActionCast {
     private const int ActionControlColumn = 200;
 
-    protected BaseActionCast(uint id, ActionType actionType = ActionType.Action) {
+    protected BaseActionCast(uint id, int priority = 0, bool excludedPriority = false, ActionType actionType = ActionType.Action) {
         Id = id;
-        Enabled = false;
-
+        Priority = priority;
+        IsExcludedPriority = excludedPriority;
         ActionType = actionType;
-
         GpThreshold = DefaultGpThreshold;
     }
 
@@ -38,7 +38,7 @@ public abstract class BaseActionCast {
     [NonSerialized] public bool IsSpearFishing;
 
     [DefaultValue(true)]
-    public bool GpThresholdAbove { get; set; } = true;
+    public bool GpThresholdAbove = true;
 
     public virtual bool DoesCancelMooch() => false;
 
@@ -52,7 +52,10 @@ public abstract class BaseActionCast {
     public virtual bool RestoresGp => false;
     public virtual bool ShowGpThreshold => true;
 
-    public virtual int Priority { get; set; }
+    public int Priority;
+
+    // fixed per action type, not user editable
+    [JsonIgnore] public bool IsExcludedPriority { get; }
 
     [NonSerialized] public ActionType ActionType;
 
@@ -77,7 +80,7 @@ public abstract class BaseActionCast {
         => DescribeUnavailable(ws, ignoreCurrentMooch) == null;
 
     // null if castable; else short reason for replay decision log.
-    public string? DescribeUnavailable(WorldState ws, bool ignoreCurrentMooch = false) {
+    public string? DescribeUnavailable(WorldState ws, bool ignoreCurrentMooch = false, bool ignoreGp = false) {
         if (!Enabled)
             return "Disabled";
 
@@ -87,44 +90,26 @@ public abstract class BaseActionCast {
         if (RestoresGp && ws.Player.HasPendingGp)
             return "GP pending";
 
-        var condition = CastCondition(ws);
-        var currentGp = ws.Player.CurrentGp;
-        var hasGp = GpThresholdAbove ? currentGp >= GpThreshold : currentGp <= GpThreshold;
-        var actionAvailable = ws.ActionAvailable(Id, ActionType);
+        if (!CastCondition(ws))
+            return ConditionSet != null && !ConditionSet.PassesOrUnconfigured(ws) ? "Condition set failed" : "Cast conditions not met";
 
-        if (!condition) {
-            if (ConditionSet != null && !ConditionSet.PassesOrUnconfigured(ws))
-                return "Condition set failed";
-            return "Cast conditions not met";
-        }
+        if (!ignoreGp && !HasEnoughGp(ws))
+            return GpThresholdAbove ? $"GP {ws.Player.CurrentGp} < {GpThreshold}" : $"GP {ws.Player.CurrentGp} > {GpThreshold}";
 
-        if (!hasGp)
-            return GpThresholdAbove ? $"GP {currentGp} < {GpThreshold}" : $"GP {currentGp} > {GpThreshold}";
-
-        if (!actionAvailable)
+        if (!ws.ActionAvailable(Id, ActionType))
             return "Action not available";
 
         return null;
     }
 
-    public bool IsGpBlocked(WorldState ws, bool ignoreCurrentMooch = false) {
-        if (!Enabled)
-            return false;
+    // castable apart from the gp threshold
+    public bool IsGpBlocked(WorldState ws, bool ignoreCurrentMooch = false)
+        => !HasEnoughGp(ws) && DescribeUnavailable(ws, ignoreCurrentMooch, ignoreGp: true) == null;
 
-        if (DoesCancelMooch() && ws.IsMoochAvailable() && DontCancelMooch && !ignoreCurrentMooch)
-            return false;
+    private bool HasEnoughGp(WorldState ws)
+        => GpThresholdAbove ? ws.Player.CurrentGp >= GpThreshold : ws.Player.CurrentGp <= GpThreshold;
 
-        if (!CastCondition(ws))
-            return false;
-
-        if (!ws.ActionAvailable(Id, ActionType))
-            return false;
-
-        var currentGp = ws.Player.CurrentGp;
-        return GpThresholdAbove ? currentGp < GpThreshold : currentGp > GpThreshold;
-    }
-
-    public abstract bool CastCondition(WorldState ws);
+    public virtual bool CastCondition(WorldState ws) => EvaluateConditionSet(ws);
 
     public abstract string GetName();
 
@@ -134,11 +119,10 @@ public abstract class BaseActionCast {
 
     public virtual int GetPriority() => Priority;
 
-    protected delegate void DrawOptionsDelegate();
+    // false draws a plain checkbox instead of an expandable tree
+    protected virtual bool HasOptions => true;
 
-    protected virtual DrawOptionsDelegate? DrawOptions => null;
-
-    public abstract bool IsExcludedPriority { get; set; }
+    protected virtual void DrawOptions() => DrawAutoCastConditions();
 
     public virtual void DrawConfig(List<BaseActionCast>? availableActs = null)
         => DrawConfigWithLabel(GetName(), availableActs);
@@ -146,8 +130,8 @@ public abstract class BaseActionCast {
     public void DrawConfigWithLabel(string label, List<BaseActionCast>? availableActs = null) {
         using var cfgId = ImRaii.PushId(@$"{GetType().Name}_cfg");
 
-        if (DrawOptions != null) {
-            DrawUtil.DrawCheckboxTree(label, ref Enabled, () => DrawOptions?.Invoke(), GetHelpText(),
+        if (HasOptions) {
+            DrawUtil.DrawCheckboxTree(label, ref Enabled, DrawOptions, GetHelpText(),
                 drawLabelExtras: () => {
                     DrawLabelHelpMarker();
                     if (ShowGpThreshold) {
@@ -176,10 +160,6 @@ public abstract class BaseActionCast {
             return;
         ImGui.SameLine();
         ImGuiComponents.HelpMarker(help);
-    }
-
-    public virtual void DrawConfigOptions() {
-        DrawOptions?.Invoke();
     }
 
     private void DrawUpDownArrows(List<BaseActionCast>? availableActs) {
@@ -253,19 +233,8 @@ public abstract class BaseActionCast {
         ImGui.TooltipOnHover(@$"{GetName()} {UIStrings.WillBeUsedWhenYourGPIsEqualOr} {(GpThresholdAbove ? UIStrings.Above : UIStrings.Below)} {GpThreshold}");
 
         ImGui.Separator();
-        if (ImGui.RadioButton(UIStrings.Above, GpThresholdAbove)) {
-            GpThresholdAbove = true;
-            Configuration.Save();
-        }
-
-        //ImGui.SameLine();
-
-        if (ImGui.RadioButton(UIStrings.Below, !GpThresholdAbove)) {
-            GpThresholdAbove = false;
-            Configuration.Save();
-        }
-
-        //ImGui.SameLine();
+        DrawUtil.Radio(UIStrings.Above, ref GpThresholdAbove, true);
+        DrawUtil.Radio(UIStrings.Below, ref GpThresholdAbove, false);
 
         ImGui.SetNextItemWidth(100.Scaled());
         if (ImGui.InputInt(UIStrings.GP, ref GpThreshold, 1, 1)) {

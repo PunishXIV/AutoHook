@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class CurrentBaitCD : IConditionDefinition {
-    public string Id => nameof(CurrentBaitCD);
     public string Name => "Current bait";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 

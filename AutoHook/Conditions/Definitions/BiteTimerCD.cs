@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class BiteTimerCD : IConditionDefinition {
-    public string Id => nameof(BiteTimerCD);
     public string Name => "Bite timer";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCast;
 

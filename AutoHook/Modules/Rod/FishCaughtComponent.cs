@@ -88,7 +88,7 @@ public sealed class FishCaughtComponent(RodFishingModule module) : RodComponent(
             && presets.CurrentPreset.PresetName == lastCatchCfg.PresetToSwap)
             FishingCounters.RemovePresetSwap(guid);
 
-        if (swapPresetEnabled && lastCatchCfg.SwapPresetLimit.BackingSet.Passes(Ws) && !FishingCounters.SwappedPreset(guid) && !Ws.Fishing.FishingStep.HasFlag(FishingSteps.PresetSwapped)) {
+        if (swapPresetEnabled && lastCatchCfg.PresetToSwap != @"-" && lastCatchCfg.SwapPresetLimit.BackingSet.Passes(Ws) && !FishingCounters.SwappedPreset(guid) && !Ws.Fishing.FishingStep.HasFlag(FishingSteps.PresetSwapped)) {
             if (lastCatchCfg.PresetToSwap == presets.CurrentPreset.PresetName) {
                 PresetSwapHelpers.FindPresetByName(lastCatchCfg.PresetToSwap)?.TryResetCounter();
             }

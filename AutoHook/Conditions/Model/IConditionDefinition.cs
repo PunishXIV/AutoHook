@@ -1,7 +1,8 @@
 namespace AutoHook.Conditions.Model;
 
 public interface IConditionDefinition {
-    string Id { get; }
+    // stored in saved conditions, so renaming a definition class needs a migration
+    string Id => GetType().Name;
     string Name { get; }
     ConditionScopeFlags AllowedScopes { get; }
 

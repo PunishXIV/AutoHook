@@ -12,7 +12,6 @@ public sealed class ActionCooldownCD : IConditionDefinition {
     public const string CheckAvailability = "avail";
     public const string CheckCooldown = "cd";
 
-    public string Id => nameof(ActionCooldownCD);
     public string Name => "Action";
     public ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.AutoCast | ConditionScopeFlags.Spearfishing;

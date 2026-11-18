@@ -1,3 +1,4 @@
+using Dalamud.Interface.Components;
 using AutoHook.Spearfishing;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility.Raii;
@@ -74,6 +75,19 @@ public class TabSettings : BaseTab {
         DrawUtil.Checkbox(UIStrings.AutoStartFishing, ref Configuration.C.AutoStartFishing, UIStrings.AutoStartFishingHelpText);
         DrawUtil.Checkbox(UIStrings.SpectralRestOnGain, ref Configuration.C.SpectralRest, UIStrings.SpectralRestOnGainHelpText);
         DrawUtil.Checkbox(UIStrings.AutoHandleCollectables, ref Configuration.C.AutoCollectablesEnabled, UIStrings.AutoHandleCollectablesHelpText);
+        DrawFlair();
+    }
+
+    private static void DrawFlair() {
+        using var id = ImRaii.PushId(nameof(DrawFlair));
+        var cfg = Configuration.C;
+
+        DrawUtil.Checkbox(UIStrings.AutoSit, ref cfg.AutoSit);
+        ImGui.SameLine();
+        DrawUtil.Checkbox(UIStrings.AutoCastLight, ref cfg.AutoCastLight);
+
+        if (cfg.AutoSit || cfg.AutoCastLight)
+            DrawUtil.SubCheckbox(UIStrings.FlairSkipOceanFishing, ref cfg.FlairSkipOceanFishing);
     }
 
     private void DrawSpearfishingSettings() {
@@ -83,15 +97,30 @@ public class TabSettings : BaseTab {
     }
 
     private void DrawOceanFishingSettings() {
-        DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Configuration.C.AutoOceanFish, UIStrings.AutoOceanFishHelpText);
-        if (!Configuration.C.AutoOceanFish)
-            return;
-
-        using (DrawUtil.BeginBranches(indent: true)) {
-            DrawAutoOceanFishGoal();
-            DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Configuration.C.AOF_Fallthrough);
-            DrawUtil.Checkbox(UIStrings.AutoOceanFish_AllowMovement, ref Configuration.C.AOF_WalkToRailing, UIStrings.AutoOceanFish_AllowMovementHelpText);
+        DrawUtil.Checkbox(UIStrings.AutoOceanFish, ref Configuration.C.AutoOceanFish, UIStrings.AutoOceanFish_Description);
+        if (Configuration.C.AutoOceanFish) {
+            using (DrawUtil.BeginBranches(indent: true)) {
+                DrawAutoOceanFishGoal();
+                DrawUtil.Checkbox(UIStrings.AutoOceanFish_Fallthrough, ref Configuration.C.AOF_Fallthrough);
+                DrawWalkToRailing();
+                OceanTripUi.DrawReadiness();
+                DrawUtil.DrawTreeNodeEx(UIStrings.OceanTrip_Voyages, OceanTripUi.DrawVoyageSettings, UIStrings.OceanTrip_VoyagesHelp);
+            }
         }
+
+        ImGui.Spacing();
+        OceanTripUi.DrawAlarmSettings();
+    }
+
+    // trips always walk, so the setting only means something while they don't run automatically
+    private static void DrawWalkToRailing() {
+        var overridden = Configuration.C.OceanTrip.FullAuto;
+        using (ImRaii.Disabled(overridden))
+            DrawUtil.Checkbox(UIStrings.AutoOceanFish_WalkToRailing, ref Configuration.C.AOF_WalkToRailing);
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker(overridden
+            ? string.Format(UIStrings.OverriddenBy, UIStrings.OceanTrip_GoAutomatically)
+            : UIStrings.AutoOceanFish_AllowMovementHelpText);
     }
 
     private static void DrawAutoOceanFishGoal() {
@@ -99,27 +128,14 @@ public class TabSettings : BaseTab {
         ImGui.TextV($"{UIStrings.Prioritise}:");
         ImGui.SameLine();
 
-        var goal = Configuration.C.AutoOceanFishGoal;
-
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Levelling, goal == OceanFishGoalKind.Levelling)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Levelling;
-            Configuration.Save();
-        }
+        ref var goal = ref Configuration.C.AutoOceanFishGoal;
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Levelling, ref goal, OceanFishGoalKind.Levelling);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Achievements, goal == OceanFishGoalKind.Achievement)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Achievement;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Achievements, ref goal, OceanFishGoalKind.Achievement);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Legendary, goal == OceanFishGoalKind.Legendary)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Legendary;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Legendary, ref goal, OceanFishGoalKind.Legendary);
         ImGui.SameLine();
-        if (ImGui.RadioButton(UIStrings.OceanFishGoal_Points, goal == OceanFishGoalKind.Points)) {
-            Configuration.C.AutoOceanFishGoal = OceanFishGoalKind.Points;
-            Configuration.Save();
-        }
+        DrawUtil.Radio(UIStrings.OceanFishGoal_Points, ref goal, OceanFishGoalKind.Points);
     }
 
     private static void DrawDelayHook() {

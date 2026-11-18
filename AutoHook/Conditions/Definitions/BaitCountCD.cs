@@ -4,7 +4,6 @@ using Lumina.Excel.Sheets;
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class BaitCountCD : IConditionDefinition {
-    public string Id => nameof(BaitCountCD);
     public string Name => "Bait count";
     public ConditionScopeFlags AllowedScopes => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;
 

@@ -115,11 +115,8 @@ public static class ConditionUi {
             var g = set.Groups[gi];
             using var _ = ImRaii.PushId($"slim_adv_grp{gi}");
             DrawUtil.Branch();
-            var gEnabled = g.Enabled;
-            if (ImGui.Checkbox("##grp_enabled", ref gEnabled)) {
-                g.Enabled = gEnabled;
+            if (ImGui.Checkbox("##grp_enabled", ref g.Enabled))
                 Configuration.Save();
-            }
             ImGui.TooltipOnHover("Enable group");
 
             ImGui.SameLine();
@@ -210,11 +207,8 @@ public static class ConditionUi {
 
             using (var popup = ImRaii.Popup("cond_edit")) {
                 if (popup) {
-                    var enabled = cond.Enabled;
-                    if (ImGui.Checkbox("##enabled", ref enabled)) {
-                        cond.Enabled = enabled;
+                    if (ImGui.Checkbox("##enabled", ref cond.Enabled))
                         Configuration.Save();
-                    }
                     ImGui.TooltipOnHover("Enabled");
                     ImGui.SameLine();
                     if (DrawConditionContent(cond, scope, types))
@@ -254,12 +248,7 @@ public static class ConditionUi {
         ImGui.TooltipOnHover("Add condition");
 
         if (toDuplicate >= 0 && !toRemove.Contains(toDuplicate)) {
-            var src = group.Conditions[toDuplicate];
-            group.Conditions.Insert(toDuplicate + 1, new Condition {
-                TypeId = src.TypeId,
-                Params = CloneParams(src.Params),
-                Enabled = src.Enabled
-            });
+            group.Conditions.Insert(toDuplicate + 1, CloneCondition(group.Conditions[toDuplicate]));
             Configuration.Save();
         }
         foreach (var idx in toRemove.Distinct().OrderByDescending(x => x)) {
@@ -475,64 +464,27 @@ public static class ConditionUi {
         return clicked;
     }
 
+    // not a json round trip: ConditionParamConverter drops default params and would change value types.
     public static ConditionSet CloneConditionSet(ConditionSet src) {
-        var clone = new ConditionSet {
-            CombineMode = src.CombineMode,
-            Groups = []
-        };
-
-        foreach (var g in src.Groups) {
-            var cg = new ConditionGroup {
-                CombineMode = g.CombineMode,
-                Conditions = [],
-                Enabled = g.Enabled
-            };
-
-            foreach (var c in g.Conditions) {
-                var nc = new Condition {
-                    TypeId = c.TypeId,
-                    Params = CloneParams(c.Params),
-                    Enabled = c.Enabled
-                };
-                cg.Conditions.Add(nc);
-            }
-
-            clone.Groups.Add(cg);
-        }
-
+        var clone = new ConditionSet();
+        ApplyClipboard(clone, src);
         return clone;
     }
 
-    private static Dictionary<string, object> CloneParams(Dictionary<string, object> src) {
-        var dict = new Dictionary<string, object>(src.Count);
-        foreach (var (key, value) in src) {
-            dict[key] = value is List<object> list ? new List<object>(list) : value;
-        }
-        return dict;
-    }
+    private static Condition CloneCondition(Condition c) => new() {
+        TypeId = c.TypeId,
+        Params = c.Params.ToDictionary(kv => kv.Key, kv => kv.Value is List<object> list ? new List<object>(list) : kv.Value),
+        Enabled = c.Enabled
+    };
 
     private static void ApplyClipboard(ConditionSet target, ConditionSet source) {
         target.CombineMode = source.CombineMode;
         target.Expression = source.Expression;
-        target.Groups.Clear();
-        foreach (var g in source.Groups) {
-            var cg = new ConditionGroup {
-                CombineMode = g.CombineMode,
-                Conditions = [],
-                Enabled = g.Enabled
-            };
-
-            foreach (var c in g.Conditions) {
-                var nc = new Condition {
-                    TypeId = c.TypeId,
-                    Params = CloneParams(c.Params),
-                    Enabled = c.Enabled
-                };
-                cg.Conditions.Add(nc);
-            }
-
-            target.Groups.Add(cg);
-        }
+        target.Groups = [.. source.Groups.Select(g => new ConditionGroup {
+            CombineMode = g.CombineMode,
+            Conditions = [.. g.Conditions.Select(CloneCondition)],
+            Enabled = g.Enabled
+        })];
     }
 }
 

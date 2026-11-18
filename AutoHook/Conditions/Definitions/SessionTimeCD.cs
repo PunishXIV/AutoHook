@@ -1,7 +1,6 @@
 namespace AutoHook.Conditions.Definitions;
 
 public sealed class SessionTimeCD : IntCompareConditionDefinition {
-    public override string Id => nameof(SessionTimeCD);
     public override string Name => "Session time";
     public override ConditionScopeFlags AllowedScopes
         => ConditionScopeFlags.Hook | ConditionScopeFlags.FishIgnore | ConditionScopeFlags.AutoCast;

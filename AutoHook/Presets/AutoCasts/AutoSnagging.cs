@@ -1,17 +1,11 @@
-using FFXIVClientStructs.FFXIV.Client.Game;
-using System.ComponentModel;
-
 namespace AutoHook.Presets.AutoCasts;
 
 public sealed class AutoSnagging : BaseActionCast {
-    [DefaultValue(3)]
-    public override int Priority { get; set; } = 3;
-    [DefaultValue(true)]
-    public override bool IsExcludedPriority { get; set; } = true;
-
-    public AutoSnagging() : base(IDs.Actions.Snagging, ActionType.Action) { }
+    public AutoSnagging() : base(IDs.Actions.Snagging, priority: 3, excludedPriority: true) { }
 
     public override string GetName() => UIStrings.Snagging;
+
+    protected override bool HasOptions => false;
 
     public override string GetHelpText() => UIStrings.SnaggingHelpText;
     public override bool ShowGpThreshold => false;

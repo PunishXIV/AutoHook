@@ -17,36 +17,36 @@ public class ExtraTrigger {
     private static int _nextUiId = 1;
 
     [DefaultValue(true)]
-    public bool Enabled { get; set; } = true;
+    public bool Enabled = true;
 
     [JsonIgnore]
-    public int UiId { get; set; }
+    public int UiId;
 
-    public ConditionSet? ConditionSet { get; set; }
+    public ConditionSet? ConditionSet;
 
-    public bool SwapPreset { get; set; }
+    public bool SwapPreset;
 
     [DefaultValue("-")]
-    public string PresetToSwap { get; set; } = @"-";
+    public string PresetToSwap = @"-";
 
-    public bool SwapBait { get; set; }
-    public BaitFishClass BaitToSwap { get; set; } = new();
+    public bool SwapBait;
+    public BaitFishClass BaitToSwap = new();
 
-    public ExtraStopAction StopAction { get; set; } = ExtraStopAction.None;
+    public ExtraStopAction StopAction = ExtraStopAction.None;
 
-    public bool ResolveCollectablesWindow { get; set; }
-    public bool ResolveCollectablesForceNo { get; set; }
+    public bool ResolveCollectablesWindow;
+    public bool ResolveCollectablesForceNo;
 
-    public bool StartFishing { get; set; }
+    public bool StartFishing;
 
-    public bool ReduceFish { get; set; }
+    public bool ReduceFish;
 
-    public bool RemoveStatus { get; set; }
-    public uint StatusToRemove { get; set; }
+    public bool RemoveStatus;
+    public uint StatusToRemove;
 
-    public bool ResetFishCaughtCounter { get; set; }
+    public bool ResetFishCaughtCounter;
 
-    public NotificationConfig NotifyOnSuccess { get; set; } = new();
+    public NotificationConfig NotifyOnSuccess = new();
 
     public void EnsureUiId() {
         if (UiId <= 0)
