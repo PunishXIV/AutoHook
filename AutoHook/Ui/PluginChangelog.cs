@@ -3,6 +3,17 @@
 public static class PluginChangelog {
     public static readonly List<Version> Versions =
     [
+        new Version("6.1.0.0") {
+            Main = {
+                "Ocean fishing can now be fully automatic.",
+            },
+            Minor = {
+                "Added SpectralInZoneCD",
+                "Added setting to auto sit/cast light",
+                "Fixed spectral rest when you cause the spectral",
+                "Fixed chat spam in ocean fishing",
+            }
+        },
         new Version("6.0.4.0") {
             Main = {
                 "Added an alarm system for ocean fishing.",
