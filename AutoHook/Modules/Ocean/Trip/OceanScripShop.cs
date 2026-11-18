@@ -102,12 +102,12 @@ public static class OceanScripShop {
     public static unsafe byte SelectedCategory => Data == null ? byte.MaxValue : Data->SelectedCategoryIndex;
 
     public static unsafe void SelectCategory(byte index) {
-        var agent = AgentInclusionShop.Instance();
-        if (agent != null)
-            agent->SelectCategory(index);
+        if (Ready(AddonName) is var addon && addon != null)
+            FireCallback(addon, true, 12, index);
     }
 
-    // the subcategory tab holding the item in the selected category, -1 if it isn't there (or isn't loaded yet)
+    public static unsafe byte SelectedTab => Data == null ? byte.MaxValue : Data->SelectedSubCategoryTab;
+
     public static unsafe int FindTab(uint itemId) {
         var data = Data;
         if (data == null)
@@ -115,7 +115,9 @@ public static class OceanScripShop {
         var category = CategoryAt(data, data->SelectedCategoryIndex);
         if (category == null || category->SubCategories == null)
             return -1;
-        for (var tab = 0; tab < data->VisibleSubCategoryCount; tab++) {
+        // tab 0 is "-- select a subcategory --" when it's listed
+        var first = data->VisibleSubCategoryCount > category->SubCategoryCount ? 1 : 0;
+        for (var tab = first; tab < data->VisibleSubCategoryCount; tab++) {
             var sub = data->SubCategoryIndexMap[tab];
             if (sub < category->SubCategoryCount && FindItem(&category->SubCategories[sub], itemId) != null)
                 return tab;
@@ -123,7 +125,10 @@ public static class OceanScripShop {
         return -1;
     }
 
-    public static unsafe bool SelectTab(int tab) => Data != null && Data->SelectSubCategory((byte)tab);
+    public static unsafe void SelectTab(int tab) {
+        if (Ready(AddonName) is var addon && addon != null)
+            FireCallback(addon, true, 13, tab);
+    }
 
     // how many the scrips on hand (above the reserve) pay for, from the selected subcategory
     public static unsafe int Affordable(uint itemId, int reserve = 0) {
@@ -136,7 +141,7 @@ public static class OceanScripShop {
         var item = FindItem(&category->SubCategories[data->SelectedSubCategoryIndex], itemId);
         if (item == null || item->CostAmount[0] == 0)
             return 0;
-        return (int)(Math.Max((long)item->CostOwnedCount[0] - reserve, 0) / item->CostAmount[0]);
+        return (int)(Math.Max(item->CostOwnedCount[0] - reserve, 0) / item->CostAmount[0]);
     }
 
     // position of the item in the window's list, -1 if not listed

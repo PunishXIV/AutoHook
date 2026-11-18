@@ -9,13 +9,13 @@ using ECommons.UIHelpers.AddonMasterImplementations;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using FFXIVClientStructs.FFXIV.Client.Game.InstanceContent;
-using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using Lumina.Excel.Sheets;
 using System.Numerics;
+using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
 namespace AutoHook.Tasks;
 
@@ -88,6 +88,10 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         }
         catch (OperationCanceledException) {
             throw;
+        }
+        catch (Exception) when (InOtherDuty) {
+            Warning("Another duty took over, stopping the trip");
+            IChatGui.Get().Print(OceanTripService.ChatPrefix + string.Format(UIStrings.OceanTrip_Stopped, UIStrings.OceanTrip_ReasonOtherDuty));
         }
         catch (Exception e) {
             IChatGui.Get().PrintError(OceanTripService.ChatPrefix + string.Format(UIStrings.OceanTrip_Stopped, e.Message));
@@ -326,7 +330,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         while (remaining > 0) {
             var index = OceanScripShop.ListIndex(itemId, out var max);
             var wanted = remaining == int.MaxValue ? int.MaxValue : (remaining + perExchange - 1) / perExchange;
-            var amount = Math.Min(Math.Min(wanted, OceanScripShop.Affordable(itemId, reserve)),OceanTripConsts.MaxPurchaseBatch);
+            var amount = Math.Min(Math.Min(wanted, OceanScripShop.Affordable(itemId, reserve)), OceanTripConsts.MaxPurchaseBatch);
             if (max > 0)
                 amount = Math.Min(amount, max);
             if (index < 0 || amount <= 0)
@@ -367,7 +371,10 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             var tab = OceanScripShop.FindTab(itemId);
             if (tab < 0)
                 continue;
-            OceanScripShop.SelectTab(tab);
+            if (OceanScripShop.SelectedTab != tab) {
+                OceanScripShop.SelectTab(tab);
+                await DelayMs(300);
+            }
             await WaitUntil(() => OceanScripShop.IsReady && OceanScripShop.ListIndex(itemId, out _) >= 0, "WaitTab", timeout: TimeSpan.FromSeconds(3), abortOnTimeout: false);
             if (OceanScripShop.ListIndex(itemId, out _) >= 0)
                 return true;
@@ -665,6 +672,10 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
     private static long Now => Framework.GetServerTime();
 
     public static bool InOceanFishing => TerritoryType.TryGetRow(IClientState.Get().TerritoryType, out var t) && t.TerritoryIntendedUse.RowId == OceanFishingIntendedUse;
+
+    private static bool InOtherDuty
+        => OceanTripService.InOtherDutyQueue
+           || !InOceanFishing && (ICondition.Get()[ConditionFlag.BoundByDuty] || ICondition.Get()[ConditionFlag.BoundByDuty56] || ICondition.Get()[ConditionFlag.BoundByDuty95]);
 
     private static uint CurrentJob => IObjectTable.Get().LocalPlayer?.ClassJob.RowId ?? 0;
 
