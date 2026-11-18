@@ -32,6 +32,7 @@ public sealed class RodFishingModule : FishingModule {
     public Random Rng { get; } = new();
     public StopAfterState StopAfterNextFish { get; set; }
     public bool SpectralRestPending { get; set; }
+    public SpectralCurrentStatus? CastSpectralStatus { get; set; } // status when the current cast went out since the line lands half a second later and spectral can occur in that window
     public uint FishingSpotId { get; set; }
 
     public static bool AutoStartLocked { get; private set; } // set by hard quit
@@ -163,10 +164,12 @@ public sealed class RodFishingModule : FishingModule {
                             // can't cast while locked, unless the cast was queued just before a hard quit
                             if (!Ws.Fishing.FishingStep.HasFlag(FishingSteps.QuitRequested))
                                 ClearAutoStartLock();
+                            CastSpectralStatus = Ws.SpectralCurrentStatus;
                             BiteHook.OnBeganFishing(false);
                             break;
                         case IDs.Actions.Mooch:
                         case IDs.Actions.Mooch2:
+                            CastSpectralStatus = Ws.SpectralCurrentStatus;
                             BiteHook.OnBeganFishing(true);
                             break;
                         case IDs.Actions.AmbitiousLure:

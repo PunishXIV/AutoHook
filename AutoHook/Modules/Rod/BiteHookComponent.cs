@@ -21,12 +21,22 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
     public void TrySpectralRest() {
         if (!Rod.SpectralRestPending) return;
 
-        var midCast = Ws.Fishing.FishingState is FishingState.LineInWater or FishingState.AmbitiousLure or FishingState.ModestLure;
-        var canceling = (Ws.Fishing.FishingStep & (FishingSteps.CancelPending | FishingSteps.TimeOut)) != 0;
-        if (!Configuration.C.PluginEnabled || !Configuration.C.SpectralRest || !midCast) {
+        if (!Configuration.C.PluginEnabled || !Configuration.C.SpectralRest || Ws.Fishing.FishingState is FishingState.None or FishingState.Quitting) {
             Rod.SpectralRestPending = false;
             return;
         }
+
+        // the gain can land after a cast went out but before the line is in the water (still PoleReady/CastingOut), hold until line lands
+        var midCast = Ws.Fishing.FishingState is FishingState.LineInWater or FishingState.AmbitiousLure or FishingState.ModestLure;
+        if (!midCast)
+            return;
+
+        if (Rod.CastSpectralStatus == SpectralCurrentStatus.Active) {
+            Rod.SpectralRestPending = false;
+            return;
+        }
+
+        var canceling = (Ws.Fishing.FishingStep & (FishingSteps.CancelPending | FishingSteps.TimeOut)) != 0;
         if (canceling || Ws.Player.BlockCasting || !EzThrottler.Throttle("SpectralRestMidCast", 200)) return;
 
         var hints = new ActionHints();
@@ -206,6 +216,7 @@ public sealed class BiteHookComponent(RodFishingModule module) : RodComponent(mo
     public void OnFishingStop() {
         Rod.ClearStopAfterNextFish();
         Rod.SpectralRestPending = false;
+        Rod.CastSpectralStatus = null;
 
         Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.None));
         Ws.Execute(new RodState.OpResetFishCaught());
