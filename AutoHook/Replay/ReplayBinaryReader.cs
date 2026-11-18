@@ -272,7 +272,8 @@ internal sealed class ReplayBinaryReader(Stream stream, FishingReplay replay, Ca
 
     private RodState.OpSetLastLureCastBiteTime ParseLastLureCastBiteTime() {
         var has = _reader.ReadBoolean();
-        return new RodState.OpSetLastLureCastBiteTime(has ? _reader.ReadDouble() : null);
+        var value = _reader.ReadDouble();
+        return new RodState.OpSetLastLureCastBiteTime(has ? value : null);
     }
 
     private OceanState.OpOceanFishing ParseOcean() {
