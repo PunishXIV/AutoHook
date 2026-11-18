@@ -3610,15 +3610,6 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to another duty started.
-        /// </summary>
-        internal static string OceanTrip_ReasonOtherDuty {
-            get {
-                return ResourceManager.GetString("OceanTrip_ReasonOtherDuty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to busy.
         /// </summary>
         internal static string OceanTrip_ReasonBusy {
@@ -3660,6 +3651,15 @@ namespace AutoHook.Resources.Localization {
         internal static string OceanTrip_ReasonNotLoggedIn {
             get {
                 return ResourceManager.GetString("OceanTrip_ReasonNotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to another duty started.
+        /// </summary>
+        internal static string OceanTrip_ReasonOtherDuty {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonOtherDuty", resourceCulture);
             }
         }
         
@@ -3761,7 +3761,7 @@ namespace AutoHook.Resources.Localization {
                 return ResourceManager.GetString("OceanTrip_ScripKeepHelp", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Keep {0} scrips.
         /// </summary>
