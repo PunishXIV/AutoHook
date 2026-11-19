@@ -1708,6 +1708,15 @@
   <data name="SpectralRestOnGainHelpText" xml:space="preserve">
     <value>먼바다 낚시 중에 환해류가 출현하면 진행 중인 낚시를 취소하고 다시 던집니다</value>
   </data>
+  <data name="AutoSit" xml:space="preserve">
+    <value>앉기</value>
+  </data>
+  <data name="AutoCastLight" xml:space="preserve">
+    <value>낚시등</value>
+  </data>
+  <data name="FlairSkipOceanFishing" xml:space="preserve">
+    <value>먼바다 낚시 제외</value>
+  </data>
   <data name="AutoHandleCollectables" xml:space="preserve">
     <value>소장품 획득 자동 수락</value>
   </data>
