@@ -249,7 +249,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var vendor = FindObject(baseId) ?? throw new InvalidOperationException(UIStrings.OceanTrip_ErrorVendorNotFound);
         var closest = float.MaxValue;
         var lastCloser = Environment.TickCount64;
-        await MoveToDirectly(vendor.Position, () => {
+        await MoveTo(vendor.Position, MovementConfig.Default, stopCondition: () => {
             var distance = Vector3.Distance(IObjectTable.Get().LocalPlayer?.Position ?? vendor.Position, vendor.Position);
             if (distance < closest - 0.05f) {
                 closest = distance;
