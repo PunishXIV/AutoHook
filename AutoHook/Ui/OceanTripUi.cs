@@ -354,6 +354,9 @@ public static class OceanTripUi {
         }
         ));
 
+        DrawUtil.Branch();
+        DrawUtil.Checkbox(UIStrings.OceanTrip_ScripKeepAllaganTools, ref Cfg.ScripKeepCountsAllaganTools, UIStrings.OceanTrip_ScripKeepAllaganToolsHelp);
+
         for (var i = 0; i < purchases.Count; i++) {
             using var id = ImRaii.PushId(i);
             var purchase = purchases[i];

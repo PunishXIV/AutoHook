@@ -3754,6 +3754,24 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use AllaganTools.
+        /// </summary>
+        internal static string OceanTrip_ScripKeepAllaganTools {
+            get {
+                return ResourceManager.GetString("OceanTrip_ScripKeepAllaganTools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Allagan Tools to include items outside your inventory when checking how many you own..
+        /// </summary>
+        internal static string OceanTrip_ScripKeepAllaganToolsHelp {
+            get {
+                return ResourceManager.GetString("OceanTrip_ScripKeepAllaganToolsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to How many to have in your inventory. 0 buys as many as possible..
         /// </summary>
         internal static string OceanTrip_ScripKeepHelp {

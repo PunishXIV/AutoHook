@@ -291,7 +291,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task SpendScrips() {
         using var scope = BeginScope(nameof(SpendScrips));
-        var purchases = Cfg.ScripPurchases.Where(p => p.ItemId != 0 && (p.Keep <= 0 || ItemCount(p.ItemId) < p.Keep)).ToList();
+        var owned = OwnedCounter();
+        var purchases = Cfg.ScripPurchases.Where(p => p.ItemId != 0 && (p.Keep <= 0 || owned(p.ItemId) < p.Keep)).ToList();
         if (purchases.Count == 0)
             return;
 
@@ -299,8 +300,26 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         await OpenScripShop();
         // in list order: the first one gets everything it wants before the next is looked at
         foreach (var purchase in purchases)
-            await BuyScripItem(purchase.ItemId, purchase.Keep <= 0 ? int.MaxValue : purchase.Keep - ItemCount(purchase.ItemId), Math.Max(Cfg.ScripReserve, 0));
+            await BuyScripItem(purchase.ItemId, purchase.Keep <= 0 ? int.MaxValue : purchase.Keep - owned(purchase.ItemId), Math.Max(Cfg.ScripReserve, 0));
         await CloseScripShop();
+    }
+
+    private Func<uint, int> OwnedCounter() {
+        if (!Cfg.ScripKeepCountsAllaganTools)
+            return ItemCount;
+        if (!AllaganToolsIPC.Get().Available) {
+            Warning("Allagan Tools isn't loaded, only counting the inventory");
+            return ItemCount;
+        }
+        var snapshot = new Dictionary<uint, (int Owned, int Bags)>();
+        return itemId => {
+            if (!snapshot.TryGetValue(itemId, out var s)) {
+                var bags = ItemCount(itemId);
+                s = (Math.Max(AllaganToolsIPC.Get().OwnedCount(itemId) ?? bags, bags), bags);
+                snapshot[itemId] = s;
+            }
+            return s.Owned + ItemCount(itemId) - s.Bags;
+        };
     }
 
     private async Task OpenScripShop() {

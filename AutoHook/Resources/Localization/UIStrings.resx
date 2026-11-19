@@ -2229,6 +2229,12 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_ReasonOtherDuty" xml:space="preserve">
     <value>another duty started</value>
   </data>
+  <data name="OceanTrip_ScripKeepAllaganTools" xml:space="preserve">
+    <value>Use AllaganTools</value>
+  </data>
+  <data name="OceanTrip_ScripKeepAllaganToolsHelp" xml:space="preserve">
+    <value>Use Allagan Tools to include items outside your inventory when checking how many you own.</value>
+  </data>
   <data name="OceanTrip_ScripReserve" xml:space="preserve">
     <value>Keep {0} scrips</value>
   </data>

@@ -78,6 +78,7 @@ public sealed class OceanTripConfig {
 
     public bool SpendScrips = false;
     public int ScripReserve = 0;
+    public bool ScripKeepCountsAllaganTools = false;
     public List<OceanScripPurchase> ScripPurchases = [];
 
     public List<OceanTripStep> PostSteps = [new()];
