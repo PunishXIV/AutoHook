@@ -81,9 +81,10 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             }
             await Register();
             await RideVoyage();
-            await Cleanup();
+            // in case they fail to run, the remaining post steps will still carry out
+            await Skippable(Cleanup, Cfg.Cleanup == OceanTripCleanup.Desynth ? UIStrings.OceanTrip_StatusDesynthing : UIStrings.OceanTrip_StatusSelling);
             if (Cfg.SpendScrips)
-                await SpendScrips();
+                await Skippable(SpendScrips, UIStrings.OceanTrip_StatusBuyingScripItems);
             await RunPostSteps();
         }
         catch (OperationCanceledException) {
@@ -246,8 +247,16 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (FindObject(baseId) == null)
             await MoveTo(OceanTripConsts.DockTerritory, OceanTripConsts.DryskthotaPosition, MovementConfig.Default.WithTolerance(4f));
         var vendor = FindObject(baseId) ?? throw new InvalidOperationException(UIStrings.OceanTrip_ErrorVendorNotFound);
-        if (!vendor.IsInInteractRange())
-            await MoveToDirectly(vendor.Position, vendor.IsInInteractRange);
+        var closest = float.MaxValue;
+        var lastCloser = Environment.TickCount64;
+        await MoveToDirectly(vendor.Position, () => {
+            var distance = Vector3.Distance(IObjectTable.Get().LocalPlayer?.Position ?? vendor.Position, vendor.Position);
+            if (distance < closest - 0.05f) {
+                closest = distance;
+                lastCloser = Environment.TickCount64;
+            }
+            return vendor.IsInInteractRange() && (distance <= 3f || Environment.TickCount64 - lastCloser > 1000);
+        });
         await WaitWhile(() => IsMoving, "WaitStopped");
         return vendor;
     }
@@ -490,7 +499,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
         Status = UIStrings.OceanTrip_StatusReturningToDock;
         Configuration.C.PluginEnabled = _pluginWasEnabled;
-        await WaitUntil(() => !InOceanFishing && Player.Interactable && !IsOccupied(), "WaitBackAshore", timeout: TimeSpan.FromMinutes(3));
+        await WaitUntil(() => !InOceanFishing && GameMain.IsTerritoryLoaded && Player.Interactable && !IsOccupied(), "WaitBackAshore", timeout: TimeSpan.FromMinutes(3));
+        await DelayMs(2000); // idk I want to see if this fixes the immediate interact after voyage ends
     }
 
     // the last stop is never left early, its rewards come at the end
@@ -546,6 +556,36 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
     #endregion
 
     #region Cleanup
+
+    private async Task Skippable(Func<Task> step, string name) {
+        try {
+            await step();
+        }
+        catch (OperationCanceledException) {
+            throw;
+        }
+        catch (Exception e) when (!InOtherDuty) {
+            Warning($"{name} failed, skipping: {e.Message}");
+            IChatGui.Get().PrintError(OceanTripService.ChatPrefix + string.Format(UIStrings.OceanTrip_StepSkipped, name, e.Message));
+            if (IsOccupied())
+                await CloseLeftovers();
+        }
+    }
+
+    private async Task CloseLeftovers() {
+        using var scope = BeginScope(nameof(CloseLeftovers));
+        if (AgentShop.IsShopOpen())
+            AgentShop.CloseShop();
+        if (OceanScripShop.IsOpen)
+            OceanScripShop.Close();
+        CloseAddon("SelectString");
+        await WaitUntil(() => {
+            ConfirmPrompts();
+            if (AtkUnitBase.IsAddonReady("SelectYesno"))
+                AddonSelectYesno.No();
+            return !AgentShop.IsShopOpen() && !OceanScripShop.IsOpen && !IsOccupied();
+        }, "WaitClosed", timeout: TimeSpan.FromSeconds(10), abortOnTimeout: false);
+    }
 
     private async Task Cleanup() {
         using var scope = BeginScope(nameof(Cleanup));

@@ -2076,6 +2076,9 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_Departing" xml:space="preserve">
     <value>Departing for {0}</value>
   </data>
+  <data name="OceanTrip_StepSkipped" xml:space="preserve">
+    <value>{0} failed, skipping: {1}</value>
+  </data>
   <data name="OceanTrip_Stopped" xml:space="preserve">
     <value>Ocean trip stopped: {0}</value>
   </data>

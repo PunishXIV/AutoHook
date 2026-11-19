@@ -4024,6 +4024,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} failed, skipping: {1}.
+        /// </summary>
+        internal static string OceanTrip_StepSkipped {
+            get {
+                return ResourceManager.GetString("OceanTrip_StepSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start AutoRetainer multi mode.
         /// </summary>
         internal static string OceanTrip_StepStartAutoRetainerMulti {
