@@ -28,8 +28,9 @@ public class AutoCollectables : IPluginService, IDisposable {
         "Preserve the following",
         "収集価値",
         "Sammlerwert",
-        "Valeur de collection"
-        // if someone could add the chinese and korean translations that'd be nice
+        "Valeur de collection",
+        "收藏价值", // cn
+        // if someone could add the korean translation that'd be nice
     ];
 
     public void RequestResolve(bool forceNo) {
