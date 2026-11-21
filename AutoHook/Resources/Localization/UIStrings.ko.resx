@@ -1777,6 +1777,9 @@
   <data name="OceanTrip_Preparation" xml:space="preserve">
     <value>먼바다 낚시 정비</value>
   </data>
+  <data name="OceanTrip_After" xml:space="preserve">
+    <value>먼바다 낚시 이후 설정</value>
+  </data>
   <data name="OceanTrip_Leave" xml:space="preserve">
     <value>승선 시간 설정</value>
   </data>
@@ -1790,7 +1793,7 @@
     <value>{0} 를 현실시간 {1} 부터 {2} 까지만 사용</value>
   </data>
   <data name="OceanTrip_StartsFrom" xml:space="preserve">
-    <value>{0} 대기장소 설정</value>
+    <value>{0} 시작 위치 설정</value>
   </data>
   <data name="OceanTrip_InnRoom" xml:space="preserve">
     <value>여관 객실</value>
@@ -1801,11 +1804,125 @@
   <data name="OceanTrip_AnySanctuary" xml:space="preserve">
     <value>아무 휴식지역</value>
   </data>
+  <data name="OceanTrip_BuyBait" xml:space="preserve">
+    <value>미끼 구매</value>
+  </data>
+  <data name="OceanTrip_NoFisherGearset" xml:space="preserve">
+    <value>어부 장비 세트를 찾을 수 없습니다</value>
+  </data>
+  <data name="OceanTrip_LeaveEarly" xml:space="preserve">
+    <value>낚을 물고기가 없으면 조기 퇴장</value>
+  </data>
+  <data name="OceanTrip_LeaveEarlyHelp" xml:space="preserve">
+    <value>미획득 물고기를 낚은 시점에 더 이상 어류도감에 기록될 물고기가 없으면 먼바다 낚시에서 퇴장합니다. 남은 업적이 있거나, 승선하기 전부터 해당 항로에 물고기를 전부 낚은 상태라면 퇴장하지 않습니다.</value>
+  </data>
+  <data name="OceanTrip_Fish" xml:space="preserve">
+    <value>잡은 물고기:</value>
+  </data>
+  <data name="OceanTrip_Keep" xml:space="preserve">
+    <value>보관</value>
+  </data>
+  <data name="OceanTrip_Desynth" xml:space="preserve">
+    <value>분해</value>
+  </data>
+  <data name="OceanTrip_SellToVendor" xml:space="preserve">
+    <value>판매</value>
+  </data>
+  <data name="OceanTrip_LegendaryHelp" xml:space="preserve">
+    <value>먼바다 전설어는 항상 보관되며, 항상 처분 대상에서 제외됩니다.</value>
+  </data>
+  <data name="OceanTrip_Then" xml:space="preserve">
+    <value>추가 설정</value>
+  </data>
+  <data name="OceanTrip_StepReturnToOrigin" xml:space="preserve">
+    <value>이전 위치로 돌아가기</value>
+  </data>
+  <data name="OceanTrip_StepReturnToOriginHelp" xml:space="preserve">
+    <value>이전 장비 세트로 변경후, 원래 있던 지역과 위치로 돌아갑니다.</value>
+  </data>
+  <data name="OceanTrip_StepGoToInn" xml:space="preserve">
+    <value>여관으로 이동</value>
+  </data>
+  <data name="OceanTrip_StepGoHome" xml:space="preserve">
+    <value>개인집으로 이동</value>
+  </data>
+  <data name="OceanTrip_StepCommand" xml:space="preserve">
+    <value>명령어</value>
+  </data>
+  <data name="OceanTrip_RequiresLifestream" xml:space="preserve">
+    <value>Lifestream 필요</value>
+  </data>
+  <data name="OceanTrip_ReturnHousingTo" xml:space="preserve">
+    <value>주택에서 시작했다면 다음 장소로 이동</value>
+  </data>
+  <data name="OceanTrip_HomePrivate" xml:space="preserve">
+    <value>개인 집</value>
+  </data>
+  <data name="OceanTrip_HomeFreeCompany" xml:space="preserve">
+    <value>자유부대 집</value>
+  </data>
+  <data name="OceanTrip_HomeApartment" xml:space="preserve">
+    <value>아파트</value>
+  </data>
+  <data name="OceanTrip_BoatAlarms" xml:space="preserve">
+    <value>먼바다 낚시 승선 알람</value>
+  </data>
+  <data name="OceanTrip_MinBeforeBoarding" xml:space="preserve">
+    <value>분 전 알람</value>
+  </data>
+  <data name="OceanTrip_Opens" xml:space="preserve">
+    <value>승선시작기준</value>
+  </data>
+  <data name="OceanTrip_Closes" xml:space="preserve">
+    <value>승선마감기준</value>
+  </data>
+  <data name="OceanTrip_AlarmBoardingNow" xml:space="preserve">
+    <value>지금 승선 가능, 마감까지 {0}:{1}</value>
+  </data>
+  <data name="OceanTrip_AlarmBoardingIn" xml:space="preserve">
+    <value>승선 시작까지 {0}:{1}</value>
+  </data>
+  <data name="OceanTrip_SecondsShort" xml:space="preserve">
+    <value>{0}초</value>
+  </data>
+  <data name="OceanTrip_MinutesShort" xml:space="preserve">
+    <value>{0}분</value>
+  </data>
+  <data name="OceanTrip_GoLink" xml:space="preserve">
+    <value>[이동]</value>
+  </data>
+  <data name="OceanTrip_NotStarted" xml:space="preserve">
+    <value>먼바다 낚시가 시작되지 않음: {0}</value>
+  </data>
+  <data name="OceanTrip_ReasonNotLoggedIn" xml:space="preserve">
+    <value>로그인되지 않았습니다</value>
+  </data>
+  <data name="OceanTrip_ReasonAutoOceanFishDisabled" xml:space="preserve">
+    <value>설정에서 자동 먼바다 낚시가 비활성화돼 있습니다</value>
+  </data>
+  <data name="OceanTrip_ReasonAlreadyRunning" xml:space="preserve">
+    <value>{0} 이미 실행 중입니다</value>
+  </data>
+  <data name="OceanTrip_ReasonBusy" xml:space="preserve">
+    <value>현재 다른 행동을 할 수 없습니다</value>
+  </data>
+  <data name="OceanTrip_ReasonMissedBoat" xml:space="preserve">
+    <value>배를 놓쳤습니다</value>
+  </data>
+  <data name="OceanTrip_StatusDesynthing" xml:space="preserve">
+    <value>물고기 분해중</value>
+  </data>
+  <data name="OceanTrip_StatusSelling" xml:space="preserve">
+    <value>물고기 판매중</value>
+  </data>
   <data name="OceanTrip_Voyages" xml:space="preserve">
     <value>항해</value>
   </data>
   <data name="OceanTrip_GoAutomatically" xml:space="preserve">
     <value>자동화 시작</value>
+  </data>
+  <data name="OceanTrip_During" xml:space="preserve">
+    <value>먼바다 낚시 중 설정</value>
   </data>
   <data name="AutoOceanFish_Description" xml:space="preserve">
     <value>먼바다 낚시의 각 해역에 맞게 프리셋 전환 및 낚시를 시작합니다.</value>
@@ -1825,10 +1942,64 @@
   <data name="OceanTrip_Repair" xml:space="preserve">
     <value>수리</value>
   </data>
+  <data name="OceanTrip_RepairBelow" xml:space="preserve">
+    <value>장착 장비 내구도 {0}% 미만 시 수리</value>
+  </data>
+  <data name="OceanTrip_RepairSelfThenNpc" xml:space="preserve">
+    <value>자가 수리, 안되면 수리공 이용</value>
+  </data>
+  <data name="OceanTrip_RepairNpc" xml:space="preserve">
+    <value>수리공에게 수리</value>
+  </data>
   <data name="OceanTrip_StatusEquippingRecommended" xml:space="preserve">
     <value>최강 장비 장착</value>
   </data>
+  <data name="OceanTrip_StatusRepairing" xml:space="preserve">
+    <value>장비 수리중</value>
+  </data>
+  <data name="OceanTrip_ReasonInventoryFull" xml:space="preserve">
+    <value>소지품 여유 공간 부족</value>
+  </data>
+  <data name="OceanTrip_ReasonInParty" xml:space="preserve">
+    <value>파티 참가 중</value>
+  </data>
   <data name="ZeroToDisable" xml:space="preserve">
     <value>0 으로 설정시 비활성화</value>
+  </data>
+  <data name="OceanTrip_ScripBait" xml:space="preserve">
+    <value>미획득 물고기용 화폐 미끼를 각각 {0}개까지 구매</value>
+  </data>
+  <data name="OceanTrip_SpendScrips" xml:space="preserve">
+    <value>화폐 사용</value>
+  </data>
+  <data name="OceanTrip_ScripKeep" xml:space="preserve">
+    <value>구매</value>
+  </data>
+  <data name="OceanTrip_ScripKeepHelp" xml:space="preserve">
+    <value>소지품 내 목표 보유 수량 (0 입력 시 계속 구매)</value>
+  </data>
+  <data name="OceanTrip_ReasonOtherDuty" xml:space="preserve">
+    <value>다른 임무 진행 중</value>
+  </data>
+  <data name="OceanTrip_ScripKeepAllaganTools" xml:space="preserve">
+    <value>AllaganTools 사용</value>
+  </data>
+  <data name="OceanTrip_ScripKeepAllaganToolsHelp" xml:space="preserve">
+    <value>보유 수량 확인 시 소지품 외 초코보 가방, 집사 소지품도 포함하도록 Allagan Tools를 사용합니다.</value>
+  </data>
+  <data name="OceanTrip_ScripReserve" xml:space="preserve">
+    <value>화폐 {0} 개 유지</value>
+  </data>
+  <data name="OceanTrip_SelectItem" xml:space="preserve">
+    <value>아이템 선택</value>
+  </data>
+  <data name="OceanTrip_StatusBuyingScripItems" xml:space="preserve">
+    <value>화폐 교환 중</value>
+  </data>
+  <data name="OceanTrip_ReasonPluginDisabled" xml:space="preserve">
+    <value>AutoHook이 비활성화되었습니다</value>
+  </data>
+  <data name="Conditions_PluginOffWarning" xml:space="preserve">
+    <value>AutoHook이 꺼져 있어 조건이 적용되지 않습니다. 활성화 전까지는 유효성 정보가 갱신되지 않습니다.</value>
   </data>
 </root>
