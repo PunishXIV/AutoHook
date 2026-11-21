@@ -96,7 +96,9 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
         if (ItemUtil.GetBaseId(itemId) is { ItemId: > 0 and var id }) {
             WorldState.Get().Execute(new RodState.OpSetLastCatch(new CatchInfo(id, amount, isLarge, size, level, stars, oceanStars, isMoochable, isFirstTimeCatch)));
         }
-        WorldState.Get().Execute(new RodState.OpSetFishingStep(FishingSteps.FishCaught));
+        // keep a stop/quit requested while reeling in, or the catch would wipe it and auto cast would carry on
+        var pendingStop = WorldState.Get().Fishing.FishingStep & (FishingSteps.StopCasting | FishingSteps.QuitRequested);
+        WorldState.Get().Execute(new RodState.OpSetFishingStep(FishingSteps.FishCaught | pendingStop));
     }
 
     private unsafe void ReceiveAchievementProgressDetour(AchievementStruct* thisPtr, uint id, uint current, uint max) {
