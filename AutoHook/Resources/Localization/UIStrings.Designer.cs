@@ -1146,6 +1146,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AutoHook is off, so conditions aren&apos;t being evaluated. Their validity will be out of date until it&apos;s turned back on..
+        /// </summary>
+        internal static string Conditions_PluginOffWarning {
+            get {
+                return ResourceManager.GetString("Conditions_PluginOffWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure.
         /// </summary>
         internal static string Configure {
@@ -3601,15 +3610,6 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AutoHook is disabled.
-        /// </summary>
-        internal static string OceanTrip_ReasonPluginDisabled {
-            get {
-                return ResourceManager.GetString("OceanTrip_ReasonPluginDisabled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to auto ocean fishing is disabled in the settings.
         /// </summary>
         internal static string OceanTrip_ReasonAutoOceanFishDisabled {
@@ -3669,6 +3669,15 @@ namespace AutoHook.Resources.Localization {
         internal static string OceanTrip_ReasonOtherDuty {
             get {
                 return ResourceManager.GetString("OceanTrip_ReasonOtherDuty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AutoHook is disabled.
+        /// </summary>
+        internal static string OceanTrip_ReasonPluginDisabled {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonPluginDisabled", resourceCulture);
             }
         }
         

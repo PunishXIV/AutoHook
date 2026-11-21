@@ -2061,9 +2061,6 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_ReasonAutoOceanFishDisabled" xml:space="preserve">
     <value>auto ocean fishing is disabled in the settings</value>
   </data>
-  <data name="OceanTrip_ReasonPluginDisabled" xml:space="preserve">
-    <value>AutoHook is disabled</value>
-  </data>
   <data name="OceanTrip_ReasonAlreadyRunning" xml:space="preserve">
     <value>{0} is already running</value>
   </data>
@@ -2246,5 +2243,11 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   </data>
   <data name="OceanTrip_StatusBuyingScripItems" xml:space="preserve">
     <value>Buying from the scrip exchange</value>
+  </data>
+  <data name="OceanTrip_ReasonPluginDisabled" xml:space="preserve">
+    <value>AutoHook is disabled</value>
+  </data>
+  <data name="Conditions_PluginOffWarning" xml:space="preserve">
+    <value>AutoHook is off, so conditions aren't being evaluated. Their validity will be out of date until it's turned back on.</value>
   </data>
 </root>

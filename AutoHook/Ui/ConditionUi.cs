@@ -78,7 +78,19 @@ public static class ConditionUi {
             drawHeaderExtras();
         }
 
+        DrawPluginOffWarning();
         return set;
+    }
+
+    private static void DrawPluginOffWarning() {
+        if (Configuration.C.PluginEnabled)
+            return;
+
+        ImGui.SameLine(0, 6.Scaled());
+        ImGui.AlignTextToFramePadding();
+        using (ImRaii.PushFont(UiBuilder.IconFont))
+            ImGui.TextColored(ImGuiColors.DalamudOrange, FontAwesomeIcon.ExclamationTriangle.ToIconString());
+        ImGui.TooltipOnHover(UIStrings.Conditions_PluginOffWarning);
     }
 
     private static void DrawSlimAdvancedEditor(string label, ConditionSet set, ConditionScope scope, IReadOnlyList<ConditionTypeDef> types, Action? drawHeaderExtras) {
@@ -102,6 +114,7 @@ public static class ConditionUi {
             ImGui.SameLine(0, 3.Scaled());
             drawHeaderExtras();
         }
+        DrawPluginOffWarning();
         var toRemoveGroup = new List<int>();
         using var branches = DrawUtil.BeginBranches(indent: true);
         if (IsExpressionEditorVisible(set)) {
