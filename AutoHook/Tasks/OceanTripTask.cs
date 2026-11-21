@@ -186,9 +186,8 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
     private async Task NpcRepair() {
         using var scope = BeginScope(nameof(NpcRepair));
         var vendor = await ApproachBaitVendor();
-        await InteractUntil(vendor.GameObjectId, () => TryGetSelectStringText(out _), "WaitMenu", UiSkipOptions.Talk);
-        TryGetSelectStringText(out var text);
-        SelectString(1, text);
+        await InteractUntil(vendor.GameObjectId, () => VendorMenuOpen, "WaitMenu", UiSkipOptions.Talk);
+        SelectVendorMenu(1);
         await WaitUntil(() => { ConfirmPrompts(); return AtkUnitBase.IsAddonReady("Repair"); }, "WaitRepairOpen", timeout: TimeSpan.FromSeconds(10));
         var before = LowestCondition();
         RepairEquippedNpc();
@@ -324,9 +323,9 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (OceanScripShop.IsReady)
             return;
         var vendor = await ApproachNpc(OceanScripShop.VendorId);
-        await InteractUntil(vendor.GameObjectId, () => { ConfirmPrompts(); return TryGetSelectStringText(out _) || OceanScripShop.IsOpen; }, "WaitMenu");
-        if (TryGetSelectStringText(out var text))
-            SelectString(OceanScripShop.MenuIndex, text);
+        await InteractUntil(vendor.GameObjectId, () => { ConfirmPrompts(); return VendorMenuOpen || OceanScripShop.IsOpen; }, "WaitMenu");
+        if (!OceanScripShop.IsOpen)
+            SelectVendorMenu(OceanScripShop.MenuIndex);
         await WaitUntil(() => { ConfirmPrompts(); return OceanScripShop.IsReady; }, "WaitShopOpen", timeout: TimeSpan.FromSeconds(10));
     }
 
@@ -591,6 +590,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         if (OceanScripShop.IsOpen)
             OceanScripShop.Close();
         CloseAddon("SelectString");
+        CloseAddon(VendorMenuAddon);
         await WaitUntil(() => {
             ConfirmPrompts();
             if (AtkUnitBase.IsAddonReady("SelectYesno"))
@@ -737,11 +737,7 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private static bool IsMoving => IObjectTable.Get().LocalPlayer is { } p && p.IsMoving;
 
-    private static int ItemCount(uint itemId) {
-        unsafe {
-            return InventoryManager.Instance()->GetInventoryItemCount(itemId);
-        }
-    }
+    private static unsafe int ItemCount(uint itemId) => InventoryManager.Instance()->GetInventoryItemCount(itemId);
 
     private static IGameObject? FindObject(uint baseId)
         => IObjectTable.Get().Where(o => o.BaseId == baseId && o.IsTargetable).OrderBy(o => Vector3.DistanceSquared(o.Position, IObjectTable.Get().LocalPlayer?.Position ?? default)).FirstOrDefault();
@@ -763,7 +759,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         }
     }
 
-    // 0-based gearset index, -1 if there's no fisher gearset
     public static unsafe int FindFisherGearset() {
         var module = RaptureGearsetModule.Instance();
         if (module == null)
@@ -885,6 +880,25 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         var menu = new AddonMaster.SelectString(addon);
         Log($"SelectString '{text}' ({menu.EntryCount} entries), picking {index}");
         AddonSelectString.Select(Math.Clamp(index, 0, Math.Max(menu.EntryCount - 1, 0)));
+    }
+
+    private const string VendorMenuAddon = "SelectIconString";
+
+    private static unsafe AtkUnitBase* VendorMenu() {
+        var addon = RaptureAtkUnitManager.Instance()->GetAddonByName(VendorMenuAddon);
+        return addon != null && addon->IsVisible && addon->IsReady ? addon : null;
+    }
+
+    private static unsafe bool VendorMenuOpen => VendorMenu() != null;
+
+    private unsafe void SelectVendorMenu(int index) {
+        var addon = VendorMenu();
+        if (addon == null)
+            return;
+        Log($"{VendorMenuAddon}: picking {index}");
+        AtkValue value = default;
+        value.SetInt(index);
+        addon->FireCallback(1, &value, true);
     }
 
     private static unsafe void ClickDesynthesize() {
