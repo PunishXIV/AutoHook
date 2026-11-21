@@ -3,6 +3,15 @@
 public static class PluginChangelog {
     public static readonly List<Version> Versions =
     [
+        new Version("6.1.1.0") {
+            Main = {
+                "Forced bait selection now runs when you manually cast, instead of requiring /ahstart",
+            },
+            Minor = {
+                "A warning shows next to condtions when the plugin is off that condition eval is also off",
+                "AutoOceanFish is now tied to the plugin being on or off",
+            }
+        },
         new Version("6.1.0.0") {
             Main = {
                 "Ocean fishing can now be fully automatic.",
