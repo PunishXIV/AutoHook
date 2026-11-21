@@ -47,7 +47,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
     public OceanTripOrigin Origin { get; private set; }
 
     private uint? _pendingZone;
-    private bool _pluginWasEnabled;
 
     private static OceanTripConfig Cfg => Configuration.C.OceanTrip;
     private static WorldState Ws => WorldState.Get();
@@ -58,7 +57,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     protected override async Task Execute() {
         using var scope = BeginScope(nameof(OceanTripTask));
-        _pluginWasEnabled = Configuration.C.PluginEnabled;
         Origin = CaptureOrigin();
         Log($"Trip for route {Voyage.RouteId} boarding at {Voyage.BoardingStart}, origin {Origin}");
 
@@ -99,7 +97,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
             throw;
         }
         finally {
-            Configuration.C.PluginEnabled = _pluginWasEnabled;
             onFinished?.Invoke();
         }
     }
@@ -429,8 +426,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         ErrorIf(Now >= closes - 15, UIStrings.OceanTrip_ErrorBoardingClosed);
 
         Status = UIStrings.OceanTrip_StatusRegistering;
-        // world state, presets and the zone start event all need the plugin on, and the first zone can start soon after boarding
-        Configuration.C.PluginEnabled = true;
         if (FindObject(OceanTripConsts.DryskthotaId) == null) {
             Error(UIStrings.OceanTrip_ErrorDryskthotaNotFound);
             return;
@@ -474,7 +469,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
 
     private async Task RideVoyage() {
         using var scope = BeginScope(nameof(RideVoyage));
-        Configuration.C.PluginEnabled = true;
         await WaitUntil(() => Player.Interactable && !IsOccupied() || _pendingZone != null, "WaitAboard", timeout: TimeSpan.FromMinutes(2), abortOnTimeout: false);
 
         var leaveEarly = Cfg.LeaveEarly && HasUncaughtFish();
@@ -517,7 +511,6 @@ public sealed class OceanTripTask(OceanVoyage voyage, OceanTripSource source, Sy
         }
 
         Status = UIStrings.OceanTrip_StatusReturningToDock;
-        Configuration.C.PluginEnabled = _pluginWasEnabled;
         await WaitUntil(() => !InOceanFishing && GameMain.IsTerritoryLoaded && Player.Interactable && !IsOccupied(), "WaitBackAshore", timeout: TimeSpan.FromMinutes(3));
         await DelayMs(2000); // idk I want to see if this fixes the immediate interact after voyage ends
     }

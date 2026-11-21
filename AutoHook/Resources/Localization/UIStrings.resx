@@ -2061,6 +2061,9 @@ You may also use the command /ahstart to start. Try making a macro with it!</val
   <data name="OceanTrip_ReasonAutoOceanFishDisabled" xml:space="preserve">
     <value>auto ocean fishing is disabled in the settings</value>
   </data>
+  <data name="OceanTrip_ReasonPluginDisabled" xml:space="preserve">
+    <value>AutoHook is disabled</value>
+  </data>
   <data name="OceanTrip_ReasonAlreadyRunning" xml:space="preserve">
     <value>{0} is already running</value>
   </data>

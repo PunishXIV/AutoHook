@@ -3601,6 +3601,15 @@ namespace AutoHook.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AutoHook is disabled.
+        /// </summary>
+        internal static string OceanTrip_ReasonPluginDisabled {
+            get {
+                return ResourceManager.GetString("OceanTrip_ReasonPluginDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to auto ocean fishing is disabled in the settings.
         /// </summary>
         internal static string OceanTrip_ReasonAutoOceanFishDisabled {

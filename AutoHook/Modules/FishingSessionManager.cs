@@ -51,7 +51,7 @@ public sealed class FishingSessionManager : IPluginService, IDisposable {
         OceanTripService.Get().Update();
 
         if (!Configuration.C.PluginEnabled || !IClientState.Get().IsLoggedIn || IObjectTable.Get().LocalPlayer == null) {
-            if (!Configuration.C.PluginEnabled && Svc.Automation.CurrentTask is AutoOceanFish)
+            if (!Configuration.C.PluginEnabled && Svc.Automation.CurrentTask is AutoOceanFish or OceanTripTask)
                 Svc.Automation.Stop();
 
             var sf = Ws.Spearfishing;

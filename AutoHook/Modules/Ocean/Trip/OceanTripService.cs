@@ -71,13 +71,13 @@ public sealed class OceanTripService : IPluginService, IDisposable {
         reason = "";
         if (!IClientState.Get().IsLoggedIn || IObjectTable.Get().LocalPlayer == null)
             reason = UIStrings.OceanTrip_ReasonNotLoggedIn;
+        else if (!Configuration.C.PluginEnabled)
+            reason = UIStrings.OceanTrip_ReasonPluginDisabled;
         else if (!Configuration.C.AutoOceanFish)
             reason = UIStrings.OceanTrip_ReasonAutoOceanFishDisabled;
         else if (Svc.Automation.Running)
             reason = string.Format(UIStrings.OceanTrip_ReasonAlreadyRunning, Svc.Automation.Name);
-        else if (ICondition.Get()[ConditionFlag.BoundByDuty] && !OceanTripTask.InOceanFishing
-                 || InOtherDutyQueue
-                 || source != OceanTripSource.ArPostprocess && IsOccupied())
+        else if (ICondition.Get()[ConditionFlag.BoundByDuty] && !OceanTripTask.InOceanFishing || InOtherDutyQueue || source != OceanTripSource.ArPostprocess && IsOccupied())
             reason = UIStrings.OceanTrip_ReasonBusy;
         else if (InParty)
             reason = UIStrings.OceanTrip_ReasonInParty;
@@ -95,7 +95,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
             UpdateLogin(login);
             return;
         }
-        if (!Cfg.FullAuto || Svc.Automation.Running)
+        if (!Cfg.FullAuto || !Configuration.C.PluginEnabled || Svc.Automation.Running) // wait quietly instead of spamming can't start
             return;
 
         var now = Framework.GetServerTime();
@@ -294,7 +294,7 @@ public sealed class OceanTripService : IPluginService, IDisposable {
     #region AutoRetainer postprocess
 
     private void OnArCharacterAdditionalTask() {
-        if (!Cfg.FullAuto || !Cfg.SafePoints.HasFlag(OceanTripSafePoint.ArPostprocess) || !IsArCharacter || Svc.Automation.Running)
+        if (!Cfg.FullAuto || !Configuration.C.PluginEnabled || !Cfg.SafePoints.HasFlag(OceanTripSafePoint.ArPostprocess) || !IsArCharacter || Svc.Automation.Running)
             return;
 
         var now = Framework.GetServerTime();
