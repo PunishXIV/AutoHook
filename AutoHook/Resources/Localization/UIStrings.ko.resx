@@ -1708,6 +1708,15 @@
   <data name="SpectralRestOnGainHelpText" xml:space="preserve">
     <value>먼바다 낚시 중에 환해류가 출현하면 진행 중인 낚시를 취소하고 다시 던집니다</value>
   </data>
+  <data name="AutoSit" xml:space="preserve">
+    <value>앉기</value>
+  </data>
+  <data name="AutoCastLight" xml:space="preserve">
+    <value>낚시등</value>
+  </data>
+  <data name="FlairSkipOceanFishing" xml:space="preserve">
+    <value>먼바다 낚시 제외</value>
+  </data>
   <data name="AutoHandleCollectables" xml:space="preserve">
     <value>소장품 획득 자동 수락</value>
   </data>
@@ -1761,5 +1770,62 @@
   </data>
   <data name="AnyAchievement" xml:space="preserve">
     <value>아무 업적</value>
+  </data>
+  <data name="FullAutoHelpText" xml:space="preserve">
+    <value>먼바다 낚시 탭의 필터 조건과 일치하는 모든 항해에 자동으로 매칭을 넣습니다.</value>
+  </data>
+  <data name="OceanTrip_Preparation" xml:space="preserve">
+    <value>먼바다 낚시 정비</value>
+  </data>
+  <data name="OceanTrip_Leave" xml:space="preserve">
+    <value>승선 시간 설정</value>
+  </data>
+  <data name="OceanTrip_LeaveWhenBoardingOpens" xml:space="preserve">
+    <value>정시 승선 (:00)</value>
+  </data>
+  <data name="OceanTrip_LeaveLate" xml:space="preserve">
+    <value>늦은 승선:</value>
+  </data>
+  <data name="OceanTrip_OnlyBetween" xml:space="preserve">
+    <value>{0} 를 현실시간 {1} 부터 {2} 까지만 사용</value>
+  </data>
+  <data name="OceanTrip_StartsFrom" xml:space="preserve">
+    <value>{0} 대기장소 설정</value>
+  </data>
+  <data name="OceanTrip_InnRoom" xml:space="preserve">
+    <value>여관 객실</value>
+  </data>
+  <data name="OceanTrip_ResidentialSector" xml:space="preserve">
+    <value>거주구역</value>
+  </data>
+  <data name="OceanTrip_AnySanctuary" xml:space="preserve">
+    <value>아무 휴식지역</value>
+  </data>
+  <data name="OceanTrip_Voyages" xml:space="preserve">
+    <value>항해</value>
+  </data>
+  <data name="OceanTrip_GoAutomatically" xml:space="preserve">
+    <value>자동화 시작</value>
+  </data>
+  <data name="AutoOceanFish_Description" xml:space="preserve">
+    <value>먼바다 낚시의 각 해역에 맞게 프리셋 전환 및 낚시를 시작합니다.</value>
+  </data>
+  <data name="OceanTrip_VoyagesHelp" xml:space="preserve">
+    <value>선착장 이동, 미끼 구매 및 먼바다 낚시가 끝난 뒤 동작 설정.</value>
+  </data>
+  <data name="AutoOceanFish_WalkToRailing" xml:space="preserve">
+    <value>난간으로 이동</value>
+  </data>
+  <data name="OceanTrip_MinFreeSlots" xml:space="preserve">
+    <value>소지품 빈 칸이 {0}개 미만이면 이번 항해를 건너뜁니다</value>
+  </data>
+  <data name="OceanTrip_EquipRecommended" xml:space="preserve">
+    <value>최강 장비 장착</value>
+  </data>
+  <data name="OceanTrip_StatusEquippingRecommended" xml:space="preserve">
+    <value>최강 장비 장착</value>
+  </data>
+  <data name="ZeroToDisable" xml:space="preserve">
+    <value>0 으로 설정시 비활성화</value>
   </data>
 </root>
