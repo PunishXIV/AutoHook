@@ -171,13 +171,22 @@ public sealed class ActionExecutor : IPluginService, IDisposable {
     public bool TryUseStellarHookset(string actionName = "Stellar Hookset")
         => _ws.GetAvailableStellarHooksetId() is { } actionId && TryCastDelayed(actionId, ActionType.Action, actionName);
 
+    // true while the plugin itself is calling UseAction, so the UseAction hook can tell its own casts from the player's
+    public static bool IssuingAction { get; private set; }
+
     public unsafe bool UseAction(uint id, ActionType actionType = ActionType.Action) {
         if (actionType == ActionType.Item) {
             AgentInventoryContext.Instance()->UseItem(id);
             return true;
         }
 
-        return ActionManager.Instance()->UseAction(actionType, id);
+        IssuingAction = true;
+        try {
+            return ActionManager.Instance()->UseAction(actionType, id);
+        }
+        finally {
+            IssuingAction = false;
+        }
     }
 
     public void BeginPostCastDelay() {

@@ -195,9 +195,7 @@ public sealed class RodFishingModule : FishingModule {
             return;
         }
 
-        OceanPresetSelector.TryApply();
-        Hints.Clear();
-        Extra.ProcessExtraActions(Hints, Resolver);
+        ApplyStartPresetAndExtras();
 
         // a rule can hard quit during the pass above
         if (AutoStartLocked)
@@ -209,20 +207,52 @@ public sealed class RodFishingModule : FishingModule {
             return;
         }
 
-        var extraCfg = GetExtraCfg();
-        if (extraCfg is { ForceBaitSwap: true, Enabled: true }) {
-            var result = BaitComponent.ChangeBait((uint)extraCfg.ForcedBaitId);
-
-            if (result == ChangeBaitReturn.Success) {
-                IChatGui.Get().PrintStatus($@"Starting with bait: {Item.GetRow((uint)extraCfg.ForcedBaitId).Name}");
-                Configuration.Save();
-            }
-            else if (result != ChangeBaitReturn.AlreadyEquipped)
-                IChatGui.Get().PrintStatus(@$"Failed to change bait for forced bait swap. Result: {result}");
-        }
+        ApplyForcedBait();
 
         Ws.Execute(new RodState.OpSetFishingStep(FishingSteps.StartPending));
         AutoCast.UseAutoCasts();
+    }
+
+    // setup forced bait for a manual cast
+    public void PrepareManualCast() {
+        if (Ws.Fishing.FishingState != FishingState.None || Ws.Player.BlockCasting || !Ws.ActionAvailable(IDs.Actions.Cast, ActionType.Action))
+            return;
+
+        ApplyStartPresetAndExtras();
+        if (AutoStartLocked)
+            return;
+        ApplyForcedBait();
+    }
+
+    private void ApplyStartPresetAndExtras() {
+        OceanPresetSelector.TryApply();
+        Hints.Clear();
+        Extra.ProcessExtraActions(Hints, Resolver);
+    }
+
+    // the bait a start or manual cast will fish with: the forced bait if ApplyForcedBait would get it equipped, otherwise the equipped one
+    public uint GetStartBaitId(out bool forced) {
+        var equipped = Ws.Fishing.BaitInfo.BaitId;
+        var extraCfg = GetExtraCfg();
+        forced = extraCfg is { ForceBaitSwap: true, Enabled: true, ForcedBaitId: > 0 }
+                 && (uint)extraCfg.ForcedBaitId != equipped
+                 && Ws.Player.GetItemCount((uint)extraCfg.ForcedBaitId) > 0
+                 && FishBaitCatalog.Get().Baits.Any(b => b.Id == extraCfg.ForcedBaitId);
+        return forced ? (uint)extraCfg.ForcedBaitId : equipped;
+    }
+
+    private void ApplyForcedBait() {
+        var extraCfg = GetExtraCfg();
+        if (extraCfg is not { ForceBaitSwap: true, Enabled: true })
+            return;
+
+        var result = BaitComponent.ChangeBait((uint)extraCfg.ForcedBaitId);
+        if (result == ChangeBaitReturn.Success) {
+            IChatGui.Get().PrintStatus($@"Starting with bait: {Item.GetRow((uint)extraCfg.ForcedBaitId).Name}");
+            Configuration.Save();
+        }
+        else if (result != ChangeBaitReturn.AlreadyEquipped)
+            IChatGui.Get().PrintStatus(@$"Failed to change bait for forced bait swap. Result: {result}");
     }
 
     private bool BlockedByMissingBait() {

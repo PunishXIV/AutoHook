@@ -74,6 +74,14 @@ public sealed class HooksUpdateModule : IAsyncDisposable {
 
     private unsafe bool UseActionDetour(ActionManager* thisPtr, ActionType actionType, uint actionId, ulong targetId, uint extraParam, ActionManager.UseActionMode mode, uint comboRouteId, bool* outOptAreaTargeted) {
         try {
+            // make sure preset's bait is selected
+            if (actionType == ActionType.Action && actionId == IDs.Actions.Cast && mode != ActionManager.UseActionMode.Queue && !ActionExecutor.IssuingAction && Configuration.C.PluginEnabled)
+                FishingSessionManager.Get().Rod.PrepareManualCast();
+        }
+        catch (Exception e) {
+            IPluginLog.Get().Warning(e, "[WorldStateUpdater] PrepareManualCast");
+        }
+        try {
             if (actionType == ActionType.Action && Configuration.C.PluginEnabled && WorldState.Get().ActionAvailable(actionId, actionType))
                 WorldState.Get().Execute(new RodState.OpPlayerUsedAction(new UsedAction(actionId, actionType)));
         }

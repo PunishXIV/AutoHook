@@ -160,14 +160,15 @@ public class PluginUi : Window, IDisposable {
                             UIStrings.StatusNoPreset);
                     }
                     else {
-                        var baitId = WorldState.Get().Fishing.BaitInfo.BaitId;
+                        var baitId = FishingSessionManager.Get().Rod.GetStartBaitId(out var forced);
                         var baitName = baitId == 0 ? UIStrings.None : Item.GetRow(baitId).Name.ToString();
+                        var baitLabel = forced ? "Forced Bait:" : "Equipped Bait:";
 
                         var hasBait = preset != null && preset.HasBaitOrMooch(baitId);
                         var presetName = hasBait ? _presets.SelectedPreset?.PresetName : _presets.DefaultPreset.PresetName;
-                        Status = $"Equipped Bait: {baitName} - Preset \'{presetName}\' will be used.";
+                        Status = $"{baitLabel} {baitName} - Preset \'{presetName}\' will be used.";
 
-                        ImGui.TextColored(ImGuiColors.DalamudViolet, $"Equipped Bait:");
+                        ImGui.TextColored(ImGuiColors.DalamudViolet, baitLabel);
                         ImGui.SameLine(0, 3.Scaled());
                         ImGui.TextColored(ImGuiColors.ParsedGold, $"\'{baitName}\'");
                         ImGui.SameLine(0, 3.Scaled());
