@@ -1909,26 +1909,65 @@
   <data name="OceanTrip_ReasonMissedBoat" xml:space="preserve">
     <value>배를 놓쳤습니다</value>
   </data>
+  <data name="OceanTrip_StatusBoarding" xml:space="preserve">
+    <value>승선</value>
+  </data>
   <data name="OceanTrip_StatusDesynthing" xml:space="preserve">
     <value>물고기 분해중</value>
   </data>
   <data name="OceanTrip_StatusSelling" xml:space="preserve">
     <value>물고기 판매중</value>
   </data>
+  <data name="OceanTrip_ErrorBuyFailed" xml:space="preserve">
+    <value>{0} 구매 실패</value>
+  </data>
+  <data name="OceanTrip_ErrorVendorNotFound" xml:space="preserve">
+    <value>미끼 상인을 찾을 수 없었습니다</value>
+  </data>
+  <data name="OceanTrip_ErrorOpenShopFailed" xml:space="preserve">
+    <value>미끼 상점 열기 실패</value>
+  </data>
+  <data name="OceanTrip_ErrorBoardingClosed" xml:space="preserve">
+    <value>승선 시간 마감</value>
+  </data>
+  <data name="OceanTrip_ErrorDryskthotaNotFound" xml:space="preserve">
+    <value>드뤼스크토타를 찾을 수 없었습니다</value>
+  </data>
+  <data name="OceanTrip_ErrorRegisterTimeout" xml:space="preserve">
+    <value>드뤼스크토타 승선 신청 시간 초과</value>
+  </data>
+  <data name="OceanTrip_ErrorDesynthFailed" xml:space="preserve">
+    <value>{0} 분해 실패</value>
+  </data>
+  <data name="OceanTrip_ErrorSellFunctionMissing" xml:space="preserve">
+    <value>판매 기능을 찾을 수 없었습니다</value>
+  </data>
   <data name="OceanTrip_Voyages" xml:space="preserve">
     <value>항해</value>
   </data>
   <data name="OceanTrip_GoAutomatically" xml:space="preserve">
-    <value>자동화 시작</value>
+    <value>자동 승선</value>
   </data>
   <data name="OceanTrip_During" xml:space="preserve">
     <value>먼바다 낚시 중 설정</value>
+  </data>
+  <data name="OceanTrip_Readiness" xml:space="preserve">
+    <value>{2} 목적 프리셋: {0}/{1}</value>
+  </data>
+  <data name="OceanTrip_ReadinessMissing" xml:space="preserve">
+    <value>프리셋 없음:</value>
+  </data>
+  <data name="OceanTrip_ReadinessGated" xml:space="preserve">
+    <value>항로에 프리셋이 없는 해역이 있으면 승선하지 않습니다.</value>
   </data>
   <data name="AutoOceanFish_Description" xml:space="preserve">
     <value>먼바다 낚시의 각 해역에 맞게 프리셋 전환 및 낚시를 시작합니다.</value>
   </data>
   <data name="OceanTrip_VoyagesHelp" xml:space="preserve">
     <value>선착장 이동, 미끼 구매 및 먼바다 낚시가 끝난 뒤 동작 설정.</value>
+  </data>
+  <data name="OverriddenBy" xml:space="preserve">
+    <value>{0}이 활성화되어 해당 설정으로 대체됨</value>
   </data>
   <data name="AutoOceanFish_WalkToRailing" xml:space="preserve">
     <value>난간으로 이동</value>
